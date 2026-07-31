@@ -51,12 +51,12 @@ type MobileTab = 'home' | 'vitals' | 'care' | 'chat';
 type CareSubTab = 'plan' | 'meds' | 'devices' | 'logs';
 
 const TYPE_BADGE: Record<string, string> = {
-  medication: 'bg-[#FDF5E8] text-[#C49A6C]', med: 'bg-[#FDF5E8] text-[#C49A6C]',
-  therapy: 'bg-[#FDF5E8] text-[#9C7A4E]', exercise: 'bg-[#FDF5E8] text-[#C49A6C]',
-  nurse_visit: 'bg-[#E8D5B8] text-[#7A5C32]', visit: 'bg-[#E8D5B8] text-[#7A5C32]',
-  doctor_consult: 'bg-[#F5E6D0] text-[#9C7A4E]', consult: 'bg-[#F5E6D0] text-[#9C7A4E]',
+  medication: 'bg-[#E0F2F1] text-[#2E7D6F]', med: 'bg-[#E0F2F1] text-[#2E7D6F]',
+  therapy: 'bg-[#E0F2F1] text-[#1B5E4F]', exercise: 'bg-[#E0F2F1] text-[#2E7D6F]',
+  nurse_visit: 'bg-[#80CBC4] text-[#0D3B32]', visit: 'bg-[#80CBC4] text-[#0D3B32]',
+  doctor_consult: 'bg-[#B2DFDB] text-[#1B5E4F]', consult: 'bg-[#B2DFDB] text-[#1B5E4F]',
   monitoring: 'bg-amber-100 text-amber-700', monitor: 'bg-amber-100 text-amber-700',
-  self_care: 'bg-slate-100 text-slate-500', care_worker: 'bg-[#FDF5E8] text-[#C49A6C]',
+  self_care: 'bg-slate-100 text-slate-500', care_worker: 'bg-[#E0F2F1] text-[#2E7D6F]',
 };
 
 const SectionHeader: FC<{ icon: FC<{ className?: string }>; title: string; right?: ReactNode }> = ({ icon: Icon, title, right }) => (
@@ -70,10 +70,10 @@ const SectionHeader: FC<{ icon: FC<{ className?: string }>; title: string; right
 );
 
 const AiInsight: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="mt-2 pt-2 border-t border-[#E8D5B8] bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0] rounded-lg px-2.5 py-2 flex items-start gap-1.5">
-    <Brain className="w-3 h-3 text-[#C49A6C] flex-shrink-0 mt-0.5" />
+  <div className="mt-2 pt-2 border-t border-[#80CBC4] bg-gradient-to-r from-[#E0F2F1] to-[#B2DFDB] rounded-lg px-2.5 py-2 flex items-start gap-1.5">
+    <Brain className="w-3 h-3 text-[#2E7D6F] flex-shrink-0 mt-0.5" />
     <div>
-      <p className="text-[8px] font-bold text-[#9C7A4E] mb-0.5">AI Insight</p>
+      <p className="text-[8px] font-bold text-[#1B5E4F] mb-0.5">AI Insight</p>
       <p className="text-[9px] text-slate-600 leading-relaxed font-medium">{children}</p>
     </div>
   </div>
@@ -168,7 +168,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
                     ))}
                       {/* iHomeCare — custom icon with badge */}
                       <div key="ihc" className="flex flex-col items-center gap-1">
-                        <button onClick={() => setShowSplash(true)} className="w-[60px] h-[60px] rounded-[16px] flex items-center justify-center shadow-[0_2px_12px_rgba(196,154,108,0.5)] bg-[#C49A6C] transition-transform active:scale-90 relative">
+                        <button onClick={() => setShowSplash(true)} className="w-[60px] h-[60px] rounded-[16px] flex items-center justify-center shadow-[0_2px_12px_rgba(196,154,108,0.5)] bg-[#2E7D6F] transition-transform active:scale-90 relative">
                           <IHomeCareFamilyLogoIcon size={30} />
                           <span className="absolute -top-1.5 -right-1.5 w-[18px] h-[18px] bg-[#FF453A] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center shadow-md">3</span>
                         </button>
@@ -210,7 +210,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
             </div>
           ) : showSplash ? (
             /* Splash Screen */
-            <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] min-h-0" onClick={() => { setShowApp(true); setShowSplash(false); }}>
+            <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#2E7D6F] to-[#1B5E4F] min-h-0" onClick={() => { setShowApp(true); setShowSplash(false); }}>
               <div className="zoom-in flex flex-col items-center">
                 <div className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 mb-6">
                   <IHomeCareFamilyLogoIcon size={40} />
@@ -248,7 +248,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
                 <button
                   key={key}
                   onClick={() => setTab(key)}
-                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${tab === key ? 'text-[#C49A6C]' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${tab === key ? 'text-[#2E7D6F]' : 'text-slate-400 hover:text-slate-600'}`}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="text-[9px] font-medium">{label}</span>
@@ -515,15 +515,15 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg font-bold">{formatDemoDateLabel()}</p>
-          <p className="text-[10px] text-[#E8D5B8] mt-0.5">照护 Day {DEMO_HAH_DAY} · {patient?.name ?? '患者'}</p>
+          <p className="text-[10px] text-[#80CBC4] mt-0.5">照护 Day {DEMO_HAH_DAY} · {patient?.name ?? '患者'}</p>
           <div className="flex items-center gap-1.5 mt-2">
-            <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-300 animate-pulse' : news.tier === 'medium' ? 'bg-amber-300' : news.redScore ? 'bg-orange-300' : 'bg-[#E8D5B8]'}`} />
+            <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-300 animate-pulse' : news.tier === 'medium' ? 'bg-amber-300' : news.redScore ? 'bg-orange-300' : 'bg-[#80CBC4]'}`} />
             <span className="text-xs font-medium">{news.tier === 'high' ? `${newsHeadline} — ${newsAction}` : `${newsHeadline} · ${newsAction}`}</span>
           </div>
         </div>
         <div className="text-right bg-white/15 rounded-xl px-3 py-2">
           <p className="text-sm font-bold">17:00</p>
-          <p className="text-[9px] text-[#E8D5B8]">下次访视</p>
+          <p className="text-[9px] text-[#80CBC4]">下次访视</p>
         </div>
       </div>
     </div>
@@ -533,7 +533,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       <SectionHeader icon={Heart} title="患者概览" />
       <div className="p-4">
       <div className="flex items-center gap-3">
-        <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-md border-2 border-[#E8D5B8]">
+        <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-md border-2 border-[#80CBC4]">
           <PatientAvatar patientId={familyPatientId} size={64} />
         </div>
         <div className="flex-1">
@@ -542,8 +542,8 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
           </div>
           <p className="text-xs text-slate-400">{patient?.gender ?? ''}, {patient?.age ?? ''} yrs · {patient?.diagnosis ?? ''}</p>
           <div className="flex items-center gap-1.5 mt-1.5">
-          <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-500 animate-pulse' : news.tier === 'medium' ? 'bg-amber-500' : news.redScore ? 'bg-orange-500' : 'bg-[#C49A6C]'}`} />
-          <span className={`text-xs font-medium ${news.tier === 'high' ? 'text-red-600' : news.tier === 'medium' ? 'text-amber-600' : news.redScore ? 'text-orange-600' : 'text-[#C49A6C]'}`}>{newsHeadline}</span>
+          <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-500 animate-pulse' : news.tier === 'medium' ? 'bg-amber-500' : news.redScore ? 'bg-orange-500' : 'bg-[#2E7D6F]'}`} />
+          <span className={`text-xs font-medium ${news.tier === 'high' ? 'text-red-600' : news.tier === 'medium' ? 'text-amber-600' : news.redScore ? 'text-orange-600' : 'text-[#2E7D6F]'}`}>{newsHeadline}</span>
           </div>
         </div>
         <button onClick={onAlertClick} className="relative flex-shrink-0 group">
@@ -590,7 +590,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       <div className="p-4 space-y-3">
         {careTeam.map((member) => (
           <div key={member.name} className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-[#E8D5B8]">
+            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-[#80CBC4]">
               <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
@@ -600,7 +600,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
             <button
               type="button"
               onClick={() => setCallTarget(`${member.name} · ${member.phone}`)}
-              className="flex items-center gap-1 text-[10px] text-[#C49A6C] font-medium bg-[#F5E6D0] px-2.5 py-1 rounded-lg hover:bg-[#E8D5B8] transition-colors"
+              className="flex items-center gap-1 text-[10px] text-[#2E7D6F] font-medium bg-[#B2DFDB] px-2.5 py-1 rounded-lg hover:bg-[#80CBC4] transition-colors"
             >
               <Phone className="w-3 h-3" /> Call
             </button>
@@ -628,15 +628,15 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
           </div>
         ))}
       </div>
-      <div className="px-4 py-2 bg-[#FDF5E8] border-t border-[#E8D5B8] flex items-center justify-end gap-1">
-        <span className="text-[9px] text-[#9C7A4E] font-medium">View full plan</span>
-        <ChevronRight className="w-3.5 h-3.5 text-[#C49A6C]" />
+      <div className="px-4 py-2 bg-[#E0F2F1] border-t border-[#80CBC4] flex items-center justify-end gap-1">
+        <span className="text-[9px] text-[#1B5E4F] font-medium">View full plan</span>
+        <ChevronRight className="w-3.5 h-3.5 text-[#2E7D6F]" />
       </div>
     </div>
 
     {callTarget && (
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 animate-in fade-in">
-        <Phone className="w-3.5 h-3.5 text-[#C49A6C]" />
+        <Phone className="w-3.5 h-3.5 text-[#2E7D6F]" />
         <span>Calling {callTarget}</span>
       </div>
     )}
@@ -644,7 +644,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
     {/* Floating patient switch button — bottom right */}
     <button
       onClick={() => setFamilyPatientId(familyPatientId === 18 ? 7 : 18)}
-      className="fixed bottom-6 right-6 z-50 bg-[#C49A6C] hover:bg-[#B0895E] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transition-all flex items-center gap-2"
+      className="fixed bottom-6 right-6 z-50 bg-[#2E7D6F] hover:bg-[#B0895E] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transition-all flex items-center gap-2"
     >
       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
       Switch to {PATIENTS_FULL.find(p => p.id === familyPatientId)?.name ?? 'other patient'}
@@ -676,7 +676,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
             <Heart className="w-5 h-5" />
             <div>
               <h3 className="text-sm font-bold">Real-Time Vitals</h3>
-              <p className="text-[10px] text-[#E8D5B8]">{patient?.name ?? '患者'} · Live device sync</p>
+              <p className="text-[10px] text-[#80CBC4]">{patient?.name ?? '患者'} · Live device sync</p>
             </div>
           </div>
         </div>
@@ -754,10 +754,10 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[10px] text-slate-400">Oral Intake</span>
-                  <span className="text-[11px] font-bold text-[#C49A6C]">{ioSnapshot.oralIntake}</span>
+                  <span className="text-[11px] font-bold text-[#2E7D6F]">{ioSnapshot.oralIntake}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-1.5">
-                  <div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-1.5 rounded-full" style={{ width: `${ioSnapshot.oralPct}%` }} />
+                  <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-1.5 rounded-full" style={{ width: `${ioSnapshot.oralPct}%` }} />
                 </div>
                 <p className="text-[8px] text-slate-400 mt-0.5">{ioSnapshot.oralNote}</p>
               </div>
@@ -773,7 +773,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-slate-50">
                 <span className="text-[10px] font-semibold text-slate-600">Fluid Balance</span>
-                <span className={`text-[11px] font-extrabold ${ioSnapshot.fluidWarn ? 'text-red-600' : 'text-[#C49A6C]'}`}>{ioSnapshot.fluidBalance}</span>
+                <span className={`text-[11px] font-extrabold ${ioSnapshot.fluidWarn ? 'text-red-600' : 'text-[#2E7D6F]'}`}>{ioSnapshot.fluidBalance}</span>
               </div>
             </div>
             <AiInsight>{ioSnapshot.insight}</AiInsight>
@@ -795,7 +795,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <p className="text-lg font-bold text-slate-900">{s.value}</p>
               <p className="text-[8px] text-slate-400">{s.label}</p>
               <p className="text-[9px] text-slate-400 mt-0.5">{s.unit}</p>
-              <p className={`text-[8px] mt-0.5 ${p7Alert ? 'text-red-500' : 'text-[#C49A6C]'}`}>{s.sub}</p>
+              <p className={`text-[8px] mt-0.5 ${p7Alert ? 'text-red-500' : 'text-[#2E7D6F]'}`}>{s.sub}</p>
             </div>
           ))}
         </div>
@@ -825,7 +825,7 @@ const CareTab: FC<{ sub: CareSubTab; setSub: (s: CareSubTab) => void; familyPati
             <button
               key={key}
               onClick={() => setSub(key)}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${sub === key ? 'bg-white text-[#C49A6C] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-all ${sub === key ? 'bg-white text-[#2E7D6F] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               <Icon className="w-3 h-3" />
               {label}
@@ -870,15 +870,15 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           title={dayLabel}
           right={<span className="text-[9px] font-semibold text-white/90 bg-white/20 px-2 py-0.5 rounded-full">Today</span>}
         />
-        <div className="px-4 py-3 bg-[#FDF5E8] border-b border-[#E8D5B8]">
+        <div className="px-4 py-3 bg-[#E0F2F1] border-b border-[#80CBC4]">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] font-semibold text-[#9C7A4E]">Daily Progress</span>
-            <span className="text-[10px] font-bold text-[#C49A6C]">{completed}/{acts.length} · {progressPct}%</span>
+            <span className="text-[10px] font-semibold text-[#1B5E4F]">Daily Progress</span>
+            <span className="text-[10px] font-bold text-[#2E7D6F]">{completed}/{acts.length} · {progressPct}%</span>
           </div>
-          <div className="w-full bg-white rounded-full h-2 overflow-hidden border border-[#E8D5B8]">
-            <div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-2 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+          <div className="w-full bg-white rounded-full h-2 overflow-hidden border border-[#80CBC4]">
+            <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-2 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
           </div>
-          <p className="text-[9px] text-[#9C7A4E] mt-1">{acts.length} activities{missed > 0 ? ` · ${missed} missed` : ''}</p>
+          <p className="text-[9px] text-[#1B5E4F] mt-1">{acts.length} activities{missed > 0 ? ` · ${missed} missed` : ''}</p>
         </div>
         <div className="divide-y divide-slate-50">
           {acts.map((act: any, j: number) => {
@@ -896,9 +896,9 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
                 <p className="text-[9px] text-slate-400 mt-0.5">{act.detail}</p>
               </div>
               <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0 ${
-                isCompleted ? 'bg-[#FDF5E8] text-[#C49A6C]' :
+                isCompleted ? 'bg-[#E0F2F1] text-[#2E7D6F]' :
                 isMissed ? 'bg-red-50 text-red-600 alert-blink' :
-                isInProgress ? 'bg-[#F5E6D0] text-[#9C7A4E]' :
+                isInProgress ? 'bg-[#B2DFDB] text-[#1B5E4F]' :
                 'bg-amber-50 text-amber-700'
               }`}>
                 {isCompleted ? '✓ Done' : isMissed ? '✗ Missed' : isInProgress ? '◷ Active' : '○ Due'}
@@ -1055,11 +1055,11 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       </div>
 
       {/* Expected Outcome */}
-      <div className="border-t border-slate-100 px-4 py-3 bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0]">
+      <div className="border-t border-slate-100 px-4 py-3 bg-gradient-to-r from-[#E0F2F1] to-[#B2DFDB]">
         <div className="flex items-start gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#C49A6C] flex-shrink-0 mt-0.5" />
+          <CheckCircle2 className="w-4 h-4 text-[#2E7D6F] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[10px] font-bold text-[#9C7A4E]">Expected Outcome (48–72h)</p>
+            <p className="text-[10px] font-bold text-[#1B5E4F]">Expected Outcome (48–72h)</p>
             <p className="text-[9px] text-slate-600 mt-0.5">{p7Alert ? `If all 4 interventions completed: SpO₂ ≥92% on O₂ 2L/min, Temp ≤37.5°C, ${escalation}` : `If all 4 interventions completed: CAP resolved, SpO₂ ≥93% on room air, Ceftriaxone completed. ${monitoringLabel}.`}</p>
             {isP7 && (
             <button
@@ -1069,7 +1069,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               className={`mt-2 text-[9px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-colors ${
                 protocolActive
                   ? 'bg-emerald-100 text-emerald-700 cursor-default'
-                  : 'text-white bg-[#C49A6C] hover:bg-[#B8860B]'
+                  : 'text-white bg-[#2E7D6F] hover:bg-[#00796B]'
               }`}
             >
               <CheckCircle2 className="w-3 h-3" />
@@ -1087,7 +1087,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       <div className="p-4 space-y-3">
         {progressNotes.map((note, i) => (
           <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
-            <div className="w-8 h-8 rounded-full bg-[#FDF5E8] flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#E0F2F1] flex items-center justify-center flex-shrink-0">
               <note.icon className={`w-4 h-4 ${note.color}`} />
             </div>
             <div className="flex-1 min-w-0">
@@ -1118,7 +1118,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 animate-pulse" />
     <div>
       <p className="text-xs font-semibold text-red-700">AI Alert: Infection Risk — Medication Review</p>
-      <p className="text-[10px] text-[#C49A6C] mt-0.5">{summary.aiSummary}</p>
+      <p className="text-[10px] text-[#2E7D6F] mt-0.5">{summary.aiSummary}</p>
     </div>
     </div>
     </div>
@@ -1141,7 +1141,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
             </div>
             <div className="text-right">
               <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${med.adherent ? 'text-slate-600 bg-slate-100' : 'text-red-600 bg-red-100'}`}>{med.schedule}</span>
-              <p className={`text-[8px] mt-0.5 ${med.adherent ? 'text-[#C49A6C]' : 'text-red-500 font-semibold'}`}>{med.adherence}</p>
+              <p className={`text-[8px] mt-0.5 ${med.adherent ? 'text-[#2E7D6F]' : 'text-red-500 font-semibold'}`}>{med.adherence}</p>
             </div>
           </div>
         </div>
@@ -1167,11 +1167,11 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <SectionHeader icon={Sun} title="Today's Schedule" />
       <div className="p-4 grid grid-cols-2 gap-2">
-        <div className="bg-[#FDF5E8] rounded-xl p-3 border border-[#E8D5B8]">
+        <div className="bg-[#E0F2F1] rounded-xl p-3 border border-[#80CBC4]">
           <div className="flex items-center gap-1.5 mb-1">
             <Sun className="w-3 h-3 text-amber-500" />
             <span className="text-[10px] font-semibold text-slate-700">Morning (8 AM)</span>
-            <CheckCircle2 className="w-3 h-3 text-[#C49A6C] ml-auto" />
+            <CheckCircle2 className="w-3 h-3 text-[#2E7D6F] ml-auto" />
           </div>
           <p className="text-[9px] text-slate-600">Tiotropium · Amlodipine · Ceftriaxone IV</p>
         </div>
@@ -1188,14 +1188,14 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
     {/* Adherence Trend */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={CheckCircle2} title="7-Day Adherence Trend" right={<span className="text-[10px] font-bold text-[#C49A6C]">{summary.adherencePct}%</span>} />
+      <SectionHeader icon={CheckCircle2} title="7-Day Adherence Trend" right={<span className="text-[10px] font-bold text-[#2E7D6F]">{summary.adherencePct}%</span>} />
       <div className="p-4 flex gap-2">
         {[
           { day: 'M', ok: true }, { day: 'T', ok: true }, { day: 'W', ok: true }, 
           { day: 'T', ok: true }, { day: 'F', ok: true }, { day: 'S', ok: true }, { day: 'S', ok: true },
         ].map((d, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold ${d.ok ? 'bg-[#FDF5E8] text-[#C49A6C]' : 'bg-red-100 text-red-600'}`}>
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold ${d.ok ? 'bg-[#E0F2F1] text-[#2E7D6F]' : 'bg-red-100 text-red-600'}`}>
               {d.ok ? <CheckCircle2 className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
             </div>
             <span className="text-[9px] text-slate-400">{d.day}</span>
@@ -1223,7 +1223,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       const statusClass = dev.status === 'Connected'
         ? 'bg-green-50 text-green-700'
         : dev.status === 'Syncing'
-          ? 'bg-[#FDF5E8] text-[#9C7A4E]'
+          ? 'bg-[#E0F2F1] text-[#1B5E4F]'
           : 'bg-slate-100 text-slate-600';
       return (
         <div key={`${dev.serial}-${i}`} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
@@ -1232,7 +1232,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               {img ? (
                 <img src={img} alt={dev.model} className="w-12 h-12 rounded-xl object-contain bg-slate-50 border border-slate-100 flex-shrink-0" />
               ) : (
-                <div className="w-12 h-12 bg-gradient-to-br from-[#D4A87C] to-[#C49A6C] rounded-2xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#4DB6AC] to-[#2E7D6F] rounded-2xl flex items-center justify-center flex-shrink-0">
                   <Watch className="w-6 h-6 text-white" />
                 </div>
               )}
@@ -1263,10 +1263,10 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-400">Battery</span>
-              <span className="font-semibold text-[#C49A6C]">{dev.battery}%</span>
+              <span className="font-semibold text-[#2E7D6F]">{dev.battery}%</span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-1.5">
-              <div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-1.5 rounded-full" style={{ width: `${dev.battery}%` }} />
+              <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-1.5 rounded-full" style={{ width: `${dev.battery}%` }} />
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="text-slate-400">Last Sync</span>
@@ -1291,24 +1291,24 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     {/* Data Flow */}
     <div className="bg-slate-900 rounded-2xl p-4 text-white">
       <div className="flex items-center gap-2 mb-3">
-        <Shield className="w-4 h-4 text-[#C49A6C]" />
+        <Shield className="w-4 h-4 text-[#2E7D6F]" />
         <p className="text-xs font-semibold">Data Flow Status</p>
       </div>
       <div className="flex items-center justify-between text-[10px]">
         <div className="text-center">
-          <div className="w-8 h-8 rounded-full bg-[#C49A6C] flex items-center justify-center mx-auto mb-1">
+          <div className="w-8 h-8 rounded-full bg-[#2E7D6F] flex items-center justify-center mx-auto mb-1">
             <Watch className="w-4 h-4 text-white" />
           </div>
           <p className="text-slate-300">Devices</p>
         </div>
-        <ArrowRight className="w-3 h-3 text-[#C49A6C]" />
+        <ArrowRight className="w-3 h-3 text-[#2E7D6F]" />
         <div className="text-center">
-          <div className="w-8 h-8 rounded-full bg-[#9C7A4E] flex items-center justify-center mx-auto mb-1">
+          <div className="w-8 h-8 rounded-full bg-[#1B5E4F] flex items-center justify-center mx-auto mb-1">
             <Wifi className="w-4 h-4 text-white" />
           </div>
           <p className="text-slate-300">Encrypted</p>
         </div>
-        <ArrowRight className="w-3 h-3 text-[#C49A6C]" />
+        <ArrowRight className="w-3 h-3 text-[#2E7D6F]" />
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mx-auto mb-1">
             <Hospital className="w-4 h-4 text-white" />
@@ -1376,7 +1376,7 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   return (
     <div className="flex flex-col flex-1 min-h-0">
       {/* Chat Header */}
-      <div className="bg-gradient-to-r from-[#C49A6C] to-[#9C7A4E] px-4 py-3 flex items-center gap-3 flex-shrink-0">
+      <div className="bg-gradient-to-r from-[#2E7D6F] to-[#1B5E4F] px-4 py-3 flex items-center gap-3 flex-shrink-0">
         <div className="flex -space-x-2">
           <StaffAvatar name={PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse ?? 'RN'} size={32} className="ring-2 ring-white/40" />
           <StaffAvatar name={PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor ?? 'Physician'} size={32} className="ring-2 ring-white/40" />
@@ -1384,8 +1384,8 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         </div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-white">照护消息</p>
-          <p className="text-[9px] text-[#E8D5B8] flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E8D5B8]" /> Online — AI Monitor · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
+          <p className="text-[9px] text-[#80CBC4] flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#80CBC4]" /> Online — AI Monitor · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
           </p>
         </div>
         <Phone className="w-4 h-4 text-white/90" />
@@ -1413,9 +1413,9 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           onChange={e => setInputText(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') handleSend(); }}
           placeholder="Type a message..."
-          className="flex-1 bg-slate-50 rounded-full px-4 py-2 text-xs text-slate-700 placeholder-slate-400 outline-none border border-slate-100 focus:border-[#D4A87C]"
+          className="flex-1 bg-slate-50 rounded-full px-4 py-2 text-xs text-slate-700 placeholder-slate-400 outline-none border border-slate-100 focus:border-[#4DB6AC]"
         />
-        <button type="button" onClick={handleSend} disabled={!inputText.trim()} className="w-9 h-9 rounded-full bg-[#C49A6C] flex items-center justify-center hover:bg-[#B8860B] transition-colors disabled:opacity-40">
+        <button type="button" onClick={handleSend} disabled={!inputText.trim()} className="w-9 h-9 rounded-full bg-[#2E7D6F] flex items-center justify-center hover:bg-[#00796B] transition-colors disabled:opacity-40">
           <Send className="w-4 h-4 text-white" />
         </button>
       </div>

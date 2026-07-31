@@ -251,7 +251,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
       {/* === Body: Sidebar + Content === */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Desktop sidebar — deep gold, distinct from white header */}
-        <aside className={`hidden lg:flex ${sidebarW} bg-gradient-to-b from-[#7A5C32] to-[#4a3720] border-r border-[#3d2e1f] flex-shrink-0 flex-col transition-all duration-200 h-full shadow-sm`}>
+        <aside className={`hidden lg:flex ${sidebarW} bg-gradient-to-b from-[#1B5E4F] to-[#0D3B32] border-r border-[#0a2a22] flex-shrink-0 flex-col transition-all duration-200 h-full shadow-sm`}>
           <div className="p-2 pt-3 space-y-0.5 flex-1 overflow-y-auto">
             {filteredNav.map(nav => {
               const Icon = nav.icon;
@@ -290,7 +290,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
         {sidebarOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
-            <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#7A5C32] to-[#4a3720] shadow-2xl flex flex-col animate-slide-in">
+            <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#1B5E4F] to-[#0D3B32] shadow-2xl flex flex-col animate-slide-in">
               <div className="p-3 border-b border-white/10 flex items-center justify-between">
                 <span className="text-sm font-bold text-white font-display">长护险</span>
                 <button onClick={() => setSidebarOpen(false)} className="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-white text-xs">✕</button>

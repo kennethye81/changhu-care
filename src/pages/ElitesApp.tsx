@@ -55,7 +55,7 @@ type ElitesTab = 'today' | 'candidate' | 'patients' | 'chat';
 
 const DIAGNOSIS_TAG: Record<string, string> = {
   'Post-PCI Recovery':     'bg-rose-50 text-rose-700 border-rose-200',
-  'COPD':                   'bg-[#FDF5E8] text-[#C49A6C] border-[#E8D5B8]',
+  'COPD':                   'bg-[#E0F2F1] text-[#2E7D6F] border-[#80CBC4]',
   'Oncology — Breast Ca':  'bg-[#F5F0EB] text-[#8B7D6B] border-[#E0D5C5]',
   'Oncology — Lung Ca':    'bg-[#F5F0EB] text-[#8B7D6B] border-[#E0D5C5]',
   'Post-Stroke Rehab':     'bg-orange-50 text-orange-700 border-orange-200',
@@ -112,7 +112,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
               </div>
             </div>
           ) : showSplash ? (
-            <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] min-h-0">
+            <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#2E7D6F] to-[#1B5E4F] min-h-0">
               <div className="zoom-in flex flex-col items-center">
                 <div className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 mb-6">
                   <IHomeCareEliteLogoIcon size={40} />
@@ -146,7 +146,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
                 <button
                   key={key}
                   onClick={() => setTab(key)}
-                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${tab === key ? 'text-[#C49A6C]' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${tab === key ? 'text-[#2E7D6F]' : 'text-slate-400 hover:text-slate-600'}`}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="text-[9px] font-medium">{label}</span>
@@ -203,16 +203,16 @@ const ElitesDashboardTab: FC = () => {
     <div className="flex-shrink-0 px-4 pt-4 pb-2 bg-slate-50 z-10">
       <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
         <div className="flex items-center gap-3">
-          <StaffAvatar name={caregiverName} size={56} className="shadow-md border-2 border-[#E8D5B8]" />
+          <StaffAvatar name={caregiverName} size={56} className="shadow-md border-2 border-[#80CBC4]" />
           <div className="flex-1">
             <h3 className="text-base font-bold text-slate-900">{caregiverName}</h3>
             <p className="text-xs text-slate-400">Primary Nurse · 8 yrs exp</p>
             <div className="flex items-center gap-1.5 mt-1.5">
-              <div className="w-2 h-2 rounded-full bg-[#C49A6C]" />
-              <span className="text-xs text-[#C49A6C] font-medium">On duty · {workOrders.today.total} visits today</span>
+              <div className="w-2 h-2 rounded-full bg-[#2E7D6F]" />
+              <span className="text-xs text-[#2E7D6F] font-medium">On duty · {workOrders.today.total} visits today</span>
             </div>
           </div>
-          <button className="bg-[#F5E6D0] text-[#C49A6C] text-[10px] font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1">
+          <button className="bg-[#B2DFDB] text-[#2E7D6F] text-[10px] font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1">
             <CheckCircle2 className="w-3 h-3" /> Clock In
           </button>
         </div>
@@ -235,13 +235,13 @@ const ElitesDashboardTab: FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg font-bold">{formatDemoDateLabel()}</p>
-          <p className="text-[10px] text-[#E8D5B8] mt-0.5">Week 25 · Daily Work Report</p>
+          <p className="text-[10px] text-[#80CBC4] mt-0.5">Week 25 · Daily Work Report</p>
         </div>
         <div className="flex items-center gap-2 bg-white/15 rounded-xl px-3 py-2">
           <CloudSun className="w-5 h-5 text-yellow-200" />
           <div>
             <p className="text-sm font-bold">28°C</p>
-            <p className="text-[9px] text-[#E8D5B8]">Partly Cloudy</p>
+            <p className="text-[9px] text-[#80CBC4]">Partly Cloudy</p>
           </div>
         </div>
       </div>
@@ -251,16 +251,16 @@ const ElitesDashboardTab: FC = () => {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <div className="px-4 py-3 border-b border-slate-50">
         <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
-          <ClipboardList className="w-4 h-4 text-[#C49A6C]" /> 工单
+          <ClipboardList className="w-4 h-4 text-[#2E7D6F]" /> 工单
         </h3>
       </div>
       <div className="p-4 space-y-4">
         {/* Today / Week / Month counts */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: 'Today', total: workOrders.today.total, completed: workOrders.today.completed, pct: todayPct, color: 'border-[#E8D5B8] bg-[#FDF5E8]', bar: 'bg-[#C49A6C]', text: 'text-[#C49A6C]' },
-            { label: '本周', total: workOrders.week.total, completed: workOrders.week.completed, pct: weekPct, color: 'border-[#D4A87C] bg-[#FAE8D0]', bar: 'bg-[#D4A87C]', text: 'text-[#B8860B]' },
-            { label: '本月', total: workOrders.month.total, completed: workOrders.month.completed, pct: monthPct, color: 'border-[#C49A6C] bg-[#F0D5B0]', bar: 'bg-[#9C7A4E]', text: 'text-[#9C7A4E]' },
+            { label: 'Today', total: workOrders.today.total, completed: workOrders.today.completed, pct: todayPct, color: 'border-[#80CBC4] bg-[#E0F2F1]', bar: 'bg-[#2E7D6F]', text: 'text-[#2E7D6F]' },
+            { label: '本周', total: workOrders.week.total, completed: workOrders.week.completed, pct: weekPct, color: 'border-[#4DB6AC] bg-[#FAE8D0]', bar: 'bg-[#4DB6AC]', text: 'text-[#00796B]' },
+            { label: '本月', total: workOrders.month.total, completed: workOrders.month.completed, pct: monthPct, color: 'border-[#2E7D6F] bg-[#F0D5B0]', bar: 'bg-[#1B5E4F]', text: 'text-[#1B5E4F]' },
           ].map((col, i) => (
             <div key={i} className={`rounded-xl border ${col.color} p-3 text-center`}>
               <p className="text-[10px] font-semibold text-slate-500 mb-1">{col.label}</p>
@@ -279,10 +279,10 @@ const ElitesDashboardTab: FC = () => {
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-[10px] font-semibold text-slate-500">今日完成</span>
-            <span className="text-[10px] font-bold text-[#C49A6C]">{todayPct}%</span>
+            <span className="text-[10px] font-bold text-[#2E7D6F]">{todayPct}%</span>
           </div>
           <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
-            <div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-2.5 rounded-full transition-all" style={{ width: `${todayPct}%` }} />
+            <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-2.5 rounded-full transition-all" style={{ width: `${todayPct}%` }} />
           </div>
           <p className="text-[9px] text-slate-400 mt-1">
             {workOrders.today.completed} of {workOrders.today.total} completed · {workOrders.today.total - workOrders.today.completed} remaining
@@ -292,8 +292,8 @@ const ElitesDashboardTab: FC = () => {
         {/* Week + Month progress bars */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: '本周', completed: workOrders.week.completed, total: workOrders.week.total, pct: weekPct, color: 'bg-[#D4A87C]' },
-            { label: '本月', completed: workOrders.month.completed, total: workOrders.month.total, pct: monthPct, color: 'bg-[#9C7A4E]' },
+            { label: '本周', completed: workOrders.week.completed, total: workOrders.week.total, pct: weekPct, color: 'bg-[#4DB6AC]' },
+            { label: '本月', completed: workOrders.month.completed, total: workOrders.month.total, pct: monthPct, color: 'bg-[#1B5E4F]' },
           ].map((bar, i) => (
             <div key={i}>
               <div className="flex items-center justify-between mb-1">
@@ -311,10 +311,10 @@ const ElitesDashboardTab: FC = () => {
 
     {/* AI质量评估 */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <div className="bg-gradient-to-r from-[#9C7A4E] to-[#7A5C32] px-4 py-3 flex items-center gap-2">
+      <div className="bg-gradient-to-r from-[#1B5E4F] to-[#0D3B32] px-4 py-3 flex items-center gap-2">
         <Brain className="w-4 h-4 text-white" />
         <span className="text-xs font-bold text-white">AI质量评估</span>
-        <span className="text-[9px] text-[#E8D5B8] ml-auto">Real-time</span>
+        <span className="text-[9px] text-[#80CBC4] ml-auto">Real-time</span>
       </div>
       <div className="p-4 space-y-3">
         {/* Metric bars */}
@@ -351,8 +351,8 @@ const ElitesDashboardTab: FC = () => {
         <div className="border-t border-slate-100 pt-3 space-y-2">
           {/* 护理主管 Feedback */}
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-full bg-[#F5E6D0] flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-[#9C7A4E]" />
+            <div className="w-5 h-5 rounded-full bg-[#B2DFDB] flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-[#1B5E4F]" />
             </div>
             <div>
               <p className="text-[10px] font-semibold text-slate-600">护理主管</p>
@@ -362,8 +362,8 @@ const ElitesDashboardTab: FC = () => {
 
           {/* 个案管理 Feedback */}
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-full bg-[#E8D5B8] flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Users className="w-3 h-3 text-[#7A5C32]" />
+            <div className="w-5 h-5 rounded-full bg-[#80CBC4] flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Users className="w-3 h-3 text-[#0D3B32]" />
             </div>
             <div>
               <p className="text-[10px] font-semibold text-slate-600">个案管理</p>
@@ -373,11 +373,11 @@ const ElitesDashboardTab: FC = () => {
         </div>
 
         {/* AI建议 */}
-        <div className="bg-[#FDF5E8] rounded-xl p-3 border border-[#E8D5B8] flex items-start gap-2">
-          <Zap className="w-3.5 h-3.5 text-[#C49A6C] flex-shrink-0 mt-0.5 animate-pulse" />
+        <div className="bg-[#E0F2F1] rounded-xl p-3 border border-[#80CBC4] flex items-start gap-2">
+          <Zap className="w-3.5 h-3.5 text-[#2E7D6F] flex-shrink-0 mt-0.5 animate-pulse" />
           <div>
-            <p className="text-[10px] font-bold text-[#9C7A4E] mb-0.5">AI建议</p>
-            <p className="text-[9px] text-[#7A5C32] leading-relaxed">{aiQuality.summary}</p>
+            <p className="text-[10px] font-bold text-[#1B5E4F] mb-0.5">AI建议</p>
+            <p className="text-[9px] text-[#0D3B32] leading-relaxed">{aiQuality.summary}</p>
           </div>
         </div>
       </div>
@@ -391,7 +391,7 @@ const ElitesDashboardTab: FC = () => {
 
 const CANDIDATE_IDS = [114, 111, 112];
 
-const ELITE_GOLD_HEADER = 'bg-gradient-to-r from-[#C49A6C] to-[#9C7A4E]';
+const ELITE_GOLD_HEADER = 'bg-gradient-to-r from-[#2E7D6F] to-[#1B5E4F]';
 
 const InitialAssessmentPage = ({
   pid,
@@ -430,7 +430,7 @@ const InitialAssessmentPage = ({
         </button>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-white leading-snug">Initial 患者评估</p>
-          <p className="text-[9px] text-[#E8D5B8] truncate">{p.name} &middot; {p.hospital}</p>
+          <p className="text-[9px] text-[#80CBC4] truncate">{p.name} &middot; {p.hospital}</p>
         </div>
         {waiting && (
           <span className="text-[9px] text-white/80 font-medium flex-shrink-0">Preparing…</span>
@@ -495,7 +495,7 @@ const CarePlanPage = ({
         </button>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-white">照护计划</p>
-          <p className="text-[9px] text-[#E8D5B8] truncate">{p.name} &middot; D/C {p.dischargeDate}</p>
+          <p className="text-[9px] text-[#80CBC4] truncate">{p.name} &middot; D/C {p.dischargeDate}</p>
         </div>
         {waiting && (
           <span className="text-[9px] text-white/80 font-medium flex-shrink-0">Preparing…</span>
@@ -568,7 +568,7 @@ const Elites待入组Tab: FC = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-[#C49A6C]" /> 待入组</h3>
+        <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-[#2E7D6F]" /> 待入组</h3>
         <span className="text-[10px] text-slate-400">{candidates.length} pending</span>
       </div>
       <div className="space-y-3">
@@ -594,7 +594,7 @@ const Elites待入组Tab: FC = () => {
                       className={`flex-1 text-[10px] font-semibold py-2 rounded-xl transition-colors flex items-center justify-center gap-1 ${
                         iaSubmitted
                           ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                          : 'bg-[#C49A6C] text-white hover:bg-[#B8860B]'
+                          : 'bg-[#2E7D6F] text-white hover:bg-[#00796B]'
                       }`}
                     >
                       <ClipboardList className="w-3.5 h-3.5" />
@@ -609,7 +609,7 @@ const Elites待入组Tab: FC = () => {
                   className={`flex-1 text-[10px] font-semibold py-2 rounded-xl transition-colors flex items-center justify-center gap-1 ${
                     submittedCarePlans.has(p.id)
                       ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                      : 'bg-[#9C7A4E] text-white hover:bg-[#7A5C32]'
+                      : 'bg-[#1B5E4F] text-white hover:bg-[#0D3B32]'
                   }`}
                 >
                   <FileText className="w-3.5 h-3.5" />
@@ -655,8 +655,8 @@ const ElitesPatientsTab: FC = () => {
     nurse_visit: 'visit', doctor_consult: 'visit', care_worker: 'visit',
   };
   const typeColor: Record<string, string> = {
-    med: 'bg-[#FDF5E8] text-[#C49A6C]', monitor: 'bg-amber-100 text-amber-700',
-    exercise: 'bg-[#FDF5E8] text-[#C49A6C]', visit: 'bg-[#E8D5B8] text-[#7A5C32]',
+    med: 'bg-[#E0F2F1] text-[#2E7D6F]', monitor: 'bg-amber-100 text-amber-700',
+    exercise: 'bg-[#E0F2F1] text-[#2E7D6F]', visit: 'bg-[#80CBC4] text-[#0D3B32]',
   };
 
   const getTasks = (pid: number) =>
@@ -851,7 +851,7 @@ const ElitesPatientsTab: FC = () => {
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-shrink-0 px-4 pt-4 pb-2 bg-slate-50 z-10 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-[#C49A6C]" /> My Patients</h3>
+          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-[#2E7D6F]" /> My Patients</h3>
           <span className="text-[10px] text-slate-400">{myPatients.length} assigned</span>
         </div>
         <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-slate-200">
@@ -901,8 +901,8 @@ const ElitesPatientsTab: FC = () => {
               </div>
             )}
             {ai && (
-              <div className="border-t border-slate-100 bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0] px-4 py-3">
-                <div className="flex items-start gap-2 mb-2"><Brain className="w-3.5 h-3.5 text-[#C49A6C] flex-shrink-0 mt-0.5" /><div><p className="text-[9px] font-bold text-[#9C7A4E] mb-0.5">AI Assessment</p><p className="text-[9px] text-slate-600 leading-relaxed">{ai.summary}</p></div></div>
+              <div className="border-t border-slate-100 bg-gradient-to-r from-[#E0F2F1] to-[#B2DFDB] px-4 py-3">
+                <div className="flex items-start gap-2 mb-2"><Brain className="w-3.5 h-3.5 text-[#2E7D6F] flex-shrink-0 mt-0.5" /><div><p className="text-[9px] font-bold text-[#1B5E4F] mb-0.5">AI Assessment</p><p className="text-[9px] text-slate-600 leading-relaxed">{ai.summary}</p></div></div>
               </div>
             )}
           </div>
@@ -939,8 +939,8 @@ const ElitesPatientsTab: FC = () => {
 
       {/* Progress bar */}
       <div className="bg-white rounded-xl p-3 border border-slate-100 shadow-sm">
-        <div className="flex items-center justify-between mb-1.5"><span className="text-[10px] font-semibold text-slate-500">Task Progress</span><span className="text-[10px] font-bold text-[#C49A6C]">{doneCount}/{tasks.length}</span></div>
-        <div className="w-full bg-slate-100 rounded-full h-2"><div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-2 rounded-full transition-all" style={{ width: `${tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0}%` }} /></div>
+        <div className="flex items-center justify-between mb-1.5"><span className="text-[10px] font-semibold text-slate-500">Task Progress</span><span className="text-[10px] font-bold text-[#2E7D6F]">{doneCount}/{tasks.length}</span></div>
+        <div className="w-full bg-slate-100 rounded-full h-2"><div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-2 rounded-full transition-all" style={{ width: `${tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0}%` }} /></div>
       </div>
     </div>
 
@@ -956,10 +956,10 @@ const ElitesPatientsTab: FC = () => {
         const inMin = times.clockIn ? parseInt(times.clockIn.split(':')[0]) * 60 + parseInt(times.clockIn.split(':')[1]) : 0;
         const isLate = hasIn && (inMin - schedMin) >= 5;
         return (
-        <div key={i} className={`bg-white rounded-xl border shadow-sm overflow-hidden ${isComplete ? 'border-[#E8D5B8]' : 'border-slate-100'}`}>
+        <div key={i} className={`bg-white rounded-xl border shadow-sm overflow-hidden ${isComplete ? 'border-[#80CBC4]' : 'border-slate-100'}`}>
           <div className="p-3">
             <div className="flex items-start gap-3">
-              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${isComplete ? 'bg-[#C49A6C] text-white' : hasIn ? 'bg-[#D4A87C] text-white' : 'bg-slate-100 text-slate-400'}`}>
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${isComplete ? 'bg-[#2E7D6F] text-white' : hasIn ? 'bg-[#4DB6AC] text-white' : 'bg-slate-100 text-slate-400'}`}>
                 {isComplete ? <CheckCircle2 className="w-4 h-4" /> : hasIn ? <Clock className="w-4 h-4" /> : <span className="text-[9px] font-bold">{i + 1}</span>}
               </div>
               <div className="flex-1 min-w-0">
@@ -972,12 +972,12 @@ const ElitesPatientsTab: FC = () => {
                 <div className="flex items-center gap-3 mt-2 text-[9px]">
                   <span className="text-slate-400 flex items-center gap-1"><Clock className="w-2.5 h-2.5" /> Sched: {t.time}</span>
                   {hasIn && (
-                    <span className={`flex items-center gap-1 font-semibold ${isLate ? 'text-red-600' : 'text-[#C49A6C]'}`}>
+                    <span className={`flex items-center gap-1 font-semibold ${isLate ? 'text-red-600' : 'text-[#2E7D6F]'}`}>
                       ▶ In: {times.clockIn}
                       {isLate && <span className="text-[8px] font-extrabold text-red-600 alert-blink">+{inMin - schedMin}m</span>}
                     </span>
                   )}
-                  {hasOut && <span className="text-[#C49A6C] font-semibold flex items-center gap-1">✓ Done: {times.clockOut}</span>}
+                  {hasOut && <span className="text-[#2E7D6F] font-semibold flex items-center gap-1">✓ Done: {times.clockOut}</span>}
                 </div>
               </div>
             </div>
@@ -986,11 +986,11 @@ const ElitesPatientsTab: FC = () => {
           {!isComplete && (
             <div className="border-t border-slate-50 px-3 py-2 bg-slate-50/50 flex items-center gap-2">
               {!hasIn ? (
-                <button onClick={() => handleClockIn(key)} className="flex-1 text-[10px] font-semibold bg-[#C49A6C] text-white py-1.5 rounded-lg hover:bg-[#B8860B] transition-colors flex items-center justify-center gap-1">
+                <button onClick={() => handleClockIn(key)} className="flex-1 text-[10px] font-semibold bg-[#2E7D6F] text-white py-1.5 rounded-lg hover:bg-[#00796B] transition-colors flex items-center justify-center gap-1">
                   <Clock className="w-3 h-3" /> Clock In
                 </button>
               ) : (
-                <button onClick={() => handleClockOut(key)} className="flex-1 text-[10px] font-semibold bg-[#C49A6C] text-white py-1.5 rounded-lg hover:bg-[#B8860B] transition-colors flex items-center justify-center gap-1">
+                <button onClick={() => handleClockOut(key)} className="flex-1 text-[10px] font-semibold bg-[#2E7D6F] text-white py-1.5 rounded-lg hover:bg-[#00796B] transition-colors flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3 h-3" /> Mark Done
                 </button>
               )}
@@ -1005,12 +1005,12 @@ const ElitesPatientsTab: FC = () => {
       <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => {}}>
         <div className="bg-white rounded-2xl shadow-2xl w-[380px] max-h-[85vh] overflow-y-auto m-2 relative" onClick={e => e.stopPropagation()}>
           {/* Modal header */}
-          <div className="sticky top-0 bg-gradient-to-r from-[#C49A6C] to-[#9C7A4E] px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl">
+          <div className="sticky top-0 bg-gradient-to-r from-[#2E7D6F] to-[#1B5E4F] px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl">
             <div className="flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-white" />
               <div>
                 <span className="text-sm font-bold text-white">照护记录s</span>
-                <p className="text-[9px] text-[#E8D5B8]">{p.name} · Wed 6/18</p>
+                <p className="text-[9px] text-[#80CBC4]">{p.name} · Wed 6/18</p>
               </div>
             </div>
             <button onClick={() => { setSelectedPid(null); }} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30">
@@ -1023,7 +1023,7 @@ const ElitesPatientsTab: FC = () => {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <Mic className="w-3.5 h-3.5 text-[#C49A6C]" /> NLP Voice-to-Text
+                  <Mic className="w-3.5 h-3.5 text-[#2E7D6F]" /> NLP Voice-to-Text
                 </span>
                 {isRecording && (
                   <span className="text-[9px] text-red-500 font-semibold animate-pulse flex items-center gap-1">
@@ -1038,7 +1038,7 @@ const ElitesPatientsTab: FC = () => {
                   {Array.from({ length: 24 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-[3px] bg-[#D4A87C] rounded-full"
+                      className="w-[3px] bg-[#4DB6AC] rounded-full"
                       style={{
                         animation: `waveform 0.6s ease-in-out infinite`,
                         animationDelay: `${i * 0.05}s`,
@@ -1051,18 +1051,18 @@ const ElitesPatientsTab: FC = () => {
 
               {/* Text area with typing animation */}
               <div className="relative">
-                <div className={`rounded-xl p-4 min-h-[100px] border-2 transition-colors ${isRecording ? 'border-[#D4A87C] bg-[#FDF5E8]/50' : voiceText ? 'border-slate-200 bg-slate-50' : 'border-slate-200 bg-slate-50'}`}>
+                <div className={`rounded-xl p-4 min-h-[100px] border-2 transition-colors ${isRecording ? 'border-[#4DB6AC] bg-[#E0F2F1]/50' : voiceText ? 'border-slate-200 bg-slate-50' : 'border-slate-200 bg-slate-50'}`}>
                   {isRecording && !voiceText ? (
                     <div className="flex items-center gap-2 h-full">
-                      <span className="w-2 h-2 bg-[#C49A6C] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
-                      <span className="w-2 h-2 bg-[#C49A6C] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
-                      <span className="w-2 h-2 bg-[#C49A6C] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
-                      <span className="text-[10px] text-[#C49A6C] ml-2 font-medium">Listening...</span>
+                      <span className="w-2 h-2 bg-[#2E7D6F] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+                      <span className="w-2 h-2 bg-[#2E7D6F] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
+                      <span className="w-2 h-2 bg-[#2E7D6F] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
+                      <span className="text-[10px] text-[#2E7D6F] ml-2 font-medium">Listening...</span>
                     </div>
                   ) : voiceText ? (
                     <p className="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap">
                       {voiceText}
-                      {isRecording && <span className="inline-block w-[2px] h-[14px] bg-[#C49A6C] ml-0.5 animate-pulse align-middle" />}
+                      {isRecording && <span className="inline-block w-[2px] h-[14px] bg-[#2E7D6F] ml-0.5 animate-pulse align-middle" />}
                     </p>
                   ) : (
                     <p className="text-[11px] text-slate-400 italic">Tap the microphone to start dictating your care report...</p>
@@ -1075,7 +1075,7 @@ const ElitesPatientsTab: FC = () => {
                   className={`absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 ${
                     isRecording
                       ? 'bg-red-500 text-white animate-pulse shadow-red-300'
-                      : 'bg-[#C49A6C] text-white hover:bg-[#B8860B] shadow-[#E8D5B8]'
+                      : 'bg-[#2E7D6F] text-white hover:bg-[#00796B] shadow-[#80CBC4]'
                   }`}
                 >
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
@@ -1085,7 +1085,7 @@ const ElitesPatientsTab: FC = () => {
               {isRecording && (
                 <div className="mt-3 flex items-center gap-2 px-1">
                   <div className="flex-1 bg-slate-200 rounded-full h-1 overflow-hidden">
-                    <div className="bg-[#C49A6C] h-1 animate-pulse" style={{ width: '100%' }} />
+                    <div className="bg-[#2E7D6F] h-1 animate-pulse" style={{ width: '100%' }} />
                   </div>
                   <span className="text-[9px] text-slate-400 font-mono">
                     {String(Math.floor(recordingTime / 60000)).padStart(2,'0')}:{String(Math.floor((recordingTime % 60000) / 1000)).padStart(2,'0')}
@@ -1108,13 +1108,13 @@ const ElitesPatientsTab: FC = () => {
               ].map((f) => (
                 <div key={f.key}>
                   <label className="text-[10px] font-semibold text-slate-600 flex items-center gap-1.5 mb-1">
-                    <f.icon className="w-3 h-3 text-[#C49A6C]" /> {f.label}
+                    <f.icon className="w-3 h-3 text-[#2E7D6F]" /> {f.label}
                   </label>
                   <input
                     type="text"
                     value={careLogFields[f.key as keyof typeof careLogFields]}
                     onChange={e => selectedPid !== null && setEliteCareLogFields(selectedPid, { ...careLogFields, [f.key]: e.target.value })}
-                    className="w-full bg-slate-50 rounded-lg px-3 py-2 text-[10px] text-slate-700 placeholder-slate-400 border border-slate-200 outline-none focus:border-[#D4A87C]"
+                    className="w-full bg-slate-50 rounded-lg px-3 py-2 text-[10px] text-slate-700 placeholder-slate-400 border border-slate-200 outline-none focus:border-[#4DB6AC]"
                   />
                 </div>
               ))}
@@ -1123,7 +1123,7 @@ const ElitesPatientsTab: FC = () => {
             <button
               onClick={handleSubmitLogs}
               disabled={uploading}
-              className="w-full py-2.5 bg-[#C49A6C] text-white text-xs font-bold rounded-xl hover:bg-[#B8860B] transition-colors shadow-md shadow-[#E8D5B8] flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-2.5 bg-[#2E7D6F] text-white text-xs font-bold rounded-xl hover:bg-[#00796B] transition-colors shadow-md shadow-[#80CBC4] flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" /> Submit 照护记录s
             </button>
@@ -1134,14 +1134,14 @@ const ElitesPatientsTab: FC = () => {
             {/* Upload progress overlay */}
             {uploading && (
               <div className="absolute inset-0 bg-white/95 rounded-2xl flex flex-col items-center justify-center z-20">
-                <div className="w-16 h-16 rounded-full border-4 border-[#F5E6D0] border-t-[#C49A6C] animate-spin mb-4" />
+                <div className="w-16 h-16 rounded-full border-4 border-[#B2DFDB] border-t-[#2E7D6F] animate-spin mb-4" />
                 <p className="text-sm font-bold text-slate-700 mb-1">{uploadProgress}%</p>
                 <div className="w-48 bg-slate-100 rounded-full h-2 mb-3 overflow-hidden">
-                  <div className="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] h-2 rounded-full transition-all duration-200" style={{ width: `${uploadProgress}%` }} />
+                  <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-2 rounded-full transition-all duration-200" style={{ width: `${uploadProgress}%` }} />
                 </div>
                 <p className="text-[10px] text-slate-500">{uploadStage}</p>
                 {uploadProgress >= 100 && (
-                  <div className="flex items-center gap-2 mt-3 text-[#C49A6C] animate-[slideUp_0.3s_ease-out]">
+                  <div className="flex items-center gap-2 mt-3 text-[#2E7D6F] animate-[slideUp_0.3s_ease-out]">
                     <CheckCircle2 className="w-5 h-5" />
                     <span className="text-xs font-bold">照护记录 Synced</span>
                   </div>
@@ -1156,14 +1156,14 @@ const ElitesPatientsTab: FC = () => {
     {/* AI Assessment */}
     {patientAI[p.id] && (
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-[#9C7A4E] to-[#7A5C32] px-4 py-3 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-[#1B5E4F] to-[#0D3B32] px-4 py-3 flex items-center gap-2">
           <Brain className="w-4 h-4 text-white" /><span className="text-xs font-bold text-white">AI Assessment</span>
         </div>
         <div className="p-4 space-y-2">
           <p className="text-[10px] text-slate-600 leading-relaxed">{patientAI[p.id].summary}</p>
           <div className="space-y-0.5">
             {patientAI[p.id].recommendations.map((rec, j) => (
-              <div key={j} className="flex items-start gap-1.5"><span className="text-[8px] text-[#C49A6C] font-bold flex-shrink-0 mt-0.5">•</span><span className="text-[8px] text-slate-500 leading-relaxed">{rec}</span></div>
+              <div key={j} className="flex items-start gap-1.5"><span className="text-[8px] text-[#2E7D6F] font-bold flex-shrink-0 mt-0.5">•</span><span className="text-[8px] text-slate-500 leading-relaxed">{rec}</span></div>
             ))}
           </div>
         </div>
@@ -1230,7 +1230,7 @@ const ElitesChatTab: FC = () => {
   if (selectedChatPid === null) {
     return (
     <div className="p-4 space-y-4">
-      <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-[#C49A6C]" /> Patient Conversations</h3>
+      <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-[#2E7D6F]" /> Patient Conversations</h3>
       <div className="space-y-2">
         {myPatients.map((p) => {
           const chat = patientChats[p.id];
@@ -1322,7 +1322,7 @@ const ElitesChatTab: FC = () => {
             <div className={getChatBubbleClasses(raw.from, { isMe, p7Alert: p7AlertActive, isLog, textClass: 'text-[10px]' })}>
               <pre className="whitespace-pre-wrap font-sans">{msg.text}</pre>
               {isLog && (
-                <div className="mt-2 pt-2 border-t border-[#E8D5B8] flex items-center gap-1.5 text-[8px] text-[#C49A6C]">
+                <div className="mt-2 pt-2 border-t border-[#80CBC4] flex items-center gap-1.5 text-[8px] text-[#2E7D6F]">
                   <CheckCircle2 className="w-3 h-3" />
                   Auto-generated from NLP voice-to-text · Verified by 护理主管
                 </div>
@@ -1343,13 +1343,13 @@ const ElitesChatTab: FC = () => {
           onChange={e => setInputText(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') handleSend(); }}
           placeholder="Type a message..."
-          className="flex-1 bg-slate-50 rounded-full px-4 py-2 text-[10px] text-slate-700 placeholder-slate-400 outline-none border border-slate-100 focus:border-[#D4A87C]"
+          className="flex-1 bg-slate-50 rounded-full px-4 py-2 text-[10px] text-slate-700 placeholder-slate-400 outline-none border border-slate-100 focus:border-[#4DB6AC]"
         />
         <button
           type="button"
           onClick={handleSend}
           disabled={!inputText.trim()}
-          className="w-8 h-8 rounded-full bg-[#C49A6C] flex items-center justify-center hover:bg-[#B8860B] transition-colors flex-shrink-0 disabled:opacity-40"
+          className="w-8 h-8 rounded-full bg-[#2E7D6F] flex items-center justify-center hover:bg-[#00796B] transition-colors flex-shrink-0 disabled:opacity-40"
         >
           <Send className="w-3.5 h-3.5 text-white" />
         </button>
