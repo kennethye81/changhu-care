@@ -19,7 +19,7 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
     allergies: ['无'],
     physician: '—（社区医生定期随访）',
     admittingDiagnosis: '长护险中度等级评估。77岁男性，高血压病史，血压160/82mmHg。双侧肢体活动异常，Barthel ADL 30/60，中度依赖。Braden 16分，有压疮风险。跌倒风险评估105分（极高危），有跌倒史。意识清醒，半自理状态。配偶同住为主要照护者。',
-    clinicalSummary: '77岁男性，高血压患者，中度失能。双侧上下肢活动异常，需助行器辅助。已有压疮，Braden 16分提示压疮风险。跌倒风险极高（105分），有近3月跌倒史。意识清醒，半自理。需持续照护：翻身q2h、压疮护理、血压监测、防跌倒措施。评估机构：易得康，评估者李妍，评估日期2026.4.1。',
+    clinicalSummary: '77岁男性，身高164cm，体重70kg。高血压患者，中度失能。双侧上下肢活动异常，需助行器辅助。已有压疮（部位待确认），Braden 16分提示压疮风险。跌倒风险极高（105分），有近3月跌倒史。意识清醒，半自理。需持续照护：翻身q2h、压疮护理、血压监测、防跌倒措施。评估机构：易得康，评估者李妍，评估日期2026.4.1。⚠️ Barthel ADL：手写总分=60 vs 勾选位置累加=30，差异待确认。',
 
     careType: '长护险',
     careLevel: '中度',
@@ -154,6 +154,7 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
       { id: 'M4', name: '血压管理', content: '血压监测 + 低盐低脂饮食指导 + 用药提醒', frequency: '持续' },
       { id: 'M5', name: '营养干预', content: '营养评估 + 蛋白补充 + 饮食指导', frequency: '每周' },
       { id: 'M6', name: '医疗协同', content: '护士月度评估 + 压疮复查 + 用药审查', frequency: '月度' },
+      { id: 'M7', name: '数据贡献（免责）', content: 'RWE/RWD数据贡献由服务商承担成本，不向客户收费。健康监测数据仅供参考，不构成临床诊疗建议。', frequency: '持续' },
     ],
 
     outcomeTargets: [
