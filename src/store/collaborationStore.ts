@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { buildInitialMessagesByPatient, generateP7Chats, type ChatMessage } from '../data/chatMessages';
+import { buildInitialMessagesByPatient, type ChatMessage } from '../data/chatMessages';
 
 import type { CarePlanTaskStatus } from '../utils/carePlanSync';
 import type { FollowupLogEntry } from '../data/carePlans';
@@ -100,14 +100,8 @@ export const useCollaborationStore = create<CollaborationStore>((set, get) => ({
     }));
   },
 
-  refreshP7Messages: (p7AlertActive) => {
-    set(state => ({
-      messagesByPatient: {
-        ...state.messagesByPatient,
-        7: generateP7Chats(p7AlertActive),
-      },
-      readUpToByPatient: { ...state.readUpToByPatient, 7: 0 },
-    }));
+  refreshP7Messages: (_p7AlertActive: boolean) => {
+    // P7 alert system removed — 长护险 no longer uses this
   },
 
   setEliteTaskClockIn: (taskKey, time) => {
