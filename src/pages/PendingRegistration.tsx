@@ -118,7 +118,7 @@ const PendingRegistration: FC = () => {
     return (
       <div className="p-6">
         <button onClick={() => setSelectedPatient(null)} className="text-xs text-teal-600 hover:text-teal-800 font-semibold mb-4 flex items-center gap-1">
-          ← Back to Patient Registration
+          ← ← 返回患者登记
         </button>
         <div className="glass-card rounded-2xl border border-slate-200 overflow-hidden">
           <div className="bg-gradient-to-r from-teal-600 to-teal-800 px-6 py-4 flex justify-between items-start">
@@ -128,7 +128,7 @@ const PendingRegistration: FC = () => {
             </div>
             {registrationComplete && (
               <div className="bg-gold-600 text-white text-[9px] font-bold px-3 py-1.5 rounded-lg border border-gold-500 shadow-sm opacity-70 pointer-events-none select-none flex-shrink-0">
-                Registration Complete
+                登记完成 → 登记完成
               </div>
             )}
           </div>
@@ -137,10 +137,10 @@ const PendingRegistration: FC = () => {
             <div><span className="text-slate-400 block mb-0.5">Hospital</span><p className="font-semibold text-slate-800">{p.hospital}</p></div>
             <div><span className="text-slate-400 block mb-0.5">Department</span><p className="font-semibold text-slate-800">{p.department}</p></div>
             <div className="col-span-2"><span className="text-slate-400 block mb-0.5">Diagnosis</span><p className="font-semibold text-slate-800">{p.diagnosis}</p></div>
-            <div><span className="text-slate-400 block mb-0.5">Attending Physician</span><p className="font-semibold text-slate-800">{p.doctor}</p></div>
-            <div><span className="text-slate-400 block mb-0.5">Expected Discharge Date</span><p className="font-semibold text-slate-800">{p.dischargeDate}</p></div>
+            <div><span className="text-slate-400 block mb-0.5">主治医师</span><p className="font-semibold text-slate-800">{p.doctor}</p></div>
+            <div><span className="text-slate-400 block mb-0.5">预计出院日期</span><p className="font-semibold text-slate-800">{p.dischargeDate}</p></div>
             <div className="col-span-2 border-t pt-4 mt-2">
-              <span className="text-slate-400 block mb-1">Recommended Home Care Services</span>
+              <span className="text-slate-400 block mb-1">推荐居家照护服务</span>
               <ul className="space-y-1">
                 {p.services.split('·').map((s, i) => (
                   <li key={i} className="flex items-start gap-1.5 text-slate-700 text-[11px]">
@@ -150,7 +150,7 @@ const PendingRegistration: FC = () => {
               </ul>
             </div>
             <div className="col-span-2 border-t pt-4 mt-2">
-              <span className="text-slate-400 block mb-2">Contact Person</span>
+              <span className="text-slate-400 block mb-2">联系人</span>
               <div className="bg-warm-50 rounded-xl p-4">
                 <div>
                   <p className="font-semibold text-slate-800 text-sm">{p.contactName}</p>
@@ -161,16 +161,16 @@ const PendingRegistration: FC = () => {
             <div className="col-span-2 border-t pt-4 mt-2">
               <div className="flex items-center gap-2">
                 <button onClick={() => setHistoryModal(p)} className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm ${regStep > 0 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-teal-600 text-white hover:bg-teal-700'}`}>
-                  {regStep > 0 ? '✓ ' : ''}View Medical History
+                  {regStep > 0 ? '✓ ' : ''}查看病史档案
                 </button>
                 <button onClick={() => regStep >= 1 && setAssessmentModal(p)} className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm ${regStep === 1 ? 'bg-teal-600 text-white hover:bg-teal-700' : regStep > 1 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                  {regStep > 1 ? '✓ ' : ''}Initial Assessment
+                  {regStep > 1 ? '✓ ' : ''}初始评估
                 </button>
                 <button onClick={() => regStep >= 2 && (setCarePlanPatient(p), startCarePlan())} className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm ${regStep === 2 ? 'bg-gold-600 text-white hover:bg-gold-700' : regStep > 2 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                  {regStep > 2 ? '✓ ' : ''}Conduct Care Plan
+                  {regStep > 2 ? '✓ ' : ''}制定照护计划
                 </button>
                 <button onClick={() => regStep >= 3 && setShowVacantModal(true)} className={`text-[10px] font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm ${regStep === 3 ? 'bg-gold-600 text-white hover:bg-gold-700' : regStep > 3 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                  {regStep > 3 ? '✓ ' : ''}Assign Care Elite
+                  {regStep > 3 ? '✓ ' : ''}分配照护专员
                 </button>
               </div>
             </div>
@@ -185,7 +185,7 @@ const PendingRegistration: FC = () => {
               <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-teal-600 to-teal-800 rounded-t-2xl">
                 <div className="flex items-center gap-2">
                   <FileText className="w-5 h-5 text-white" />
-                  <span className="text-sm font-bold text-white">Medical History — {historyModal.name}</span>
+                  <span className="text-sm font-bold text-white">病史档案 — {historyModal.name}</span>
                 </div>
                 <button onClick={() => setHistoryModal(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button>
               </div>
@@ -261,7 +261,7 @@ const PendingRegistration: FC = () => {
               <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-teal-600 to-teal-800 rounded-t-2xl flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <ClipboardCheck className="w-5 h-5 text-white" />
-                  <span className="text-sm font-bold text-white">Comprehensive Initial Patient Assessment Form</span>
+                  <span className="text-sm font-bold text-white">长护险综合初始评估表</span>
                 </div>
                 {assessmentPhase !== 'filling' && <button onClick={() => setAssessmentModal(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button>}
               </div>
@@ -285,7 +285,7 @@ const PendingRegistration: FC = () => {
             <div className="fixed inset-0 z-[400] flex items-start justify-center pt-6 bg-black/40 backdrop-blur-sm" onClick={() => carePlanPhase === 'filling' ? null : setCarePlanPatient(null)}>
               <div className="glass-card rounded-2xl shadow-2xl w-[860px] max-h-[90vh] flex flex-col" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-teal-600 to-teal-800 rounded-t-2xl flex-shrink-0">
-                  <div className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5 text-white" /><span className="text-sm font-bold text-white">Patient Care Plan</span></div>
+                  <div className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5 text-white" /><span className="text-sm font-bold text-white">患者照护计划</span></div>
                   {carePlanPhase !== 'filling' && <button onClick={() => setCarePlanPatient(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button>}
                 </div>
                 <div ref={careScrollRef} className="overflow-y-auto p-5 space-y-4 text-[11px]">
@@ -312,7 +312,7 @@ const PendingRegistration: FC = () => {
                 <div className="glass-card rounded-2xl shadow-2xl w-[720px] h-[620px] flex flex-col overflow-clip" onClick={e => e.stopPropagation()}>
                   {/* Header */}
                   <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-teal-600 to-teal-800 rounded-t-2xl flex-shrink-0">
-                    <span className="text-sm font-bold text-white">Assign Care Elites</span>
+                    <span className="text-sm font-bold text-white">分配照护专员s</span>
                     <button onClick={() => { setShowVacantModal(false); setAssignedElites(new Set()); setMatchScores({}); }} className="w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button>
                   </div>
                   {matchingActive && (
@@ -541,7 +541,7 @@ const PendingRegistration: FC = () => {
       <div className="mb-4">
         <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
           <FileText className="w-5 h-5 text-teal-600" />
-          Patient Registration
+          患者登记
         </h2>
         <p className="text-xs text-slate-500 mt-1">{PENDING_PATIENTS.length} patients · {filteredPatients.length} shown</p>
       </div>

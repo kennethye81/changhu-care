@@ -810,7 +810,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
 const CareTab: FC<{ sub: CareSubTab; setSub: (s: CareSubTab) => void; familyPatientId: number }> = ({ sub, setSub, familyPatientId }) => {
   const subTabs: { key: CareSubTab; label: string; icon: FC<{ className?: string }> }[] = [
-    { key: 'plan', label: 'Care Plan', icon: CalendarDays },
+    { key: 'plan', label: '照护计划', icon: CalendarDays },
     { key: 'logs', label: 'Care Logs', icon: ClipboardList },
     { key: 'meds', label: 'Meds', icon: Pill },
     { key: 'devices', label: 'Devices', icon: Smartphone },
@@ -923,25 +923,25 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const baseline = DEFAULT_VITALS[familyPatientId];
   const contributingFactors = useMemo(() => [
     {
-      vital: p7Alert ? 'SpO₂ Desaturation' : 'SpO₂ Baseline',
+      vital: p7Alert ? 'SpO₂下降' : 'SpO₂ 基线',
       risk: p7Alert
-        ? `SpO₂ dropped from ${baseline.spo2}% → ${effectiveVitals.spo2}%${effectiveVitals.onSupplementalO2 ? '. O₂ initiated' : ' on room air'}. GOLD 2024: COPD G2 target 92–96%. ${monitoringLabel}.`
-        : `SpO₂ ${effectiveVitals.spo2}% stable at rest. GOLD 2024: expected baseline for COPD GOLD 2 (FEV₁ 55%). O₂ concentrator on standby.`,
+        ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%${effectiveVitals.onSupplementalO2 ? '。O₂已启动。' : '，未用氧。'}GOLD 2024：COPD G2目标92–96%。${monitoringLabel}。`
+        : `SpO₂ ${effectiveVitals.spo2}%静息稳定。GOLD 2024：COPD G2预期基线(FEV₁ 55%)。O₂浓缩器待机。`,
       icon: Activity,
     },
     {
-      vital: p7Alert ? 'Infection Markers' : 'CAP Recovery',
+      vital: p7Alert ? '感染指标' : '血压管理',
       risk: buildFamilyInfectionFactor(p7Alert, effectiveVitals, summary?.diagnosis ?? ''),
       icon: Droplets,
     },
     {
-      vital: p7Alert ? 'Acute Confusion' : 'Medication Adherence',
+      vital: p7Alert ? '急性意识障碍' : '用药依从性',
       risk: p7Alert
-        ? `AMTS dropped 10→7 during desaturation — hypoxic delirium. ${monitoringLabel}. Wife (Mrs. Chan) trained on confusion assessment.`
-        : 'Tiotropium 18mcg QD + Amlodipine 5mg QD confirmed taken. Salbutamol PRN — used 2× in past 24h, within safe range.',
+        ? `AMTS下降10→7 — 低氧性谵妄。${monitoringLabel}。照护者已接受意识评估培训。`
+        : '硝苯地平30mg QD确认服用。低盐低脂饮食依从良好。',
       icon: Heart,
     },
-    { vital: 'Caregiver Support', risk: 'Wife (Mrs. Chan) at home full-time. Trained on COPD action plan + O₂ concentrator use. Daughter Emily Chan visits daily. Emergency contacts updated.', icon: MessageCircle },
+    { vital: '照护者支持', risk: '配偶为日常照护者。已培训压疮护理+防跌倒措施+血压监测+紧急联络流程。', icon: MessageCircle },
   ], [p7Alert, effectiveVitals, monitoringLabel, summary?.diagnosis]);
   const careLogs = usePatientStore(s => s.carePlans[familyPatientId]?.logs);
   const submitted = useCollaborationStore(s => s.submittedCareLogs[familyPatientId]) ?? EMPTY_SUBMITTED_LOGS;
@@ -1036,10 +1036,10 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         </div>
         <div className="space-y-2">
           {[
-            { num: '1', action: 'Start IV Ceftriaxone 2g from Day 2 per C&S. Reassess oral switch after Day 7 if afebrile and SpO₂ stable.', icon: Pill },
-            { num: '2', action: p7Alert ? `Monitor all 7 NEWS parameters — ${monitoringLabel}. O₂ 2L/min titrate to SpO₂ ≥92%.` : `Monitor SpO₂ per ${monitoringLabel}. O₂ concentrator on standby. Target SpO₂ ≥92%. Notify ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0] ?? 'attending physician'} if <88%.`, icon: Activity },
-            { num: '3', action: newsTier === 'high' || redScore ? 'Baseline POCT CRP + PCT now. Blood cultures if fever develops. AVPU/AMTS q1h if confused.' : 'Baseline POCT CRP + PCT at next nurse visit. Blood cultures if fever develops. AMTS monitoring q1h if confused.', icon: Thermometer },
-            { num: '4', action: `Ensure hydration ~1,500 mL/day for sputum clearance. Mrs. Chan to log intake. ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} home visit scheduled.`, icon: ClipboardList },
+            { num: '1', action: '压疮护理：每2h翻身+检查皮肤+减压气垫床。Braden≤16需重点关注。', icon: BedDouble },
+            { num: '2', action: p7Alert ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0] ?? '社区医生'} 若>180/100。`, icon: Heart },
+            { num: '3', action: newsTier === 'high' || redScore ? '跌倒防控：检查助行器+地面防滑+夜间照明。有跌倒史需24h内上门。' : '跌倒防控：检查助行器+地面防滑+夜间照明。定期评估Barthel ADL。', icon: Footprints },
+            { num: '4', action: `确保每日饮水~1,500 mL + 低盐低脂饮食。${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCareWorker?.split(' (')[0] ?? '护理员'}定期访视。`, icon: GlassWater },
           ].map((rec, i) => (
             <div key={i} className="flex items-start gap-2">
               <div className="w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">{rec.num}</div>
@@ -1059,8 +1059,8 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="flex items-start gap-2">
           <CheckCircle2 className="w-4 h-4 text-[#2E7D6F] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[10px] font-bold text-[#1B5E4F]">Expected Outcome (48–72h)</p>
-            <p className="text-[9px] text-slate-600 mt-0.5">{p7Alert ? `If all 4 interventions completed: SpO₂ ≥92% on O₂ 2L/min, Temp ≤37.5°C, ${escalation}` : `If all 4 interventions completed: CAP resolved, SpO₂ ≥93% on room air, Ceftriaxone completed. ${monitoringLabel}.`}</p>
+            <p className="text-[10px] font-bold text-[#1B5E4F]">预期结果（30–90天）</p>
+            <p className="text-[9px] text-slate-600 mt-0.5">{p7Alert ? `若全部4项干预完成：SpO₂≥92%，体温≤37.5°C，${escalation}` : `若全部4项干预完成：跌倒0次，血压<150/90，压疮改善。${monitoringLabel}。`}</p>
             {isP7 && (
             <button
               type="button"
@@ -1073,7 +1073,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               }`}
             >
               <CheckCircle2 className="w-3 h-3" />
-              {protocolActive ? 'Protocol Active' : 'Activate COPD Care Protocol'}
+              {protocolActive ? '照护协议已激活' : '激活长护险照护协议'}
             </button>
             )}
           </div>

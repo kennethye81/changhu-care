@@ -620,6 +620,64 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
                   </div>
                 </>
               )}
+              {patient.careType === '长护险' && patient.keyIndicators && (
+                <>
+                  <div className="border-t border-slate-200 my-2" />
+                  <h3 className="text-xs font-semibold text-purple-600 uppercase tracking-wider mb-2">关键指标监测</h3>
+                  <div className="overflow-hidden rounded-lg border border-slate-200">
+                    <table className="w-full text-xs">
+                      <thead className="bg-slate-50">
+                        <tr>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">指标</th>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">基线</th>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">阈值</th>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">触发行动</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {patient.keyIndicators.map((ki, i) => (
+                          <tr key={i} className="hover:bg-slate-50">
+                            <td className="px-3 py-2 font-semibold text-slate-700">{ki.name}</td>
+                            <td className="px-3 py-2 text-slate-500">{ki.baseline}</td>
+                            <td className="px-3 py-2"><span className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">{ki.threshold}</span></td>
+                            <td className="px-3 py-2 text-slate-500 text-[10px]">{ki.action}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
+              {patient.careType === '长护险' && patient.outcomeTargets && (
+                <>
+                  <div className="border-t border-slate-200 my-2" />
+                  <h3 className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-2">转归目标</h3>
+                  <div className="overflow-hidden rounded-lg border border-slate-200">
+                    <table className="w-full text-xs">
+                      <thead className="bg-emerald-50">
+                        <tr>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-emerald-700">指标</th>
+                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">基线</th>
+                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">30天</th>
+                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">90天</th>
+                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">180天</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {patient.outcomeTargets.map((ot, i) => (
+                          <tr key={i} className="hover:bg-slate-50">
+                            <td className="px-3 py-2 font-semibold text-slate-700">{ot.indicator}</td>
+                            <td className="px-2 py-2 text-center text-slate-500">{ot.baseline}</td>
+                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day30}</span></td>
+                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day90}</span></td>
+                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day180}</span></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
               <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Current Medications</h3><div className="space-y-1.5">{patient.medications.filter(m=>m.status==='Active').map((m,i)=>(<div key={i} className="text-sm text-slate-700 flex items-start gap-1.5"><span className="text-slate-300 mt-0.5 flex-shrink-0">•</span><span><span className="font-medium">{m.drug} {m.dose}</span><span className="text-slate-400 mx-1">—</span>{m.frequency}<span className="text-slate-400 ml-1">({m.purpose})</span></span></div>))}</div></div>
               <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Physical Assessment</h3><div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-slate-700"><div>• General: Alert, well-groomed</div><div>• Skin: Warm, dry, intact</div><div>• CV: Regular rhythm</div><div>• Resp: Clear to auscultation</div><div>• Abdomen: Soft, non-tender</div><div>• Neuro: Cranial nerves intact</div><div>• Mobility: Ambulates with/without aid</div><div>• Pain: 0-3/10 at rest</div></div></div>
               <div className="grid grid-cols-2 gap-4">

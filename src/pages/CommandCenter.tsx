@@ -189,6 +189,21 @@ const PatientCard: FC<{ patient: PatientSummary; onSelect?: () => void }> = ({ p
           <VitalBadge label="SpO₂" value={String(p.spo2)} unit="%" severity={vitalSeverity(tier, p.alertVital?.includes('spo2'))} icon={Droplets} />
           <VitalBadge label="Glucose" value={String(p.bloodSugar)} unit="mg/dL" severity={vitalSeverity(tier, p.alertVital?.includes('glucose'))} icon={Candy} />
         </div>
+        {full?.keyIndicators && full.keyIndicators.length > 0 && (
+          <div className="pt-1.5 border-t border-slate-100">
+            <div className="flex items-center gap-1 mb-1">
+              <AlertTriangle className="w-2.5 h-2.5 text-amber-500" />
+              <span className="text-[9px] font-semibold text-amber-600">关键指标</span>
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {full.keyIndicators.slice(0, 3).map((ki, i) => (
+                <span key={i} className="text-[8px] font-medium px-1.5 py-0.5 rounded-lg bg-amber-50 text-amber-700 border border-amber-200">
+                  {ki.name}: {ki.baseline}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -311,6 +326,23 @@ const DesktopCommandCenter: FC = () => {
             </div>
           );
         })}
+      </div>
+      {/* 关键风险指标栏 */}
+      <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {patientsSummary.some(p => PATIENTS_FULL.find(f => f.id === p.id)?.keyIndicators) && (
+          patientsSummary.filter(p => PATIENTS_FULL.find(f => f.id === p.id)?.keyIndicators).slice(0, 4).flatMap(p => {
+            const full = PATIENTS_FULL.find(f => f.id === p.id);
+            return (full?.keyIndicators || []).slice(0, 2).map((ki, i) => (
+              <div key={`${p.id}-${i}`} className="glass-card rounded-xl border border-slate-200 p-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold text-slate-600 truncate">{p.name} · {ki.name}</p>
+                  <p className="text-[9px] text-slate-400 truncate">基线:{ki.baseline} 阈值:{ki.threshold}</p>
+                </div>
+              </div>
+            ))
+          })
+        )}
       </div>
     </div>
     <div className="max-w-[1600px] mx-auto px-4 sm:px-8 pb-6 sm:pb-8">
