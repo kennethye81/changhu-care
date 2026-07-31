@@ -325,8 +325,7 @@ const CHAN_TAI_MING_FAMILY_CONTACTS: FamilyContact[] = [
 
 export const PATIENT_FAMILY: Record<number, FamilyContact[]> = {
   1: [
-    { name: 'Mrs. Cheung (Lee Mei Ling)', relationship: 'Wife', phone: '+852 9123 4567', email: '', isPrimary: false, livingWith: true, notes: 'Full-time caregiver. Assists with meals, daily weight log, fluid restriction monitoring, and emotional support. Trained on BP monitor and medication schedule.' },
-    { name: 'Cheung Mei Ling', relationship: 'Daughter', phone: '+852 9234 5678', email: 'mei.ling@email.com', isPrimary: true, livingWith: false, notes: 'Visits daily after work. Manages medication box, medical appointments, and power of attorney for medical decisions. Primary contact for emergencies.' },
+    { name: '王小凤', relationship: '配偶', phone: '13092427015', email: '', isPrimary: true, livingWith: true, notes: '同住。全职照护者。负责用药提醒、血压监测、翻身协助。已培训压疮护理和跌倒预防。' },
   ],
   2: [
     { name: 'Wong Siu Ming', relationship: 'Daughter', phone: '+852 9345 6789', email: 'siu.ming@email.com', isPrimary: true, livingWith: false, notes: 'Visits daily. Manages O₂ equipment, inhaler supplies, and medical appointments. Trained on O₂ safety and exacerbation action plan. Lives in same district.' },
