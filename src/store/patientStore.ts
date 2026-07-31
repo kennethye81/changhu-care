@@ -8,7 +8,6 @@ import { CARE_TEAM, type TeamMember } from '../data/careTeam';
 import { PATIENT_FAMILY } from '../data/careTeam';
 import { TWO_WEEK_PLANS } from '../data/carePlans';
 import { ALL_DEFAULT_VITALS } from '../data/allDefaultVitals';
-import { NEW_DEFAULT_SUMMARIES } from '../data/newPatients/defaultVitals';
 import { useCollaborationStore } from './collaborationStore';
 import {
   calculateNews,
@@ -92,14 +91,7 @@ export const DEFAULT_VITALS: Record<number, Vitals> = ALL_DEFAULT_VITALS;
 /* ──────────────────── Default Patient Summaries (from Desktop CC) ──────────────────── */
 
 const DEFAULT_SUMMARIES_BASE: Omit<PatientSummary, 'newsScore' | 'newsTier' | 'rr' | 'bloodSugar'>[] = [
-  { id: 1, name: 'Cheung Wai Man', gender: 'M', age: 78, diagnosis: 'Heart Failure NYHA III · CKD Stage 3 · T2DM · Permanent AF', temp: 36.6, hr: 82, bpSystolic: 118, bpDiastolic: 72, spo2: 95, hospital: 'HK Sanatorium & Hospital', address: 'Flat 8B, Block 5, Laguna City, Cha Kwo Ling, Kowloon', doctor: 'Dr. Chan Chi Keung (Cardiology)', caseManager: 'Peter Ho (Case Mgr)' },
-  { id: 2, name: 'Wong Chi Ming', gender: 'F', age: 74, diagnosis: 'COPD GOLD Stage 3 · HTN · Hyperlipidaemia', temp: 36.5, hr: 86, bpSystolic: 134, bpDiastolic: 80, spo2: 90, hospital: 'Queen Mary Hospital', address: 'Room 1805, Block 2, Whampoa Garden, Hung Hom, Kowloon', doctor: 'Dr. Lee Mei Ling (Respiratory)', caseManager: 'Grace Tang (Case Mgr)' },
-  { id: 3, name: 'Lam Ka Chun', gender: 'M', age: 45, diagnosis: 'Community-Acquired Pneumonia', temp: 36.8, hr: 72, bpSystolic: 118, bpDiastolic: 74, spo2: 97, hospital: 'Gleneagles Hospital', address: 'Flat 22C, Block 6, Mei Foo Sun Chuen, Lai Chi Kok, Kowloon', doctor: 'Dr. Cheung Kwok Wai (ID/IM)', caseManager: 'Anna Leung (Case Mgr)' },
-  { id: 4, name: 'Lau Suk Yee', gender: 'F', age: 81, diagnosis: 'Complicated UTI', temp: 36.7, hr: 88, bpSystolic: 138, bpDiastolic: 84, spo2: 96, hospital: 'HK Sanatorium & Hospital', address: 'Flat 3A, Block 1, Telford Gardens, Kowloon Bay, Kowloon', doctor: 'Dr. Chan Chi Keung (Internal Med)', caseManager: 'Tony Lam (Case Mgr)' },
-  { id: 5, name: 'Ho Tai Wai', gender: 'M', age: 72, diagnosis: 'Cellulitis — Left Lower Limb', temp: 36.6, hr: 78, bpSystolic: 136, bpDiastolic: 82, spo2: 97, hospital: 'Queen Mary Hospital', address: 'Flat 15A, Block 2, Bel-Air Residence, Pok Fu Lam, HK Island', doctor: 'Dr. Lee Mei Ling (Internal Med)', caseManager: 'Grace Tang (Case Mgr)' },
-  { id: 6, name: 'Ng Siu Wan', gender: 'F', age: 67, diagnosis: 'Deep Vein Thrombosis', temp: 36.5, hr: 74, bpSystolic: 132, bpDiastolic: 80, spo2: 97, hospital: 'Gleneagles Hospital', address: 'Flat 7B, Block 3, South Horizons, Ap Lei Chau, HK Island', doctor: 'Dr. Cheung Kwok Wai (Internal Med)', caseManager: 'Anna Leung (Case Mgr)' },
-  { id: 7, name: 'Chan Tai Ming', gender: 'M', age: 82, diagnosis: 'COPD GOLD 2 + CAP', temp: 37.0, hr: 84, bpSystolic: 138, bpDiastolic: 84, spo2: 93, hospital: 'Prince of Wales Hospital', address: 'Flat 12B, Block 8, City One Shatin, Ngan Shing Street, Sha Tin, New Territories', doctor: 'Dr. Lee Mei Ling (Respiratory)', caseManager: 'Grace Tang (Case Mgr)' },
-  ...NEW_DEFAULT_SUMMARIES,
+  { id: 1, name: '冯存富', gender: 'M', age: 77, diagnosis: '高血压 · 双侧肢体异常 · 压疮 · 中度失能', temp: 36.7, hr: 78, bpSystolic: 160, bpDiastolic: 82, spo2: 96, hospital: '易得康（常州金坛）', address: '江苏省常州市金坛区指前镇解放村接王家村3号', doctor: '社区医生（定期随访）', caseManager: '李妍（评估师）' },
 ];
   
 
