@@ -80,7 +80,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
 
   const tabs: { key: ElitesTab; label: string; icon: FC<{ className?: string }> }[] = [
     { key: 'today', label: 'Dashboard', icon: CalendarDays },
-    { key: 'candidate', label: 'Candidate', icon: ClipboardCheck },
+    { key: 'candidate', label: '待入组', icon: ClipboardCheck },
     { key: 'patients', label: 'Patients', icon: Users },
     { key: 'chat', label: 'Chat', icon: MessageCircle },
   ];
@@ -137,7 +137,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
             </div>
             <div className={`flex-1 flex flex-col min-h-0 ${tab === 'today' || tab === 'patients' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
               {tab === 'today' && <ElitesDashboardTab />}
-              {tab === 'candidate' && <ElitesCandidateTab />}
+              {tab === 'candidate' && <Elites待入组Tab />}
               {tab === 'patients' && <ElitesPatientsTab />}
               {tab === 'chat' && <ElitesChatTab />}
             </div>
@@ -247,11 +247,11 @@ const ElitesDashboardTab: FC = () => {
       </div>
     </div>
 
-    {/* Work Orders Summary */}
+    {/* 工单 Summary */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <div className="px-4 py-3 border-b border-slate-50">
         <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
-          <ClipboardList className="w-4 h-4 text-[#C49A6C]" /> Work Orders
+          <ClipboardList className="w-4 h-4 text-[#C49A6C]" /> 工单
         </h3>
       </div>
       <div className="p-4 space-y-4">
@@ -259,8 +259,8 @@ const ElitesDashboardTab: FC = () => {
         <div className="grid grid-cols-3 gap-3">
           {[
             { label: 'Today', total: workOrders.today.total, completed: workOrders.today.completed, pct: todayPct, color: 'border-[#E8D5B8] bg-[#FDF5E8]', bar: 'bg-[#C49A6C]', text: 'text-[#C49A6C]' },
-            { label: 'This Week', total: workOrders.week.total, completed: workOrders.week.completed, pct: weekPct, color: 'border-[#D4A87C] bg-[#FAE8D0]', bar: 'bg-[#D4A87C]', text: 'text-[#B8860B]' },
-            { label: 'This Month', total: workOrders.month.total, completed: workOrders.month.completed, pct: monthPct, color: 'border-[#C49A6C] bg-[#F0D5B0]', bar: 'bg-[#9C7A4E]', text: 'text-[#9C7A4E]' },
+            { label: '本周', total: workOrders.week.total, completed: workOrders.week.completed, pct: weekPct, color: 'border-[#D4A87C] bg-[#FAE8D0]', bar: 'bg-[#D4A87C]', text: 'text-[#B8860B]' },
+            { label: '本月', total: workOrders.month.total, completed: workOrders.month.completed, pct: monthPct, color: 'border-[#C49A6C] bg-[#F0D5B0]', bar: 'bg-[#9C7A4E]', text: 'text-[#9C7A4E]' },
           ].map((col, i) => (
             <div key={i} className={`rounded-xl border ${col.color} p-3 text-center`}>
               <p className="text-[10px] font-semibold text-slate-500 mb-1">{col.label}</p>
@@ -278,7 +278,7 @@ const ElitesDashboardTab: FC = () => {
         {/* Overall progress bar */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] font-semibold text-slate-500">Today's Completion</span>
+            <span className="text-[10px] font-semibold text-slate-500">今日完成</span>
             <span className="text-[10px] font-bold text-[#C49A6C]">{todayPct}%</span>
           </div>
           <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
@@ -292,8 +292,8 @@ const ElitesDashboardTab: FC = () => {
         {/* Week + Month progress bars */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: 'This Week', completed: workOrders.week.completed, total: workOrders.week.total, pct: weekPct, color: 'bg-[#D4A87C]' },
-            { label: 'This Month', completed: workOrders.month.completed, total: workOrders.month.total, pct: monthPct, color: 'bg-[#9C7A4E]' },
+            { label: '本周', completed: workOrders.week.completed, total: workOrders.week.total, pct: weekPct, color: 'bg-[#D4A87C]' },
+            { label: '本月', completed: workOrders.month.completed, total: workOrders.month.total, pct: monthPct, color: 'bg-[#9C7A4E]' },
           ].map((bar, i) => (
             <div key={i}>
               <div className="flex items-center justify-between mb-1">
@@ -309,11 +309,11 @@ const ElitesDashboardTab: FC = () => {
       </div>
     </div>
 
-    {/* AI Quality Summary */}
+    {/* AI质量评估 */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <div className="bg-gradient-to-r from-[#9C7A4E] to-[#7A5C32] px-4 py-3 flex items-center gap-2">
         <Brain className="w-4 h-4 text-white" />
-        <span className="text-xs font-bold text-white">AI Quality Summary</span>
+        <span className="text-xs font-bold text-white">AI质量评估</span>
         <span className="text-[9px] text-[#E8D5B8] ml-auto">Real-time</span>
       </div>
       <div className="p-4 space-y-3">
@@ -349,34 +349,34 @@ const ElitesDashboardTab: FC = () => {
 
         {/* Divider */}
         <div className="border-t border-slate-100 pt-3 space-y-2">
-          {/* Nursing Director Feedback */}
+          {/* 护理主管 Feedback */}
           <div className="flex items-start gap-2">
             <div className="w-5 h-5 rounded-full bg-[#F5E6D0] flex items-center justify-center flex-shrink-0 mt-0.5">
               <Shield className="w-3 h-3 text-[#9C7A4E]" />
             </div>
             <div>
-              <p className="text-[10px] font-semibold text-slate-600">Nursing Director</p>
+              <p className="text-[10px] font-semibold text-slate-600">护理主管</p>
               <p className="text-[9px] text-slate-500 leading-relaxed">{aiQuality.ndFeedback}</p>
             </div>
           </div>
 
-          {/* Case Manager Feedback */}
+          {/* 个案管理 Feedback */}
           <div className="flex items-start gap-2">
             <div className="w-5 h-5 rounded-full bg-[#E8D5B8] flex items-center justify-center flex-shrink-0 mt-0.5">
               <Users className="w-3 h-3 text-[#7A5C32]" />
             </div>
             <div>
-              <p className="text-[10px] font-semibold text-slate-600">Case Manager</p>
+              <p className="text-[10px] font-semibold text-slate-600">个案管理</p>
               <p className="text-[9px] text-slate-500 leading-relaxed">{aiQuality.cmFeedback}</p>
             </div>
           </div>
         </div>
 
-        {/* AI Recommendation */}
+        {/* AI建议 */}
         <div className="bg-[#FDF5E8] rounded-xl p-3 border border-[#E8D5B8] flex items-start gap-2">
           <Zap className="w-3.5 h-3.5 text-[#C49A6C] flex-shrink-0 mt-0.5 animate-pulse" />
           <div>
-            <p className="text-[10px] font-bold text-[#9C7A4E] mb-0.5">AI Recommendation</p>
+            <p className="text-[10px] font-bold text-[#9C7A4E] mb-0.5">AI建议</p>
             <p className="text-[9px] text-[#7A5C32] leading-relaxed">{aiQuality.summary}</p>
           </div>
         </div>
@@ -429,7 +429,7 @@ const InitialAssessmentPage = ({
           <ChevronRight className="w-4 h-4 text-white rotate-180" />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-white leading-snug">Initial Patient Assessment</p>
+          <p className="text-sm font-bold text-white leading-snug">Initial 患者评估</p>
           <p className="text-[9px] text-[#E8D5B8] truncate">{p.name} &middot; {p.hospital}</p>
         </div>
         {waiting && (
@@ -494,7 +494,7 @@ const CarePlanPage = ({
           <ChevronRight className="w-4 h-4 text-white rotate-180" />
         </button>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-white">Patient Care Plan</p>
+          <p className="text-sm font-bold text-white">照护计划</p>
           <p className="text-[9px] text-[#E8D5B8] truncate">{p.name} &middot; D/C {p.dischargeDate}</p>
         </div>
         {waiting && (
@@ -528,7 +528,7 @@ const CarePlanPage = ({
   );
 };
 
-const ElitesCandidateTab: FC = () => {
+const Elites待入组Tab: FC = () => {
   const [pg, setPg] = useState("list");
   const [selPid, setSelPid] = useState<number | null>(null);
   const [submittedAssessments, setSubmittedAssessments] = useState<Set<number>>(() => new Set());
@@ -568,7 +568,7 @@ const ElitesCandidateTab: FC = () => {
   return (
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-[#C49A6C]" /> Candidate</h3>
+        <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-[#C49A6C]" /> 待入组</h3>
         <span className="text-[10px] text-slate-400">{candidates.length} pending</span>
       </div>
       <div className="space-y-3">
@@ -802,7 +802,7 @@ const ElitesPatientsTab: FC = () => {
 
     setUploading(true);
     setUploadProgress(0);
-    const stages = ['Encrypting data...', 'Uploading to HK health cloud...', 'Verifying against care plan...', 'Nursing Director review...', 'Sync complete ✓'];
+    const stages = ['Encrypting data...', 'Uploading to HK health cloud...', 'Verifying against care plan...', '护理主管 review...', 'Sync complete ✓'];
     let p = 0;
     const iv = setInterval(() => {
       p += 2 + Math.floor(Math.random() * 7);
@@ -813,7 +813,7 @@ const ElitesPatientsTab: FC = () => {
         appendSubmittedCareLog(selectedPid, {
           date: TODAY,
           time: logTime,
-          type: 'Elite Care Log',
+          type: 'Elite 照护记录',
           detail: `${patientName}: ${detail.slice(0, 480)}`,
           author: user?.name ?? 'Sarah Leung',
           role: 'RN',
@@ -1000,7 +1000,7 @@ const ElitesPatientsTab: FC = () => {
         );
       })}
 
-    {/* Auto-show Care Logs modal when all tasks complete */}
+    {/* Auto-show 照护记录s modal when all tasks complete */}
     {allTasksDone && (
       <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => {}}>
         <div className="bg-white rounded-2xl shadow-2xl w-[380px] max-h-[85vh] overflow-y-auto m-2 relative" onClick={e => e.stopPropagation()}>
@@ -1009,7 +1009,7 @@ const ElitesPatientsTab: FC = () => {
             <div className="flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-white" />
               <div>
-                <span className="text-sm font-bold text-white">Care Logs</span>
+                <span className="text-sm font-bold text-white">照护记录s</span>
                 <p className="text-[9px] text-[#E8D5B8]">{p.name} · Wed 6/18</p>
               </div>
             </div>
@@ -1125,7 +1125,7 @@ const ElitesPatientsTab: FC = () => {
               disabled={uploading}
               className="w-full py-2.5 bg-[#C49A6C] text-white text-xs font-bold rounded-xl hover:bg-[#B8860B] transition-colors shadow-md shadow-[#E8D5B8] flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <Send className="w-3.5 h-3.5" /> Submit Care Logs
+              <Send className="w-3.5 h-3.5" /> Submit 照护记录s
             </button>
 
             {/* Hidden TTS audio */}
@@ -1143,7 +1143,7 @@ const ElitesPatientsTab: FC = () => {
                 {uploadProgress >= 100 && (
                   <div className="flex items-center gap-2 mt-3 text-[#C49A6C] animate-[slideUp_0.3s_ease-out]">
                     <CheckCircle2 className="w-5 h-5" />
-                    <span className="text-xs font-bold">Care Log Synced</span>
+                    <span className="text-xs font-bold">照护记录 Synced</span>
                   </div>
                 )}
               </div>
@@ -1324,7 +1324,7 @@ const ElitesChatTab: FC = () => {
               {isLog && (
                 <div className="mt-2 pt-2 border-t border-[#E8D5B8] flex items-center gap-1.5 text-[8px] text-[#C49A6C]">
                   <CheckCircle2 className="w-3 h-3" />
-                  Auto-generated from NLP voice-to-text · Verified by Nursing Director
+                  Auto-generated from NLP voice-to-text · Verified by 护理主管
                 </div>
               )}
             </div>
