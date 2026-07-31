@@ -7,3 +7,7 @@ dist
 *.bak.*
 *.orig
 *.rej
+public/tts/
+public/care-log-tts*.mp3
+roadshow-compositions/videos/
+roadshow-compositions/screenshots/
