@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import PatientAvatar from '../components/PatientAvatar';
 import { usePatientStore, type PatientSummary } from '../store/patientStore';
+import { PATIENTS_FULL } from '../data/patients';
 import { useCollaborationStore } from '../store/collaborationStore';
 import { useAuth } from '../auth/AuthContext';
 import { getVisiblePatientIds } from '../auth/permissions';
@@ -141,6 +142,9 @@ const DIAGNOSIS_TAG: Record<string, string> = {
 };
 
 const PatientCard: FC<{ patient: PatientSummary; onSelect?: () => void }> = ({ patient: p, onSelect }) => {
+  const full = PATIENTS_FULL.find(f => f.id === p.id);
+  const barthelScore = full?.barthel?.score;
+  const fallScore = full?.fallRisk?.score;
   const tier = p.newsTier;
   const isHigh = tier === 'high';
   const isMedium = tier === 'medium';
@@ -158,14 +162,20 @@ const PatientCard: FC<{ patient: PatientSummary; onSelect?: () => void }> = ({ p
           <p className="text-xs font-bold text-slate-900 truncate">{p.name}</p>
           <p className="text-[10px] font-semibold text-slate-500">{p.gender === 'M' ? '♂' : '♀'} {p.age} yrs</p>
         </div>
-        {!isAlert && <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="NEWS Low" />}
+        {!isAlert && <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="稳定" />}
       </div>
       <div className="flex items-center gap-2 mb-3">
         <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg border ${diagTag} truncate max-w-full`}>{p.diagnosis}</span>
-        <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-lg border flex-shrink-0 ${isHigh ? 'bg-red-50 text-red-700 border-red-200' : isMedium ? 'bg-amber-50 text-amber-700 border-amber-200' : p.newsRedScore ? 'bg-orange-50 text-orange-700 border-orange-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
-          NEWS {p.newsScore}
-        </span>
-        <span className="text-[9px] text-slate-500 truncate" title={p.newsMonitoringLabel}>{p.newsMonitoringLabel}</span>
+        {barthelScore != null && (
+          <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-lg border bg-teal-50 text-teal-700 border-teal-200 flex-shrink-0">
+            Barthel {barthelScore}/60
+          </span>
+        )}
+        {fallScore != null && fallScore > 35 && (
+          <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-lg border bg-red-50 text-red-700 border-red-200 flex-shrink-0">
+            跌倒{fallScore}
+          </span>
+        )}
       </div>
       <div className="space-y-1.5">
         <div className="flex gap-1.5">
@@ -280,12 +290,12 @@ const DesktopCommandCenter: FC = () => {
     <div className="max-w-[1600px] mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-2 sm:pb-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
-          { label: 'Total Patients', value: String(patientsSummary.length), sub: 'Active under care', icon: Users, color: 'gold' as const },
-          { label: 'NEWS High (7+)', value: String(highCount), sub: 'Emergency response', icon: AlertTriangle, color: 'red' as const },
-          { label: 'NEWS Medium (5–6)', value: String(mediumCount), sub: 'Urgent nurse review', icon: Bell, color: 'amber' as const },
-          { label: 'NEWS Low (0–4)', value: String(lowCount), sub: 'Routine monitoring', icon: CheckCircle2, color: 'green' as const },
-          { label: 'Care Team', value: `${careTeamOnDuty}/${careTeamTotal}`, sub: 'On duty today', icon: Heart, color: 'teal' as const },
-          { label: 'Devices', value: `${devicesOnline}/${devicesTotal}`, sub: devicesTotal > 0 ? `${deviceOnlinePct}% online` : 'No devices', icon: Smartphone, color: 'purple' as const },
+          { label: '服务中患者', value: String(patientsSummary.length), sub: 'Active under care', icon: Users, color: 'gold' as const },
+          { label: '跌倒高风险', value: String(highCount), sub: 'Fall risk >35', icon: AlertTriangle, color: 'red' as const },
+          { label: '压疮风险', value: String(mediumCount), sub: 'Braden ≤16', icon: Bell, color: 'amber' as const },
+          { label: '血压异常', value: String(lowCount), sub: 'BP >140/90', icon: CheckCircle2, color: 'green' as const },
+          { label: '照护团队', value: `${careTeamOnDuty}/${careTeamTotal}`, sub: '今日在岗', icon: Heart, color: 'teal' as const },
+          { label: '设备在线', value: `${devicesOnline}/${devicesTotal}`, sub: devicesTotal > 0 ? `${deviceOnlinePct}% 在线` : '无设备', icon: Smartphone, color: 'purple' as const },
         ].map((stat, i) => {
           const t = STAT_CARD_THEMES[stat.color];
           return (
@@ -307,8 +317,8 @@ const DesktopCommandCenter: FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 sm:mb-5 pt-2 sm:pt-3 gap-2 sm:gap-0">
         <h2 className="text-sm sm:text-base font-semibold text-slate-800 flex items-center gap-2 font-display">
           <Users className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
-          Patient Monitoring Grid
-          <span className="inline-flex items-center ml-2 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full bg-gold-100 text-gold-800 text-[10px] sm:text-xs font-semibold">{patientsSummary.length} ACTIVE</span>
+          患者监控面板
+          <span className="inline-flex items-center ml-2 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full bg-gold-100 text-gold-800 text-[10px] sm:text-xs font-semibold">{patientsSummary.length} 在管</span>
         </h2>
         <div className="flex items-center gap-2 sm:gap-3">
           <button className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-slate-600 glass-card hover:bg-warm-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-colors"><Filter className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Filter Patients</button>

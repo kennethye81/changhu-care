@@ -23,14 +23,14 @@ type NavItem = {
 };
 
 const ALL_NAV: NavItem[] = [
-  { key: 'command_center', label: 'Command Center', icon: Activity, route: '/command-center' },
-  { key: 'patient_registration', label: 'Patient Registration', icon: FileText, route: '/pending-registration' },
-  { key: 'patient_records', label: 'Patient Profile', icon: Users, route: '/patient-records' },
-  { key: 'care_elites', label: 'Care Elites', icon: Heart, route: '/care-elites' },
-  { key: 'inventory', label: 'Inventory', icon: Boxes, route: '/iot-devices' },
-  { key: 'medical_institution', label: 'Medical Institution', icon: Building2, route: '/medical-institution' },
-  { key: 'finance', label: 'Finance', icon: CreditCard, route: '/billing' },
-  { key: 'messages', label: 'Messages', icon: MessageCircle, route: '/messages' },
+  { key: 'command_center', label: '指挥中心', icon: Activity, route: '/command-center' },
+  { key: 'patient_registration', label: '病人登记', icon: FileText, route: '/pending-registration' },
+  { key: 'patient_records', label: '病人档案', icon: Users, route: '/patient-records' },
+  { key: 'care_elites', label: '照护团队', icon: Heart, route: '/care-elites' },
+  { key: 'inventory', label: '设备管理', icon: Boxes, route: '/iot-devices' },
+  { key: 'medical_institution', label: '服务机构', icon: Building2, route: '/medical-institution' },
+  { key: 'finance', label: '财务管理', icon: CreditCard, route: '/billing' },
+  { key: 'messages', label: '消息中心', icon: MessageCircle, route: '/messages' },
 ];
 
 // Available roles for switching
@@ -131,8 +131,8 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
               <IHomeCareHubLogoIcon size={18} />
             </div>
             <div className="hidden sm:block">
-              <span className="text-sm font-bold text-slate-800 font-display">iHomeCare</span>
-              <span className="text-[9px] text-slate-400 ml-1.5 font-medium">v1.38</span>
+              <span className="text-sm font-bold text-slate-800 font-display">长护险</span>
+              <span className="text-[9px] text-slate-400 ml-1.5 font-medium">ChangHu Care</span>
             </div>
           </div>
 
@@ -292,7 +292,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
             <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#7A5C32] to-[#4a3720] shadow-2xl flex flex-col animate-slide-in">
               <div className="p-3 border-b border-white/10 flex items-center justify-between">
-                <span className="text-sm font-bold text-white font-display">iHomeCare</span>
+                <span className="text-sm font-bold text-white font-display">长护险</span>
                 <button onClick={() => setSidebarOpen(false)} className="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-white text-xs">✕</button>
               </div>
               <div className="p-2 space-y-0.5 flex-1 overflow-y-auto">
