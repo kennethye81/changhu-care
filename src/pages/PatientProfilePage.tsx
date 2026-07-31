@@ -26,15 +26,15 @@ import {
 type ProfileSection = 'smart_summary' | 'overview' | 'vitals' | 'care_team' | 'medical' | 'services' | 'logs' | 'iot' | 'billing';
 
 const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: string }> }[] = [
-  { key: 'smart_summary', label: 'Smart Summary', icon: Brain },
-  { key: 'overview', label: 'Overview', icon: User },
-  { key: 'vitals', label: 'Vital Sign Record', icon: Heart },
-  { key: 'care_team', label: 'Care Team', icon: Users },
-  { key: 'medical', label: 'Medical History', icon: FileText },
-  { key: 'services', label: 'Care Information', icon: CalendarDays },
-  { key: 'logs', label: 'Logs', icon: ClipboardList },
-  { key: 'iot', label: 'IoT Devices', icon: Smartphone },
-  { key: 'billing', label: 'Billing', icon: PhoneCall },
+  { key: 'smart_summary', label: '智能摘要', icon: Brain },
+  { key: 'overview', label: '概览', icon: User },
+  { key: 'vitals', label: '体征记录', icon: Heart },
+  { key: 'care_team', label: '照护团队', icon: Users },
+  { key: 'medical', label: '病史档案', icon: FileText },
+  { key: 'services', label: '照护信息', icon: CalendarDays },
+  { key: 'logs', label: '记录', icon: ClipboardList },
+  { key: 'iot', label: '设备', icon: Smartphone },
+  { key: 'billing', label: '账单', icon: PhoneCall },
 ];
 
 const PatientProfilePage: FC = () => {
@@ -591,6 +591,35 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
               </div>
               <div className="border-t border-slate-200" />
               <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Clinical History</h3><p className={modalBody}>{patient.clinicalSummary}</p></div>
+              {patient.careType === '长护险' && (
+                <>
+                  <div className="border-t border-slate-200 my-2" />
+                  <h3 className="text-xs font-semibold text-teal-600 uppercase tracking-wider mb-2">长护险评估量表</h3>
+                  <div className="grid grid-cols-3 gap-3 text-sm">
+                    {patient.barthel && (
+                      <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
+                        <p className="text-[10px] font-bold text-teal-700">Barthel ADL</p>
+                        <p className="text-xl font-extrabold text-teal-600">{patient.barthel.score}<span className="text-xs text-teal-400">/60</span></p>
+                        <p className="text-[9px] text-teal-500">{patient.careLevel ?? '—'}依赖</p>
+                      </div>
+                    )}
+                    {patient.braden && (
+                      <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
+                        <p className="text-[10px] font-bold text-amber-700">Braden 压疮</p>
+                        <p className="text-xl font-extrabold text-amber-600">{patient.braden.score}</p>
+                        <p className="text-[9px] text-amber-500">{patient.braden.score <= 16 ? '有风险' : '低风险'}</p>
+                      </div>
+                    )}
+                    {patient.fallRisk && (
+                      <div className={`rounded-lg p-3 border ${patient.fallRisk.score > 35 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+                        <p className={`text-[10px] font-bold ${patient.fallRisk.score > 35 ? 'text-red-700' : 'text-green-700'}`}>跌倒风险</p>
+                        <p className={`text-xl font-extrabold ${patient.fallRisk.score > 35 ? 'text-red-600' : 'text-green-600'}`}>{patient.fallRisk.score}</p>
+                        <p className={`text-[9px] ${patient.fallRisk.score > 35 ? 'text-red-500' : 'text-green-500'}`}>{patient.fallRisk.score > 35 ? '极高危⚠️' : '正常'}</p>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
               <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Current Medications</h3><div className="space-y-1.5">{patient.medications.filter(m=>m.status==='Active').map((m,i)=>(<div key={i} className="text-sm text-slate-700 flex items-start gap-1.5"><span className="text-slate-300 mt-0.5 flex-shrink-0">•</span><span><span className="font-medium">{m.drug} {m.dose}</span><span className="text-slate-400 mx-1">—</span>{m.frequency}<span className="text-slate-400 ml-1">({m.purpose})</span></span></div>))}</div></div>
               <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Physical Assessment</h3><div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-slate-700"><div>• General: Alert, well-groomed</div><div>• Skin: Warm, dry, intact</div><div>• CV: Regular rhythm</div><div>• Resp: Clear to auscultation</div><div>• Abdomen: Soft, non-tender</div><div>• Neuro: Cranial nerves intact</div><div>• Mobility: Ambulates with/without aid</div><div>• Pain: 0-3/10 at rest</div></div></div>
               <div className="grid grid-cols-2 gap-4">
@@ -719,10 +748,10 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
         </div>
       </div>
 
-      {/* 2. Nursing Records */}
+      {/* 2. 护理记录 */}
       <div className="glass-card rounded-xl border border-slate-200 p-4">
         <h3 className="text-xs font-bold text-emerald-700 mb-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" /> Nursing Records ({nurseLogs.length})
+          <span className="w-2 h-2 rounded-full bg-emerald-500" /> 护理记录 ({nurseLogs.length})
         </h3>
         <div className="space-y-2">
           {nurseLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
