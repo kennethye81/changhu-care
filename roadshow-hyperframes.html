@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iHomeCare — Investor Roadshow</title>
+<style>
+  :root {
+    --black: #000000;
+    --near-black: #0a0e17;
+    --surface: #111622;
+    --teal: #0A5C6A;
+    --teal-bright: #0E7C8F;
+    --gold: #DDA21E;
+    --gold-light: #E8C97A;
+    --tan: #A5785A;
+    --muted-gold: #C49A6C;
+    --medical-red: #ef4444;
+    --medical-amber: #f59e0b;
+    --medical-green: #10b981;
+    --medical-blue: #3b82f6;
+    --text-primary: rgba(255,255,255,0.92);
+    --text-secondary: rgba(255,255,255,0.60);
+    --text-tertiary: rgba(255,255,255,0.35);
+    --glass-bg: rgba(255,255,255,0.035);
+    --glass-border: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: var(--black);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ambient-top-right {
+    position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0;
+    background: var(--teal); width: 600px; height: 600px;
+    top: -250px; right: -250px; opacity: 0.07;
+  }
+  .ambient-bottom-left {
+    position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0;
+    background: var(--medical-amber); width: 450px; height: 450px;
+    bottom: -200px; left: -200px; opacity: 0.05;
+  }
+  .ambient-center {
+    position: fixed; border-radius: 50%; filter: blur(160px); pointer-events: none; z-index: 0;
+    background: var(--teal); width: 500px; height: 500px;
+    top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.03;
+  }
+
+  .deck { position: relative; z-index: 1; width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1); padding: 60px 80px; }
+  .scene.active { opacity: 1; pointer-events: auto; }
+  .scene-content { max-width: 960px; width: 100%; }
+  .scene-headline { font-size: 58px; font-weight: 600; letter-spacing: -0.6px; line-height: 1.08; margin-bottom: 24px; }
+  .scene-headline.small { font-size: 44px; }
+  .scene-subtitle { font-size: 22px; font-weight: 300; letter-spacing: -0.2px; line-height: 1.4; color: var(--text-secondary); }
+  .scene-label { font-size: 13px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--teal-bright); margin-bottom: 16px; }
+  .scene-highlight { color: var(--gold); }
+  .quote-block { border-left: 2px solid var(--gold); padding: 16px 24px; margin: 32px 0; background: linear-gradient(90deg, rgba(221,162,30,0.06) 0%, transparent 100%); }
+  .quote-block p { font-size: 21px; font-weight: 350; letter-spacing: -0.15px; line-height: 1.5; color: var(--text-primary); }
+  .glass-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px; }
+  .three-screen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 32px 0; }
+  .screen-card { border-radius: 20px; padding: 28px 24px; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: transform 0.3s ease; }
+  .screen-card.hub { background: linear-gradient(135deg, rgba(10,92,106,0.18), rgba(10,92,106,0.06)); border-color: rgba(10,92,106,0.3); }
+  .screen-card.family { background: linear-gradient(135deg, rgba(165,120,90,0.16), rgba(165,120,90,0.05)); border-color: rgba(165,120,90,0.25); }
+  .screen-card.elite { background: linear-gradient(135deg, rgba(196,154,108,0.16), rgba(196,154,108,0.05)); border-color: rgba(196,154,108,0.25); }
+  .screen-card .card-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+  .screen-card .card-title { font-size: 17px; font-weight: 600; letter-spacing: -0.15px; margin-bottom: 8px; }
+  .screen-card .card-desc { font-size: 13px; font-weight: 400; color: var(--text-secondary); line-height: 1.5; }
+  .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 28px; }
+  .feature-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .feature-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px; padding: 22px; }
+  .feature-card .fc-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .fc-icon.teal { background: rgba(10,92,106,0.25); }
+  .fc-icon.gold { background: rgba(221,162,30,0.18); }
+  .fc-icon.red { background: rgba(239,68,68,0.15); }
+  .fc-icon.blue { background: rgba(59,130,246,0.15); }
+  .fc-icon.green { background: rgba(16,185,129,0.15); }
+  .feature-card .fc-title { font-size: 15px; font-weight: 600; letter-spacing: -0.12px; margin-bottom: 6px; }
+  .feature-card .fc-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .stats-row { display: flex; gap: 24px; margin: 28px 0; flex-wrap: wrap; }
+  .stat-item { flex: 1; min-width: 140px; }
+  .stat-number { font-size: 56px; font-weight: 600; letter-spacing: -0.7px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat-number.teal { color: var(--teal-bright); }
+  .stat-number.red { color: var(--medical-red); }
+  .stat-number.gold { color: var(--gold); }
+  .stat-number.amber { color: var(--medical-amber); }
+  .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 6px; }
+  .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  .data-table th, .data-table td { padding: 14px 18px; text-align: left; font-size: 14px; }
+  .data-table th { font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--text-tertiary); border-bottom: 1px solid var(--glass-border); }
+  .data-table td { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -0.3px; }
+  .flow-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 28px 0; flex-wrap: wrap; }
+  .flow-step { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 16px 20px; text-align: center; min-width: 130px; }
+  .flow-step .step-num { font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; }
+  .flow-step .step-title { font-size: 14px; font-weight: 600; }
+  .flow-step .step-detail { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  .flow-arrow { color: var(--text-tertiary); font-size: 18px; }
+  .alert-box { border: 1px solid rgba(239,68,68,0.3); border-radius: 16px; background: rgba(239,68,68,0.06); padding: 24px; margin-top: 24px; }
+  .alert-box .alert-header { font-size: 16px; font-weight: 600; color: var(--medical-red); margin-bottom: 16px; }
+  .alert-timeline { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+  .alert-timeline .time { color: var(--text-tertiary); margin-right: 8px; }
+  .phase-row { display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap; }
+  .phase-chip { flex: 1; min-width: 120px; border-radius: 12px; padding: 14px; border: 1px solid var(--glass-border); background: var(--glass-bg); }
+  .phase-chip .phase-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .phase-chip .phase-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .phase-chip .phase-time { font-size: 11px; color: var(--text-secondary); }
+  .bullet-list { list-style: none; margin-top: 20px; }
+  .bullet-list li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 15px; line-height: 1.5; }
+  .bullet-list li:last-child { border-bottom: none; }
+  .bullet-list li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 12px; vertical-align: middle; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 24px; }
+  .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 28px 40px 36px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); pointer-events: none; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; cursor: pointer; background: rgba(255,255,255,0.2); transition: all 0.3s ease; pointer-events: auto; }
+  .nav-dot.active { background: var(--gold); width: 28px; border-radius: 4px; }
+  .nav-dot.done { background: rgba(255,255,255,0.35); }
+  .nav-hint { position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%); z-index: 100; font-size: 11px; color: var(--text-tertiary); letter-spacing: 1.5px; text-transform: uppercase; }
+  .slide-counter { position: fixed; top: 28px; right: 40px; z-index: 100; font-size: 12px; color: var(--text-tertiary); letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+  .hook-box { margin-top: 28px; padding: 20px 24px; border-radius: 12px; border: 1px solid rgba(221,162,30,0.25); background: rgba(221,162,30,0.06); }
+  .hook-box .hook-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .hook-box .hook-text { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+  .check-list { margin-top: 16px; }
+  .check-list div { font-size: 13px; color: var(--text-secondary); padding: 5px 0; }
+  .check-list .check { color: var(--medical-green); margin-right: 8px; }
+  .sync-badge { position: fixed; top: 12px; left: 20px; z-index: 200; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border-radius: 6px; padding: 4px 10px; transition: all 0.3s ease; }
+  .sync-badge.live { background: rgba(16,185,129,0.15); color: var(--medical-green); border: 1px solid rgba(16,185,129,0.3); }
+  .sync-badge.offline { background: rgba(239,68,68,0.1); color: var(--medical-red); border: 1px solid rgba(239,68,68,0.2); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes glowPulse { 0%,100% { box-shadow: 0 0 30px rgba(10,92,106,0.25), 0 0 60px rgba(10,92,106,0.08); } 50% { box-shadow: 0 0 50px rgba(10,92,106,0.4), 0 0 90px rgba(10,92,106,0.14); } }
+  @keyframes criticalPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.45); } 50% { box-shadow: 0 0 0 12px rgba(239,68,68,0); } }
+  @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .scene.active .a1 { animation: fadeUp 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both; }
+  .scene.active .a2 { animation: fadeUp 0.6s 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+  .scene.active .a3 { animation: fadeUp 0.6s 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+  .scene.active .a4 { animation: fadeUp 0.6s 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+  .scene.active .a5 { animation: fadeUp 0.6s 1.0s cubic-bezier(0.16,1,0.3,1) both; }
+  .scene.active .a6 { animation: fadeUp 0.6s 1.2s cubic-bezier(0.16,1,0.3,1) both; }
+  .logo-mark { width: 72px; height: 72px; border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; background: linear-gradient(135deg, rgba(10,92,106,0.3), rgba(10,92,106,0.1)); border: 1px solid rgba(10,92,106,0.3); animation: glowPulse 3s infinite, logoFloat 5s ease-in-out infinite; }
+
+  @media (max-width: 800px) {
+    .scene { padding: 40px 24px; }
+    .scene-headline { font-size: 36px; }
+    .scene-headline.small { font-size: 30px; }
+    .three-screen-grid, .feature-grid, .two-col, .feature-grid.three { grid-template-columns: 1fr; }
+    .stats-row { flex-wrap: wrap; }
+    .stat-number { font-size: 40px; }
+    .flow-row { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="sync-badge" id="syncBadge">SYNC</div>
+<div class="ambient-top-right"></div>
+<div class="ambient-bottom-left"></div>
+<div class="ambient-center"></div>
+
+<div class="slide-counter" id="counter">01 / 15</div>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════ SCENE 0: TITLE ═══════════════ -->
+<div class="scene active" id="s0">
+  <div class="scene-content" style="text-align:center">
+    <div class="logo-mark a1">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8C97A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <circle cx="12" cy="12" r="2" fill="#E8C97A" stroke="none"/>
+        <path d="M12 6v2M12 16v2M6 12h2M16 12h2" stroke="#0E7C8F" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <h1 class="scene-headline a2" style="font-size:72px;letter-spacing:-0.8px">iHome<span style="color:#DDA21E">Care</span></h1>
+    <p class="scene-subtitle a3" style="font-size:19px;margin-top:12px">Hospital at Home · Hong Kong</p>
+    <p class="a4" style="font-size:15px;color:var(--text-tertiary);margin-top:32px;letter-spacing:0.5px">Investor Roadshow · July 2026</p>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 1: VISION ═══════════════ -->
+<div class="scene" id="s1">
+  <div class="scene-content">
+    <div class="scene-label a1">Vision</div>
+    <div class="quote-block a2">
+      <p>"Every Hong Kong patient discharged from hospital deserves <span style="color:#DDA21E">hospital-grade care at home</span> — powered by IoT, coordinated by a clinical command center, and connected to family in real time."</p>
+    </div>
+    <p class="scene-subtitle a3">iHomeCare is building the <span class="scene-highlight">operating system</span> for Hospital at Home in Asia — turning the patient's home into a digitally monitored clinical extension of the hospital.</p>
+    <div class="feature-grid a4" style="margin-top:32px">
+      <div class="feature-card">
+        <div class="fc-icon teal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7C8F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+        </div>
+        <div class="fc-title">No Patient Falls Through Cracks</div>
+        <div class="fc-desc">Seamless handoff from hospital discharge to home recovery with continuous monitoring.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon gold">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DDA21E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="fc-title">Medical-Grade IoT, Not Gadgets</div>
+        <div class="fc-desc">Every vital sign tracked by clinically validated devices — Omron, Nonin, Abbott.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="fc-title">AI Predicts Before Crisis</div>
+        <div class="fc-desc">Real-time risk modeling enables intervention, not reaction — before readmission happens.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="fc-title">Real-Time Care Coordination</div>
+        <div class="fc-desc">Hospital, family, and care workers synchronized on one platform — no information silos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 2: PROBLEM ═══════════════ -->
+<div class="scene" id="s2">
+  <div class="scene-content">
+    <div class="scene-label a1">The Problem</div>
+    <p class="scene-subtitle a2">Hong Kong faces a <span style="color:#ef4444">structural hospital capacity crisis</span>:</p>
+    <div class="two-col" style="margin-top:28px">
+      <div>
+        <div class="stats-row" style="flex-direction:column;gap:16px">
+          <div class="stat-item a3"><div class="stat-number red">85%+</div><div class="stat-label">Hospital bed occupancy year-round</div></div>
+          <div class="stat-item a4"><div class="stat-number amber">4–8h</div><div class="stat-label">A&E wait times for non-critical</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="stats-row" style="flex-direction:column;gap:16px">
+          <div class="stat-item a3"><div class="stat-number red">15–20%</div><div class="stat-label">Readmission within 30 days (elderly CHF/COPD)</div></div>
+          <div class="stat-item a4"><div class="stat-number" style="color:#3b82f6">20%→35%</div><div class="stat-label">Population 65+ by 2040</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card a5" style="margin-top:28px"><p style="font-size:14px;color:var(--text-secondary);line-height:1.7"><strong style="color:var(--text-primary)">5+ disconnected parties</strong> — hospital, family, nurse, physiotherapist, GP — operating in <strong style="color:var(--medical-red)">information silos</strong>. Patients discharged too early. Families without tools. Hospitals blind to outcomes.</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 3: SOLUTION ═══════════════ -->
+<div class="scene" id="s3">
+  <div class="scene-content">
+    <div class="scene-label a1">The Solution</div>
+    <h2 class="scene-headline a2" style="font-size:36px">Three Synchronized Screens,<br><span class="scene-highlight">One Unified Platform</span></h2>
+    <div class="three-screen-grid a3">
+      <div class="screen-card hub">
+        <span class="card-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0E7C8F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <div class="card-title" style="color:#0E7C8F">Hub</div>
+        <div class="card-desc">Command Center for clinical operations. Patient dashboards, risk scores, care team management, IoT fleet.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(10,92,106,0.7);letter-spacing:1px">TEAL #0A5C6A</div>
+      </div>
+      <div class="screen-card family">
+        <span class="card-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#A5785A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></span>
+        <div class="card-title" style="color:#A5785A">Family</div>
+        <div class="card-desc">For patients & caregivers. Real-time vitals, care plan, medication reminders, emergency button, team chat.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(165,120,90,0.7);letter-spacing:1px">TAN #A5785A</div>
+      </div>
+      <div class="screen-card elite">
+        <span class="card-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C49A6C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+        <div class="card-title" style="color:#C49A6C">Elite</div>
+        <div class="card-desc">For care workers in the field. Visit schedule, patient records, vitals to capture, team communication.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(196,154,108,0.7);letter-spacing:1px">GOLD #C49A6C</div>
+      </div>
+    </div>
+    <p class="a4" style="text-align:center;font-size:14px;color:var(--text-tertiary);margin-top:8px">All connected to a shared patient data store — one update, visible everywhere.</p>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 4: FEATURE 1 — IoT ═══════════════ -->
+<div class="scene" id="s4">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 1</div>
+    <h2 class="scene-headline small a2">Real-Time IoT<br><span class="scene-highlight">Vitals Monitoring</span></h2>
+    <p class="scene-subtitle a3" style="font-size:16px">Medical-grade devices, not consumer wearables.</p>
+    <div class="feature-grid three a4">
+      <div class="feature-card"><div class="fc-icon teal">🩸</div><div class="fc-title">Omron HEM-7361T</div><div class="fc-desc">Bluetooth BP monitor, clinically validated. Every reading auto-synced.</div></div>
+      <div class="feature-card"><div class="fc-icon blue">🫁</div><div class="fc-title">Nonin 3230</div><div class="fc-desc">Continuous SpO₂ pulse oximeter. FDA-cleared. Critical for COPD/HF patients.</div></div>
+      <div class="feature-card"><div class="fc-icon gold">💓</div><div class="fc-title">Wearable Patch</div><div class="fc-desc">HR, RR, temperature, fall detection. 7-day battery. Water-resistant.</div></div>
+    </div>
+    <div class="hook-box a5"><div class="hook-label">Investor Hook</div><div class="hook-text">This isn't a consumer smartwatch — this is <strong style="color:var(--text-primary)">hospital-grade Remote Patient Monitoring</strong>. CPT codes 99453/99454/99457 for RPM billing exist now; HK's HA is actively piloting reimbursement models.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 5: FEATURE 2 — AI RISK ═══════════════ -->
+<div class="scene" id="s5">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 2</div>
+    <h2 class="scene-headline small a2">AI-Powered<br><span class="scene-highlight">Readmission Risk</span></h2>
+    <div class="feature-grid a3">
+      <div class="feature-card"><div class="fc-icon blue">🧬</div><div class="fc-title">Clinical Factors</div><div class="fc-desc">Diagnosis, comorbidities, medication adherence, lab trends.</div></div>
+      <div class="feature-card"><div class="fc-icon teal">📊</div><div class="fc-title">Real-Time Vitals</div><div class="fc-desc">BP trends, SpO₂ drops, HR variability — continuous risk recalculation.</div></div>
+      <div class="feature-card"><div class="fc-icon amber">⚡</div><div class="fc-title">Behavioral Signals</div><div class="fc-desc">Missed assessments, delayed responses, medication non-adherence.</div></div>
+      <div class="feature-card"><div class="fc-icon green">✓</div><div class="fc-title">Validated Frameworks</div><div class="fc-desc">LACE index, CURB-65, GOLD, CHA₂DS₂-VASc — evidence-based foundations.</div></div>
+    </div>
+    <div class="hook-box a4"><div class="hook-label">Investor Hook</div><div class="hook-text">This is our <strong style="color:var(--text-primary)">clinical AI moat</strong> — not generic LLM chatbots, but domain-specific risk models. As we scale across hospitals, the model improves. Competitors can't replicate this without patient volume.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 6: FEATURE 3 — REGISTRATION ═══════════════ -->
+<div class="scene" id="s6">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 3</div>
+    <h2 class="scene-headline small a2">4-Step Registration<br><span class="scene-highlight">+ AI Team Matching</span></h2>
+    <div class="flow-row a3">
+      <div class="flow-step"><div class="step-num">Step 1</div><div class="step-title">Medical History</div><div class="step-detail">Diagnosis · Allergies · Meds</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 2</div><div class="step-title">Assessment</div><div class="step-detail">13-Section Physical · Risk</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 3</div><div class="step-title">Care Plan</div><div class="step-detail">8 Sections · Goals · Meds</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 4</div><div class="step-title">Assign Elite</div><div class="step-detail">AI Scoring · Drag & Drop</div></div>
+    </div>
+    <div class="glass-card a4" style="margin-top:24px"><p style="font-size:14px;color:var(--text-secondary);line-height:1.6"><strong style="color:var(--gold)">AI Smart Matching</strong> scores every available care worker across <strong style="color:var(--text-primary)">5 dimensions</strong>: Clinical certification, disease experience, geographic proximity, language compatibility, and workload.</p></div>
+    <div class="hook-box a5"><div class="hook-label">Investor Hook</div><div class="hook-text">This isn't a CRM — it's a <strong style="color:var(--text-primary)">clinical operations OS</strong>. AI reduces care team allocation from <strong style="color:var(--gold)">2 hours → 5 minutes</strong>.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 7: FEATURE 4 — EMERGENCY ═══════════════ -->
+<div class="scene" id="s7">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 4</div>
+    <h2 class="scene-headline small a2">Emergency Response<br><span style="color:#ef4444">Workflow</span></h2>
+    <p class="scene-subtitle a3" style="font-size:15px">The critical test: what happens when vitals go critical?</p>
+    <div class="alert-box a4">
+      <div class="alert-header">⚠ 16:32 — SpO₂ drops to 88%</div>
+      <div class="alert-timeline">
+        <div><span class="time">16:32</span> <span style="color:#ef4444">🔴 Alert fires</span> on Command Center. Care Manager notified.</div>
+        <div><span class="time">16:33</span> <span style="color:#A5785A">📱 Family notified:</span> "Nurse dispatched, doctor reviewing."</div>
+        <div><span class="time">16:33</span> <span style="color:#C49A6C">👨‍⚕️ Nearest nurse auto-assigned</span>. Navigation + vitals history sent.</div>
+        <div><span class="time">16:35</span> Doctor on-call reviews case remotely. Approves intervention plan.</div>
+        <div><span class="time">16:58</span> <span style="color:#10b981">✓ Nurse arrives</span>. Vitals stabilizing. Doctor signs off.</div>
+      </div>
+    </div>
+    <div class="hook-box a5"><div class="hook-label">Investor Hook</div><div class="hook-text">Alert → nurse dispatched: <strong style="color:var(--text-primary)">&lt;3 minutes</strong> — vs. hours in traditional systems. This is the difference between a home visit and an ambulance.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 8: FEATURE 5 — PATIENT JOURNEY ═══════════════ -->
+<div class="scene" id="s8">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 5</div>
+    <h2 class="scene-headline small a2">3-Screen<br><span class="scene-highlight">Patient Journey</span></h2>
+    <p class="scene-subtitle a3" style="font-size:15px">All three screens synchronized through a 5-phase timeline.</p>
+    <div class="phase-row a4">
+      <div class="phase-chip" style="border-left:3px solid var(--teal-bright)"><span class="phase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E7C8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span><div class="phase-name">Hospital Referral</div><div class="phase-time">Day 0</div></div>
+      <div class="phase-chip" style="border-left:3px solid var(--tan)"><span class="phase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A5785A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></span><div class="phase-name">Assessment & Plan</div><div class="phase-time">Day 1</div></div>
+      <div class="phase-chip" style="border-left:3px solid var(--medical-green)"><span class="phase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><div class="phase-name">Daily Care</div><div class="phase-time">Days 2–14</div></div>
+      <div class="phase-chip" style="border-left:3px solid var(--medical-red)"><span class="phase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span><div class="phase-name">Emergency</div><div class="phase-time">Day 7</div></div>
+      <div class="phase-chip" style="border-left:3px solid var(--gold)"><span class="phase-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DDA21E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg></span><div class="phase-name">Reviews & Praise</div><div class="phase-time">Day 14</div></div>
+    </div>
+    <p class="a5" style="text-align:center;margin-top:20px;font-size:14px;color:var(--text-tertiary)">Outcome: 14-day program complete · Zero hospital readmission · All 3 parties submit praise</p>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 9: FEATURE 6 — MEDICAL INSTITUTION ═══════════════ -->
+<div class="scene" id="s9">
+  <div class="scene-content">
+    <div class="scene-label a1">Feature 6</div>
+    <h2 class="scene-headline small a2">Medical Institution<br><span class="scene-highlight">Management</span></h2>
+    <p class="scene-subtitle a3" style="font-size:15px">For the hospital partner side.</p>
+    <div class="two-col a4" style="margin-top:24px">
+      <div>
+        <div class="feature-card" style="margin-bottom:16px"><div class="fc-icon teal">🏥</div><div class="fc-title">Multi-Hospital Dashboards</div><div class="fc-desc">Queen Mary · HK Sanatorium · Gleneagles — unified ops view.</div></div>
+        <div class="feature-card" style="margin-bottom:16px"><div class="fc-icon gold">📊</div><div class="fc-title">Bed-Day Savings Tracking</div><div class="fc-desc">HaH bed-day cost is 30-50% of inpatient. Real-time ROI dashboard.</div></div>
+      </div>
+      <div>
+        <div class="feature-card" style="margin-bottom:16px"><div class="fc-icon blue">👨‍⚕️</div><div class="fc-title">Doctor Workload Management</div><div class="fc-desc">Department-level patient distribution & capacity planning.</div></div>
+        <div class="feature-card" style="margin-bottom:16px"><div class="fc-icon green">📈</div><div class="fc-title">Clinical Outcomes Reporting</div><div class="fc-desc">Readmission rates, patient satisfaction, NPS — tracked per episode.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 10: DEMO SCRIPT ═══════════════ -->
+<div class="scene" id="s10">
+  <div class="scene-content">
+    <div class="scene-label a1">Live Demo</div>
+    <h2 class="scene-headline small a2">Walkthrough Script<br><span class="scene-highlight">~4 Minutes</span></h2>
+    <div class="bullet-list a3" id="demoBullets">
+      <li><strong style="color:var(--teal-bright)">Hub Command Center</strong> — <span id="hf-patientCount">6</span> active HaH patients, severity-sorted. Click into full clinical profile.</li>
+      <li><strong style="color:var(--gold)">Registration Workflow</strong> — 4-step onboarding with AI-powered care team assignment.</li>
+      <li><strong style="color:var(--tan)">Family App</strong> — 4 tabs: Home, Vitals, Care Plan, Chat. One-tap emergency button.</li>
+      <li><strong style="color:var(--muted-gold)">Elite App</strong> — Dashboard, Candidates, Patients, Chat. All synced in real-time.</li>
+      <li><strong style="color:var(--medical-blue)">Patient Journey Demo</strong> — 3 screens side-by-side through 5 phases.</li>
+    </div>
+    <p class="a5" style="margin-top:24px;font-size:13px;color:var(--text-tertiary)">Fully functional · Offline-capable · Zero cloud dependency · Demo verified on Chrome, Safari, mobile.</p>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 11: COMPETITIVE MOAT ═══════════════ -->
+<div class="scene" id="s11">
+  <div class="scene-content">
+    <div class="scene-label a1">Investor FAQ</div>
+    <h2 class="scene-headline small a2"><span class="scene-highlight">Competitive Moat</span></h2>
+    <div class="feature-grid three a3">
+      <div class="feature-card"><div class="fc-icon teal">🏗️</div><div class="fc-title">Clinical Workflow Depth</div><div class="fc-desc">Not generic telehealth. Real hospital workflows. 12+ months of HK clinician co-design.</div></div>
+      <div class="feature-card"><div class="fc-icon gold">📊</div><div class="fc-title">Data Network Effects</div><div class="fc-desc">Every episode feeds AI models. New entrants start with zero data.</div></div>
+      <div class="feature-card"><div class="fc-icon blue">🔒</div><div class="fc-title">3-Screen Lock-In</div><div class="fc-desc">Hospital + Family + Care Worker — switching costs are enormous.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 12: MARKET ═══════════════ -->
+<div class="scene" id="s12">
+  <div class="scene-content">
+    <div class="scene-label a1">Investor FAQ</div>
+    <div class="two-col">
+      <div>
+        <h3 class="a1" style="font-size:18px;font-weight:600;margin-bottom:16px;color:var(--text-primary)">Market Size</h3>
+        <div class="glass-card a2">
+          <div class="stat-number gold" style="font-size:40px">HK$3-6B</div>
+          <div class="stat-label">HK HaH TAM (200K+ eligible discharges × HK$15-30K/episode)</div>
+          <div style="margin-top:16px;font-size:14px;color:var(--text-secondary)">APAC HaH market: <strong style="color:var(--gold)">$45B by 2030</strong><br>Beachhead: HK's 43 public + 12 private hospitals</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="a1" style="font-size:18px;font-weight:600;margin-bottom:16px;color:var(--text-primary)">Revenue Model</h3>
+        <div class="glass-card a2">
+          <ul class="bullet-list" style="margin-top:0">
+            <li><strong>Hospitals</strong> — SaaS per bed (30-50% of inpatient cost)</li>
+            <li><strong>Insurers</strong> — RPM reduces readmission penalties</li>
+            <li><strong>Families</strong> — Premium: AI reports, 24/7, specialist chat</li>
+            <li><strong>Device Partners</strong> — IoT kit leasing revenue share</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 13: BY THE NUMBERS ═══════════════ -->
+<div class="scene" id="s13">
+  <div class="scene-content">
+    <div class="scene-label a1">By the Numbers</div>
+    <div class="stats-row a2" id="statsNumbers">
+      <div class="stat-item"><div class="stat-number teal" id="stat-patients">6</div><div class="stat-label">Active HaH Patients</div></div>
+      <div class="stat-item"><div class="stat-number gold">14</div><div class="stat-label">Hub Modules</div></div>
+      <div class="stat-item"><div class="stat-number blue">3</div><div class="stat-label">Hospital Partners</div></div>
+      <div class="stat-item"><div class="stat-number amber">5</div><div class="stat-label">IoT Device Types</div></div>
+    </div>
+    <div class="glass-card a3" style="margin-top:28px">
+      <table class="data-table">
+        <thead><tr><th>Capability</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Command Center with severity-sorted patient cards</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>Patient profile with full clinical record</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>4-step registration + AI team matching</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>Family app (Home, Vitals, Care, Chat)</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>Elite app (Dashboard, Candidates, Patients, Chat)</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>3-screen synchronized Patient Journey Demo</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>IoT device status with battery + sync tracking</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>Readmission risk scores (LACE, CURB-65, GOLD, CHA₂DS₂-VASc)</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+          <tr><td>Emergency response workflow (alert → dispatch → arrival)</td><td><span style="color:var(--medical-green)">✓ Live</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCENE 14: CLOSING ═══════════════ -->
+<div class="scene" id="s14">
+  <div class="scene-content" style="text-align:center">
+    <div class="scene-label a1">Closing</div>
+    <h2 class="scene-headline a2" style="margin-bottom:32px">The Operating System for<br><span class="scene-highlight">Hospital at Home</span></h2>
+    <div class="feature-grid three a3" style="max-width:760px;margin:0 auto 32px">
+      <div class="feature-card" style="text-align:left"><div class="fc-icon teal">🏥</div><div class="fc-title">Clinical Depth</div><div class="fc-desc">Real HK hospital workflows, not generic telehealth.</div></div>
+      <div class="feature-card" style="text-align:left"><div class="fc-icon gold">📡</div><div class="fc-title">IoT Integration</div><div class="fc-desc">Medical-grade devices. Real clinical data.</div></div>
+      <div class="feature-card" style="text-align:left"><div class="fc-icon blue">🔗</div><div class="fc-title">3-Screen Platform</div><div class="fc-desc">Hospital + Family + Care Worker unified.</div></div>
+    </div>
+    <p class="scene-subtitle a4" style="margin-top:24px">Ready to scale across Hong Kong's 43 public and 12 private hospitals.<br>APAC HaH market: <span class="scene-highlight">$45B by 2030</span>.</p>
+    <p class="a5" style="margin-top:32px;font-size:15px;color:var(--text-tertiary)">Thank you. What would you like to dive deeper into?</p>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-hint" id="hint">Space or → to advance</div>
+<div class="nav-bar" id="nav"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- HF DATA BLOCKS — auto-updated by scripts/hyperframes-sync.mjs -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+/* HF_CSS_VARS_START */
+const HF_CSS_VARS = {
+  "--color-warm-50": "#FBFAF8",
+  "--color-warm-100": "#F5F3EF",
+  "--color-warm-200": "#EDE9E3",
+  "--color-warm-300": "#DED9D1",
+  "--color-warm-400": "#C4BDB3",
+  "--color-warm-500": "#A3998E",
+  "--color-warm-600": "#7A7168",
+  "--color-warm-700": "#5C544D",
+  "--color-warm-800": "#3D3732",
+  "--color-warm-900": "#1F1B18",
+  "--glass-bg": "rgba(255, 255, 255, 0.72)",
+  "--glass-border": "rgba(255, 255, 255, 0.3)",
+  "--glass-shadow": "0 8px 32px rgba(0, 0, 0, 0.06)",
+  "--glass-blur": "16px"
+};
+/* HF_CSS_VARS_END */
+
+/* HF_PATIENTS_START */
+const HF_PATIENTS = [
+  {
+    "id": 1,
+    "name": "Cheung Wai Man",
+    "diagnosis": "Heart Failure NYHA III · CKD Stage 3 · T2DM · Permanent AF",
+    "riskLevel": "High"
+  },
+  {
+    "id": 2,
+    "name": "Wong Chi Ming",
+    "diagnosis": "COPD GOLD Stage 3 · HTN · Hyperlipidaemia",
+    "riskLevel": "High"
+  },
+  {
+    "id": 3,
+    "name": "Lam Ka Chun",
+    "diagnosis": "Community-Acquired Pneumonia (CAP)",
+    "riskLevel": "Low"
+  },
+  {
+    "id": 4,
+    "name": "Lau Suk Yee",
+    "diagnosis": "Complicated UTI (MDR risk) · CKD Stage 3 · Post-infectious D",
+    "riskLevel": "Moderate"
+  },
+  {
+    "id": 5,
+    "name": "Ho Tai Wai",
+    "diagnosis": "Cellulitis LLL (Eron Class III) · T2DM · HTN",
+    "riskLevel": "Moderate"
+  },
+  {
+    "id": 6,
+    "name": "Ng Siu Wan",
+    "diagnosis": "Deep Vein Thrombosis (DVT) — Left Lower Limb",
+    "riskLevel": "High"
+  },
+  {
+    "id": 7,
+    "name": "Chan Tai Ming",
+    "diagnosis": "COPD GOLD Stage 2 · CAP (resolving) · HTN",
+    "riskLevel": "High"
+  }
+];
+/* HF_PATIENTS_END */
+
+/* HF_TOKENS_START */
+const HF_TOKENS = {
+  "family-primary": "#C49A6C",
+  "family-primaryHover": "#B8860B",
+  "family-secondary": "#9C7A4E",
+  "family-deep": "#7A5C32",
+  "family-light": "#D4A87C",
+  "family-accent": "#E8C97A",
+  "family-cream": "#FDF5E8",
+  "family-creamMid": "#F5E6D0",
+  "family-border": "#E8D5B8"
+};
+/* HF_TOKENS_END */
+
+/* HF_TIMESTAMP: 2026-07-30T00:00:00.000Z */
+</script>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- HYPERFRAMES SYNC CLIENT — WebSocket + file-watch bridge -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ── Sync badge ──
+  const badge = document.getElementById('syncBadge');
+  badge.className = 'sync-badge offline';
+  badge.textContent = 'OFFLINE';
+
+  // ── Apply HF data to DOM ──
+  function applyData() {
+    // Update patient count everywhere
+    const patientCount = HF_PATIENTS.length || 6;
+    const els = document.querySelectorAll('#hf-patientCount, #stat-patients');
+    els.forEach(el => { el.textContent = patientCount; });
+
+    // Update CSS variables if HF_CSS_VARS has overrides
+    const root = document.documentElement.style;
+    Object.entries(HF_CSS_VARS).forEach(([key, val]) => {
+      if (val) root.setProperty(key, val);
+    });
+
+    console.log('[hf-sync] Applied:', patientCount, 'patients,', Object.keys(HF_CSS_VARS).length, 'CSS vars');
+  }
+
+  // Run on load
+  applyData();
+
+  // ── WebSocket sync ──
+  function resolveWsUrl() {
+    return 'ws://localhost:5199';
+  }
+
+  let ws = null;
+  let reconnectTimer = null;
+
+  function connect() {
+    if (ws && (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN)) return;
+
+    ws = new WebSocket(resolveWsUrl());
+    ws.addEventListener('open', () => {
+      badge.className = 'sync-badge live';
+      badge.textContent = 'LIVE';
+      console.log('[hf-sync] WebSocket connected');
+    });
+
+    ws.addEventListener('message', (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        if (msg?.type !== 'sync' || !msg.payload) return;
+        const payload = msg.payload;
+
+        // Extract patient data from sync payload
+        if (payload.patients && Array.isArray(payload.patients)) {
+          // Update HF_PATIENTS with live data
+          const ids = Object.keys(payload.patients);
+          if (ids.length > 0) {
+            // Build patients array from sync data
+            const patients = ids.map(id => ({
+              id: parseInt(id),
+              name: payload.patients[id]?.name || '',
+            })).filter(p => p.name);
+            if (patients.length > 0) {
+              // Replace HF_PATIENTS reference
+              window._hfPatientsLive = patients;
+              const count = patients.length;
+              document.querySelectorAll('#hf-patientCount, #stat-patients').forEach(el => {
+                el.textContent = count;
+              });
+              console.log('[hf-sync] Live update:', count, 'patients');
+            }
+          }
+        }
+      } catch (e) {
+        // ignore malformed
+      }
+    });
+
+    ws.addEventListener('close', () => {
+      badge.className = 'sync-badge offline';
+      badge.textContent = 'OFFLINE';
+      ws = null;
+      reconnectTimer = setTimeout(connect, 3000);
+    });
+
+    ws.addEventListener('error', () => {
+      ws?.close();
+    });
+  }
+
+  // Start WS connection
+  connect();
+
+  // ── File watch bridge (polling fallback) ──
+  // In dev mode, the watch script updates this HTML file on src/ changes.
+  // We poll localStorage or BroadcastChannel for file-update notifications.
+  if (typeof BroadcastChannel !== 'undefined') {
+    const bc = new BroadcastChannel('ihomecare-hyperframes');
+    bc.onmessage = (event) => {
+      if (event.data?.type === 'hf-reload') {
+        console.log('[hf-sync] File update detected — reloading');
+        window.location.reload();
+      }
+    };
+  }
+
+  // ── Listen for localStorage file-change signals from watch script ──
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'ihomecare_hf_updated') {
+      const ts = event.newValue;
+      if (ts) {
+        console.log('[hf-sync] Source changed at', ts, '— reloading');
+        window.location.reload();
+      }
+    }
+  });
+
+  console.log('[hf-sync] HyperFrames sync client ready');
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- NAVIGATION SCRIPT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const TOTAL = 15;
+  const nav = document.getElementById('nav');
+  const dots = [];
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot';
+    if (i === 0) d.classList.add('active');
+    d.onclick = () => go(i);
+    nav.appendChild(d);
+    dots.push(d);
+  }
+
+  let cur = 0, auto = true, timer = null;
+  const DURATIONS = {0:5000,1:10000,2:9000,3:10000,4:9000,5:9000,6:10000,7:11000,8:10000,9:8000,10:9000,11:8000,12:9000,13:10000,14:10000};
+
+  function go(i) {
+    document.querySelectorAll('.scene').forEach((s, idx) => s.classList.toggle('active', idx === i));
+    dots.forEach((d, idx) => { d.classList.toggle('active', idx === i); d.classList.toggle('done', idx < i); });
+    document.getElementById('counter').textContent = String(i + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+    cur = i; schedule();
+  }
+  function next() { go(cur < TOTAL - 1 ? cur + 1 : 0); }
+  function prev() { go(cur > 0 ? cur - 1 : TOTAL - 1); }
+  function schedule() { if (timer) clearTimeout(timer); if (auto) timer = setTimeout(next, DURATIONS[cur] || 8000); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'a' || e.key === 'A') { auto = !auto; document.getElementById('hint').textContent = auto ? 'Space or → to advance' : 'AUTO-PAUSED — press A to resume'; schedule(); }
+  });
+
+  let touchX = 0;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => { const diff = touchX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) diff > 0 ? next() : prev(); });
+
+  schedule();
+})();
+</script>
+</body>
+</html>

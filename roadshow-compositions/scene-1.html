@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scene 1 — Pending Registration → Medical History → Elite App</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:1720px; height:1118px; overflow:hidden; background:#000; }
+
+  .layer { position:absolute; inset:0; }
+  .layer img { position:absolute; top:0; left:0; width:1720px; height:1118px; object-fit:cover; }
+  .layer video { position:absolute; top:0; left:0; width:1720px; height:1118px; object-fit:cover; }
+
+  #cc { opacity:1; }
+  #ccBlur { opacity:0; filter:blur(10px) brightness(0.55); }
+
+  #banner {
+    position:absolute; left:1384px; top:778px; width:320px;
+    z-index:20; opacity:0; border-radius:16px; overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,0.3);
+  }
+  #banner img { display:block; width:320px; }
+
+  #f2 { opacity:0; }
+  #dim { position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:25; opacity:0; }
+
+  #modal {
+    position:absolute; left:485px; top:64px; width:750px; height:894px;
+    z-index:30; opacity:0; border-radius:16px; overflow:hidden;
+    box-shadow:0 40px 80px rgba(0,0,0,0.4);
+  }
+  #modalImg, #modalImg2 { position:absolute; top:0; left:0; width:750px; height:894px; object-fit:cover; }
+  #modalImg2 { opacity:0; }
+
+  /* Scene 2 video layers */
+  #v6, #v7, #v8, #v9 {
+    position:absolute; inset:0; z-index:60; opacity:0;
+  }
+  #v6 video, #v7 video, #v8 video, #v9 video {
+    width:1720px; height:1118px; object-fit:cover;
+  }
+
+  .prog { position:absolute; top:0; left:0; height:4px; background:linear-gradient(90deg,#0D9488,#DDA21E); z-index:300; width:0; }
+  .sub {
+    position:absolute; top:20px; left:50%; transform:translateX(-50%);
+    font-size:16px; color:#fff; z-index:100; opacity:0;
+    text-shadow:0 2px 10px rgba(0,0,0,0.7);
+    background:rgba(0,0,0,0.55); padding:8px 20px; border-radius:20px;
+  }
+  .rip {
+    position:absolute; width:60px; height:60px; border-radius:50%;
+    border:3px solid rgba(13,148,136,0.5); background:rgba(13,148,136,0.1);
+    transform:scale(0); z-index:50; pointer-events:none;
+  }
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="rip" id="rip"></div>
+<div class="sub" id="sub"></div>
+
+<div class="layer" id="cc"><img src="screenshots/frame-1-cc.png"></div>
+<div class="layer" id="ccBlur"><img src="screenshots/frame-1-cc.png"></div>
+<div id="banner"><img src="screenshots/banner-cropped.png"></div>
+<div class="layer" id="f2"><img src="screenshots/frame-2-registration.png"></div>
+<div id="dim"></div>
+<div id="modal">
+  <img id="modalImg" src="screenshots/modal-card-top.png">
+  <img id="modalImg2" src="screenshots/modal-card-bottom.png">
+</div>
+
+<!-- Scene 2: Elite App video layers -->
+<div id="v6"><video src="videos/frame6-dashboard.mp4" muted playsinline></video></div>
+<div id="v7"><video src="videos/frame7-candidate.mp4" muted playsinline></video></div>
+<div id="v8"><video src="videos/frame8-assessment.mp4" muted playsinline></video></div>
+<div id="v9"><video src="videos/frame9-careplan.mp4" muted playsinline></video></div>
+
+<script>
+const tl = gsap.timeline({ onUpdate:()=>{
+  document.getElementById("prog").style.width = Math.min((tl.time()/36)*100,100)+"%";
+}});
+
+function rip(x,y){
+  gsap.set("#rip",{top:y+"%",left:x+"%",xPercent:-50,yPercent:-50,scale:0,opacity:0.8});
+  gsap.to("#rip",{scale:4,opacity:0,duration:0.5,ease:"power2.out"});
+}
+
+function playVideo(id) {
+  const v = document.querySelector(`#${id} video`);
+  if (v) { v.currentTime = 0; v.play().catch(()=>{}); }
+}
+
+// Button position: x:257, y:782, w:129, h:25 → center: 18.7%, 71.1%
+// Button coords as %: left=257/1720=14.9%, top=782/1118=69.9%
+
+// ===== SCENE 1: Pending Registration → Medical History (0–16s) =====
+
+// FRAME 1: CC page (0–1.5s)
+tl.to("#sub",{text:"Command Center · 17 Active Patients",opacity:1,duration:0.5}).to({},{duration:1});
+
+// FRAME 1.5: Banner → center + blur (1.5–4s)
+tl.set("#banner",{opacity:1,left:1384,top:778,scale:1})
+  .to("#cc",{opacity:0,duration:0.35},"+=0.1")
+  .to("#ccBlur",{opacity:1,duration:0.35},"-=0.2")
+  .to("#banner",{left:700,top:413,scale:1.6,duration:0.9,ease:"power3.inOut"},"-=0.2")
+  .to("#sub",{text:"New Pending Registration · Zhang Jianguo",opacity:1,duration:0.4},"-=0.3")
+  .to({},{duration:1});
+
+// FRAME 2: Click banner → Registration page (4–6.5s)
+tl.call(()=>rip(50,45))
+  .to("#banner",{scale:1.75,duration:0.15,ease:"power2.out"})
+  .to("#banner",{scale:1.6,duration:0.15,ease:"power2.in"})
+  .to("#banner",{scale:0,opacity:0,duration:0.35,ease:"back.in(2)"})
+  .to("#ccBlur",{opacity:0,duration:0.3},"-=0.2")
+  .set("#f2",{opacity:1,scale:1.05})
+  .to("#f2",{scale:1,duration:0.5,ease:"power2.out"})
+  .to("#sub",{text:"Patient Registration · Zhang Jianguo, 58M",opacity:1,duration:0.4},"-=0.2")
+  .to({},{duration:1.4});
+
+// FRAME 3: Open modal — no animation (6.5–9s)
+tl.to("#dim",{opacity:1,duration:0.35})
+  .set("#modal",{scale:0.92,opacity:1})
+  .set("#modalImg",{opacity:1})
+  .set("#modalImg2",{opacity:0})
+  .to("#modal",{scale:1,duration:0.5,ease:"back.out(1.7)"},"-=0.2")
+  .to("#sub",{text:"Medical History · 6 Clinical Records",opacity:1,duration:0.4})
+  .to({},{duration:1});
+
+// FRAME 4: Scroll (9–12.5s)
+tl.to("#modalImg",{opacity:0,duration:1.5})
+  .to("#modalImg2",{opacity:1,duration:1.5},"-=1.5")
+  .to("#sub",{text:"Scrolling...",opacity:0.5,duration:0.3},"-=1.0")
+  .to("#sub",{text:"Scroll Complete · Read Activated",opacity:1,duration:0.4})
+  .to({},{duration:0.8});
+
+// FRAME 5: Close modal (12.5–16s)
+tl.to("#sub",{text:"✓ Review Complete",opacity:1,duration:0.5})
+  .to("#modal",{scale:0.95,opacity:0,duration:0.35})
+  .to("#dim",{opacity:0,duration:0.4},"-=0.4")
+  .to({},{duration:2.5});
+
+// ===== SCENE 2: Elite App (16–36s) =====
+
+// FRAME 6: Elite Dashboard load (16–20s)
+tl.call(()=>{
+    document.querySelectorAll("#v6 video,#v7 video,#v8 video,#v9 video").forEach(v=>{v.pause();v.currentTime=0;});
+    playVideo("v6");
+  })
+  .set("#v6",{opacity:1})
+  .to("#sub",{text:"Elite App · Dashboard",opacity:1,duration:0.5})
+  .to({},{duration:3});
+
+// FRAME 7: Switch to Candidate (20–24s)
+tl.call(()=>playVideo("v7"))
+  .set("#v6",{opacity:0})
+  .set("#v7",{opacity:1})
+  .to("#sub",{text:"Candidate Tab · 3 Pending Patients",opacity:1,duration:0.5})
+  .to({},{duration:3});
+
+// FRAME 8: Initial Assessment auto-submit (24–30s)
+tl.call(()=>playVideo("v8"))
+  .set("#v7",{opacity:0})
+  .set("#v8",{opacity:1})
+  .to("#sub",{text:"Initial Assessment · Zhang Jianguo → Auto-Submit",opacity:1,duration:0.5})
+  .to({},{duration:5});
+
+// FRAME 9: Care Plan auto-submit (30–36s)
+tl.call(()=>playVideo("v9"))
+  .set("#v8",{opacity:0})
+  .set("#v9",{opacity:1})
+  .to("#sub",{text:"Care Plan · Zhang Jianguo → Auto-Created",opacity:1,duration:0.5})
+  .to({},{duration:5});
+</script>
+</body>
+</html>

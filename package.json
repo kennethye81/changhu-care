@@ -1,0 +1,47 @@
+{
+  "name": "ihomecare-v1.38-stable",
+  "private": true,
+  "version": "1.38.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-demo.mjs",
+    "dev:vite": "vite",
+    "dev:demo": "node scripts/dev-demo.mjs",
+    "smoke:demo": "node scripts/smoke-demo.mjs",
+    "test:sync": "node scripts/sync-merge-regression.mjs && node scripts/smoke-demo.mjs",
+    "roadshow": "node scripts/roadshow-narrator.mjs",
+    "sync": "node scripts/sync-server.mjs",
+    "build": "vite build",
+    "build:pages": "vite build",
+    "deploy:pages": "node scripts/deploy-pages-static.mjs",
+    "deploy:pages:full": "node scripts/deploy-pages.mjs",
+    "deploy:sync-worker": "npx wrangler deploy --config workers/demo-sync/wrangler.toml",
+    "serve": "python3 serve.py 5179",
+    "preview": "vite preview",
+    "generate:avatars": "node scripts/generate-avatars-fal.mjs",
+    "generate:avatars:family": "node scripts/generate-avatars-fal.mjs --group=family",
+    "audit:avatars": "node scripts/audit-chat-avatars.mjs",
+    "generate:devices": "node scripts/generate-devices-fal.mjs"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "framer-motion": "^12.42.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.400.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0",
+    "recharts": "^3.9.2",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "~5.7.0",
+    "vite": "^6.0.0",
+    "ws": "^8.18.3"
+  }
+}

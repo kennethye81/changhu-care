@@ -1,0 +1,41 @@
+---
+description: Always prefix shell commands with rtk for token-optimized output
+alwaysApply: true
+---
+
+# RTK — Always Prefix Shell Commands
+
+**Golden rule:** Every shell command MUST start with `rtk`. RTK is always safe — dedicated filters compress output; everything else passes through unchanged.
+
+## Command Chains
+
+Even with `&&`, prefix each command:
+
+```bash
+# ❌ Wrong
+git add . && git commit -m "msg" && git push
+
+# ✅ Correct
+rtk git add . && rtk git commit -m "msg" && rtk git push
+```
+
+## Common Commands
+
+| Workflow | Command |
+|----------|---------|
+| Git | `rtk git status`, `rtk git diff`, `rtk git log`, `rtk git add`, `rtk git commit`, `rtk git push` |
+| Build | `rtk tsc`, `rtk lint`, `rtk npm run build`, `rtk vite build` |
+| Test | `rtk vitest`, `rtk jest`, `rtk pytest`, `rtk npm test` |
+| Search | `rtk grep <pattern>`, `rtk find <pattern>`, `rtk ls <path>` |
+| Debug | `rtk err <cmd>`, `rtk gain`, `rtk gain --history` |
+
+## Passthrough
+
+Git subcommands not listed explicitly still work: `rtk git fetch`, `rtk git branch`, etc.
+
+Use `rtk proxy <cmd>` only when you need unfiltered output for debugging.
+
+## Do Not Skip
+
+- Do not run bare `git`, `npm`, `npx`, `tsc`, `curl`, `docker`, `kubectl` when `rtk` has a wrapper
+- Agent shell tool calls in this project always use the `rtk` prefix
