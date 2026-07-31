@@ -96,10 +96,10 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
   // Initialize store connection for real-time family data
   usePatientStore(state => state.patients);
   const tabs: { key: MobileTab; label: string; icon: FC<{ className?: string }> }[] = [
-    { key: 'home', label: 'Home', icon: Home },
-    { key: 'vitals', label: 'Vitals', icon: Heart },
-    { key: 'care', label: 'Care', icon: ClipboardList },
-    { key: 'chat', label: 'Chat', icon: MessageCircle },
+    { key: 'home', label: '首页', icon: Home },
+    { key: 'vitals', label: '体征', icon: Heart },
+    { key: 'care', label: '照护', icon: ClipboardList },
+    { key: 'chat', label: '消息', icon: MessageCircle },
   ];
 
   return (
@@ -504,7 +504,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       <div className="bg-red-50 border border-red-200 rounded-2xl p-3 flex items-start gap-2">
         <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-xs font-bold text-red-700">{newsHeadline} — {patient?.name ?? 'Patient'}</p>
+          <p className="text-xs font-bold text-red-700">{newsHeadline} — {patient?.name ?? '患者'}</p>
           <p className="text-[10px] text-red-600 mt-0.5">{formatP7AlertBanner(vitals, summary?.diagnosis ?? '')}</p>
         </div>
       </div>
@@ -515,7 +515,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg font-bold">{formatDemoDateLabel()}</p>
-          <p className="text-[10px] text-[#E8D5B8] mt-0.5">HaH Day {DEMO_HAH_DAY} · {patient?.name ?? 'Patient'}</p>
+          <p className="text-[10px] text-[#E8D5B8] mt-0.5">照护 Day {DEMO_HAH_DAY} · {patient?.name ?? '患者'}</p>
           <div className="flex items-center gap-1.5 mt-2">
             <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-300 animate-pulse' : news.tier === 'medium' ? 'bg-amber-300' : news.redScore ? 'bg-orange-300' : 'bg-[#E8D5B8]'}`} />
             <span className="text-xs font-medium">{news.tier === 'high' ? `${newsHeadline} — ${newsAction}` : `${newsHeadline} · ${newsAction}`}</span>
@@ -523,14 +523,14 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
         </div>
         <div className="text-right bg-white/15 rounded-xl px-3 py-2">
           <p className="text-sm font-bold">17:00</p>
-          <p className="text-[9px] text-[#E8D5B8]">Next RN visit</p>
+          <p className="text-[9px] text-[#E8D5B8]">下次访视</p>
         </div>
       </div>
     </div>
 
     {/* Patient Profile Card */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={Heart} title="Patient Overview" />
+      <SectionHeader icon={Heart} title="患者概览" />
       <div className="p-4">
       <div className="flex items-center gap-3">
         <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-md border-2 border-[#E8D5B8]">
@@ -538,7 +538,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-bold text-slate-900">{patient?.name ?? 'Patient'}</h3>
+            <h3 className="text-base font-bold text-slate-900">{patient?.name ?? '患者'}</h3>
           </div>
           <p className="text-xs text-slate-400">{patient?.gender ?? ''}, {patient?.age ?? ''} yrs · {patient?.diagnosis ?? ''}</p>
           <div className="flex items-center gap-1.5 mt-1.5">
@@ -586,7 +586,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
 
     {/* Care Team */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={Users} title="Care Team" />
+      <SectionHeader icon={Users} title="照护团队" />
       <div className="p-4 space-y-3">
         {careTeam.map((member) => (
           <div key={member.name} className="flex items-center gap-3">
@@ -609,11 +609,11 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       </div>
     </div>
 
-    {/* Today's Care Plan */}
+    {/* 今日照护计划 */}
     <div onClick={onCarePlanClick} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
       <SectionHeader
         icon={CalendarDays}
-        title="Today's Care Plan"
+        title="今日照护计划"
         right={<span className="text-[9px] font-bold text-white/90 bg-white/20 px-2 py-0.5 rounded-md">{formatDemoDateBadge()}</span>}
       />
       <div className="divide-y divide-slate-50">
@@ -676,7 +676,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
             <Heart className="w-5 h-5" />
             <div>
               <h3 className="text-sm font-bold">Real-Time Vitals</h3>
-              <p className="text-[10px] text-[#E8D5B8]">{patient?.name ?? 'Patient'} · Live device sync</p>
+              <p className="text-[10px] text-[#E8D5B8]">{patient?.name ?? '患者'} · Live device sync</p>
             </div>
           </div>
         </div>
@@ -988,7 +988,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       <div className={`px-4 py-3 flex items-center justify-between ${newsTier === 'high' ? 'bg-gradient-to-r from-red-500 to-red-600' : newsTier === 'medium' ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-emerald-500 to-emerald-600'}`}>
         <div className="flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-white" />
-          <span className="text-xs font-bold text-white">NEWS Assessment</span>
+          <span className="text-xs font-bold text-white">风险评估</span>
         </div>
         <span className="text-[10px] font-semibold text-white/90 bg-black/20 px-2 py-0.5 rounded-full">
           {label}
@@ -1313,7 +1313,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mx-auto mb-1">
             <Hospital className="w-4 h-4 text-white" />
           </div>
-          <p className="text-slate-300">HK Care Team</p>
+          <p className="text-slate-300">照护团队</p>
         </div>
       </div>
       <p className="text-[9px] text-slate-400 text-center mt-3">End-to-end encrypted · HIPAA compliant · Data stored in HK</p>
@@ -1383,7 +1383,7 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <PatientAvatar patientId={familyPatientId} size={32} className="ring-2 ring-white/40" />
         </div>
         <div className="flex-1">
-          <p className="text-sm font-semibold text-white">Care Team Chat</p>
+          <p className="text-sm font-semibold text-white">照护消息</p>
           <p className="text-[9px] text-[#E8D5B8] flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#E8D5B8]" /> Online — AI Monitor · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
           </p>
