@@ -20,10 +20,10 @@ import {
   ArrowLeft, User, Users, FileText, CalendarDays, ClipboardList,
   Smartphone, PhoneCall, Heart, Activity, Thermometer, Droplets,
   Brain, BedDouble, GlassWater, AlertTriangle,
-  Phone, Mail, Clock, Pill, Stethoscope, FlaskConical, Microscope, X, CheckCircle2,
+  Phone, Mail, Clock, Pill, Stethoscope, FlaskConical, Microscope, X, CheckCircle2, Sparkles,
 } from 'lucide-react';
 
-type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing';
+type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing' | 'value_added';
 
 const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: string }> }[] = [
   { key: 'smart_summary', label: '智能摘要', icon: Brain },
@@ -32,6 +32,7 @@ const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: str
   { key: 'vitals', label: '体征记录', icon: Heart },
   { key: 'care_info', label: '照护信息', icon: Users },
   { key: 'logs', label: '照护记录', icon: CalendarDays },
+  { key: 'value_added', label: '增值服务方案', icon: Sparkles },
   { key: 'iot', label: '设备串联', icon: Smartphone },
   { key: 'billing', label: '客户账单', icon: PhoneCall },
 ];
@@ -86,6 +87,7 @@ const PatientProfilePage: FC = () => {
         {section==='care_info'&&<CareInfoSection patient={patient} teamMembers={teamMembers} todaySchedule={todaySchedule} today={today}/>}
         {section==='logs'&&<LogsSection patient={displayPatient} plan={plan}/>}
         {section==='iot'&&<IoTDevicesSection patient={displayPatient}/>}
+        {section==='value_added'&&<ValueAddedSection patient={patient}/>}
         {section==='billing'&&<BillingSection patientId={patient.id}/>}
       </main>
     </div>
@@ -1101,6 +1103,94 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
     )})}
   </div>
 );};
+
+{/* ══════════════════════════════════════════════════
+    增值服务方案
+   ══════════════════════════════════════════════════ */}
+const ValueAddedSection: FC<{ patient: PatientFull }> = ({ patient }) => {
+  const modules = patient.serviceModules || [];
+  const outcomes = patient.outcomeTargets || [];
+  const tierLabel = patient.serviceTier === 'premium' ? '尊享版' : patient.serviceTier === 'standard' ? '标准版' : '基础版';
+  const tierColor = patient.serviceTier === 'premium' ? 'bg-amber-100 text-amber-700' : 'bg-teal-100 text-teal-700';
+
+  const moduleIcons: Record<string, string> = {
+    M1: '🛏️', M2: '🦯', M3: '💪', M4: '💊', M5: '🥗', M6: '🩺', M7: '📊',
+  };
+  const moduleColors: Record<string, string> = {
+    M1: 'border-l-rose-400 bg-rose-50/30', M2: 'border-l-red-400 bg-red-50/30',
+    M3: 'border-l-purple-400 bg-purple-50/30', M4: 'border-l-amber-400 bg-amber-50/30',
+    M5: 'border-l-emerald-400 bg-emerald-50/30', M6: 'border-l-teal-400 bg-teal-50/30',
+    M7: 'border-l-slate-400 bg-slate-50/30',
+  };
+
+  return (
+    <div className="-mt-6">
+      <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
+        <ST title="增值服务方案" icon={Sparkles} />
+      </div>
+
+      <div className="space-y-4">
+        {/* 服务等级 */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-slate-700">当前服务包</h3>
+            <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold ${tierColor}`}>{tierLabel}</span>
+          </div>
+          {/* 模块卡片 */}
+          <div className="space-y-2">
+            {modules.map(m => (
+              <div key={m.id} className={`${moduleColors[m.id] || 'border-l-teal-400 bg-teal-50/30'} border border-slate-200 rounded-xl px-4 py-3`}>
+                <div className="flex items-start gap-3">
+                  <span className="text-lg flex-shrink-0 leading-none mt-0.5">{moduleIcons[m.id] || '📋'}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-xs font-bold text-slate-800">{m.name}</span>
+                      <span className="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">{m.frequency}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">{m.content}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 服务成效目标 */}
+        {outcomes.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="px-5 pt-5 pb-3">
+              <h3 className="text-sm font-semibold text-slate-700">服务成效目标</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="bg-slate-50 border-y border-slate-100">
+                    <th className="text-left px-5 py-2.5 font-semibold text-slate-500">指标</th>
+                    <th className="text-left px-3 py-2.5 font-semibold text-slate-500">基线</th>
+                    <th className="text-center px-3 py-2.5 font-semibold text-slate-500">30天</th>
+                    <th className="text-center px-3 py-2.5 font-semibold text-slate-500">90天</th>
+                    <th className="text-center px-5 py-2.5 font-semibold text-slate-500">180天</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {outcomes.map((o, i) => (
+                    <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50">
+                      <td className="px-5 py-2.5 font-medium text-slate-700">{o.indicator}</td>
+                      <td className="px-3 py-2.5 text-slate-500">{o.baseline}</td>
+                      <td className="px-3 py-2.5 text-center text-slate-600">{o.day30}</td>
+                      <td className="px-3 py-2.5 text-center text-slate-600">{o.day90}</td>
+                      <td className="px-5 py-2.5 text-center text-slate-600">{o.day180}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const billingStatusClass = (status: InvoiceStatus) => {
   if (status === 'Paid') return 'bg-emerald-100 text-emerald-700';
