@@ -77,6 +77,14 @@ function fallRiskLevel(score?: number): string {
   return '低风险';
 }
 
+const staffAvatar: Record<string, string> = {
+  '林晓东': '/avatars/lin-xiaodong.png',
+  '姜珊': '/avatars/jiang-shan.png',
+  '周明': '/avatars/zhou-ming.png',
+  '陈雅文': '/avatars/chen-yawen.png',
+  '汤菊玲': '/avatars/tang-juling.png',
+};
+
 import { PATIENTS_FULL } from '../data/patients';
 
 export const PatientRecords: FC = () => {
@@ -167,11 +175,11 @@ export const PatientRecords: FC = () => {
                       {fallRiskLevel((p as any).fallRiskScore)}
                     </span>
                   </td>
-                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCaseManager || '—'}</td>
-                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNurse || '—'}</td>
-                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedRehabTherapist || '—'}</td>
-                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNutritionist || '—'}</td>
-                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCareWorker || '—'}</td>
+                  <td className="px-2 py-2.5">{cp?.assignedCaseManager ? <div className="flex items-center gap-1.5"><img src={staffAvatar[cp.assignedCaseManager]} className="w-5 h-5 rounded-full" /><span className="text-slate-600">{cp.assignedCaseManager}</span></div> : '—'}</td>
+                  <td className="px-2 py-2.5">{cp?.assignedNurse ? <div className="flex items-center gap-1.5"><img src={staffAvatar[cp.assignedNurse]} className="w-5 h-5 rounded-full" /><span className="text-slate-600">{cp.assignedNurse}</span></div> : '—'}</td>
+                  <td className="px-2 py-2.5">{cp?.assignedRehabTherapist ? <div className="flex items-center gap-1.5"><img src={staffAvatar[cp.assignedRehabTherapist]} className="w-5 h-5 rounded-full" /><span className="text-slate-600">{cp.assignedRehabTherapist}</span></div> : '—'}</td>
+                  <td className="px-2 py-2.5">{cp?.assignedNutritionist ? <div className="flex items-center gap-1.5"><img src={staffAvatar[cp.assignedNutritionist]} className="w-5 h-5 rounded-full" /><span className="text-slate-600">{cp.assignedNutritionist}</span></div> : '—'}</td>
+                  <td className="px-2 py-2.5">{cp?.assignedCareWorker ? <div className="flex items-center gap-1.5"><img src={staffAvatar[cp.assignedCareWorker]} className="w-5 h-5 rounded-full" /><span className="text-slate-600">{cp.assignedCareWorker}</span></div> : '—'}</td>
                   <td className="px-2 py-2.5"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusC}`}>{p.status}</span></td>
                 </tr>
               );
