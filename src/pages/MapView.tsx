@@ -48,7 +48,7 @@ function newsBadgeStyle(tier: string, redScore: boolean) {
 
 /* ════════════════════════════════════════════ 组件 ════════════════════════════════════════════ */
 
-const MapView: FC<{ patients: PatientSummary[] }> = ({ patients }) => {
+const MapView: FC<{ patients: PatientSummary[]; onClose?: () => void }> = ({ patients, onClose }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<L.Map | null>(null);
   const featureGroup = useRef<L.FeatureGroup>(L.featureGroup());
@@ -181,6 +181,15 @@ const MapView: FC<{ patients: PatientSummary[] }> = ({ patients }) => {
   return createPortal(
     <div className="fixed inset-0 z-[9999] bg-white" style={{ top: 0, left: 0, right: 0, bottom: 0 }}>
       <div ref={mapRef} className="w-full h-full" />
+      {/* 关闭按钮 */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-3 left-3 z-[1001] bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200 shadow-md px-3 py-2 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          ← 返回
+        </button>
+      )}
       {/* 图例 */}
       <div className="absolute top-3 right-3 z-[1000] bg-white/95 backdrop-blur-sm rounded-xl border border-slate-200 shadow-md px-3 py-2.5 pointer-events-none">
         <p className="text-[10px] font-bold text-slate-700 mb-2 tracking-wide">照护员访视状态</p>

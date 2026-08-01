@@ -289,11 +289,7 @@ const DesktopCommandCenter: FC = () => {
   <div className="bg-warm-50 min-h-full">
     {view === 'map' ? (
       <div className="h-[calc(100vh-56px)] relative">
-      <div className="absolute top-4 left-4 z-[1000] flex items-center gap-1 bg-gold-100 rounded-xl p-1 border border-[#d2c4be]">
-        <button onClick={() => setView('patient')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Patient View</button>
-        <button onClick={() => setView('map')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${!isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Map View</button>
-      </div>
-        <MapView patients={patientsSummary} />
+        <MapView patients={patientsSummary} onClose={() => setView('patient')} />
       </div>
     ) : (
     <> 
