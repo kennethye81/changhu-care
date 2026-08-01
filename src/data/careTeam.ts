@@ -349,6 +349,65 @@ import { NEW_PATIENT_FAMILY, NEW_FAMILY_COMMS } from './newPatients/careTeamExtr
 Object.assign(PATIENT_FAMILY, NEW_PATIENT_FAMILY);
 Object.assign(FAMILY_COMMS, NEW_FAMILY_COMMS);
 
+// ── 大陆团队数据 ──
+export const CN_CARE_TEAM: Record<string, TeamMember> = {
+  '姜珊': {
+    id: 'CN_N001', name: '姜珊', role: '护士经理',
+    gender: '女', age: 35, yearsExperience: 12,
+    specialty: '老年护理 · 居家护理 · 压疮管理',
+    certifications: ['主管护师', '伤口造口专科护士', '养老护理员培训师'],
+    institution: '常州市金坛区护理站',
+    education: '护理学本科（南京医科大学）',
+    bio: '拥有12年老年护理和居家护理经验。擅长压疮预防与护理、跌倒风险评估、慢性病居家管理。负责制定和执行个性化护理计划。',
+    avatar: '姜',
+    registrationNo: 'CN3204-001',
+  },
+  '汤菊玲': {
+    id: 'CN_CW001', name: '汤菊玲', role: '护理员',
+    gender: '女', age: 48, yearsExperience: 8,
+    specialty: '生活照料 · 辅助进食 · 助行陪护',
+    certifications: ['养老护理员（中级）', '急救员证'],
+    institution: '常州市金坛区护理站',
+    education: '养老护理专业培训',
+    bio: '8年居家照护经验。负责日常生活照料，包括助餐、助浴、助行、用药提醒等。',
+    avatar: '汤',
+    registrationNo: 'CN3204-CW001',
+  },
+  '个案经理': {
+    id: 'CN_CM000', name: '个案经理', role: '个案经理（待分配）',
+    gender: '—', age: 0, yearsExperience: 0,
+    specialty: '待分配',
+    certifications: [],
+    institution: '常州市金坛区护理站',
+    education: '待分配',
+    bio: '负责服务协调、进度跟踪、家属沟通及长护险结算对接。目前待分配。',
+    avatar: '待',
+    registrationNo: '',
+  },
+  '康复治疗师': {
+    id: 'CN_RT000', name: '康复治疗师', role: '康复治疗师（待分配）',
+    gender: '—', age: 0, yearsExperience: 0,
+    specialty: '待分配',
+    certifications: [],
+    institution: '常州市金坛区护理站',
+    education: '待分配',
+    bio: '负责被动关节活动、肌力训练、床上活动能力训练及辅助器具适配评估。目前待分配。',
+    avatar: '待',
+    registrationNo: '',
+  },
+  '营养师': {
+    id: 'CN_NT000', name: '营养师', role: '营养师（待分配）',
+    gender: '—', age: 0, yearsExperience: 0,
+    specialty: '待分配',
+    certifications: [],
+    institution: '常州市金坛区护理站',
+    education: '待分配',
+    bio: '负责营养评估、膳食指导、蛋白补充方案制定及吞咽功能评估。目前待分配。',
+    avatar: '待',
+    registrationNo: '',
+  },
+};
+
 export function getPatientFamily(patientId: number): FamilyContact[] {
   if (patientId === 7) return CHAN_TAI_MING_FAMILY_CONTACTS;
   const raw = PATIENT_FAMILY[patientId] || [];

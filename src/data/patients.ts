@@ -28,6 +28,7 @@ export interface PatientFull {
     assignedCaseManager: string;
     assignedCareWorker?: string;
     assignedRehabTherapist?: string;
+    assignedNutritionist?: string;
   };
   nursingRecords: { date: string; time: string; note: string; nurse: string; vitals?: string }[];
   medications: { drug: string; dose: string; route: string; frequency: string; purpose: string; startDate: string; status: 'Active' | 'Discontinued' }[];

@@ -1,7 +1,7 @@
 import { useState, type FC, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PATIENTS_FULL, type PatientFull } from '../data/patients';
-import { CARE_TEAM, getPatientFamily, FAMILY_COMMS, type FamilyContact } from '../data/careTeam';
+import { CARE_TEAM, getPatientFamily, FAMILY_COMMS, CN_CARE_TEAM, type FamilyContact } from '../data/careTeam';
 import { MEDICAL_HISTORY } from '../data/medicalHistory';
 import { DEFAULT_VITALS } from '../store/patientStore';
 import { usePatientStore } from '../store/patientStore';
@@ -23,7 +23,7 @@ import {
   Phone, Mail, Clock, Pill, Stethoscope, FlaskConical, Microscope, X, CheckCircle2, Sparkles,
 } from 'lucide-react';
 
-type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing' | 'value_added';
+type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing';
 
 const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: string }> }[] = [
   { key: 'smart_summary', label: '智能摘要', icon: Brain },
@@ -32,7 +32,6 @@ const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: str
   { key: 'vitals', label: '体征记录', icon: Heart },
   { key: 'care_info', label: '照护信息', icon: Users },
   { key: 'logs', label: '照护记录', icon: CalendarDays },
-  { key: 'value_added', label: '增值服务方案', icon: Sparkles },
   { key: 'iot', label: '设备串联', icon: Smartphone },
   { key: 'billing', label: '客户账单', icon: PhoneCall },
 ];
@@ -60,7 +59,13 @@ const PatientProfilePage: FC = () => {
     [plan, patient.id, today, carePlanStatus],
   );
   const cp = patient.carePlan;
-  const teamMembers = [cp.assignedDoctor, cp.assignedCaseManager, cp.assignedNurse, ...(cp.assignedRehabTherapist ? [cp.assignedRehabTherapist] : []), ...(cp.assignedCareWorker ? [cp.assignedCareWorker] : [])].map(name => name?.replace(/\s*\([^)]*\)\s*/g, '').trim()).filter(Boolean);
+  const teamMembers = [
+    cp.assignedCaseManager,
+    cp.assignedNurse,
+    cp.assignedRehabTherapist,
+    cp.assignedNutritionist,
+    cp.assignedCareWorker,
+  ].filter((name): name is string => !!name && name !== '—');
 
   return (<>
     <div className="flex flex-1 min-h-0 overflow-hidden">
@@ -87,7 +92,6 @@ const PatientProfilePage: FC = () => {
         {section==='care_info'&&<CareInfoSection patient={patient} teamMembers={teamMembers} todaySchedule={todaySchedule} today={today}/>}
         {section==='logs'&&<LogsSection patient={displayPatient} plan={plan}/>}
         {section==='iot'&&<IoTDevicesSection patient={displayPatient}/>}
-        {section==='value_added'&&<ValueAddedSection patient={patient}/>}
         {section==='billing'&&<BillingSection patientId={patient.id}/>}
       </main>
     </div>
@@ -345,27 +349,272 @@ const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: bool
     <div className={`rounded-xl p-4 ${alertTone === 'crit' ? 'bg-red-50 border border-red-200' : alertTone === 'warn' ? 'bg-amber-50 border border-amber-200' : 'bg-emerald-50 border border-emerald-200'}`}><div className="flex items-start gap-2"><AlertTriangle className={`w-4 h-4 mt-0.5 ${alertTone === 'crit' ? 'text-red-500' : alertTone === 'warn' ? 'text-amber-500' : 'text-emerald-500'}`}/><div className="text-xs"><p className="font-bold text-slate-700">AI临床提醒</p><p className="text-slate-600 mt-0.5">{clinicalAlertText}</p></div></div></div>
   </div>);}
 
-const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySchedule: any[]; today: string }> = ({ patient, teamMembers, todaySchedule, today }) => (
-  <div className="space-y-6">
-    <CareTeamSection patient={patient} teamMembers={teamMembers} />
-    <ServicesSection patient={patient} todaySchedule={todaySchedule} today={today} />
-  </div>
-);
+const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySchedule: any[]; today: string }> = ({ patient, teamMembers, todaySchedule, today }) => {
+  const plan = usePatientStore(s => s.carePlans[patient.id]);
+  const taskTimes = useCollaborationStore(s => s.eliteTaskTimes);
+  const { completed, total, progressPct, missed } = useMemo(
+    () => summarizeCarePlanProgress(todaySchedule),
+    [todaySchedule],
+  );
+  const [carePlanModal, setCarePlanModal] = useState(false);
 
-const CareTeamSection: FC<{ patient: PatientFull; teamMembers: string[] }> = ({ teamMembers }) => (
-  <div className="space-y-4"><ST title="Care Team" icon={Users}/>
-    <div className="grid grid-cols-2 gap-4">
-      {teamMembers.map((name,i)=>{const m=CARE_TEAM[name];if(!m)return null;
-        const isImg = m.avatar.startsWith('/');
-        return(<div key={i} className="glass-card rounded-xl border border-slate-200 p-4"><div className="flex items-start gap-3">{
-          isImg
-            ? <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 shadow-md"><img src={m.avatar} alt={m.name} className="w-full h-full object-cover" /></div>
-            : <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0 shadow-md">{m.avatar}</div>
-        }<div className="flex-1 min-w-0"><p className="text-sm font-bold text-slate-800">{m.name}</p><p className="text-[10px] text-teal-600 font-semibold">{m.role}{m.registrationNo ? <span className="ml-1 text-[9px] text-slate-400 font-mono">#{m.registrationNo}</span> : null}</p><p className="text-[10px] text-slate-400 mt-0.5">{m.gender}, {m.age} · {m.yearsExperience}yrs exp</p><p className="text-[10px] text-slate-500 mt-1"><strong>专科:</strong> {m.specialty}</p><p className="text-[10px] text-slate-500"><strong>机构:</strong> {m.institution}</p><p className="text-[10px] text-slate-500"><strong>健康教育:</strong> {m.education}</p><div className="flex flex-wrap gap-1 mt-2">{m.certifications.map((c,j)=>(<span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>))}</div><p className="text-[10px] text-slate-600 mt-2 leading-relaxed">{m.bio}</p></div></div></div>);
-      })}
+  const typeLabels: Record<string, string> = {
+    medication: '用药', monitoring: '监测', therapy: '康复',
+    nurse_visit: '护理', doctor_consult: '医生', care_worker: '照护', self_care: '自理',
+  };
+  const typeBadgeColors: Record<string, string> = {
+    medication: 'bg-amber-50 text-amber-700', nurse_visit: 'bg-teal-50 text-teal-700',
+    doctor_consult: 'bg-teal-100 text-teal-800', therapy: 'bg-purple-50 text-purple-700',
+    care_worker: 'bg-warm-100 text-warm-700', monitoring: 'bg-blue-50 text-blue-700',
+    self_care: 'bg-slate-50 text-slate-600',
+  };
+
+  return (
+    <div className="-mt-6">
+      <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
+        <ST title="照护信息" icon={Users} />
+      </div>
+      <div className="space-y-4">
+        {/* ━━━ 1. 护理团队 ━━━ */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+          <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-teal-500" /> 护理团队
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            {teamMembers.map((name, i) => {
+              const m = CN_CARE_TEAM[name];
+              if (!m) return null;
+              const isPlaceholder = m.yearsExperience === 0;
+              return (
+                <div key={i} className={`rounded-xl border p-4 ${isPlaceholder ? 'border-dashed border-slate-300 bg-slate-50/50' : 'border-slate-200 bg-white shadow-sm'}`}>
+                  <div className="flex items-start gap-3">
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-base font-bold flex-shrink-0 shadow-sm ${isPlaceholder ? 'bg-slate-200 text-slate-400' : 'bg-gradient-to-br from-teal-500 to-teal-700 text-white'}`}>
+                      {m.avatar}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-xs font-bold ${isPlaceholder ? 'text-slate-400' : 'text-slate-800'}`}>{m.name}</p>
+                      <p className={`text-[10px] font-medium ${isPlaceholder ? 'text-slate-300' : 'text-teal-600'}`}>
+                        {m.role}{m.registrationNo ? <span className="ml-1 text-[9px] text-slate-400">#{m.registrationNo}</span> : null}
+                      </p>
+                      {!isPlaceholder && (
+                        <>
+                          <p className="text-[10px] text-slate-400 mt-0.5">{m.specialty}</p>
+                          <p className="text-[10px] text-slate-500 mt-0.5">{m.institution}</p>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {m.certifications.map((c, j) => (
+                              <span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ━━━ 2. 护理计划 + 3. 用药概览 (并排) ━━━ */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* 护理计划 */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-teal-500" /> 护理计划
+              </h3>
+              <button onClick={() => setCarePlanModal(true)} className="text-[10px] font-medium text-teal-600 hover:text-teal-800">查看完整计划 →</button>
+            </div>
+            <div className="border-b border-slate-100 grid grid-cols-[72px_1fr_80px_64px] gap-2 px-5 pb-2">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">角色</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">服务内容</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">频次</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase text-right">时长</span>
+            </div>
+            <div className="max-h-52 overflow-y-auto">
+              {[
+                { role: '个案经理', service: '服务协调、进度跟踪、家属沟通、长护险对接', freq: '持续', duration: '按需', color: 'border-l-teal-600' },
+                { role: '护理员', service: '助餐、助浴、助行、用药提醒、翻身、压疮护理', freq: patient.carePlan.serviceFrequency, duration: patient.carePlan.visitDuration, color: 'border-l-amber-500' },
+                { role: '护士', service: '生命体征监测、压疮评估、用药依从性检查、健康教育', freq: '每周1次', duration: '45 min', color: 'border-l-teal-500' },
+                ...(cp.assignedRehabTherapist && cp.assignedRehabTherapist !== '—' ? [{ role: '康复师', service: '被动关节活动、肌力训练、助行器训练', freq: '2次/周', duration: '45 min', color: 'border-l-purple-500' }] : []),
+                ...(cp.assignedNutritionist && cp.assignedNutritionist !== '—' ? [{ role: '营养师', service: '营养评估、膳食指导、蛋白补充方案', freq: '每月1次', duration: '30 min', color: 'border-l-emerald-500' }] : []),
+              ].map((r, i) => (
+                <div key={i} className={`grid grid-cols-[72px_1fr_80px_64px] gap-2 px-5 py-2.5 text-xs items-start border-l-2 ${r.color} bg-slate-50/50 border-b border-slate-100`}>
+                  <span className="font-semibold text-slate-700 text-[11px]">{r.role}</span>
+                  <span className="text-slate-600 text-[11px] leading-relaxed">{r.service}</span>
+                  <span className="text-[10px] text-slate-500">{r.freq}</span>
+                  <span className="text-[10px] text-slate-400 text-right">{r.duration}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 用药概览 */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="px-5 pt-5 pb-3">
+              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-teal-500" /> 用药概览
+              </h3>
+            </div>
+            <div className="border-b border-slate-100 grid grid-cols-[1fr_72px_72px_56px] gap-2 px-5 pb-2">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">药品</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">剂量</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">频率</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase text-right">库存</span>
+            </div>
+            <div className="max-h-52 overflow-y-auto">
+              {patient.medications.map((med, i) => {
+                const todayObj = new Date(today);
+                const start = new Date(med.startDate);
+                const daysSince = Math.max(0, Math.floor((todayObj.getTime() - start.getTime()) / 86400000));
+                const stockDays = med.status === 'Active' ? Math.max(1, (daysSince > 90 ? 30 : 30) - (daysSince % 30)) : 0;
+                const totalSupply = daysSince > 90 ? 30 : 30;
+                const stockLow = stockDays <= 7;
+                const stockWarn = !stockLow && stockDays <= 14;
+                const stockColor = stockLow ? 'text-red-600' : stockWarn ? 'text-amber-600' : 'text-emerald-600';
+                return (
+                  <div key={i} className="grid grid-cols-[1fr_72px_72px_56px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-100 bg-slate-50/50">
+                    <span className="font-semibold text-slate-700 text-[11px]">{med.drug}</span>
+                    <span className="text-slate-500 text-[10px]">{med.dose}·{med.route}</span>
+                    <span className="text-slate-500 text-[10px]">{med.frequency}</span>
+                    <span className={`font-semibold text-[10px] text-right ${stockColor} ${stockLow ? 'animate-pulse' : ''}`}>{stockDays}/{totalSupply}d</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ━━━ 4. 增值服务 ━━━ */}
+        {patient.serviceModules && patient.serviceModules.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-teal-500" /> 增值服务 · 标准版
+            </h3>
+            <div className="grid grid-cols-2 gap-2">
+              {patient.serviceModules.map(m => {
+                const iconMap: Record<string, string> = { M1: '🛏️', M2: '🦯', M3: '💪', M4: '💊', M5: '🥗', M6: '🩺', M7: '📊' };
+                return (
+                  <div key={m.id} className="bg-slate-50/50 border border-slate-200 rounded-xl px-3 py-2.5">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-sm">{iconMap[m.id] || '📋'}</span>
+                      <span className="text-[11px] font-bold text-slate-800">{m.name}</span>
+                      <span className="text-[9px] text-slate-400 bg-slate-100 px-1 py-0.5 rounded ml-auto">{m.frequency}</span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 leading-relaxed">{m.content}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ━━━ 5. 当日完成情况 ━━━ */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-teal-500" /> 当日完成情况
+            </h3>
+            <div className="flex items-center gap-3 text-[10px] text-slate-400">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />已完成 {completed}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" />待处理 {total - completed - missed}</span>
+              {missed > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />逾期 {missed}</span>}
+            </div>
+          </div>
+          <div className="border-b border-slate-100 grid grid-cols-[56px_1fr_1.2fr_1fr_80px] gap-2 px-5 pb-2">
+            <span className="text-[10px] font-semibold text-slate-400 uppercase">时间</span>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase">照护项</span>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase">详情</span>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase">实际</span>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase text-center">状态</span>
+          </div>
+          <div className="max-h-72 overflow-y-auto">
+            {todaySchedule.length > 0 ? todaySchedule.map((act: any, i: number) => {
+              const taskKey = eliteTaskKey(patient.id, act.time, act.activity);
+              const times = taskTimes[taskKey] || {};
+              const hasActual = !!times.clockIn;
+              const dotColor = act.status === 'completed' ? 'bg-emerald-500 animate-pulse' : act.status === 'in_progress' ? 'bg-teal-500 animate-pulse' : act.status === 'missed' ? 'bg-red-500 animate-pulse' : 'bg-amber-400';
+              const statusText = act.status === 'completed' ? '完成' : act.status === 'in_progress' ? '进行中' : act.status === 'missed' ? '逾期' : '待处理';
+              return (
+                <div key={i} className="grid grid-cols-[56px_1fr_1.2fr_1fr_80px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-slate-50/50">
+                  <span className="text-[11px] font-bold text-slate-400">{act.time}</span>
+                  <div className="flex items-start gap-1.5 min-w-0">
+                    <span className={`text-[8px] font-semibold px-1 py-0.5 rounded-full flex-shrink-0 mt-px ${typeBadgeColors[act.type] || 'bg-slate-100 text-slate-600'}`}>{typeLabels[act.type] || act.type}</span>
+                    <span className="text-slate-700 font-medium text-[11px] leading-relaxed">{act.activity}</span>
+                  </div>
+                  <span className="text-[11px] text-slate-500 leading-relaxed">{act.detail}</span>
+                  <span className="text-[10px] text-slate-500 font-mono">
+                    {hasActual ? `${times.clockIn}${times.clockOut ? `–${times.clockOut}` : '–...'}` : '—:—'}
+                  </span>
+                  <div className="flex items-center gap-1.5 justify-center">
+                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dotColor}`} />
+                    <span className="text-[10px] text-slate-500">{statusText}</span>
+                  </div>
+                </div>
+              );
+            }) : <p className="text-xs text-slate-400 px-5 py-4 text-center">今日暂无排程</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 护理计划完整弹窗 ── */}
+      {carePlanModal && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/30" onClick={() => setCarePlanModal(false)}>
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-h-[80vh] overflow-y-auto m-4 w-full max-w-lg" onClick={e => e.stopPropagation()}>
+            <div className="sticky top-0 bg-gradient-to-r from-teal-600 to-teal-800 px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl">
+              <h3 className="text-sm font-semibold text-white">完整护理计划</h3>
+              <button onClick={() => setCarePlanModal(false)} className="text-white/80 hover:text-white"><X className="w-4 h-4" /></button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div>
+                <p className="text-[10px] text-slate-400 font-medium mb-2">服务频率</p>
+                <p className="text-sm text-slate-700 font-medium">{patient.carePlan.serviceFrequency}</p>
+                <p className="text-xs text-slate-500 mt-0.5">每次 {patient.carePlan.visitDuration}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-medium mb-2">照护目标</p>
+                <ul className="space-y-1">
+                  {patient.carePlan.goals.map((g, i) => (
+                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 flex-shrink-0" />{g}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-medium mb-2">注意事项</p>
+                <ul className="space-y-1">
+                  {patient.carePlan.precautions.map((p, i) => (
+                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />{p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-medium mb-2">人员分配</p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {[
+                    { label: '个案经理', value: cp.assignedCaseManager },
+                    { label: '护士', value: cp.assignedNurse },
+                    { label: '护理员', value: cp.assignedCareWorker },
+                    { label: '康复治疗师', value: cp.assignedRehabTherapist },
+                    { label: '营养师', value: cp.assignedNutritionist },
+                  ].map((r, i) => (
+                    <div key={i} className="bg-slate-50 rounded-lg px-3 py-2">
+                      <span className="text-[10px] text-slate-400">{r.label}</span>
+                      <p className="text-slate-700 font-medium mt-0.5">{r.value || '未分配'}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const history = MEDICAL_HISTORY[patient.id];
@@ -601,312 +850,6 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
 
 
 
-const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: string }> = ({ patient, todaySchedule, today }) => {
-  const plan = usePatientStore(s => s.carePlans[patient.id]);
-  const taskTimes = useCollaborationStore(s => s.eliteTaskTimes);
-  const { completed, total, progressPct, missed } = useMemo(
-    () => summarizeCarePlanProgress(todaySchedule),
-    [todaySchedule],
-  );
-  const pendingCount = todaySchedule.filter(a => a.status === 'pending').length;
-  const [carePlanModal, setCarePlanModal] = useState(false);
-  const [medicationModal, setMedicationModal] = useState(false);
-  const startDate = plan?.startDate || '2026-06-16';
-  const endDate = plan?.endDate || '2026-06-29';
-  const typeLabels: Record<string, string> = {
-    medication: 'Med', monitoring: 'Monitor', therapy: 'Therapy',
-    nurse_visit: 'Nurse', doctor_consult: 'Doctor', care_worker: 'Care Wkr', self_care: 'Self',
-  };
-  const typeBadgeColors: Record<string, string> = {
-    medication: 'bg-gold-100 text-gold-800',
-    nurse_visit: 'bg-teal-50 text-teal-700',
-    doctor_consult: 'bg-teal-100 text-teal-800',
-    therapy: 'bg-emerald-50 text-emerald-800',
-    care_worker: 'bg-warm-200 text-warm-700',
-    monitoring: 'bg-warm-100 text-warm-700',
-    self_care: 'bg-warm-100 text-slate-600',
-  };
-
-  const sectionTitle = 'text-sm font-semibold text-warm-900 font-display flex items-center gap-2 flex-wrap';
-  const sectionLink = 'text-[10px] font-medium text-teal-600 hover:text-teal-800 hover:underline font-body';
-  const tableHead = 'text-[10px] font-semibold text-slate-500 uppercase tracking-wide font-display';
-  const modalOverlay = 'fixed inset-0 z-[500] flex items-center justify-center bg-teal-900/40';
-  const modalShell = 'bg-white rounded-lg border border-[#99E7FF] max-h-[85vh] overflow-y-auto m-4';
-  const modalHeader = 'sticky top-0 bg-gradient-to-r from-teal-800 to-teal-900 px-5 py-4 flex items-center justify-between z-10 rounded-t-lg border-b border-teal-700/30';
-  const modalTitle = 'text-sm font-semibold text-white font-display';
-  const modalLabel = 'label-md text-slate-500';
-  const modalBody = 'text-sm text-slate-700 leading-relaxed font-body';
-
-  // Compute total prescribed days for each medication from start date
-  const todayObj = new Date(today);
-  const getTotalSupply = (startDate: string, remaining: number): number => {
-    const start = new Date(startDate);
-    const daysSince = Math.max(0, Math.floor((todayObj.getTime() - start.getTime()) / 86400000));
-    // Chronic meds started > 90 days ago: assume current refill cycle
-    if (daysSince > 90) return Math.max(remaining, 30);
-    return remaining + daysSince;
-  };
-
-  return (
-    <div className="flex flex-col h-full min-h-0">
-      {/* Sticky overall title */}
-      <div className="flex-shrink-0 sticky top-0 z-10 bg-warm-50 pb-3 -mx-6 px-6">
-        <ST title="照护信息" icon={CalendarDays} />
-      </div>
-
-      <div className="flex-1 space-y-4 overflow-y-auto min-h-0 pr-1">
-
-      {/* TOP ROW: Care Plan Summary + Medication Overview side-by-side */}
-      <div className="grid grid-cols-2 gap-4">
-
-      {/* ──────── Care Plan Summary ──────── */}
-      <div className="glass-card rounded-lg border border-slate-200 overflow-hidden flex flex-col">
-        <div className="flex-shrink-0 sticky top-0 z-[5] bg-white">
-          <h3 className={`${sectionTitle} px-4 pt-4 pb-2`}>
-            <ClipboardList className="w-4 h-4 text-teal-600 flex-shrink-0" /> Care Plan Summary
-            <button onClick={() => setCarePlanModal(true)} className={sectionLink}>View full Care Plan →</button>
-            <span className="inline-flex items-center gap-1 text-[10px] ml-auto font-body">
-              <span className="bg-gold-100 text-gold-800 px-1.5 py-0.5 rounded-full font-semibold whitespace-nowrap">{startDate}</span>
-              <span className="text-slate-300">→</span>
-              <span className="bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded-full font-semibold whitespace-nowrap">{endDate}</span>
-              <span className="text-slate-400 whitespace-nowrap ml-0.5">14-day</span>
-            </span>
-          </h3>
-          <div className={`grid grid-cols-[80px_1fr_90px_80px] gap-2 px-4 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span className="text-left">角色</span>
-            <span className="text-left">服务</span>
-            <span className="text-left">频率</span>
-            <span className="text-right">时长</span>
-          </div>
-        </div>
-        <div className="max-h-64 overflow-y-auto">
-          {[
-            { role: 'Physician', service: 'Remote ward rounds, clinical assessment, medication management, risk intervention', freq: '1-2x/wk', duration: '30 min', color: 'border-l-teal-800' },
-            { role: 'Case Mgr', service: 'Patient onboarding, service coordination, progress tracking, family liaison', freq: 'Ongoing', duration: 'As needed', color: 'border-l-gold-600' },
-            { role: 'Nurse', service: 'Home visits: vital assessment, medication compliance, wound care, education', freq: patient.carePlan.serviceFrequency, duration: patient.carePlan.visitDuration, color: 'border-l-teal-600' },
-            ...(patient.carePlan.assignedCareWorker ? [{ role: 'Care Wkr', service: 'Meal preparation, medication prompting, light housekeeping, companionship', freq: '2-3x/wk', duration: '45 min', color: 'border-l-warm-600' }] : []),
-            ...(patient.carePlan.assignedRehabTherapist ? [{ role: 'Rehab', service: 'Supervised exercise, gait training, functional mobility, equipment assessment', freq: '2x/wk', duration: '45 min', color: 'border-l-teal-700' }] : []),
-          ].map((r, i) => (
-            <div key={i} className={`grid grid-cols-[80px_1fr_90px_80px] gap-2 px-4 py-2.5 text-xs items-start min-h-[48px] border-l-2 ${r.color} bg-warm-50/50 border-b border-slate-100 hover:bg-warm-100 transition-colors font-body`}>
-              <span className="font-semibold text-slate-700 whitespace-nowrap text-[11px] font-display">{r.role}</span>
-              <span className="text-slate-600 text-[11px] leading-relaxed">{r.service}</span>
-              <span className="text-[10px] text-slate-500 leading-relaxed text-left">{r.freq}</span>
-              <span className="text-[10px] text-slate-400 whitespace-nowrap text-right">{r.duration}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ──────── Medication Overview ──────── */}
-      <div className="glass-card rounded-lg border border-slate-200 overflow-hidden flex flex-col">
-        <div className="flex-shrink-0 sticky top-0 z-[5] bg-white">
-          <h3 className={`${sectionTitle} px-4 pt-4 pb-2`}>
-            <Pill className="w-4 h-4 text-teal-600" /> Medication Summary
-            <button onClick={() => setMedicationModal(true)} className={`ml-auto ${sectionLink}`}>View full Medication Info →</button>
-          </h3>
-          <div className={`grid grid-cols-[1fr_100px_100px_76px] gap-2 px-4 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span>药品</span>
-            <span>剂量</span>
-            <span>频率</span>
-            <span className="text-right">库存</span>
-          </div>
-        </div>
-        <div className="max-h-64 overflow-y-auto">
-          {patient.medications.map((med, i) => {
-            const stockDays = med.status === 'Active' ? Math.floor(Math.random() * 25) + 5 : 0;
-            const totalSupply = getTotalSupply(med.startDate, stockDays);
-            const stockLow = stockDays <= 7;
-            const stockWarn = !stockLow && stockDays <= 14;
-            const stockColor = stockLow ? 'text-red-600' : stockWarn ? 'text-amber-600' : 'text-emerald-600';
-            return (
-              <div key={i} className="grid grid-cols-[1fr_100px_100px_76px] gap-2 px-4 py-2.5 text-xs items-start min-h-[48px] border-l-2 border-l-teal-300 bg-warm-50/50 border-b border-slate-100 hover:bg-warm-100 transition-colors font-body">
-                <span className="font-semibold text-slate-700 text-[11px] leading-relaxed">{med.drug}</span>
-                <span className="text-slate-500 text-[10px] leading-relaxed">{med.dose} · {med.route}</span>
-                <span className="text-slate-500 text-[10px] leading-relaxed">{med.frequency}</span>
-                <span className={`font-semibold whitespace-nowrap text-[10px] text-right ${stockColor} ${stockLow ? 'alert-blink' : ''}`}>{stockDays}/{totalSupply}d</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      </div>{/* end top row */}
-
-      {/* ──────── BOTTOM: Today's Schedule ──────── */}
-      <div className="glass-card rounded-lg border border-slate-200 overflow-hidden flex flex-col">
-        <div className="flex-shrink-0 sticky top-0 z-[5] bg-white">
-          <h3 className={`${sectionTitle} px-5 pt-4 pb-2`}>
-            <Clock className="w-4 h-4 text-teal-600" /> Today's Schedule
-          </h3>
-          <div className={`grid grid-cols-[64px_0.9fr_1.2fr_0.9fr_70px] gap-2.5 px-5 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span>时间</span>
-            <span>照护项</span>
-            <span>详情</span>
-            <span>实际</span>
-            <span className="text-right">状态</span>
-          </div>
-        </div>
-        <div className="max-h-80 overflow-y-auto">
-          {todaySchedule.length > 0 ? (
-            todaySchedule.map((act: any, i: number) => {
-              const displayStatus = act.status;
-              const taskKey = eliteTaskKey(patient.id, act.time, act.activity);
-              const times = taskTimes[taskKey] || {};
-              const schedParts = act.time.split(':');
-              const schedMin = parseInt(schedParts[0]) * 60 + parseInt(schedParts[1]);
-              let lateMinutes = 0;
-              if (times.clockIn) {
-                const inParts = times.clockIn.split(':');
-                lateMinutes = Math.max(0, parseInt(inParts[0]) * 60 + parseInt(inParts[1]) - schedMin);
-              }
-              const isLate = lateMinutes >= 5;
-              const hasActual = !!times.clockIn;
-
-              const statusColor = displayStatus === 'completed' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : displayStatus === 'in_progress' ? 'bg-gold-100 text-gold-800 border-[#99E7FF]' : displayStatus === 'missed' ? 'bg-red-50 text-red-800 border-red-200' : 'bg-amber-50 text-amber-800 border-amber-200';
-              const statusDot = displayStatus === 'completed' ? 'bg-emerald-600' : displayStatus === 'in_progress' ? 'bg-teal-600 animate-pulse' : displayStatus === 'missed' ? 'bg-red-600' : 'bg-amber-500';
-              const statusLabel = displayStatus === 'completed' ? 'Done' : displayStatus === 'in_progress' ? 'Active' : displayStatus === 'missed' ? 'Missed' : 'Due';
-
-              return (
-              <div key={i} className="grid grid-cols-[64px_0.9fr_1.2fr_0.9fr_70px] gap-2.5 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-warm-100 transition-colors">
-                <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap pt-px">{act.time}</span>
-                <div className="flex items-start gap-2 min-w-0">
-                  <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex-shrink-0 mt-px ${typeBadgeColors[act.type] || 'bg-warm-100 text-slate-600'}`}>{typeLabels[act.type] || act.type}</span>
-                  <span className="text-slate-700 font-medium text-[11px] leading-relaxed">{act.activity}</span>
-                </div>
-                <span className="text-[11px] text-slate-500 leading-relaxed">{act.detail}</span>
-                <span className="text-[10px] text-slate-500 whitespace-nowrap font-mono pt-px">
-                  {hasActual
-                    ? `${times.clockIn}${times.clockOut ? `–${times.clockOut}` : '–...'}`
-                    : '—:—'}
-                </span>
-                <div className="flex items-center gap-1 justify-end">
-                  <span className={`inline-flex items-center gap-1 text-[9px] font-semibold px-2 py-1 rounded-full border whitespace-nowrap ${statusColor}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${statusDot}`} />
-                    {statusLabel}
-                  </span>
-                  {isLate && hasActual && (
-                    <span className="text-[9px] font-extrabold text-red-600 bg-red-100 px-1 py-0.5 rounded alert-blink whitespace-nowrap">+{lateMinutes}m</span>
-                  )}
-                </div>
-              </div>
-              );
-            })
-          ) : <p className="text-xs text-slate-400 px-5 py-4">今日暂无排程。</p>}
-        </div>
-
-        {/* AI Service Evaluation */}
-        <div className="flex-shrink-0 border-t border-[#99E7FF] bg-warm-100 px-5 py-3">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-teal-800 rounded flex items-center justify-center flex-shrink-0">
-              <Brain className="w-4 h-4 text-white" />
-            </div>
-            <div className="flex-1 min-w-0 space-y-1.5">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[11px] font-semibold text-teal-800 font-display">AI服务评估</span>
-                <span className="text-[10px] bg-gold-100 text-gold-800 px-1.5 py-0.5 rounded-full font-semibold">实时</span>
-              </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] font-body">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">依从率:</span>
-                  <span className="font-semibold text-emerald-700">{progressPct}%</span>
-                  <span className="w-16 h-1.5 bg-warm-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-600 rounded-full" style={{ width: `${progressPct}%` }} />
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">已完成:</span>
-                  <span className="font-semibold text-teal-700">{completed}/{total}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">待完成:</span>
-                  <span className="font-semibold text-amber-700">{pendingCount}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">已错过:</span>
-                  <span className="font-semibold text-red-700">{missed}</span>
-                </div>
-              </div>
-              <div className="flex items-start gap-2 flex-wrap">
-                <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${missed > 0 || pendingCount > 3 ? 'bg-red-100 text-red-700 alert-blink' : pendingCount > 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
-                  <AlertTriangle className="w-3 h-3" />
-                  {missed > 0
-                    ? `${missed} missed task${missed > 1 ? 's' : ''}`
-                    : pendingCount > 3
-                      ? `${pendingCount} tasks still due`
-                      : pendingCount > 0
-                        ? 'On track with minor items pending'
-                        : 'All tasks completed for today'}
-                </span>
-                <span className="text-[10px] text-slate-500">· Live sync from Elite clock-in/out across tabs</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      </div>
-
-      {/* ─── Assessment Modal ─── */}
-
-      {/* ─── Care Plan Modal ─── */}
-      {carePlanModal && (
-        <div className={modalOverlay} onClick={() => setCarePlanModal(false)}>
-          <div className={`${modalShell} w-[640px]`} onClick={e => e.stopPropagation()}>
-            <div className={modalHeader}>
-              <div className="flex items-center gap-2"><CalendarDays className="w-5 h-5 text-gold-200" /><span className={modalTitle}>Full Care Plan — {plan?.patientName || patient.name}</span></div>
-              <button onClick={() => setCarePlanModal(false)} className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"><X className="w-3.5 h-3.5 text-white" /></button>
-            </div>
-            <div className="p-5 space-y-3 font-body">
-              {plan && Object.entries(plan.schedule).sort().map(([date, acts]) => (
-                <div key={date} className="bg-warm-50 rounded-lg border border-[#99E7FF] overflow-hidden">
-                  <div className="bg-warm-100 px-4 py-2 flex items-center justify-between border-b border-[#99E7FF]"><span className="text-xs font-semibold text-slate-700 font-display">{new Date(date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</span><span className="text-[10px] text-slate-500">{acts.length} activities</span></div>
-                  <div className="divide-y divide-[#ede7e5]">
-                    {acts.map((act: any, j: number) => (
-                      <div key={j} className="px-4 py-2 flex items-center gap-3 text-sm">
-                        <span className="font-semibold text-teal-700 w-10 flex-shrink-0 font-display">{act.time}</span>
-                        <span className="text-slate-700 flex-1">{act.activity}</span>
-                        <span className="text-xs text-slate-500 max-w-[45%] truncate">{act.detail}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ─── Medication Modal ─── */}
-      {medicationModal && (
-        <div className={modalOverlay} onClick={() => setMedicationModal(false)}>
-          <div className={`${modalShell} w-[580px]`} onClick={e => e.stopPropagation()}>
-            <div className={modalHeader}>
-              <div className="flex items-center gap-2"><Pill className="w-5 h-5 text-gold-200" /><span className={modalTitle}>Full Medication Information — {patient.name}</span></div>
-              <button onClick={() => setMedicationModal(false)} className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"><X className="w-3.5 h-3.5 text-white" /></button>
-            </div>
-            <div className="p-5 font-body">
-              <div className="rounded-lg border border-[#99E7FF] overflow-hidden bg-white">
-                <div className={`grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2 bg-warm-100 ${tableHead} border-b border-[#99E7FF]`}>
-                  <span>药品</span><span>剂量</span><span>频率</span><span>用途</span><span className="text-right">状态</span>
-                </div>
-                {patient.medications.map((med,i) => (
-                  <div key={i} className="grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2.5 text-sm items-center border-b border-[#ede7e5] last:border-0 hover:bg-warm-50">
-                    <span className="font-semibold text-slate-800 font-display">{med.drug}</span>
-                    <span className="text-slate-600">{med.dose} · {med.route}</span>
-                    <span className="text-slate-600">{med.frequency}</span>
-                    <span className="text-slate-500">{med.purpose}</span>
-                    <span className={`text-right font-semibold ${med.status==='Active'?'text-emerald-700':'text-red-600'}`}>{med.status}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-    </div>
-  );
-};
 
 const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan }) => {
   const alertActive = usePatientStore(s => s.alertActive);
@@ -1103,94 +1046,6 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
     )})}
   </div>
 );};
-
-{/* ══════════════════════════════════════════════════
-    增值服务方案
-   ══════════════════════════════════════════════════ */}
-const ValueAddedSection: FC<{ patient: PatientFull }> = ({ patient }) => {
-  const modules = patient.serviceModules || [];
-  const outcomes = patient.outcomeTargets || [];
-  const tierLabel = patient.serviceTier === 'premium' ? '尊享版' : patient.serviceTier === 'standard' ? '标准版' : '基础版';
-  const tierColor = patient.serviceTier === 'premium' ? 'bg-amber-100 text-amber-700' : 'bg-teal-100 text-teal-700';
-
-  const moduleIcons: Record<string, string> = {
-    M1: '🛏️', M2: '🦯', M3: '💪', M4: '💊', M5: '🥗', M6: '🩺', M7: '📊',
-  };
-  const moduleColors: Record<string, string> = {
-    M1: 'border-l-rose-400 bg-rose-50/30', M2: 'border-l-red-400 bg-red-50/30',
-    M3: 'border-l-purple-400 bg-purple-50/30', M4: 'border-l-amber-400 bg-amber-50/30',
-    M5: 'border-l-emerald-400 bg-emerald-50/30', M6: 'border-l-teal-400 bg-teal-50/30',
-    M7: 'border-l-slate-400 bg-slate-50/30',
-  };
-
-  return (
-    <div className="-mt-6">
-      <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
-        <ST title="增值服务方案" icon={Sparkles} />
-      </div>
-
-      <div className="space-y-4">
-        {/* 服务等级 */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-slate-700">当前服务包</h3>
-            <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold ${tierColor}`}>{tierLabel}</span>
-          </div>
-          {/* 模块卡片 */}
-          <div className="space-y-2">
-            {modules.map(m => (
-              <div key={m.id} className={`${moduleColors[m.id] || 'border-l-teal-400 bg-teal-50/30'} border border-slate-200 rounded-xl px-4 py-3`}>
-                <div className="flex items-start gap-3">
-                  <span className="text-lg flex-shrink-0 leading-none mt-0.5">{moduleIcons[m.id] || '📋'}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-xs font-bold text-slate-800">{m.name}</span>
-                      <span className="text-[9px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">{m.frequency}</span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">{m.content}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 服务成效目标 */}
-        {outcomes.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="px-5 pt-5 pb-3">
-              <h3 className="text-sm font-semibold text-slate-700">服务成效目标</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="bg-slate-50 border-y border-slate-100">
-                    <th className="text-left px-5 py-2.5 font-semibold text-slate-500">指标</th>
-                    <th className="text-left px-3 py-2.5 font-semibold text-slate-500">基线</th>
-                    <th className="text-center px-3 py-2.5 font-semibold text-slate-500">30天</th>
-                    <th className="text-center px-3 py-2.5 font-semibold text-slate-500">90天</th>
-                    <th className="text-center px-5 py-2.5 font-semibold text-slate-500">180天</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {outcomes.map((o, i) => (
-                    <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50">
-                      <td className="px-5 py-2.5 font-medium text-slate-700">{o.indicator}</td>
-                      <td className="px-3 py-2.5 text-slate-500">{o.baseline}</td>
-                      <td className="px-3 py-2.5 text-center text-slate-600">{o.day30}</td>
-                      <td className="px-3 py-2.5 text-center text-slate-600">{o.day90}</td>
-                      <td className="px-5 py-2.5 text-center text-slate-600">{o.day180}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 const billingStatusClass = (status: InvoiceStatus) => {
   if (status === 'Paid') return 'bg-emerald-100 text-emerald-700';

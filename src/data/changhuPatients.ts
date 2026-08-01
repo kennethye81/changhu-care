@@ -93,7 +93,7 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
 
     wardRounds: [],
     carePlan: {
-      serviceFrequency: '护理员日常照护（每日） + 护士定期访视（月度）',
+      serviceFrequency: '每周上门4次（隔日一次）',
       visitDuration: '60-90分钟/次',
       goals: [
         '零跌倒事件',
@@ -108,11 +108,12 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
         '助行器+地面防滑+夜间照明',
         '保持身体清洁，适当按摩',
       ],
-      assignedDoctor: '社区医生（定期随访）',
-      assignedNurse: '姜珊（护士经理）',
-      assignedCaseManager: '个案经理（待分配）',
+      assignedDoctor: '—',
+      assignedNurse: '姜珊',
+      assignedCaseManager: '个案经理',
       assignedCareWorker: '汤菊玲',
-      assignedRehabTherapist: '—',
+      assignedRehabTherapist: '康复治疗师',
+      assignedNutritionist: '营养师',
     },
 
     nursingRecords: [
