@@ -30,7 +30,6 @@ import { computeEliteWorkOrders } from '../utils/eliteWorkOrders';
 import { deriveEliteChatMeta, mapHubMessagesToEliteDisplay } from '../utils/eliteChat';
 import { getHubNurseSender } from '../utils/chatSenders';
 import { normalizeChatMessage, type ChatMessage } from '../data/chatMessages';
-import { buildPatientAiBrief } from '../utils/patientAiBrief';
 import { buildPatient1EliteVoiceBundle, formatPatient1EscalationChat, formatNewsHeadline } from '../utils/medicalHistoryNews';
 import { calculateNews, PATIENT1_ESCALATION_VITALS } from '../utils/newsScore';
 import AlertToggle from '../components/AlertToggle';
@@ -579,7 +578,7 @@ const Elites待入组Tab: FC = () => {
                 <PatientAvatar patientId={p.id} size={40} />
                 <div className="flex-1 min-w-0">
                   <span className="text-sm font-bold text-slate-800">{p.name}</span>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{p.gender === "M" ? "\u2642" : "\u2640"} {p.age} yrs \u00b7 {p.hospital}</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{p.gender === "M" ? "\u2642" : "\u2640"} {p.age} 岁 \u00b7 {p.hospital}</p>
                   <p className="text-[9px] font-semibold text-slate-600 mt-0.5 line-clamp-1">{p.diagnosis}</p>
                 </div>
               </div>
@@ -673,17 +672,7 @@ const ElitesPatientsTab: FC = () => {
     };
   };
 
-  const vitals = usePatientStore(s => s.vitals);
-
   // ── 每位患者的AI建议 (NEWS2-driven, all visible patients) ──
-  const patientAI = useMemo<Record<number, { summary: string; recommendations: string[] }>>(() => {
-    const map: Record<number, { summary: string; recommendations: string[] }> = {};
-    myPatients.forEach(p => {
-      map[p.id] = buildPatientAiBrief(p, vitals[p.id], alertActive && p.id === 1);
-    });
-    return map;
-  }, [myPatients, vitals, alertActive]);
-
   const handleClockIn = (taskKey: string) => {
     setEliteTaskClockIn(taskKey, getDemoClockTime());
     const parsed = parseEliteTaskKey(taskKey);
@@ -854,7 +843,6 @@ const ElitesPatientsTab: FC = () => {
           const isAttn = sev === 'medium' || p.newsRedScore;
           const patientTasks = getTasks(p.id);
           const diagTag = DIAGNOSIS_TAG[p.diagnosis] ?? 'bg-slate-50 text-slate-600 border-slate-200';
-          const ai = patientAI[p.id];
           return (
           <div key={p.id} onClick={() => setSelectedPid(p.id)} className={`bg-white rounded-xl border shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow ${isCrit ? 'border-red-400 critical-pulse' : isAlert ? 'border-amber-400 alert-pulse' : 'border-slate-100'}`}>
             <div className="p-4 pb-3">
@@ -863,10 +851,10 @@ const ElitesPatientsTab: FC = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-slate-800">{p.name}</span>
-                    {isAlert && <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${isCrit ? 'bg-red-100 text-red-600 alert-blink' : p.newsRedScore ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600'}`}>{isCrit ? 'NEWS HIGH' : p.newsRedScore ? 'RED SCORE' : isAttn ? 'NEWS MED' : 'ALERT'}</span>}
+                    {isAlert && <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${isCrit ? 'bg-red-100 text-red-600 alert-blink' : p.newsRedScore ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600'}`}>{isCrit ? '高危' : p.newsRedScore ? '红色预警' : isAttn ? '中危' : '预警'}</span>}
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="text-[10px] text-slate-400">{p.gender === 'M' ? '♂' : '♀'} {p.age} yrs</span>
+                    <span className="text-[10px] text-slate-400">{p.gender === 'M' ? '♂' : '♀'} {p.age} 岁</span>
                     <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${diagTag}`}>{p.diagnosis}</span>
                   </div>
                 </div>
@@ -879,17 +867,12 @@ const ElitesPatientsTab: FC = () => {
                   </span>
                 ))}
               </div>
-              <p className="text-[9px] text-slate-500 mt-2">NEWS {p.newsScore} · {p.newsMonitoringLabel}{p.newsRedScore ? ' · RED score' : ''}</p>
+              <p className="text-[9px] text-slate-500 mt-2">NEWS {p.newsScore} · {p.newsMonitoringLabel}{p.newsRedScore ? ' · 红色预警' : ''}</p>
             </div>
             {patientTasks.length > 0 && (
               <div className="border-t border-slate-100 px-4 py-2.5 bg-slate-50/50">
                 <div className="flex items-center gap-1.5 mb-1.5"><ClipboardList className="w-3 h-3 text-slate-400" /><span className="text-[10px] font-semibold text-slate-500">今日任务</span><span className="text-[9px] text-slate-400">({patientTasks.length})</span></div>
                 <div className="space-y-1">{patientTasks.slice(0, 3).map((t, j) => (<div key={j} className="flex items-center gap-2 text-[10px]"><span className="font-bold text-slate-400 w-10 flex-shrink-0">{t.time}</span><span className="text-slate-700 flex-1 truncate">{t.activity}</span><span className={`text-[8px] font-medium px-1 py-0.5 rounded ${typeColor[typeMap[t.type]] || 'bg-slate-100 text-slate-600'}`}>{typeMap[t.type]}</span></div>))}{patientTasks.length > 3 && <p className="text-[9px] text-slate-400 pl-12">+{patientTasks.length - 3} 项</p>}</div>
-              </div>
-            )}
-            {ai && (
-              <div className="border-t border-slate-100 bg-gradient-to-r from-[#CCF0FE] to-[#CCF0FE] px-4 py-3">
-                <div className="flex items-start gap-2 mb-2"><Brain className="w-3.5 h-3.5 text-[#006F80] flex-shrink-0 mt-0.5" /><div><p className="text-[9px] font-bold text-[#0B3550] mb-0.5">AI评估</p><p className="text-[9px] text-slate-600 leading-relaxed">{ai.summary}</p></div></div>
               </div>
             )}
           </div>
@@ -918,8 +901,8 @@ const ElitesPatientsTab: FC = () => {
           <ChevronRight className="w-4 h-4 text-slate-500 rotate-180" />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2"><span className="text-sm font-bold text-slate-800">{p.name}</span>{isAlert && <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${isCrit ? 'bg-red-100 text-red-600 alert-blink' : p.newsRedScore ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600'}`}>{isCrit ? 'NEWS HIGH' : p.newsRedScore ? 'RED SCORE' : 'NEWS MED'}</span>}</div>
-          <div className="flex items-center gap-1.5 mt-0.5"><span className="text-[10px] text-slate-400">{p.gender === 'M' ? '♂' : '♀'} {p.age} yrs</span><span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${diagTag}`}>{p.diagnosis}</span></div>
+          <div className="flex items-center gap-2"><span className="text-sm font-bold text-slate-800">{p.name}</span>{isAlert && <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-full ${isCrit ? 'bg-red-100 text-red-600 alert-blink' : p.newsRedScore ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600'}`}>{isCrit ? '高危' : p.newsRedScore ? '红色预警' : '中危'}</span>}</div>
+          <div className="flex items-center gap-1.5 mt-0.5"><span className="text-[10px] text-slate-400">{p.gender === 'M' ? '♂' : '♀'} {p.age} 岁</span><span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border ${diagTag}`}>{p.diagnosis}</span></div>
           <p className="text-[9px] text-slate-500 mt-1">NEWS {p.newsScore} · {p.newsMonitoringLabel}</p>
         </div>
       </div>
