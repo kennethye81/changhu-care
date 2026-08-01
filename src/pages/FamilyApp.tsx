@@ -905,25 +905,25 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const baseline = DEFAULT_VITALS[familyPatientId];
   const contributingFactors = useMemo(() => [
     {
-      vital: alertActive ? 'SpO₂下降' : 'SpO₂ 基线',
+      vital: alertActive ? '血氧异常' : '血氧基线',
       risk: alertActive
-        ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%${effectiveVitals.onSupplementalO2 ? '。O₂已启动。' : '，未用氧。'}GOLD 2024：COPD G2目标92–96%。${monitoringLabel}。`
-        : `SpO₂ ${effectiveVitals.spo2}%静息稳定。GOLD 2024：COPD G2预期基线(FEV₁ 55%)。O₂浓缩器待机。`,
+        ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%。脑出血术后需维持SpO₂≥95%。${monitoringLabel}。`
+        : `SpO₂ ${effectiveVitals.spo2}%静息稳定。右侧偏瘫卧床，呼吸功能正常。目标≥95%。`,
       icon: Activity,
     },
     {
-      vital: alertActive ? '感染指标' : '血压管理',
-      risk: buildFamilyInfectionFactor(alertActive, effectiveVitals, summary?.diagnosis ?? ''),
+      vital: alertActive ? '血栓预警' : '血压管理',
+      risk: `血压${effectiveVitals.bpSystolic}/${effectiveVitals.bpDiastolic} mmHg。脑出血术后目标<150/90。` + (alertActive ? `血压升高需立即复查。${monitoringLabel}` : '降压药每日一次确认服用。注意体位性低血压。'),
       icon: Droplets,
     },
     {
-      vital: alertActive ? '急性意识障碍' : '用药依从性',
+      vital: alertActive ? '意识变化' : 'DVT监测',
       risk: alertActive
-        ? `AMTS下降10→7 — 低氧性谵妄。${monitoringLabel}。照护者已接受意识评估培训。`
-        : '硝苯地平30mg QD确认服用。低盐低脂饮食依从良好。',
+        ? `意识状态变化需紧急评估。${monitoringLabel}。照护者已接受紧急联络培训。`
+        : '右下肢DVT（Caprini 7分高危）。避免挤压、抬高患肢、每日观察肿胀/皮温/颜色。',
       icon: Heart,
     },
-    { vital: '照护者支持', risk: '配偶为日常照护者。已培训压疮护理+防跌倒措施+血压监测+紧急联络流程。', icon: MessageCircle },
+    { vital: '照护者支持', risk: '儿子周明辉同住为主要照护者。已培训翻身护理+ROM操作+血压监测+血栓观察+紧急联络流程。', icon: MessageCircle },
   ], [alertActive, effectiveVitals, monitoringLabel, summary?.diagnosis]);
   const careLogs = usePatientStore(s => s.carePlans[familyPatientId]?.logs);
   const submitted = useCollaborationStore(s => s.submittedCareLogs[familyPatientId]) ?? EMPTY_SUBMITTED_LOGS;
@@ -949,7 +949,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       id: getDemoTimestamp(),
       from: 'family',
       senderName: 'Mrs. Chan (Chan Siu Ling)',
-      text: 'COPD Care Protocol activated — wife confirmed escalation steps, O₂ monitoring, and when to call the HaH team.',
+      text: '照护协议已激活 — 家属已确认紧急联络流程和血压监测要求。护士刘敏将立即上门评估。',
       time,
       patientId: familyPatientId,
     });
@@ -957,7 +957,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       date: DEMO_CARE_PLAN_DATE,
       time,
       type: 'Family Action',
-      detail: 'COPD Care Protocol activated by family caregiver.',
+      detail: '照护协议已激活 — 由家属周明辉确认。',
       author: 'Mrs. Chan',
       role: 'Family',
       status: 'completed',
@@ -1298,7 +1298,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <p className="text-slate-300">照护团队</p>
         </div>
       </div>
-      <p className="text-[9px] text-slate-400 text-center mt-3">End-to-end encrypted · HIPAA compliant · Data stored in HK</p>
+      <p className="text-[9px] text-slate-400 text-center mt-3">端到端加密 · 数据存储于中国大陆 · 仅供健康监测参考</p>
     </div>
   </div>
   );
