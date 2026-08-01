@@ -599,7 +599,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
                     {patient.barthel && (
                       <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
                         <p className="text-[10px] font-bold text-teal-700">Barthel ADL</p>
-                        <p className="text-xl font-extrabold text-teal-600">{patient.barthel.score}<span className="text-xs text-teal-400">/60</span></p>
+                        <p className="text-xl font-extrabold text-teal-600">{patient.barthel.score}<span className="text-xs text-teal-400">/{patient.barthel.items.reduce((s,i)=>s+i.maxScore,0)}</span></p>
                         <p className="text-[9px] text-teal-500">{patient.careLevel ?? '—'}依赖</p>
                       </div>
                     )}
@@ -671,6 +671,37 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
                             <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day30}</span></td>
                             <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day90}</span></td>
                             <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day180}</span></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
+              {patient.careType === '长护险' && patient.serviceModules && (
+                <>
+                  <div className="border-t border-slate-200 my-2" />
+                  <h3 className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">增值服务包 · {patient.serviceTier === 'standard' ? '标准' : patient.serviceTier === 'premium' ? '全面' : '基础+'}</h3>
+                  <div className="grid grid-cols-3 gap-2 mb-3 text-center">
+                    <div className="rounded-lg border border-slate-200 p-2"><div className="text-[10px] text-slate-400">基础+</div><div className="text-lg font-extrabold">¥5,000</div><div className="text-[9px] text-slate-400">/月</div></div>
+                    <div className="rounded-lg border-2 border-blue-500 bg-blue-50 p-2"><div className="text-[9px] bg-blue-500 text-white inline-block px-1.5 py-0.5 rounded mb-1">推荐</div><div className="text-[10px] text-slate-400">标准</div><div className="text-lg font-extrabold text-blue-600">¥7,000</div><div className="text-[9px] text-slate-400">/月</div></div>
+                    <div className="rounded-lg border border-slate-200 p-2"><div className="text-[10px] text-slate-400">全面</div><div className="text-lg font-extrabold">¥9,500</div><div className="text-[9px] text-slate-400">/月</div></div>
+                  </div>
+                  <div className="overflow-hidden rounded-lg border border-slate-200">
+                    <table className="w-full text-xs">
+                      <thead className="bg-blue-50">
+                        <tr>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-blue-700">模块</th>
+                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-blue-700">内容</th>
+                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-blue-700">节奏</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {patient.serviceModules.map((m, i) => (
+                          <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                            <td className="px-3 py-2 font-semibold text-blue-700">{m.id} {m.name}</td>
+                            <td className="px-3 py-2 text-slate-600">{m.content}</td>
+                            <td className="px-2 py-2 text-center text-[10px] text-slate-500">{m.frequency}</td>
                           </tr>
                         ))}
                       </tbody>
