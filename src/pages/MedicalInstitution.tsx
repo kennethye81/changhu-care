@@ -54,22 +54,22 @@ const MedicalInstitution: FC = () => {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-emerald-50 rounded-xl border border-slate-200 p-4">
           <p className="text-2xl font-extrabold text-emerald-600">{totalActive}</p>
-          <p className="text-xs text-slate-500 mt-1">Active Patients</p>
+          <p className="text-xs text-slate-500 mt-1">在管病人</p>
         </div>
         {totalPending > 0 ? (
           <div className="bg-amber-50 rounded-xl border border-amber-200 p-4" style={{ animation: 'pending-glow 2s ease-in-out infinite' }}>
             <p className="text-2xl font-extrabold text-amber-600">{totalPending}</p>
-            <p className="text-xs text-amber-500 mt-1">Pending Registration</p>
+            <p className="text-xs text-amber-500 mt-1">待登记</p>
           </div>
         ) : (
           <div className="bg-warm-50 rounded-xl border border-slate-200 p-4">
             <p className="text-2xl font-extrabold text-slate-600">{totalPending}</p>
-            <p className="text-xs text-slate-500 mt-1">Pending Registration</p>
+            <p className="text-xs text-slate-500 mt-1">待登记</p>
           </div>
         )}
         <div className="bg-warm-50 rounded-xl border border-slate-200 p-4">
           <p className="text-2xl font-extrabold text-slate-600">{totalCompleted}</p>
-          <p className="text-xs text-slate-500 mt-1">Completed</p>
+          <p className="text-xs text-slate-500 mt-1">已完成</p>
         </div>
       </div>
       <style>{`
@@ -113,16 +113,16 @@ const MedicalInstitution: FC = () => {
               <button onClick={() => setSelectedHospital(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button>
             </div>
             <div className="p-5 space-y-4">
-              <div className="text-xs"><span className="text-slate-400">Address</span><p className="font-semibold text-slate-800 mt-0.5">{selectedHospital.address}</p></div>
-              <div className="grid grid-cols-2 gap-3 text-xs"><div><span className="text-slate-400">Phone</span><p className="font-semibold text-slate-800">{selectedHospital.phone}</p></div><div><span className="text-slate-400">Email</span><p className="font-semibold text-slate-800">{selectedHospital.email}</p></div></div>
-              <div className="text-xs"><span className="text-slate-400">Liaison Officer</span><p className="font-semibold text-slate-800 mt-0.5">{selectedHospital.liaison}</p></div>
-              <div className="text-xs"><span className="text-slate-400">Departments</span><div className="flex flex-wrap gap-1 mt-1">{selectedHospital.departments.map(d => (<span key={d} className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">{d}</span>))}</div></div>
-              <div className="text-xs"><span className="text-slate-400">Partner Doctors</span><div className="mt-1 space-y-0.5">{selectedHospital.doctors.map(d => (<p key={d} className="text-slate-700">{'\u2022'} {d}</p>))}</div></div>
-              <div className="border-t pt-3"><span className="text-xs font-semibold text-slate-600 uppercase">Patient Statistics</span>
+              <div className="text-xs"><span className="text-slate-400">地址</span><p className="font-semibold text-slate-800 mt-0.5">{selectedHospital.address}</p></div>
+              <div className="grid grid-cols-2 gap-3 text-xs"><div><span className="text-slate-400">电话</span><p className="font-semibold text-slate-800">{selectedHospital.phone}</p></div><div><span className="text-slate-400">邮箱</span><p className="font-semibold text-slate-800">{selectedHospital.email}</p></div></div>
+              <div className="text-xs"><span className="text-slate-400">联络官</span><p className="font-semibold text-slate-800 mt-0.5">{selectedHospital.liaison}</p></div>
+              <div className="text-xs"><span className="text-slate-400">科室</span><div className="flex flex-wrap gap-1 mt-1">{selectedHospital.departments.map(d => (<span key={d} className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-medium">{d}</span>))}</div></div>
+              <div className="text-xs"><span className="text-slate-400">合作医生</span><div className="mt-1 space-y-0.5">{selectedHospital.doctors.map(d => (<p key={d} className="text-slate-700">{'\u2022'} {d}</p>))}</div></div>
+              <div className="border-t pt-3"><span className="text-xs font-semibold text-slate-600 uppercase">病人统计</span>
                 <div className="grid grid-cols-3 gap-2 mt-2 text-center">
-                  <div className="bg-emerald-50 rounded-lg p-3"><p className="text-lg font-extrabold text-emerald-600">{selectedHospital.activePatients}</p><p className="text-[10px] text-emerald-500">Active</p></div>
-                  <div className="bg-amber-50 rounded-lg p-3"><p className="text-lg font-extrabold text-amber-600">{selectedHospital.pendingPatients}</p><p className="text-[10px] text-amber-500">Pending</p></div>
-                  <div className="bg-warm-50 rounded-lg p-3"><p className="text-lg font-extrabold text-slate-600">{selectedHospital.completedPatients}</p><p className="text-[10px] text-slate-400">Completed</p></div>
+                  <div className="bg-emerald-50 rounded-lg p-3"><p className="text-lg font-extrabold text-emerald-600">{selectedHospital.activePatients}</p><p className="text-[10px] text-emerald-500">活跃</p></div>
+                  <div className="bg-amber-50 rounded-lg p-3"><p className="text-lg font-extrabold text-amber-600">{selectedHospital.pendingPatients}</p><p className="text-[10px] text-amber-500">待定</p></div>
+                  <div className="bg-warm-50 rounded-lg p-3"><p className="text-lg font-extrabold text-slate-600">{selectedHospital.completedPatients}</p><p className="text-[10px] text-slate-400">已完成</p></div>
                 </div>
               </div>
             </div>

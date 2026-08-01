@@ -193,7 +193,7 @@ const Messages: FC = () => {
           </>
         ) : (
           <div className="flex-1 flex items-center justify-center text-slate-400">
-            <div className="text-center"><MessageCircle className="w-12 h-12 mx-auto mb-3 text-slate-300" /><p className="text-sm">Select a patient to view messages</p><p className="text-xs mt-1">Messages sync between desktop and family mobile app</p></div>
+            <div className="text-center"><MessageCircle className="w-12 h-12 mx-auto mb-3 text-slate-300" /><p className="text-sm">选择一个病人查看消息</p><p className="text-xs mt-1">消息在桌面端与家属手机端实时同步</p></div>
           </div>
         )}
       </main>

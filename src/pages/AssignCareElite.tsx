@@ -63,7 +63,7 @@ const AssignCareElite: FC = () => {
 
       {/* Patient Summary Header */}
       <div className="bg-gradient-to-r from-orange-500 to-amber-600 rounded-2xl px-6 py-4 mb-6 shadow-md">
-        <h1 className="text-lg font-bold text-white">Assign Care Elite</h1>
+        <h1 className="text-lg font-bold text-white">分配照护人员</h1>
         <div className="flex items-center gap-3 mt-1.5 text-[11px] text-orange-100">
           <span className="font-semibold text-white">{p.name}</span>
           <span>{p.gender}, {p.age} yrs</span>

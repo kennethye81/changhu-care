@@ -134,9 +134,9 @@ const PendingRegistration: FC = () => {
           </div>
           <div className="relative overflow-hidden">
           <div className="p-6 grid grid-cols-2 gap-5 text-xs">
-            <div><span className="text-slate-400 block mb-0.5">Hospital</span><p className="font-semibold text-slate-800">{p.hospital}</p></div>
-            <div><span className="text-slate-400 block mb-0.5">Department</span><p className="font-semibold text-slate-800">{p.department}</p></div>
-            <div className="col-span-2"><span className="text-slate-400 block mb-0.5">Diagnosis</span><p className="font-semibold text-slate-800">{p.diagnosis}</p></div>
+            <div><span className="text-slate-400 block mb-0.5">医院</span><p className="font-semibold text-slate-800">{p.hospital}</p></div>
+            <div><span className="text-slate-400 block mb-0.5">科室</span><p className="font-semibold text-slate-800">{p.department}</p></div>
+            <div className="col-span-2"><span className="text-slate-400 block mb-0.5">诊断</span><p className="font-semibold text-slate-800">{p.diagnosis}</p></div>
             <div><span className="text-slate-400 block mb-0.5">主治医师</span><p className="font-semibold text-slate-800">{p.doctor}</p></div>
             <div><span className="text-slate-400 block mb-0.5">预计出院日期</span><p className="font-semibold text-slate-800">{p.dischargeDate}</p></div>
             <div className="col-span-2 border-t pt-4 mt-2">
@@ -212,34 +212,34 @@ const PendingRegistration: FC = () => {
                     {/* Card Body */}
                     <div className="px-4 py-3 space-y-2">
                       <div>
-                        <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Chief Complaint</span>
+                        <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">主诉</span>
                         <p className="text-[11px] text-slate-700 mt-0.5 leading-relaxed">{entry.chiefComplaint}</p>
                       </div>
                       <div>
-                        <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Diagnosis</span>
+                        <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">诊断</span>
                         <p className="text-[11px] text-slate-700 mt-0.5 leading-relaxed">{entry.diagnosis}</p>
                       </div>
                       {entry.labs && (
                         <div>
-                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Labs</span>
+                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">检验</span>
                           <p className="text-[10px] text-slate-600 mt-0.5 leading-relaxed">{entry.labs}</p>
                         </div>
                       )}
                       {entry.imaging && (
                         <div>
-                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Imaging</span>
+                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">影像</span>
                           <p className="text-[10px] text-slate-600 mt-0.5 leading-relaxed">{entry.imaging}</p>
                         </div>
                       )}
                       {entry.prescriptions && (
                         <div>
-                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Prescriptions</span>
+                          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide">处方</span>
                           <p className="text-[10px] text-slate-600 mt-0.5 leading-relaxed">{entry.prescriptions}</p>
                         </div>
                       )}
                       {entry.notes && (
                         <div className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">
-                          <span className="text-[9px] font-semibold text-amber-600 uppercase tracking-wide">Notes</span>
+                          <span className="text-[9px] font-semibold text-amber-600 uppercase tracking-wide">备注</span>
                           <p className="text-[10px] text-amber-800 mt-0.5 leading-relaxed">{entry.notes}</p>
                         </div>
                       )}
@@ -248,7 +248,7 @@ const PendingRegistration: FC = () => {
                 ))}
               </div>
               <div className="flex justify-end px-5 pb-4 pt-3 border-t mt-3">
-                <button onClick={() => { if (historyAtBottom) { setHistoryModal(null); setRegStep(1); } }} className={`text-[10px] font-semibold px-4 py-1.5 rounded-lg transition-colors ${historyAtBottom ? 'text-white bg-teal-600 hover:bg-teal-700' : 'text-slate-400 bg-slate-200 cursor-not-allowed'}`}>Read</button>
+                <button onClick={() => { if (historyAtBottom) { setHistoryModal(null); setRegStep(1); } }} className={`text-[10px] font-semibold px-4 py-1.5 rounded-lg transition-colors ${historyAtBottom ? 'text-white bg-teal-600 hover:bg-teal-700' : 'text-slate-400 bg-slate-200 cursor-not-allowed'}`}>已读</button>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@ const PendingRegistration: FC = () => {
                 <PendingRegistrationAssessmentForm patient={assessmentModal} />
               </div>
               <div className="flex justify-end pt-3 border-t px-5 pb-4">
-                  <button onClick={() => { setAssessmentModal(null); setRegStep(2); }} className="bg-teal-600 text-white text-xs font-bold px-6 py-2 rounded-lg hover:bg-teal-700 shadow-sm">Approve</button>
+                  <button onClick={() => { setAssessmentModal(null); setRegStep(2); }} className="bg-teal-600 text-white text-xs font-bold px-6 py-2 rounded-lg hover:bg-teal-700 shadow-sm">批准</button>
                 </div>
               </div>
             </div>
@@ -294,7 +294,7 @@ const PendingRegistration: FC = () => {
                 <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200">
                   <div className="text-[9px] text-slate-400">* Required fields</div>
                   <div className="flex items-center gap-3">
-                    {carePlanPhase === 'complete' && <button onClick={() => { setCarePlanData(cpd); setCarePlanPatient(null); setRegStep(3); }} className="bg-teal-600 text-white text-xs font-bold px-6 py-2 rounded-lg hover:bg-teal-700 shadow-sm">Approve</button>}
+                    {carePlanPhase === 'complete' && <button onClick={() => { setCarePlanData(cpd); setCarePlanPatient(null); setRegStep(3); }} className="bg-teal-600 text-white text-xs font-bold px-6 py-2 rounded-lg hover:bg-teal-700 shadow-sm">批准</button>}
                   </div>
                 </div>
               </div>
@@ -462,7 +462,7 @@ const PendingRegistration: FC = () => {
         <div className="flex-shrink-0 px-3 pt-3 pb-2 border-b border-slate-200 flex items-center justify-between">
           <p className="text-[10px] font-bold text-slate-600">Selected Elites ({assignedElites.size})</p>
           <div className="flex items-center gap-1.5">
-            <button onClick={() => setAssignedElites(new Set())} className="text-[10px] font-semibold bg-teal-600 text-white px-2 py-0.5 rounded hover:bg-teal-700 transition-colors">Clear</button>
+            <button onClick={() => setAssignedElites(new Set())} className="text-[10px] font-semibold bg-teal-600 text-white px-2 py-0.5 rounded hover:bg-teal-700 transition-colors">清除</button>
             <button onClick={() => {
               const allElites = ['CM001','CM002','CM003','N006','N007','N008','N002','N004','R006','R007','R008','R003','CW007','CW008','CW009','CW002','CW003'];
               const best = allElites.filter(id => !assignedElites.has(id)).sort((a, b) => (matchScores[b] || 0) - (matchScores[a] || 0));
@@ -472,7 +472,7 @@ const PendingRegistration: FC = () => {
               const pt = best.find(id => id.startsWith('R')); if (pt) newSet.add(pt);
               const cw = best.find(id => id.startsWith('CW')); if (cw) newSet.add(cw);
               setAssignedElites(newSet);
-            }} className={`text-[10px] font-semibold px-2 py-0.5 rounded transition-colors ${Object.keys(matchScores).length > 0 ? 'bg-[#C49A6C] text-white hover:bg-[#B8860B]' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>Auto Assign</button>
+            }} className={`text-[10px] font-semibold px-2 py-0.5 rounded transition-colors ${Object.keys(matchScores).length > 0 ? 'bg-[#C49A6C] text-white hover:bg-[#B8860B]' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>自动分配</button>
           </div>
         </div>
         {/* Scrollable List */}
@@ -487,7 +487,7 @@ const PendingRegistration: FC = () => {
               </button>
             </div>
           ))}
-          {assignedElites.size === 0 && <p className="text-[9px] text-slate-300 italic text-center py-8">Drag elites here to assign</p>}
+          {assignedElites.size === 0 && <p className="text-[9px] text-slate-300 italic text-center py-8">拖拽照护人员到此分配</p>}
         </div>
         {/* Sticky Footer */}
         <div className="flex-shrink-0 border-t border-slate-200 px-3 py-2 space-y-2">
@@ -526,7 +526,7 @@ const PendingRegistration: FC = () => {
           )}
           <div className="flex gap-2">
             <button onClick={() => { setMatchingActive(true); setMatchingProgress(0); setMatchingDim(0); setMatchScores({}); const dims = ['Diagnosis & Specialty','Medical History','Services & Role','Experience','Availability']; let step = 0; const t1 = setInterval(() => { step++; setMatchingDim(step); setMatchingProgress(prev => Math.min(prev + 20, 100)); if (step >= dims.length) { clearInterval(t1); const allStaff = [{id:'CM001',name:'Grace Tang',age:40,gender:'Female',role:'CM',spec:'Care Coordination & Discharge Planning',exp:12,avatar:'/avatars/grace-tang.png'},{id:'CM002',name:'Tony Lam',age:43,gender:'Male',role:'CM',spec:'Complex Cases & Palliative Care',exp:15,avatar:'/avatars/tony-lam.png'},{id:'CM003',name:'Anna Leung',age:38,gender:'Female',role:'CM',spec:'Elderly Home Care & Chronic Disease',exp:10,avatar:'/avatars/anna-leung.png'},{id:'N006',name:'Jessie Fong',age:34,gender:'Female',role:'RN',spec:'Geriatric & Chronic Disease',exp:7,avatar:'/avatars/rn-vacant-1.png'},{id:'N007',name:'Maggie Cheung',age:41,gender:'Female',role:'RN',spec:'Post-Surgical & Palliative',exp:8,avatar:'/avatars/rn-vacant-2.png'},{id:'N008',name:'Brian Ng',age:29,gender:'Male',role:'RN',spec:'Cardiac & Respiratory',exp:6,avatar:'/avatars/rn-vacant-3.png'},{id:'N002',name:'Jenny Tam',age:29,gender:'Female',role:'RN',spec:'Home Care Nursing',exp:5,avatar:'/avatars/jenny-tam.png'},{id:'N004',name:'Connie Cheung',age:42,gender:'Female',role:'RN',spec:'Wound Care & Medication',exp:14,avatar:'/avatars/connie-cheung.png'},{id:'R006',name:'Catherine Tsang',age:37,gender:'Female',role:'PT',spec:'Orthopedic & Neuro',exp:7,avatar:'/avatars/pt-vacant-1.png'},{id:'R007',name:'Samson Hui',age:45,gender:'Male',role:'PT',spec:'Geriatric & Falls Prevention',exp:9,avatar:'/avatars/pt-vacant-2.png'},{id:'R008',name:'Jason Chan',age:32,gender:'Male',role:'PT',spec:'Cardiac & Pulmonary',exp:5,avatar:'/avatars/pt-vacant-3.png'},{id:'R003',name:'Raymond Wong',age:45,gender:'Male',role:'PT',spec:'Stroke Rehab & Mobility',exp:12,avatar:'/avatars/raymond-wong.png'},{id:'CW007',name:'Alice Ho',age:43,gender:'Female',role:'CW',spec:'Elderly Home Care',exp:6,avatar:'/avatars/cw-vacant-1.png'},{id:'CW008',name:'Michelle Yuen',age:38,gender:'Female',role:'CW',spec:'Post-Stroke & Dementia',exp:8,avatar:'/avatars/cw-vacant-2.png'},{id:'CW009',name:'Kenny Ma',age:48,gender:'Male',role:'CW',spec:'Post-Surgical & Wound',exp:5,avatar:'/avatars/cw-vacant-3.png'},{id:'CW002',name:'Lisa Cheng',age:38,gender:'Female',role:'CW',spec:'Personal Care & Companionship',exp:7,avatar:'/avatars/lisa-cheng.png'},{id:'CW003',name:'Carol Ng',age:45,gender:'Female',role:'CW',spec:'Dementia & Palliative Care',exp:10,avatar:'/avatars/carol-ng.png'}]; const diag = (p?.diagnosis || '').toLowerCase(); const mhEntries = (p as any)?.medicalHistory || []; const mh = typeof mhEntries === 'string' ? mhEntries.toLowerCase() : mhEntries.map((e: any) => (e.diagnosis || '') + ' ' + (e.chiefComplaint || '')).join(' ').toLowerCase(); const svc = (p?.services || '').toLowerCase(); const diagWords = diag.split(/[\s,·]+/).filter((w:string) => w.length > 2); const mhWords = mh.split(/[\s,·]+/).filter((w:string) => w.length > 2); const svcWords = svc.split(/[\s,·]+/).filter((w:string) => w.length > 2); const scores: Record<string,number> = {}; allStaff.forEach(s => { const team = Object.values(CARE_TEAM).find(t => t.id === s.id); const certs = team?.certifications?.join(' ').toLowerCase() || ''; const bio = team?.bio?.toLowerCase() || ''; const specWords = (s.spec + ' ' + certs + ' ' + bio).toLowerCase().split(/[\s,&]+/); const diagMatch = diagWords.filter((w:string) => specWords.some(sw => sw.includes(w) || w.includes(sw))).length; const diagScore = Math.round((diagMatch / Math.max(diagWords.length, 1)) * 35); const mhMatch = mhWords.filter((w:string) => certs.includes(w)).length; const mhScore = Math.min(Math.round((mhMatch / Math.max(mhWords.length || 1, 1)) * 15), 15); const svcMatch = svcWords.filter((w:string) => specWords.some(sw => sw.includes(w))).length; const svcScore = Math.min(Math.round((svcMatch / Math.max(svcWords.length || 1, 1)) * 15), 15); const expScore = Math.min(s.exp * 2, 20); const availScore = Math.min(Math.floor(Math.random() * 6) + 5, 10); scores[s.id] = Math.min(diagScore + mhScore + svcScore + expScore + availScore, 98); }); setMatchScores(scores); setTimeout(() => { setMatchingActive(false); }, 400); } }, 700); }} className="flex-1 text-[9px] font-semibold bg-gold-500/20 text-gold-700 py-1.5 rounded-lg border border-gold-500/30 hover:bg-gold-500/30 transition-colors">{'\u2728'} AI Smart Matching</button>
-            <button onClick={() => { if (Array.from(assignedElites).some((id: string) => id.startsWith('CM')) && Array.from(assignedElites).some((id: string) => /^[NRC]/.test(id))) { setShowVacantModal(false); setAssignedElites(new Set()); setMatchScores({}); setRegStep(4); setRegistrationComplete(true); if (p.id === 114) { usePatientStore.getState().promotePatient(18); } } }} className={`flex-1 text-[9px] font-semibold py-1.5 rounded-lg transition-colors ${Array.from(assignedElites).some(id => id.startsWith('CM')) && Array.from(assignedElites).some(id => /^[NRC]/.test(id)) ? 'bg-gold-600 text-white hover:bg-gold-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>Done</button>
+            <button onClick={() => { if (Array.from(assignedElites).some((id: string) => id.startsWith('CM')) && Array.from(assignedElites).some((id: string) => /^[NRC]/.test(id))) { setShowVacantModal(false); setAssignedElites(new Set()); setMatchScores({}); setRegStep(4); setRegistrationComplete(true); if (p.id === 114) { usePatientStore.getState().promotePatient(18); } } }} className={`flex-1 text-[9px] font-semibold py-1.5 rounded-lg transition-colors ${Array.from(assignedElites).some(id => id.startsWith('CM')) && Array.from(assignedElites).some(id => /^[NRC]/.test(id)) ? 'bg-gold-600 text-white hover:bg-gold-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>完成</button>
           </div>
         </div>
       </div>
@@ -550,13 +550,13 @@ const PendingRegistration: FC = () => {
       <div className="flex items-center gap-3 mb-5">
         <div className="flex items-center gap-2 text-[10px]"><ArrowUpDown className="w-3 h-3 text-slate-400" />
           <div className="flex items-center gap-0.5">
-            <button onClick={() => { setSortBy('discharge'); setDirs(d => ({ ...d, discharge: 'asc' })); }} className={`px-2 py-1 rounded-l font-semibold ${sortBy === 'discharge' ? 'bg-amber-100 text-amber-700' : 'text-slate-500 hover:bg-warm-100'}`}>D/C Date</button>
+            <button onClick={() => { setSortBy('discharge'); setDirs(d => ({ ...d, discharge: 'asc' })); }} className={`px-2 py-1 rounded-l font-semibold ${sortBy === 'discharge' ? 'bg-amber-100 text-amber-700' : 'text-slate-500 hover:bg-warm-100'}`}>出院日期</button>
             <button onClick={() => { if (sortBy === 'discharge') setDirs(d => ({ ...d, discharge: d.discharge === 'asc' ? 'desc' : 'asc' })); else { setSortBy('discharge'); } }} className={`px-1 py-1 rounded-r ${sortBy === 'discharge' ? 'bg-amber-100 text-amber-700' : 'text-slate-400 hover:bg-warm-100'} font-bold`}>
               {sortBy === 'discharge' ? (dirs.discharge === 'asc' ? '↑' : '↓') : '↕'}
             </button>
           </div>
           <div className="flex items-center gap-0.5">
-            <button onClick={() => { setSortBy('name'); setDirs(d => ({ ...d, name: 'asc' })); }} className={`px-2 py-1 rounded-l font-semibold ${sortBy === 'name' ? 'bg-amber-100 text-amber-700' : 'text-slate-500 hover:bg-warm-100'}`}>Name</button>
+            <button onClick={() => { setSortBy('name'); setDirs(d => ({ ...d, name: 'asc' })); }} className={`px-2 py-1 rounded-l font-semibold ${sortBy === 'name' ? 'bg-amber-100 text-amber-700' : 'text-slate-500 hover:bg-warm-100'}`}>姓名</button>
             <button onClick={() => { if (sortBy === 'name') setDirs(d => ({ ...d, name: d.name === 'asc' ? 'desc' : 'asc' })); else { setSortBy('name'); } }} className={`px-1 py-1 rounded-r ${sortBy === 'name' ? 'bg-amber-100 text-amber-700' : 'text-slate-400 hover:bg-warm-100'} font-bold`}>
               {sortBy === 'name' ? (dirs.name === 'asc' ? '↑' : '↓') : '↕'}
             </button>
@@ -564,11 +564,11 @@ const PendingRegistration: FC = () => {
         </div>
         <div className="w-px h-4 bg-warm-200" />
         <select value={filterHospital} onChange={e => setFilterHospital(e.target.value)} className="text-[10px] border border-slate-200 rounded px-2 py-1 text-slate-600 bg-white">
-          <option value="all">All Hospitals</option>
+          <option value="all">全部医院</option>
           {hospitals.map(h => <option key={h} value={h}>{h}</option>)}
         </select>
         <select value={filterDoctor} onChange={e => setFilterDoctor(e.target.value)} className="text-[10px] border border-slate-200 rounded px-2 py-1 text-slate-600 bg-white">
-          <option value="all">All Doctors</option>
+          <option value="all">全部医生</option>
           {doctors.map(d => <option key={d} value={d}>{d}</option>)}
         </select>
       </div>

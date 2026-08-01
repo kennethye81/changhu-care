@@ -98,12 +98,12 @@ export const PatientRecords: FC = () => {
         <table className="w-full text-xs">
           <thead className="bg-warm-50">
             <tr>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">Patient</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">Diagnosis</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">Physician</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">Case Mgr</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">Care Team</th>
-              <th className="text-center px-3 py-2 font-semibold text-slate-600">Status</th>
+              <th className="text-left px-3 py-2 font-semibold text-slate-600">病人</th>
+              <th className="text-left px-3 py-2 font-semibold text-slate-600">诊断</th>
+              <th className="text-left px-3 py-2 font-semibold text-slate-600">医生</th>
+              <th className="text-left px-3 py-2 font-semibold text-slate-600">个案经理</th>
+              <th className="text-left px-3 py-2 font-semibold text-slate-600">照护团队</th>
+              <th className="text-center px-3 py-2 font-semibold text-slate-600">状态</th>
             </tr>
           </thead>
           <tbody>
@@ -163,7 +163,7 @@ export const Inventory: FC = () => {
         <h3 className="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2"><Smartphone className="w-4 h-4 text-teal-600" /> Remote Patient Monitoring Devices</h3>
         <div className="glass-card rounded-xl border border-slate-200 overflow-hidden">
           <table className="w-full text-[11px]">
-            <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2 font-semibold text-slate-600">Device</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Model</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Supplier</th><th className="text-center px-4 py-2 font-semibold text-slate-600">Stock</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Assigned To</th></tr></thead>
+            <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2 font-semibold text-slate-600">设备</th><th className="text-left px-4 py-2 font-semibold text-slate-600">型号</th><th className="text-left px-4 py-2 font-semibold text-slate-600">供应商</th><th className="text-center px-4 py-2 font-semibold text-slate-600">库存</th><th className="text-left px-4 py-2 font-semibold text-slate-600">分配给</th></tr></thead>
             <tbody>{devices.map(d => { const low = d.stock < d.minStock; return (
               <tr key={d.id} className="border-t border-slate-50 hover:bg-warm-100 cursor-pointer" onClick={() => setSelectedItem(d)}>
                 <td className="px-4 py-2.5 font-semibold text-slate-700">{d.name}</td>
@@ -180,7 +180,7 @@ export const Inventory: FC = () => {
         <h3 className="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2"><Package className="w-4 h-4 text-purple-600" /> Medical Consumables</h3>
         <div className="glass-card rounded-xl border border-slate-200 overflow-hidden">
           <table className="w-full text-[11px]">
-            <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2 font-semibold text-slate-600">Item</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Model</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Supplier</th><th className="text-center px-4 py-2 font-semibold text-slate-600">Stock</th><th className="text-left px-4 py-2 font-semibold text-slate-600">Category</th></tr></thead>
+            <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2 font-semibold text-slate-600">物品</th><th className="text-left px-4 py-2 font-semibold text-slate-600">型号</th><th className="text-left px-4 py-2 font-semibold text-slate-600">供应商</th><th className="text-center px-4 py-2 font-semibold text-slate-600">库存</th><th className="text-left px-4 py-2 font-semibold text-slate-600">类别</th></tr></thead>
             <tbody>{consumables.map(c => { const low = c.stock < c.minStock; return (
               <tr key={c.id} className="border-t border-slate-50 hover:bg-warm-100 cursor-pointer" onClick={() => setSelectedItem(c)}>
                 <td className="px-4 py-2.5 font-semibold text-slate-700">{c.name}</td>
@@ -196,14 +196,14 @@ export const Inventory: FC = () => {
       {selectedItem && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-teal-900/30 backdrop-blur-md" onClick={() => setSelectedItem(null)}>
           <div className="glass-card rounded-2xl shadow-2xl w-[400px] m-4" onClick={e => e.stopPropagation()}>
-            <div className="px-5 py-4 border-b flex items-center justify-between"><span className="text-sm font-bold text-slate-800">Item Detail</span><button onClick={() => setSelectedItem(null)} className="w-7 h-7 rounded-lg hover:bg-warm-100 flex items-center justify-center"><X className="w-4 h-4 text-slate-400" /></button></div>
+            <div className="px-5 py-4 border-b flex items-center justify-between"><span className="text-sm font-bold text-slate-800">物品详情</span><button onClick={() => setSelectedItem(null)} className="w-7 h-7 rounded-lg hover:bg-warm-100 flex items-center justify-center"><X className="w-4 h-4 text-slate-400" /></button></div>
             <div className="p-5 space-y-2 text-xs">
-              <div><span className="text-slate-400">Name</span><p className="font-semibold text-slate-800">{selectedItem.name}</p></div>
-              <div><span className="text-slate-400">Model</span><p className="text-slate-700">{selectedItem.model}</p></div>
-              <div><span className="text-slate-400">Supplier</span><p className="text-slate-700">{selectedItem.supplier}</p></div>
-              <div><span className="text-slate-400">Current Stock</span><p className={`font-bold ${selectedItem.stock < selectedItem.minStock ? 'text-red-600' : 'text-emerald-600'}`}>{selectedItem.stock} / min {selectedItem.minStock} {selectedItem.unit}</p></div>
-              {selectedItem.assigned && <div><span className="text-slate-400">Assigned To</span><p className="text-slate-700">{selectedItem.assigned}</p></div>}
-              {selectedItem.category && <div><span className="text-slate-400">Category</span><p className="text-slate-700">{selectedItem.category}</p></div>}
+              <div><span className="text-slate-400">名称</span><p className="font-semibold text-slate-800">{selectedItem.name}</p></div>
+              <div><span className="text-slate-400">型号</span><p className="text-slate-700">{selectedItem.model}</p></div>
+              <div><span className="text-slate-400">供应商</span><p className="text-slate-700">{selectedItem.supplier}</p></div>
+              <div><span className="text-slate-400">当前库存</span><p className={`font-bold ${selectedItem.stock < selectedItem.minStock ? 'text-red-600' : 'text-emerald-600'}`}>{selectedItem.stock} / min {selectedItem.minStock} {selectedItem.unit}</p></div>
+              {selectedItem.assigned && <div><span className="text-slate-400">分配给</span><p className="text-slate-700">{selectedItem.assigned}</p></div>}
+              {selectedItem.category && <div><span className="text-slate-400">类别</span><p className="text-slate-700">{selectedItem.category}</p></div>}
             </div>
           </div>
         </div>
@@ -234,8 +234,8 @@ export const FollowupWorkbench: FC = () => {
     <div className="p-6">
       <PageHeader title="Follow-up Workbench" icon={ClipboardList} subtitle={`${allTasks.filter(t => t.status !== 'completed').length} active tasks · ${allTasks.filter(t => t.status === 'completed').length} completed`}
         action={<div className="flex gap-2">
-          <button onClick={()=>setFilter('all')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${filter==='all'?'bg-gold-600 text-white':'bg-warm-100 text-slate-600'}`}>All Tasks</button>
-          <button onClick={()=>setFilter('mine')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${filter==='mine'?'bg-gold-600 text-white':'bg-warm-100 text-slate-600'}`}>My Tasks</button>
+          <button onClick={()=>setFilter('all')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${filter==='all'?'bg-gold-600 text-white':'bg-warm-100 text-slate-600'}`}>全部任务</button>
+          <button onClick={()=>setFilter('mine')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${filter==='mine'?'bg-gold-600 text-white':'bg-warm-100 text-slate-600'}`}>我的任务</button>
         </div>}
       />
       <div className="grid grid-cols-3 gap-4">
@@ -324,11 +324,11 @@ export const ClinicalReports: FC = () => {
           </div>
           <div className="p-5">
             <div className="bg-teal-50 rounded-lg p-3 mb-4">
-              <span className="text-[10px] font-semibold text-blue-500 uppercase tracking-wide">Summary</span>
+              <span className="text-[10px] font-semibold text-blue-500 uppercase tracking-wide">摘要</span>
               <p className="text-xs text-slate-700 mt-1 leading-relaxed">{selectedDoc.summary}</p>
             </div>
             <div>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Full Report</span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">完整报告</span>
               <p className="text-xs text-slate-600 mt-1 leading-relaxed whitespace-pre-line">{selectedDoc.content}</p>
             </div>
           </div>
@@ -378,7 +378,7 @@ export const MedicationPage: FC = () => (
     <PageHeader title="Medication Management" icon={Pill} subtitle="Prescribe, review, and manage patient medications" action={<button className="flex items-center gap-1.5 px-3 py-1.5 bg-gold-600 text-white text-xs font-semibold rounded-lg hover:bg-gold-700"><Plus className="w-3.5 h-3.5" /> Prescribe</button>} />
     <div className="glass-card rounded-2xl border border-slate-200 overflow-hidden">
       <table className="w-full text-xs">
-        <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2.5 font-semibold text-slate-600">Drug</th><th className="text-left px-4 py-2.5 font-semibold text-slate-600">Class</th><th className="text-center px-4 py-2.5 font-semibold text-slate-600">Patients</th><th className="text-center px-4 py-2.5 font-semibold text-slate-600">Status</th></tr></thead>
+        <thead className="bg-warm-50"><tr><th className="text-left px-4 py-2.5 font-semibold text-slate-600">药品</th><th className="text-left px-4 py-2.5 font-semibold text-slate-600">分类</th><th className="text-center px-4 py-2.5 font-semibold text-slate-600">Patients</th><th className="text-center px-4 py-2.5 font-semibold text-slate-600">状态</th></tr></thead>
         <tbody>{MED_DATA.map((m, i) => (
           <tr key={i} className="border-t border-slate-50 hover:bg-warm-100"><td className="px-4 py-2.5 font-semibold text-slate-700">{m.drug}</td><td className="px-4 py-2.5 text-slate-500">{m.class}</td><td className="px-4 py-2.5 text-center font-bold text-slate-700">{m.patients}</td><td className="px-4 py-2.5 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${m.status==='Active'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'}`}>{m.status}</span></td></tr>
         ))}</tbody>
@@ -420,7 +420,7 @@ export const Finance: FC = () => {
         </div>);
       })}
     </div>
-    {selectedInvoice && (<div className="fixed inset-0 z-[300] flex items-center justify-center bg-teal-900/30 backdrop-blur-md" onClick={() => setSelectedInvoice(null)}><div className="glass-card rounded-2xl shadow-2xl w-[500px] max-h-[85vh] overflow-y-auto m-4" onClick={e => e.stopPropagation()}><div className="sticky top-0 bg-gradient-to-r from-teal-600 to-teal-800 px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl"><div className="flex items-center gap-2"><CreditCard className="w-5 h-5 text-white" /><span className="text-sm font-bold text-white">Invoice Detail</span></div><button onClick={() => setSelectedInvoice(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button></div><div className="p-5 space-y-4"><div className="grid grid-cols-2 gap-3 text-xs"><div><span className="text-slate-400">Invoice #</span><p className="font-bold text-slate-800">{selectedInvoice.id}</p></div><div><span className="text-slate-400">Patient</span><p className="font-bold text-slate-800">{selectedInvoice.patient}</p></div><div><span className="text-slate-400">Status</span><p className={`font-bold ${selectedInvoice.status==='Paid'?'text-emerald-600':selectedInvoice.status==='Partial'?'text-amber-600':'text-red-600'}`}>{selectedInvoice.status}</p></div><div><span className="text-slate-400">Total</span><p className="font-extrabold text-lg text-slate-800">HK$ {selectedInvoice.total.toLocaleString()}</p></div></div><div><span className="text-xs font-semibold text-slate-600 uppercase">Service Items</span><div className="mt-2 divide-y border rounded-lg"><div className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 bg-warm-50 text-[10px] font-semibold text-slate-400 uppercase"><span>Description</span><span className="text-right">Amount</span></div>{selectedInvoice.items.map((item: any, i: number) => (<div key={i} className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 text-[11px]"><span className="text-slate-700">{item.desc}</span><span className="text-right font-semibold text-slate-800">HK$ {item.amount.toLocaleString()}</span></div>))}<div className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 bg-teal-50 font-bold text-xs"><span className="text-teal-700">Total</span><span className="text-right text-teal-700">HK$ {selectedInvoice.total.toLocaleString()}</span></div></div></div></div></div></div>)}
+    {selectedInvoice && (<div className="fixed inset-0 z-[300] flex items-center justify-center bg-teal-900/30 backdrop-blur-md" onClick={() => setSelectedInvoice(null)}><div className="glass-card rounded-2xl shadow-2xl w-[500px] max-h-[85vh] overflow-y-auto m-4" onClick={e => e.stopPropagation()}><div className="sticky top-0 bg-gradient-to-r from-teal-600 to-teal-800 px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl"><div className="flex items-center gap-2"><CreditCard className="w-5 h-5 text-white" /><span className="text-sm font-bold text-white">Invoice Detail</span></div><button onClick={() => setSelectedInvoice(null)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><X className="w-3.5 h-3.5 text-white" /></button></div><div className="p-5 space-y-4"><div className="grid grid-cols-2 gap-3 text-xs"><div><span className="text-slate-400">Invoice #</span><p className="font-bold text-slate-800">{selectedInvoice.id}</p></div><div><span className="text-slate-400">病人</span><p className="font-bold text-slate-800">{selectedInvoice.patient}</p></div><div><span className="text-slate-400">状态</span><p className={`font-bold ${selectedInvoice.status==='Paid'?'text-emerald-600':selectedInvoice.status==='Partial'?'text-amber-600':'text-red-600'}`}>{selectedInvoice.status}</p></div><div><span className="text-slate-400">合计</span><p className="font-extrabold text-lg text-slate-800">HK$ {selectedInvoice.total.toLocaleString()}</p></div></div><div><span className="text-xs font-semibold text-slate-600 uppercase">Service Items</span><div className="mt-2 divide-y border rounded-lg"><div className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 bg-warm-50 text-[10px] font-semibold text-slate-400 uppercase"><span>Description</span><span className="text-right">Amount</span></div>{selectedInvoice.items.map((item: any, i: number) => (<div key={i} className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 text-[11px]"><span className="text-slate-700">{item.desc}</span><span className="text-right font-semibold text-slate-800">HK$ {item.amount.toLocaleString()}</span></div>))}<div className="grid grid-cols-[1fr_120px] gap-3 px-3 py-2 bg-teal-50 font-bold text-xs"><span className="text-teal-700">合计</span><span className="text-right text-teal-700">HK$ {selectedInvoice.total.toLocaleString()}</span></div></div></div></div></div></div>)}
   </div>);
 };
 
@@ -756,8 +756,8 @@ export const CareElites: FC = () => {
         <PageHeader title="Care Elites" icon={Award} subtitle="Nurses, Rehab Therapists & Care Workers"
           action={
             <div className="flex gap-2">
-              <button onClick={() => setView('roster')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${view === 'roster' ? 'bg-gold-600 text-white shadow-sm' : 'bg-warm-100 text-slate-600 hover:bg-warm-200'}`}>Roster</button>
-              <button onClick={() => setView('calendar')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${view === 'calendar' ? 'bg-gold-600 text-white shadow-sm' : 'bg-warm-100 text-slate-600 hover:bg-warm-200'}`}>Calendar</button>
+              <button onClick={() => setView('roster')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${view === 'roster' ? 'bg-gold-600 text-white shadow-sm' : 'bg-warm-100 text-slate-600 hover:bg-warm-200'}`}>排班</button>
+              <button onClick={() => setView('calendar')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${view === 'calendar' ? 'bg-gold-600 text-white shadow-sm' : 'bg-warm-100 text-slate-600 hover:bg-warm-200'}`}>日历</button>
             </div>
           }
         />
@@ -813,7 +813,7 @@ export const CareElites: FC = () => {
                           ) : (
                             <>
                               <span className="w-1.5 h-1.5 rounded-full bg-slate-300 flex-shrink-0" />
-                              <span className="text-[10px] text-slate-400">Vacant</span>
+                              <span className="text-[10px] text-slate-400">空缺</span>
                             </>
                           )}
                         </div>
@@ -904,25 +904,25 @@ export const CareElites: FC = () => {
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="bg-warm-50 rounded-lg p-2.5">
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Experience</span>
+                    <span className="text-[10px] text-slate-400 uppercase font-semibold">经验</span>
                     <p className="font-bold text-slate-700 mt-0.5">{selectedStaff.yearsExperience} years</p>
                   </div>
                   <div className="bg-warm-50 rounded-lg p-2.5">
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold">Education</span>
+                    <span className="text-[10px] text-slate-400 uppercase font-semibold">教育</span>
                     <p className="font-bold text-slate-700 mt-0.5 text-[10px] leading-snug">{selectedStaff.education}</p>
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Specialty</span>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">专科</span>
                   <p className="text-xs text-slate-700 mt-0.5">{selectedStaff.specialty}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Institution</span>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">机构</span>
                   <p className="text-xs text-slate-700 mt-0.5">{selectedStaff.institution}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Certifications</span>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">资质</span>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {selectedStaff.certifications.map((cert, i) => (
                       <span key={i} className="text-[9px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full font-medium">{cert}</span>
@@ -930,7 +930,7 @@ export const CareElites: FC = () => {
                   </div>
                 </div>
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Bio</span>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">简介</span>
                   <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{selectedStaff.bio}</p>
                 </div>
                 <div className="flex items-center gap-3 pt-2 border-t border-slate-100">

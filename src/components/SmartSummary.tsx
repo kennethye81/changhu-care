@@ -352,7 +352,7 @@ const SmartSummary: FC<{ patient: PatientFull }> = ({ patient }) => {
               <card.icon className={`w-4 h-4 ${card.color}`} />
               <h3 className="text-xs font-bold text-slate-700">{card.title}</h3>
               {idx === 0 && isCritical && (
-                <span className="text-[9px] bg-red-500 text-white px-2 py-0.5 rounded-full font-bold">Action Required</span>
+                <span className="text-[9px] bg-red-500 text-white px-2 py-0.5 rounded-full font-bold">需处理</span>
               )}
             </div>
             {card.render()}
