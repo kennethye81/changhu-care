@@ -501,12 +501,26 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
             <AlertTriangle className="w-3 h-3" /> 核心关注点
           </h4>
           <div className="space-y-2">
-            {concerns.map((c, i) => (
-              <div key={i} className="bg-indigo-100/60 border border-indigo-200 rounded-lg px-3 py-2">
-                <span className="text-[9px] text-indigo-400 font-semibold mr-1">{i + 1}.</span>
-                <span className="text-[11px] text-indigo-800 leading-relaxed">{c}</span>
+            {concerns.map((c, i) => {
+            const emojiMap: Record<number, string> = {
+              0: '💊', 1: '🩹', 2: '🦯', 3: '🦽', 4: '🤲'
+            };
+            const accentMap: Record<number, string> = {
+              0: 'border-l-rose-500 bg-rose-50/40',
+              1: 'border-l-amber-500 bg-amber-50/40',
+              2: 'border-l-red-500 bg-red-50/40',
+              3: 'border-l-purple-500 bg-purple-50/40',
+              4: 'border-l-teal-500 bg-teal-50/40',
+            };
+            return (
+              <div key={i} className={`${accentMap[i] || 'border-l-indigo-400'} border border-slate-200 rounded-lg px-3.5 py-2.5 flex items-start gap-2.5`}>
+                <span className="text-base flex-shrink-0 leading-none mt-px">{emojiMap[i] || '📋'}</span>
+                <div>
+                  <span className="text-[11px] text-slate-800 leading-relaxed">{c}</span>
+                </div>
               </div>
-            ))}
+            );
+          })}
           </div>
         </div>
       </div>
