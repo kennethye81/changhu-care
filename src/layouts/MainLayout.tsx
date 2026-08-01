@@ -119,7 +119,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
         <div className="flex items-center justify-between px-4 h-11">
           {/* Left: Logo + Version */}
           <div className="flex items-center gap-2.5 flex-shrink-0">
-            <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 hover:bg-slate-200 border border-slate-200/80" title="Menu">
+            <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 hover:bg-slate-200 border border-slate-200/80" title="菜单">
               <Menu className="w-4 h-4 text-slate-600" />
             </button>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm bg-gradient-to-br from-[#C49A6C] to-[#9C7A4E] cursor-pointer" onClick={() => navigate('/command-center')}>
@@ -142,7 +142,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                   value={patientSearch}
                   onChange={e => { setPatientSearch(e.target.value); setShowPatientSearch(true); }}
                   onFocus={() => setShowPatientSearch(true)}
-                  placeholder="Search patients..."
+                  placeholder="搜索病人..."
                   className="flex-1 text-xs bg-transparent outline-none text-slate-700 placeholder-slate-400 ml-2"
                 />
               </div>
@@ -153,7 +153,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                       <button key={name} className="w-full text-left px-3 py-2 text-xs text-slate-700 hover:bg-[#FDF5E8] transition-colors border-b border-slate-50 last:border-0">{name}</button>
                     ))}
                     {quickSearchPatients.filter(p => p.toLowerCase().includes(patientSearch.toLowerCase())).length === 0 && (
-                      <p className="px-3 py-2 text-xs text-slate-400">No patients found</p>
+                      <p className="px-3 py-2 text-xs text-slate-400">未找到病人</p>
                     )}
                   </div>
                 </div>
@@ -213,7 +213,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
               </button>
               {showRoleSwitcher && (
                 <div className="absolute top-full mt-1 right-0 w-48 bg-white rounded-xl border border-slate-200 shadow-xl z-50 overflow-hidden">
-                  <p className="px-3 py-2 text-[10px] font-semibold text-slate-400 uppercase border-b border-slate-100">Switch Role</p>
+                  <p className="px-3 py-2 text-[10px] font-semibold text-slate-400 uppercase border-b border-slate-100">切换角色</p>
                   {ROLES.map(r => (
                     <button
                       key={r.id}
@@ -235,7 +235,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <button
               onClick={() => { logout(); navigate('/'); }}
               className="w-7 h-7 hover:bg-red-50 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors"
-              title="Logout"
+              title="退出登录"
             >
               <LogOut className="w-3.5 h-3.5" />
             </button>
@@ -275,9 +275,9 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`flex-shrink-0 flex items-center w-full px-2.5 py-2 border-t border-white/10 hover:bg-white/10 text-white/50 hover:text-white/90 transition-all ${collapsed ? 'justify-center' : 'justify-start gap-2.5'}`}
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={collapsed ? '展开' : '收起'}
           >
-            {collapsed ? <PanelLeftOpen className="w-3.5 h-3.5" /> : <><PanelLeftClose className="w-3.5 h-3.5" /><span className="text-[10px] font-medium truncate">Collapse</span></>}
+            {collapsed ? <PanelLeftOpen className="w-3.5 h-3.5" /> : <><PanelLeftClose className="w-3.5 h-3.5" /><span className="text-[10px] font-medium truncate">收起</span></>}
           </button>
         </aside>
 

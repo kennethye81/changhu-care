@@ -78,7 +78,7 @@ const LoginPage: FC = () => {
       if (result.success) {
         navigate('/command-center', { replace: true });
       } else {
-        setError(result.error || 'Login failed');
+        setError(result.error || '登录失败');
       }
       setLoading(false);
     }, 600);
@@ -91,18 +91,18 @@ const LoginPage: FC = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
             <Activity className="w-8 h-8 text-white animate-pulse" />
           </div>
-          <p className="text-white font-bold text-lg">iHome<span className="text-blue-400">Care</span></p>
+          <p className="text-white font-bold text-lg">iHome<span className="text-blue-400">长护险平台</span></p>
           <div className="w-72 space-y-3">
             <div className="bg-white/10 rounded-lg px-4 py-2.5 flex items-center gap-2">
-              <span className="text-slate-400 text-xs w-16">Institution</span>
+              <span className="text-slate-400 text-xs w-16">机构</span>
               <span className="text-white text-xs font-mono">{typeInst}<span className="animate-pulse text-blue-400">|</span></span>
             </div>
             <div className="bg-white/10 rounded-lg px-4 py-2.5 flex items-center gap-2">
-              <span className="text-slate-400 text-xs w-16">Account</span>
+              <span className="text-slate-400 text-xs w-16">账号</span>
               <span className="text-white text-xs font-mono">{typeAcct}{animStep === 1 ? <span className="animate-pulse text-blue-400">|</span> : ''}</span>
             </div>
             <div className="bg-white/10 rounded-lg px-4 py-2.5 flex items-center gap-2">
-              <span className="text-slate-400 text-xs w-16">Password</span>
+              <span className="text-slate-400 text-xs w-16">密码</span>
               <span className="text-white text-xs font-mono">{typePwd}{animStep === 2 ? <span className="animate-pulse text-blue-400">|</span> : ''}</span>
             </div>
             {animStep === 3 && (
@@ -126,7 +126,7 @@ const LoginPage: FC = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 mx-auto mb-4">
             <Activity className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">iHome<span className="text-teal-600">Care</span></h1>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">iHome<span className="text-teal-600">长护险平台</span></h1>
           <p className="text-sm text-slate-500 mt-1">Home Medical Care SaaS · Clinical Command Center</p>
         </div>
 
@@ -136,7 +136,7 @@ const LoginPage: FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Institution ID</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">机构编号</label>
               <input
                 type="text"
                 value={institutionId}
@@ -147,24 +147,24 @@ const LoginPage: FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Account</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">账号</label>
               <input
                 type="text"
                 value={account}
                 onChange={e => setAccount(e.target.value)}
-                placeholder="Enter account"
+                placeholder="输入账号"
                 className="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">密码</label>
               <div className="relative">
                 <input
                   type={showPwd ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="Enter password"
+                  placeholder="输入密码"
                   className="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all pr-10"
                 />
                 <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -174,13 +174,13 @@ const LoginPage: FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">CAPTCHA</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">验证码</label>
               <div className="flex gap-3">
                 <input
                   type="text"
                   value={captcha}
                   onChange={e => setCaptcha(e.target.value)}
-                  placeholder="CAPTCHA"
+                  placeholder="验证码"
                   maxLength={4}
                   className="flex-1 px-3 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
                 />
@@ -195,7 +195,7 @@ const LoginPage: FC = () => {
                 <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} className="rounded" />
                 Remember me
               </label>
-              <button type="button" className="text-xs text-teal-600 font-medium hover:underline">Forgot password</button>
+              <button type="button" className="text-xs text-teal-600 font-medium hover:underline">忘记密码</button>
             </div>
 
             {error && (
@@ -209,7 +209,7 @@ const LoginPage: FC = () => {
               disabled={loading}
               className="w-full py-2.5 bg-gold-600 hover:bg-gold-700 disabled:bg-blue-400 text-white font-semibold text-sm rounded-xl transition-colors shadow-md shadow-blue-200"
             >
-              {loading ? 'Verifying...' : 'Sign In'}
+              {loading ? '验证中...' : '登录'}
             </button>
           </form>
 
@@ -237,7 +237,7 @@ const LoginPage: FC = () => {
 
           {/* Mobile App Access */}
           <div className="mt-4 pt-4 border-t border-slate-100">
-            <p className="text-[10px] text-slate-400 text-center mb-3">Mobile Apps (no login required)</p>
+            <p className="text-[10px] text-slate-400 text-center mb-3">移动端应用（无需登录）)</p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => navigate('/family')}

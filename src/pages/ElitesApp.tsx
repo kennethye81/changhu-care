@@ -107,8 +107,8 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
                   className="w-[72px] h-[72px] rounded-[20px] flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 transition-transform active:scale-90">
                   <IHomeCareEliteLogoIcon size={36} />
                 </button>
-                <span className="text-white/95 font-bold text-sm mt-3 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>iHomeCare Elites</span>
-                <span className="text-white/60 text-[10px] mt-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]">Care Team Portal</span>
+                <span className="text-white/95 font-bold text-sm mt-3 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>长护险照护端</span>
+                <span className="text-white/60 text-[10px] mt-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]">照护团队平台</span>
               </div>
             </div>
           ) : showSplash ? (
@@ -117,7 +117,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
                 <div className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 mb-6">
                   <IHomeCareEliteLogoIcon size={40} />
                 </div>
-                <p className="text-white text-2xl font-extrabold tracking-tight mb-8" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>iHomeCare Elites</p>
+                <p className="text-white text-2xl font-extrabold tracking-tight mb-8" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>长护险照护</p>
                 <div className="flex gap-1.5">
                   <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
                   <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />

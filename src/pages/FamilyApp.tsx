@@ -172,7 +172,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
                           <IHomeCareFamilyLogoIcon size={30} />
                           <span className="absolute -top-1.5 -right-1.5 w-[18px] h-[18px] bg-[#FF453A] text-white text-[10px] font-extrabold rounded-full flex items-center justify-center shadow-md">3</span>
                         </button>
-                        <span className="text-[9px] text-white/95 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">iHomeCare Family</span>
+                        <span className="text-[9px] text-white/95 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">长护险家属</span>
                       </div>
                   </div>
 
@@ -215,7 +215,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
                 <div className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 mb-6">
                   <IHomeCareFamilyLogoIcon size={40} />
                 </div>
-                <p className="text-white text-2xl font-extrabold tracking-tight mb-8" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>iHomeCare Family</p>
+                <p className="text-white text-2xl font-extrabold tracking-tight mb-8" style={{ fontFamily: "'Space Grotesk','Inter',sans-serif" }}>长护险家属</p>
                 <div className="flex gap-1.5">
                   <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
                   <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
