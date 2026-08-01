@@ -66,15 +66,15 @@ function disabilityLevel(score?: number): string {
 }
 function bradenRisk(score?: number): string {
   if (score == null) return '—';
-  if (score <= 12) return '高';
-  if (score <= 16) return '中';
-  return '低';
+  if (score <= 12) return '高风险';
+  if (score <= 16) return '中风险';
+  return '低风险';
 }
 function fallRiskLevel(score?: number): string {
   if (score == null) return '—';
-  if (score >= 45) return '高';
-  if (score >= 25) return '中';
-  return '低';
+  if (score >= 45) return '高风险';
+  if (score >= 25) return '中风险';
+  return '低风险';
 }
 
 import { PATIENTS_FULL } from '../data/patients';
@@ -122,7 +122,7 @@ export const PatientRecords: FC = () => {
           <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-warm-100 rounded-lg hover:bg-warm-200"><Filter className="w-3 h-3" /> 筛选</button>
         </div>
         <div className="overflow-x-auto">
-        <table className="w-full text-xs">
+        <table className="w-full text-xs table-fixed">
           <thead className="bg-warm-50">
             <tr>
               <th className="text-left px-2 py-2 font-semibold text-slate-600 w-[36px]"></th>
@@ -138,7 +138,7 @@ export const PatientRecords: FC = () => {
               <th className="text-left px-2 py-2 font-semibold text-slate-600">康复治疗师</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">营养师</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">护理员</th>
-              <th className="text-center px-2 py-2 font-semibold text-slate-600">状态</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">状态</th>
             </tr>
           </thead>
           <tbody>
@@ -158,17 +158,21 @@ export const PatientRecords: FC = () => {
                     </span>
                   </td>
                   <td className="px-2 py-2.5">
-                    <span className="text-[10px] font-semibold text-slate-600">{bradenRisk((p as any).bradenScore)}</span>
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${(p as any).bradenScore != null && (p as any).bradenScore <= 12 ? 'bg-red-50 text-red-600' : (p as any).bradenScore <= 16 ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                      {bradenRisk((p as any).bradenScore)}
+                    </span>
                   </td>
                   <td className="px-2 py-2.5">
-                    <span className="text-[10px] font-semibold text-slate-600">{fallRiskLevel((p as any).fallRiskScore)}</span>
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${(p as any).fallRiskScore != null && (p as any).fallRiskScore >= 45 ? 'bg-red-50 text-red-600' : (p as any).fallRiskScore >= 25 ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                      {fallRiskLevel((p as any).fallRiskScore)}
+                    </span>
                   </td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCaseManager || '—'}</td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNurse || '—'}</td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedRehabTherapist || '—'}</td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNutritionist || '—'}</td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCareWorker || '—'}</td>
-                  <td className="px-2 py-2.5 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusC}`}>{p.status}</span></td>
+                  <td className="px-2 py-2.5"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusC}`}>{p.status}</span></td>
                 </tr>
               );
             })}
