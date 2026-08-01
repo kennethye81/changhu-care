@@ -400,7 +400,7 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     const max = Math.max(...vals);
     const firstMean = firstHalf.reduce((a,b) => a + b, 0) / half;
     const secondMean = secondHalf.reduce((a,b) => a + b, 0) / half;
-    const trend = secondMean > firstMean + 1 ? '↑ Rising' : secondMean < firstMean - 1 ? '↓ Falling' : '→ Stable';
+    const trend = secondMean > firstMean + 1 ? '↑ 升高' : secondMean < firstMean - 1 ? '↓ 下降' : '→ 平稳';
     const ambers = vals.filter(v => getVitalColor(v, thr, VITAL_RANGE_KIND[key as string] ?? 'bounded') === 'amber').length;
     const reds = vals.filter(v => getVitalColor(v, thr, VITAL_RANGE_KIND[key as string] ?? 'bounded') === 'red').length;
     return { mean, min, max, firstMean, secondMean, trend, pctAmber: Math.round(ambers/n*100), pctRed: Math.round(reds/n*100) };
@@ -416,12 +416,12 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
 
   // Per-patient clinical context
   const context: Record<number, { name: string; conditions: string }> = {
-    1: { name: 'Cheung Wai Man', conditions: 'HF NYHA III, CKD3, T2DM, AF' },
-    2: { name: 'Wong Chi Ming', conditions: 'COPD GOLD 3, HTN, Dyslipidaemia' },
-    3: { name: 'Lam Ka Chun', conditions: 'CAP (resolving), Penicillin anaphylaxis' },
-    4: { name: 'Lau Suk Yee', conditions: 'UTI, CKD3, T2DM, HTN, Delirium' },
-    5: { name: 'Ho Tai Wai', conditions: 'Cellulitis Eron III, T2DM, HTN' },
-    6: { name: 'Ng Siu Wan', conditions: 'DVT LL, HTN, Dyslipidaemia, Warfarin' },
+    1: { name: '冯存富', conditions: 'HF NYHA III, CKD3, T2DM, AF' },
+    2: { name: '待录入', conditions: 'COPD GOLD 3, HTN, Dyslipidaemia' },
+    3: { name: '待录入', conditions: 'CAP (resolving), Penicillin anaphylaxis' },
+    4: { name: '待录入', conditions: 'UTI, CKD3, T2DM, HTN, Delirium' },
+    5: { name: '待录入', conditions: 'Cellulitis Eron III, T2DM, HTN' },
+    6: { name: '待录入', conditions: 'DVT LL, HTN, Dyslipidaemia, Warfarin' },
     7: { name: 'Chan Tai Ming', conditions: 'COPD GOLD 2, CAP (resolving), HTN' },
     ...NEW_VITALS_CONTEXT,
   };
@@ -431,22 +431,22 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
   const assessRR = () => {
     if (rrStats.pctRed > 5) return `呼吸急促发作 — ${rrStats.pctRed}%读数处于红色区域（最高${rrStats.max}次/分，${rrStats.trend}）。${ctx.conditions.includes('COPD') || ctx.conditions.includes('CAP') ? '依据GOLD 2024 / IDSA CAP，RR>24伴低氧血症提示急性恶化 — 需结合SpO₂和感染标志物综合判断。' : '需结合临床判断呼吸性或代谢性病因。'}`;
     if (rrStats.pctAmber > 10) return `呼吸频率在${rrStats.pctAmber}%读数中轻度升高（均值${rrStats.mean}次/分，${rrStats.trend}）。持续监测趋势并行完整NEWS评估。`;
-    return `呼吸频率${rrStats.trend} — 均值${rrStats.mean}次/分。${100 - rrStats.pctAmber - rrStats.pctRed}%时间处于绿色区域。`;
+    return `呼吸频率${rrStats.trend} — 均值${rrStats.mean}次/分。${Math.round(100 - rrStats.pctAmber - rrStats.pctRed)}%时间处于绿色区域。`;
   };
   const assessHR = () => {
     if (hrStats.pctRed > 5) return `检测到明显心动过速发作 — ${hrStats.pctRed}%读数处于红色区域（${hrStats.trend}）。${ctx.conditions.includes('HF') ? '依据ESC 2021指南，心衰患者需警惕 — 可能提示失代偿或房颤心率控制不足。' : ctx.conditions.includes('COPD') ? '依据GOLD 2024，可能反映COPD低氧驱动的交感神经激活。' : '需结合临床判断。'}`;
     if (hrStats.pctAmber > 10) return `轻度心动过速，${hrStats.pctAmber}%读数出现（${hrStats.trend}）。在当前临床状态下可接受范围内。`;
-    return `心率监测期间${hrStats.trend}（均值${hrStats.mean} bpm）。${100 - hrStats.pctAmber - hrStats.pctRed}%时间处于绿色区域。`;
+    return `心率监测期间${hrStats.trend}（均值${hrStats.mean} bpm）。${Math.round(100 - hrStats.pctAmber - hrStats.pctRed)}%时间处于绿色区域。`;
   };
   const assessBP = () => {
     if (sysStats.pctRed > 3) return `检测到高血压波动（收缩压最高${sysStats.max} mmHg）— ${sysStats.pctRed}%读数处于红色区域。${ctx.conditions.includes('CKD') ? '依据KDIGO 2024，血压控制对CKD3期肾脏保护至关重要。' : '中国高血压防治指南2024推荐目标<140/90。'}`;
     if (sysStats.pctAmber > 15) return `血压在${sysStats.pctAmber}%读数中中度升高（收缩压均值${sysStats.mean} mmHg，${sysStats.trend}）。监测恶化趋势。`;
-    return `血压控制良好 — 均值${sysStats.mean}/${diaStats.mean} mmHg，${sysStats.trend}。${100 - sysStats.pctAmber - sysStats.pctRed}%处于绿色区域。`;
+    return `血压控制良好 — 均值${sysStats.mean}/${diaStats.mean} mmHg，${sysStats.trend}。${Math.round(100 - sysStats.pctAmber - sysStats.pctRed)}%处于绿色区域。`;
   };
   const assessSpO2 = () => {
     if (spo2Stats.pctRed > 5) return `⚠️ 显著低氧发作 — ${spo2Stats.pctRed}%读数处于红色区域（最低${spo2Stats.min}%）。${ctx.conditions.includes('COPD') ? '依据GOLD 2024，COPD GOLD 2级SpO₂ <88%提示严重低氧血症，需氧疗和紧急临床复审。排除感染性急性加重。' : ctx.conditions.includes('CAP') ? '依据IDSA CAP指南，SpO₂ <92%定义为重症CAP。肺炎后低氧可能提示未完全缓解。' : '低氧需紧急评估肺源性或心源性病因。'}`;
     if (spo2Stats.pctAmber > 10) return `轻度间歇性低氧（${spo2Stats.pctAmber}%黄色区域，最低${spo2Stats.min}%）。${ctx.conditions.includes('COPD') ? '符合COPD GOLD分级基线 — 按GOLD 2024监测下降趋势。' : '监测进展情况。'}`;
-    return `血氧饱和度${spo2Stats.trend} — 均值${spo2Stats.mean}%，${100 - spo2Stats.pctAmber - spo2Stats.pctRed}%处于绿色区域。`;
+    return `血氧饱和度${spo2Stats.trend} — 均值${spo2Stats.mean}%，${Math.round(100 - spo2Stats.pctAmber - spo2Stats.pctRed)}%处于绿色区域。`;
   };
   const assessGlucose = () => {
     if (glucoseStats.pctRed > 3) return `⚠️ 血糖超出安全范围 — ${glucoseStats.pctRed}%读数处于危急值（${glucoseStats.min}–${glucoseStats.max} mg/dL）。${ctx.conditions.includes('T2DM') || ctx.conditions.includes('Diabetes') ? '依据ADA 2024，复查胰岛素/口服降糖方案并排查感染相关性高血糖。' : '未纳入NEWS评分 — 适用独立血糖预警协议（<70或>250为危急值）。立即复阅。'}`;
