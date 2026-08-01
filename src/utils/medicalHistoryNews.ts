@@ -23,16 +23,14 @@ export function formatSevenVitalLine(v: Vitals): string {
   return `RR ${v.rr}次/分 · 脉搏 ${v.hr} bpm · BP ${v.bpSystolic}/${v.bpDiastolic} mmHg · SpO₂ ${v.spo2}%${v.onSupplementalO2 ? ' (量表' + v.spo2Scale + ' + 吸氧)' : ''} · 血糖 ${v.bloodSugar} mg/dL · 体温 ${v.temp}°C`;
 }
 
-export function syncAiSummaryNews(patientId: number, diagnosis: string, aiSummary: string): string {
-  const vitals = ALL_DEFAULT_VITALS[patientId];
-  if (!vitals) return aiSummary;
-  const news = calculateNews(vitals, diagnosis);
-  const replacement = `NEWS ${formatNewsTierLabel(news)}`;
-  let result = aiSummary;
-  for (const pattern of NEWS_SUMMARY_PATTERNS) {
-    result = result.replace(pattern, replacement);
-  }
-  return result;
+export function syncAiSummaryNews(patientId: number, diagnosis: string, aiSummary: string): { overview: string; concerns: string[] } {
+  // Parse aiSummary: split at "AI核心关注" into overview + numbered concerns
+  const splitMarker = 'AI核心关注：';
+  const idx = aiSummary.indexOf(splitMarker);
+  const overview = idx > -1 ? aiSummary.slice(0, idx).trim() : aiSummary;
+  const concernsText = idx > -1 ? aiSummary.slice(idx + splitMarker.length).trim() : '';
+  const concerns = concernsText.split(/\d+\.\s+/).filter(Boolean).map(s => s.replace(/[—–]\s*$/, '').trim());
+  return { overview, concerns };
 }
 
 export function buildClinicalAlertText(

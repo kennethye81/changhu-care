@@ -423,16 +423,14 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
     }
   };
 
-  const aiParagraphs = history?.aiSummary
-    ? syncAiSummaryNews(patient.id, patient.diagnosis, history.aiSummary).split(/(?<=\.) (?=[A-Z0-9])/)
-    : [];
-
-  // Check if a paragraph contains AI concern/key markers
-  const isAiConcern = (text: string) => /Key AI concern|\b[1-9]\.\s|NEWS tier|NEWS (Low|Medium|High)|prognosis/i.test(text);
+  const aiSummaryData = history?.aiSummary
+    ? syncAiSummaryNews(patient.id, patient.diagnosis, history.aiSummary)
+    : null;
+  const { overview = '', concerns = [] } = aiSummaryData || {};
 
   return (
   <div>
-    <div className="sticky top-0 z-10 bg-warm-50 -mx-6 px-6 pt-6 pb-3">
+    <div className="sticky top-0 z-10 bg-white -mx-6 px-6 pt-6 pb-3 border-b border-slate-100">
       <ST title="病史档案" icon={FileText} />
     </div>
     {/* ─── 临床病史分类 ─── */}
@@ -488,21 +486,27 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
       </div>
     </div>
     {history?.aiSummary && (
-      <div className="sticky top-14 z-[5] bg-warm-50 -mx-6 px-6 pb-3">
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border-2 border-indigo-200 p-5">
-          <div className="flex items-start gap-3 mb-3">
-            <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"><Brain className="w-5 h-5 text-white" /></div>
-            <div>
-              <div className="flex items-center gap-2"><span className="text-sm font-bold text-indigo-800">智能病史分析</span><span className="text-[9px] bg-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded-full font-semibold">分析</span></div>
-            </div>
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border-2 border-indigo-200 p-5 mb-4">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"><Brain className="w-5 h-5 text-white" /></div>
+          <div>
+            <div className="flex items-center gap-2"><span className="text-sm font-bold text-indigo-800">智能病史分析</span><span className="text-[9px] bg-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded-full font-semibold">AI</span></div>
           </div>
-          <div className="space-y-2 ml-[52px]">
-            {aiParagraphs.map((p, i) => {
-              const concern = isAiConcern(p);
-              return (
-              <p key={i} className={`text-[11px] leading-relaxed ${concern ? 'bg-amber-100/70 text-amber-900 font-semibold rounded-lg px-2 py-1 border border-amber-300' : 'text-slate-700'}`}>{p.trim()}</p>
-              );
-            })}
+        </div>
+        <div className="ml-[52px]">
+          {/* Overview */}
+          <p className="text-xs text-slate-600 leading-relaxed mb-3 pb-3 border-b border-indigo-100">{overview}</p>
+          {/* Concerns — categorized cards */}
+          <h4 className="text-[10px] font-semibold text-indigo-500 mb-2 flex items-center gap-1">
+            <AlertTriangle className="w-3 h-3" /> 核心关注点
+          </h4>
+          <div className="space-y-2">
+            {concerns.map((c, i) => (
+              <div key={i} className="bg-indigo-100/60 border border-indigo-200 rounded-lg px-3 py-2">
+                <span className="text-[9px] text-indigo-400 font-semibold mr-1">{i + 1}.</span>
+                <span className="text-[11px] text-indigo-800 leading-relaxed">{c}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -528,13 +532,13 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
             {entry.labs && (
               <div className="flex items-start gap-2 cursor-pointer hover:bg-purple-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.labs!, 'lab'))}>
                 <FlaskConical className="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">检验结果</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
+                <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">检验结果</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
               </div>
             )}
             {entry.imaging && (
               <div className="flex items-start gap-2 cursor-pointer hover:bg-indigo-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.imaging!, 'imaging'))}>
                 <Microscope className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">影像</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
+                <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">影像</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
               </div>
             )}
             {entry.prescriptions && (<div className="flex items-start gap-2"><Pill className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-teal-600">处方</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.prescriptions}</p></div></div>)}
@@ -551,7 +555,7 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
           <div className="sticky top-0 bg-white px-5 py-4 flex items-center justify-between border-b z-10 rounded-t-2xl">
             <div className="flex items-center gap-2">
               {reportModal.includes('LABORATORY') ? <FlaskConical className="w-4 h-4 text-purple-500" /> : <Microscope className="w-4 h-4 text-indigo-500" />}
-              <span className="text-sm font-bold text-slate-800">{reportModal.includes('LABORATORY') ? 'Lab Report' : 'Imaging Report'}</span>
+              <span className="text-sm font-bold text-slate-800">{reportModal.includes('LABORATORY') ? '检验报告' : '影像报告'}</span>
             </div>
             <button onClick={() => setReportModal(null)} className="w-7 h-7 rounded-full bg-warm-100 flex items-center justify-center hover:bg-warm-200"><X className="w-3.5 h-3.5 text-slate-500" /></button>
           </div>
@@ -560,7 +564,7 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
           </div>
           <div className="border-t px-5 py-3 flex items-center gap-2 text-[9px] text-slate-400">
             <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-            Verified electronic record · HK Hospital Authority
+            电子病历已验证 · 常州市卫健委
           </div>
         </div>
       </div>

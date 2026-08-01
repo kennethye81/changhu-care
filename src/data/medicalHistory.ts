@@ -28,55 +28,7 @@ export const MEDICAL_HISTORY: Record<number, PatientHistory> = {};
 // ═══════════════════════════════════════════════════════════
 MEDICAL_HISTORY[1] = {
   patientId: 1,
-  entries: [
-    {
-      date: '2026-06-18', type: 'discharge', facility: 'HK Sanatorium & Hospital', department: 'Cardiology',
-      physician: '王医生（内科）', chiefComplaint: '高血压3级极高危 — 居家照护',
-      diagnosis: 'Acute Decompensated Heart Failure (NYHA III→IV); Ischaemic Cardiomyopathy (LVEF 30%); Permanent AF; CKD Stage 3 (eGFR 42); T2DM',
-      labs: 'BNP 850 (↓ from 2,200), Cr 138, eGFR 42, K⁺ 3.9, Hb 11.2, HbA1c 7.4%',
-      imaging: 'ECHO: LVEF 30%, dilated LV, moderate MR, LA enlargement. CXR: pulmonary congestion improved.',
-      prescriptions: 'Sacubitril/Valsartan 97/103mg BID, Bisoprolol 5mg qd, Furosemide 40mg BID, Spironolactone 25mg qd, Apixaban 5mg BID, Metformin 500mg BID',
-      procedures: 'IV Furosemide 80mg bolus → 10mg/h infusion. Net negative 3.2L in 48h.',
-      notes: 'Decompensation triggered by dietary indiscretion (high-sodium meal) + missed Furosemide doses. Responded to IV diuresis. Weight from 69.9→68.0kg. Pedal oedema improved 3+→1+. Discharged home with daily HaH RN visits. GP followed up. Fluid restriction 1.5L/day, Na <2g/day.',
-    },
-    {
-      date: '2026-06-14', type: 'admission', facility: 'HK Sanatorium & Hospital', department: 'Cardiology',
-      physician: '王医生（内科）', chiefComplaint: 'Progressive dyspnoea, orthopnoea, bilateral leg swelling × 5 days',
-      diagnosis: 'Acute Decompensated Heart Failure (NYHA III→IV); AF with RVR; Acute-on-Chronic Kidney Injury',
-      labs: 'BNP 2,200, Troponin I 0.06, K⁺ 5.1, Cr 188, eGFR 28. CXR: pulmonary oedema, pleural effusions.',
-      imaging: 'ECHO: LVEF 30% (no change from prior). CXR: bilateral pulmonary oedema, small bilateral pleural effusions.',
-      prescriptions: 'IV Furosemide 80mg bolus → 10mg/h infusion. O₂ 4L NC. Bisoprolol uptitrated.',
-      notes: 'Decompensation triggered by dietary indiscretion + missed Furosemide × 2 days. AF with RVR on admission. Renal function acutely worsened (Cr 138→188) — likely pre-renal from congestion. Responded to IV diuresis: net -3.2L/48h. Renal function improving with decongestion.',
-    },
-    {
-      date: '2026-01-10', type: 'outpatient', facility: 'HK Sanatorium & Hospital', department: 'Cardiology Clinic',
-      physician: '王医生（内科）', chiefComplaint: '高血压复诊 — 头晕好转, 体重稳定',
-      diagnosis: 'Heart Failure NYHA II-III; Ischaemic Cardiomyopathy (inferior MI 2023); AF; CKD Stage 3',
-      labs: 'BNP 420, Cr 130, K⁺ 4.2. INR 2.1 (on Warfarin→switched to Apixaban). HbA1c 7.1%.',
-      imaging: 'ECHO: LVEF 30% — no change from 6 months ago.',
-      prescriptions: 'Sacubitril/Valsartan uptitrated 49/51→97/103mg BID. Warfarin→Apixaban 5mg BID. Furosemide 40mg qd→BID.',
-      notes: 'Stable NYHA II-III. Entresto well-tolerated. Switched to Apixaban for convenience (no INR monitoring). HF nurse referred for home monitoring. T2DM control acceptable (HbA1c 7.1%).',
-    },
-    {
-      date: '2023-08-22', type: 'admission', facility: 'United Christian Hospital', department: 'Cardiology',
-      physician: '王医生（内科）', chiefComplaint: 'Severe chest pain + diaphoresis — inferior STEMI',
-      diagnosis: 'Inferior STEMI; Complete Heart Block (transient); HF with reduced EF (post-MI)',
-      labs: 'Troponin I 45.6 (peak), CK-MB 128. K⁺ 4.0, Cr 95.',
-      imaging: 'ECG: ST elevation II, III, aVF. Coronary Angiogram: 100% proximal RCA occlusion.',
-      prescriptions: 'Loading: Aspirin 300mg + Ticagrelor 180mg. Post-PCI: Aspirin 100mg qd, Ticagrelor 90mg BID, Bisoprolol 2.5mg qd, Ramipril 2.5mg BID.',
-      procedures: 'Primary PCI with DES to proximal RCA. Temporary pacing wire for CHB (resolved Day 2).',
-      notes: 'Successful PCI. CHB resolved spontaneously. LVEF 35% post-MI on Day 3 ECHO. Discharged Day 8 with GDMT. Cardiac rehab referral placed.',
-    },
-    {
-      date: '2023-02-15', type: 'outpatient', facility: 'Kwun Tong GOPC', department: 'Family Medicine',
-      physician: '王医生（内科）', chiefComplaint: 'Routine check-up — mild HTN, overweight',
-      diagnosis: 'Essential HTN (Stage 1, 142/88); Overweight (BMI 27.6); Impaired Fasting Glucose (FPG 6.4 mmol/L)',
-      labs: 'FPG 6.4, HbA1c 6.2%, Cr 88, Lipids: TC 5.6, LDL 3.4, HDL 1.0, TG 2.2.',
-      imaging: 'ECG: NSR, no LVH. BMI 27.6.',
-      prescriptions: 'Lifestyle modifications advised. No medication started at this visit.',
-      notes: 'Pre-diabetic range. BP borderline. Advised weight loss, exercise, dietary changes. Follow-up in 6 months. No prior significant medical history.',
-    },
-  ],
+  entries: [],
   aiSummary: '冯存富，77岁男性，高血压3级极高危10年病史，不规则服药。临床轨迹：2025年11月初诊BP 172/95伴双下肢乏力（Barthel 30分重度依赖，Braden 10分压疮高危）→ 2025年12月血压部分控制（155/88）→ 2026年3月骶尾部压疮II期入院（3cm×4cm），提示长期卧床+营养不良导致皮肤完整性受损。AI核心关注：1. 血压管理 — 氨氯地平5mg+厄贝沙坦150mg方案下BP控制不充分，需优化GDMT并加强服药依从性监督；2. 压疮防控 — Braden 16分中度风险，翻身q2h+泡沫敷料+营养支持必不可少，社区护士每周换药监督；3. 跌倒风险极高（Morse 105分）— 助行器适配+居家安全改造+防跌倒教育；4. 功能衰退 — Barthel 30分重度依赖，双侧上下肢活动异常，需持续ADL协助；5. 照护者支持 — 王小凤（配偶）为主要照护者，需护理技巧培训及喘息服务。',
 };
 
