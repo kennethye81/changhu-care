@@ -2,6 +2,7 @@ import { useState, type FC, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PATIENTS_FULL, type PatientFull } from '../data/patients';
 import { CARE_TEAM, getPatientFamily, FAMILY_COMMS, CN_CARE_TEAM, type FamilyContact } from '../data/careTeam';
+import { MONTHLY_SCHEDULE } from '../data/monthlySchedule';
 import { MEDICAL_HISTORY } from '../data/medicalHistory';
 import { DEFAULT_VITALS } from '../store/patientStore';
 import { usePatientStore } from '../store/patientStore';
@@ -21,6 +22,7 @@ import {
   Smartphone, PhoneCall, Heart, Activity, Thermometer, Droplets,
   Brain, BedDouble, GlassWater, AlertTriangle,
   Phone, Mail, Clock, Pill, Stethoscope, FlaskConical, Microscope, X, CheckCircle2, Sparkles,
+  Shield, Apple, BarChart3,
 } from 'lucide-react';
 
 type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing';
@@ -489,11 +491,21 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {patient.serviceModules.map((m: any) => {
-                const iconMap: Record<string, string> = { M1: '🛏️', M2: '🦯', M3: '💪', M4: '💊', M5: '🥗', M6: '🩺', M7: '📊' };
+                const iconMap: Record<string, { icon: typeof BedDouble; color: string }> = {
+                  M1: { icon: BedDouble, color: 'text-teal-500' },
+                  M2: { icon: Shield, color: 'text-amber-500' },
+                  M3: { icon: Activity, color: 'text-indigo-500' },
+                  M4: { icon: Heart, color: 'text-red-500' },
+                  M5: { icon: Apple, color: 'text-emerald-500' },
+                  M6: { icon: Stethoscope, color: 'text-purple-500' },
+                  M7: { icon: BarChart3, color: 'text-cyan-500' },
+                };
+                const entry = iconMap[m.id] || { icon: Sparkles, color: 'text-slate-400' };
+                const Icon = entry.icon;
                 return (
-                  <div key={m.id} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5">
+                  <div key={m.id} className="bg-white border border-slate-100 rounded-xl px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-sm">{iconMap[m.id] || '📋'}</span>
+                      <Icon className={`w-4 h-4 ${entry.color}`} />
                       <span className="text-[11px] font-bold text-slate-800">{m.name}</span>
                       <span className="text-[9px] text-slate-400 bg-slate-100 px-1 py-0.5 rounded ml-auto">{m.frequency}</span>
                     </div>
@@ -614,13 +626,42 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
             <button onClick={() => setCarePlanModal(false)} className="text-white/80 hover:text-white"><X className="w-4 h-4" /></button>
           </div>
           <div className="p-5 space-y-4">
-            <div>
-              <p className="text-[10px] text-slate-400 font-medium mb-2">服务频率</p>
-              <p className="text-sm text-slate-700 font-medium">{patient.carePlan.serviceFrequency}</p>
-              <p className="text-xs text-slate-500 mt-0.5">每次 {patient.carePlan.visitDuration}</p>
+            <div className="bg-teal-50 border border-teal-200 rounded-xl p-3">
+              <p className="text-[10px] text-teal-700 font-semibold mb-1">📋 月度排程概览</p>
+              <p className="text-xs text-teal-600">{patient.carePlan.serviceFrequency} · 每次{patient.carePlan.visitDuration} · 共{MONTHLY_SCHEDULE.length}次上门</p>
             </div>
             <div>
-              <p className="text-[10px] text-slate-400 font-medium mb-2">照护目标</p>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">2026年8月 详细排程（周一/周三/周五/周日 · 每周4次）</p>
+              <div className="overflow-x-auto -mx-1">
+                <table className="w-full text-[10px] border-collapse">
+                  <thead>
+                    <tr className="bg-slate-100 text-slate-500">
+                      <th className="text-left px-2 py-1.5 w-[24px]">#</th>
+                      <th className="text-left px-2 py-1.5 w-[44px]">日期</th>
+                      <th className="text-left px-2 py-1.5 w-[66px]">时段</th>
+                      <th className="text-left px-2 py-1.5 w-[58px]">角色</th>
+                      <th className="text-left px-2 py-1.5">服务内容</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {MONTHLY_SCHEDULE.map((row, i) => (
+                      <tr key={i} className={`hover:bg-slate-50 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'}`}>
+                        <td className="px-2 py-1.5 text-slate-400">{i + 1}</td>
+                        <td className="px-2 py-1.5 font-semibold text-slate-700 whitespace-nowrap">{row.d}</td>
+                        <td className="px-2 py-1.5 text-teal-600 font-medium whitespace-nowrap">{row.t}</td>
+                        <td className="px-2 py-1.5 text-slate-600 whitespace-nowrap">{row.r}</td>
+                        <td className="px-2 py-1.5 text-slate-600 leading-relaxed">
+                          {row.c}
+                          <div className="text-[8px] text-slate-400 mt-0.5 italic">{row.ref}</div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">照护目标（30天）</p>
               <ul className="space-y-1">
                 {patient.carePlan.goals.map((g, i) => (
                   <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
@@ -638,23 +679,6 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
                   </li>
                 ))}
               </ul>
-            </div>
-            <div>
-              <p className="text-[10px] text-slate-400 font-medium mb-2">人员分配</p>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {[
-                  { label: '个案经理', value: patient.carePlan.assignedCaseManager },
-                  { label: '护士', value: patient.carePlan.assignedNurse },
-                  { label: '护理员', value: patient.carePlan.assignedCareWorker },
-                  { label: '康复治疗师', value: patient.carePlan.assignedRehabTherapist },
-                  { label: '营养师', value: patient.carePlan.assignedNutritionist },
-                ].map((r, i) => (
-                  <div key={i} className="bg-slate-50 rounded-lg px-3 py-2">
-                    <span className="text-[10px] text-slate-400">{r.label}</span>
-                    <p className="text-slate-700 font-medium mt-0.5">{r.value || '未分配'}</p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
