@@ -1,9 +1,9 @@
 import { useState, useMemo, type FC } from 'react';
 import { useAuth } from '../auth/AuthContext';
-import { canRead, canEdit, type TabKey, type Role } from '../auth/types';
+import { canRead, can编辑, type TabKey, type Role } from '../auth/types';
 import {
   X, Heart, Activity, FileText, Pill, ClipboardList,
-  CalendarDays, Smartphone, PhoneCall, Edit3, Plus,
+  CalendarDays, Smartphone, PhoneCall, 编辑3, Plus,
   Users, Thermometer, Droplets, Wind,
 } from 'lucide-react';
 import { PATIENTS_FULL, type PatientFull } from '../data/patients';
@@ -25,13 +25,13 @@ interface PatientDetailModalProps {
 }
 
 const TABS: { key: TabKey; label: string; icon: FC<{ className?: string }> }[] = [
-  { key: 'vitals', label: 'Vitals & Trends', icon: Activity },
-  { key: 'history', label: 'Medical History', icon: FileText },
-  { key: 'medication', label: 'Medication', icon: Pill },
-  { key: 'followup_logs', label: 'Follow-up Logs', icon: ClipboardList },
-  { key: 'care_plan', label: 'Care Plan', icon: CalendarDays },
-  { key: 'devices', label: 'Devices', icon: Smartphone },
-  { key: 'billing', label: 'Billing', icon: PhoneCall },
+  { key: 'vitals', label: '体征与趋势', icon: Activity },
+  { key: 'history', label: '病史', icon: FileText },
+  { key: 'medication', label: '用药', icon: Pill },
+  { key: 'followup_logs', label: '随访记录', icon: ClipboardList },
+  { key: 'care_plan', label: '照护计划', icon: CalendarDays },
+  { key: 'devices', label: '设备', icon: Smartphone },
+  { key: 'billing', label: '账单', icon: PhoneCall },
 ];
 
 const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) => {
@@ -46,7 +46,7 @@ const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) =
     setActiveTab(visibleTabs[0].key);
   }
 
-  const editable = canEdit(role, activeTab);
+  const editable = can编辑(role, activeTab);
 
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center pt-10 bg-black/40 backdrop-blur-sm" onClick={onClose}>
@@ -61,12 +61,12 @@ const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) =
               <h2 className="text-lg font-bold text-slate-900">{patient.name}</h2>
               <p className="text-xs text-slate-500">{patient.gender}, {patient.age} yrs · {patient.diagnosis}</p>
             </div>
-            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">Active Monitoring</span>
+            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full">实时监测</span>
           </div>
           <div className="flex items-center gap-3">
             {editable && (
               <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                <Edit3 className="w-3.5 h-3.5" /> Edit
+                <编辑3 className="w-3.5 h-3.5" /> 编辑
               </button>
             )}
             <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors">
@@ -80,7 +80,7 @@ const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) =
           {visibleTabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.key;
-            const isEdit = canEdit(role, tab.key);
+            const is编辑 = can编辑(role, tab.key);
             return (
               <button
                 key={tab.key}
@@ -91,7 +91,7 @@ const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) =
               >
                 <Icon className="w-3.5 h-3.5" />
                 {tab.label}
-                {isEdit && <span className="text-[9px] bg-blue-100 text-blue-600 px-1 rounded font-bold">EDIT</span>}
+                {is编辑 && <span className="text-[9px] bg-blue-100 text-blue-600 px-1 rounded font-bold">编辑</span>}
               </button>
             );
           })}
@@ -101,11 +101,11 @@ const PatientDetailModal: FC<PatientDetailModalProps> = ({ patient, onClose }) =
         <div className="flex-1 overflow-y-auto p-6">
           {activeTab === 'vitals' && <VitalsTab patient={patient} />}
           {activeTab === 'history' && <HistoryTab patient={patient} />}
-          {activeTab === 'medication' && fullPatient && <MedicationTab patient={fullPatient} editable={canEdit(role, 'medication')} />}
-          {activeTab === 'followup_logs' && fullPatient && <FollowupLogsTab patient={fullPatient} editable={canEdit(role, 'followup_logs')} />}
-          {activeTab === 'care_plan' && fullPatient && <CarePlanTab editable={canEdit(role, 'care_plan')} role={role} patient={fullPatient} />}
-          {activeTab === 'devices' && <DevicesTab patient={patient} />}
-          {activeTab === 'billing' && <BillingTab editable={canEdit(role, 'billing')} />}
+          {activeTab === 'medication' && fullPatient && <用药Tab patient={fullPatient} editable={can编辑(role, 'medication')} />}
+          {activeTab === 'followup_logs' && fullPatient && <FollowupLogsTab patient={fullPatient} editable={can编辑(role, 'followup_logs')} />}
+          {activeTab === 'care_plan' && fullPatient && <CarePlanTab editable={can编辑(role, 'care_plan')} role={role} patient={fullPatient} />}
+          {activeTab === 'devices' && <设备Tab patient={patient} />}
+          {activeTab === 'billing' && <账单Tab editable={can编辑(role, 'billing')} />}
         </div>
       </div>
     </div>
@@ -119,11 +119,11 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
   const fullPatient = PATIENTS_FULL.find(fp => fp.id === p.id);
   const diagnosis = fullPatient?.diagnosis ?? p.diagnosis;
   const news = calculateNews(v, diagnosis);
-  const overallStatus = news.tier === 'high' ? 'critical' : news.tier === 'medium' || news.redScore ? 'attention' : 'stable';
+  const overall状态 = news.tier === 'high' ? 'critical' : news.tier === 'medium' || news.redScore ? 'attention' : 'stable';
   const now = getDemoNow();
   const timeLabels: string[] = [];
   for (let i = 8; i >= 0; i--) {
-    const t = new Date(now.getTime() - i * 15 * 60000);
+    const t = new 日期(now.getTime() - i * 15 * 60000);
     timeLabels.push(`${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`);
   }
 
@@ -147,10 +147,10 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
     alert: boolean;
     refRange: string;
   }> = [
-    { label: 'Respiratory Rate', value: String(v.rr), unit: '/min', icon: Wind, color: '#14b8a6', trend: genTrend(v.rr, 4, 9), alert: v.rr > 24 || v.rr < 8, refRange: '12–20 /min' },
-    { label: 'Heart Rate', value: String(v.hr), unit: 'bpm', icon: Heart, color: '#ef4444', trend: genTrend(v.hr, 10, 9), alert: v.hr > 90, refRange: '60–100 bpm' },
+    { label: '呼吸频率', value: String(v.rr), unit: '/min', icon: Wind, color: '#14b8a6', trend: genTrend(v.rr, 4, 9), alert: v.rr > 24 || v.rr < 8, refRange: '12–20 /min' },
+    { label: '心率', value: String(v.hr), unit: 'bpm', icon: Heart, color: '#ef4444', trend: genTrend(v.hr, 10, 9), alert: v.hr > 90, refRange: '60–100 bpm' },
     {
-      label: 'Blood Pressure',
+      label: '血压',
       value: `${v.bpSystolic}/${v.bpDiastolic}`,
       unit: 'mmHg',
       icon: Activity,
@@ -162,8 +162,8 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
       refRange: '<140/<90 mmHg',
     },
     { label: 'SpO₂', value: String(v.spo2), unit: '%', icon: Droplets, color: '#06b6d4', trend: genTrend(v.spo2, 2.5, 9), alert: v.spo2 < 92, refRange: '≥92%' },
-    { label: 'Blood Glucose', value: String(v.bloodSugar), unit: 'mg/dL', icon: Activity, color: '#a855f7', trend: genTrend(v.bloodSugar, 20, 9), alert: v.bloodSugar < 80 || v.bloodSugar > 180, refRange: '80–180 mg/dL' },
-    { label: 'Temperature', value: String(v.temp), unit: '°C', icon: Thermometer, color: '#f59e0b', trend: genTrend(v.temp, 0.4, 9), alert: v.temp > 37.5, refRange: '36.1–37.2°C' },
+    { label: '血糖', value: String(v.bloodSugar), unit: 'mg/dL', icon: Activity, color: '#a855f7', trend: genTrend(v.bloodSugar, 20, 9), alert: v.bloodSugar < 80 || v.bloodSugar > 180, refRange: '80–180 mg/dL' },
+    { label: '体温', value: String(v.temp), unit: '°C', icon: Thermometer, color: '#f59e0b', trend: genTrend(v.temp, 0.4, 9), alert: v.temp > 37.5, refRange: '36.1–37.2°C' },
   ];
 
   const buildSmoothPath = (pts: number[], w: number, h: number): string => {
@@ -183,11 +183,11 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
 
   const W = 480, H = 80, PAD = 40;
 
-  const statusStyle = overallStatus === 'critical'
-    ? { bg: 'bg-red-50', border: 'border-red-300', text: 'text-red-700', badge: 'CRITICAL', badgeC: 'bg-red-500' }
-    : overallStatus === 'attention'
-    ? { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-700', badge: 'NEEDS ATTENTION', badgeC: 'bg-amber-500' }
-    : { bg: 'bg-emerald-50', border: 'border-emerald-300', text: 'text-emerald-700', badge: 'STABLE', badgeC: 'bg-emerald-500' };
+  const statusStyle = overall状态 === 'critical'
+    ? { bg: 'bg-red-50', border: 'border-red-300', text: 'text-red-700', badge: '危重', badgeC: 'bg-red-500' }
+    : overall状态 === 'attention'
+    ? { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-700', badge: '需关注', badgeC: 'bg-amber-500' }
+    : { bg: 'bg-emerald-50', border: 'border-emerald-300', text: 'text-emerald-700', badge: '稳定', badgeC: 'bg-emerald-500' };
 
   const newsLabel = formatNewsTierLabel(news);
   const interventionText = `${news.escalation} ${news.monitoringLabel}.`;
@@ -207,7 +207,7 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
       rr: 'RR mildly elevated but stable. Monitor with full six-parameter review.',
       hr: 'HR mildly elevated but stable trajectory. No progressive tachycardia pattern. Consistent with baseline.',
       bp: 'BP mildly elevated, flat trajectory. No acute escalation. Continue current regimen with scheduled recheck.',
-      temp: 'Temperature within acceptable range. Stable readings across 2h window. No febrile pattern.',
+      temp: '体温 within acceptable range. Stable readings across 2h window. No febrile pattern.',
       spo2: 'SpO₂ within normal range. Minor fluctuations consistent with activity and position changes.',
       glucose: 'Glucose intermittently outside ideal range — separate alert protocol applies; not scored in NEWS.',
       intervention: interventionText,
@@ -226,15 +226,15 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
   };
 
   const vitalKey = (label: string) => {
-    if (label === 'Respiratory Rate') return 'rr';
-    if (label === 'Heart Rate') return 'hr';
-    if (label === 'Blood Pressure') return 'bp';
-    if (label === 'Temperature') return 'temp';
-    if (label === 'Blood Glucose') return 'glucose';
+    if (label === '呼吸频率') return 'rr';
+    if (label === '心率') return 'hr';
+    if (label === '血压') return 'bp';
+    if (label === '体温') return 'temp';
+    if (label === '血糖') return 'glucose';
     return 'spo2';
   };
 
-  const s = aiSummaries[overallStatus];
+  const s = aiSummaries[overall状态];
   const summary = vitals.filter(v => v.alert).length > 0
     ? vitals.filter(v => v.alert).map(v => (s as Record<string, string>)[vitalKey(v.label)]).join(' ')
     : (s as Record<string, string>).hr;
@@ -304,10 +304,10 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
         <div className="flex items-center gap-2 mb-2">
           <div className={`w-2 h-2 rounded-full ${statusStyle.badgeC} animate-pulse`} />
           <strong className={statusStyle.text}>AI Insight · {statusStyle.badge}</strong>
-          <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded ${overallStatus === 'critical' ? 'text-red-600 bg-red-100' : overallStatus === 'attention' ? 'text-amber-600 bg-amber-100' : 'text-emerald-600 bg-emerald-100'}`}>NEWS Tier: {s.newsLabel}</span>
+          <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded ${overall状态 === 'critical' ? 'text-red-600 bg-red-100' : overall状态 === 'attention' ? 'text-amber-600 bg-amber-100' : 'text-emerald-600 bg-emerald-100'}`}>NEWS Tier: {s.newsLabel}</span>
         </div>
         <p className={`${statusStyle.text} leading-relaxed mb-2`}>{summary}</p>
-        <div className={`mt-2 pt-2 border-t ${overallStatus === 'critical' ? 'border-red-200' : overallStatus === 'attention' ? 'border-amber-200' : 'border-emerald-200'}`}>
+        <div className={`mt-2 pt-2 border-t ${overall状态 === 'critical' ? 'border-red-200' : overall状态 === 'attention' ? 'border-amber-200' : 'border-emerald-200'}`}>
           <p className="text-[10px] font-semibold mb-1">Recommended Interventions:</p>
           <p className="text-[10px] leading-relaxed opacity-80">{s.intervention}</p>
         </div>
@@ -316,15 +316,15 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
   );
 };
 
-const MedicationTab: FC<{ patient: PatientFull; editable: boolean }> = ({ patient: p, editable }) => {
+const 用药Tab: FC<{ patient: PatientFull; editable: boolean }> = ({ patient: p, editable }) => {
   const meds = p.medications;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-700">Current Medications</h3>
+        <h3 className="text-sm font-bold text-slate-700">Current 用药s</h3>
         {editable && (
           <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700">
-            <Plus className="w-3.5 h-3.5" /> Add Medication
+            <Plus className="w-3.5 h-3.5" /> Add 用药
           </button>
         )}
       </div>
@@ -337,10 +337,10 @@ const MedicationTab: FC<{ patient: PatientFull; editable: boolean }> = ({ patien
                 <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded ${med.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{med.status}</span>
               </div>
               <p className="text-[10px] text-slate-500 mt-0.5">{med.dose} · {med.route} · {med.frequency}</p>
-              <p className="text-[10px] text-slate-400">Started: {med.startDate} · {med.purpose}</p>
+              <p className="text-[10px] text-slate-400">Started: {med.start日期} · {med.purpose}</p>
             </div>
             <div className="flex items-center gap-2 ml-3">
-              {editable && <button className="text-[10px] text-blue-600 font-medium hover:underline whitespace-nowrap">Edit</button>}
+              {editable && <button className="text-[10px] text-blue-600 font-medium hover:underline whitespace-nowrap">编辑</button>}
             </div>
           </div>
         ))}
@@ -352,23 +352,23 @@ const MedicationTab: FC<{ patient: PatientFull; editable: boolean }> = ({ patien
 const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> = ({ editable, role, patient: p }) => {
   const cp = p.carePlan;
   const carePlans = usePatientStore(s => s.carePlans);
-  const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
+  const carePlan状态 = useCollaborationStore(s => s.carePlan状态);
   const plan = carePlans[p.id];
   const today = DEMO_CARE_PLAN_DATE;
   const todaySchedule = useMemo(
-    () => getTodayActivities(plan, p.id, today, carePlanStatus),
-    [plan, p.id, today, carePlanStatus],
+    () => getTodayActivities(plan, p.id, today, carePlan状态),
+    [plan, p.id, today, carePlan状态],
   );
   const recentLogs = plan?.logs || [];
   
   return (
   <div className="space-y-4">
     <div className="flex items-center justify-between">
-      <h3 className="text-sm font-bold text-slate-700">Home Care Plan</h3>
+      <h3 className="text-sm font-bold text-slate-700">Home 照护计划</h3>
       {editable && (
         <div className="flex gap-2">
           <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700">
-            <Edit3 className="w-3.5 h-3.5" /> Edit Care Plan
+            <编辑3 className="w-3.5 h-3.5" /> 编辑 照护计划
           </button>
           <button className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white text-xs font-semibold rounded-lg hover:bg-emerald-700">
             <Users className="w-3.5 h-3.5" /> Assign Staff
@@ -378,16 +378,16 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
     </div>
 
     <div className="bg-white border border-slate-200 rounded-xl p-4">
-      <h4 className="text-xs font-bold text-slate-600 mb-3">Care Plan Summary</h4>
+      <h4 className="text-xs font-bold text-slate-600 mb-3">照护计划 Summary</h4>
       <div className="grid grid-cols-2 gap-3 text-xs">
         {[
-          { label: 'Service Frequency', value: cp.serviceFrequency },
-          { label: 'Visit Duration', value: cp.visitDuration },
-          { label: 'Assigned Doctor', value: cp.assignedDoctor },
+          { label: '服务频率', value: cp.serviceFrequency },
+          { label: '访视时长', value: cp.visitDuration },
+          { label: '责任医生', value: cp.assignedDoctor },
           { label: 'Case Manager', value: cp.assignedCaseManager || '—' },
-          { label: 'Assigned Nurse', value: cp.assignedNurse },
-          { label: 'Rehab Therapist', value: cp.assignedRehabTherapist || '—' },
-          { label: 'Care Worker', value: cp.assignedCareWorker || '—' },
+          { label: '责任护士', value: cp.assignedNurse },
+          { label: '康复治疗师', value: cp.assignedRehabTherapist || '—' },
+          { label: '照护师', value: cp.assignedCareWorker || '—' },
         ].map((item, i) => (
           <div key={i} className="flex justify-between bg-slate-50 rounded-lg px-3 py-2">
             <span className="text-slate-500">{item.label}</span>
@@ -397,7 +397,7 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
       </div>
       
       <div className="mt-4">
-        <h4 className="text-xs font-bold text-slate-600 mb-2">Care Goals</h4>
+        <h4 className="text-xs font-bold text-slate-600 mb-2">照护目标</h4>
         <div className="space-y-1">
           {cp.goals.map((g, i) => (
             <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
@@ -408,7 +408,7 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
       </div>
 
       <div className="mt-4">
-        <h4 className="text-xs font-bold text-slate-600 mb-2">Precautions</h4>
+        <h4 className="text-xs font-bold text-slate-600 mb-2">注意事项</h4>
         <div className="space-y-1">
           {cp.precautions.map((p, i) => (
             <div key={i} className="flex items-start gap-2 text-xs text-amber-700">
@@ -449,10 +449,10 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
       </div>
     )}
 
-    {/* Recent Follow-up Logs */}
+    {/* Recent 随访记录 */}
     {recentLogs.length > 0 && (
       <div className="bg-white border border-slate-200 rounded-xl p-4">
-        <h4 className="text-xs font-bold text-slate-600 mb-3">Recent Follow-up Logs</h4>
+        <h4 className="text-xs font-bold text-slate-600 mb-3">Recent 随访记录</h4>
         <div className="space-y-2 max-h-48 overflow-y-auto">
           {recentLogs.slice(0, 5).map((log, i) => (
             <div key={i} className="border-l-2 border-blue-200 pl-3 text-xs">
@@ -473,7 +473,7 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
 
     {role === 'doctor' && (
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-700">
-        <strong>Physician Note:</strong> You have read-only access to the Care Plan. The Nursing Director manages plan creation and staff assignment.
+        <strong>Physician Note:</strong> You have read-only access to the 照护计划. The Nursing Director manages plan creation and staff assignment.
       </div>
     )}
     {role === 'nurse' && (
@@ -490,32 +490,32 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
   );
 };
 
-const BillingTab: FC<{ editable: boolean }> = ({ editable }) => (
+const 账单Tab: FC<{ editable: boolean }> = ({ editable }) => (
   <div className="space-y-4">
-    <h3 className="text-sm font-bold text-slate-700">Service & Billing Records</h3>
+    <h3 className="text-sm font-bold text-slate-700">服务 & 账单 Records</h3>
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
       <table className="w-full text-xs">
         <thead className="bg-slate-50">
           <tr>
-            <th className="text-left px-4 py-2 font-semibold text-slate-600">Date</th>
-            <th className="text-left px-4 py-2 font-semibold text-slate-600">Service</th>
-            <th className="text-right px-4 py-2 font-semibold text-slate-600">Amount (HKD)</th>
-            <th className="text-center px-4 py-2 font-semibold text-slate-600">Status</th>
+            <th className="text-left px-4 py-2 font-semibold text-slate-600">日期</th>
+            <th className="text-left px-4 py-2 font-semibold text-slate-600">服务</th>
+            <th className="text-right px-4 py-2 font-semibold text-slate-600">金额(元)</th>
+            <th className="text-center px-4 py-2 font-semibold text-slate-600">状态</th>
           </tr>
         </thead>
         <tbody>
           {[
-            { date: '2026-06-18', service: 'Nurse Home Visit', amount: '1,200', status: 'Paid' },
-            { date: '2026-06-15', service: 'Remote Ward Round', amount: '800', status: 'Paid' },
-            { date: '2026-06-12', service: 'Device Monitoring (monthly)', amount: '500', status: 'Pending' },
-            { date: '2026-06-10', service: 'Medication Delivery', amount: '350', status: 'Paid' },
+            { date: '2026-06-18', service: '护士上门访视', amount: '1,200', status: '已付' },
+            { date: '2026-06-15', service: '远程查房', amount: '800', status: '已付' },
+            { date: '2026-06-12', service: '设备监测(月度)', amount: '500', status: '待付' },
+            { date: '2026-06-10', service: '用药 Delivery', amount: '350', status: '已付' },
           ].map((row, i) => (
             <tr key={i} className="border-t border-slate-100">
               <td className="px-4 py-2 text-slate-600">{row.date}</td>
               <td className="px-4 py-2 font-medium text-slate-700">{row.service}</td>
               <td className="px-4 py-2 text-right font-semibold text-slate-800">{row.amount}</td>
               <td className="px-4 py-2 text-center">
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${row.status === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${row.status === '已付' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                   {row.status}
                 </span>
               </td>
@@ -526,7 +526,7 @@ const BillingTab: FC<{ editable: boolean }> = ({ editable }) => (
     </div>
     {editable && (
       <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700">
-        <Plus className="w-3.5 h-3.5" /> Add Billing Entry
+        <Plus className="w-3.5 h-3.5" /> Add 账单 Entry
       </button>
     )}
   </div>
@@ -536,27 +536,27 @@ const BillingTab: FC<{ editable: boolean }> = ({ editable }) => (
 
 const HistoryTab: FC<{ patient: Patient }> = () => {
   const events = [
-    { date: '2026-06-19', type: 'Admission', detail: 'Admitted via A&E with acute decompensated HF NYHA III. Orthopnea, pedal oedema 2+, BNP 1,200. IV Furosemide initiated. Echo: LVEF 30%, moderate MR.', provider: 'HK Sanatorium & Hospital' },
-    { date: '2026-06-14', type: 'Admission', detail: 'Admitted with worsening dyspnoea, weight +3kg in 5 days. CXR: pulmonary congestion, small bilateral pleural effusions. GDMT optimised: Sacubitril/Valsartan initiated.', provider: 'Dr. Chan Chi Keung' },
-    { date: '2024-01-15', type: 'Diagnosis', detail: 'Type 2 Diabetes Mellitus diagnosed. HbA1c: 8.2%. Started on Metformin 500mg BID.', provider: 'Dr. Chan Chi Keung' },
-    { date: '2023-03-10', type: 'Diagnosis', detail: 'CKD Stage 3 diagnosed. eGFR 42 mL/min. UACR 850 mg/g. Losartan initiated for renoprotection — stopped due to ACEi cough. Switched to ARB (Candesartan→Losartan).', provider: 'Dr. Chan Chi Keung' },
-    { date: '2021-08-22', type: 'Diagnosis', detail: 'Permanent Atrial Fibrillation diagnosed. CHA₂DS₂-VASc 4. Anticoagulation initiated (Warfarin→Apixaban). Rate control with Bisoprolol.', provider: 'Dr. Chan Chi Keung' },
-    { date: '2018-05-10', type: 'Diagnosis', detail: 'Hypertension diagnosed. BP 158/96. Started on antihypertensive therapy (Ramipril→Candesartan→Losartan).', provider: 'Dr. Peter Ho' },
-    { date: '2016-01-20', type: 'Diagnosis', detail: 'Heart Failure diagnosed (initial presentation). NYHA II. Echo: LVEF 40%. Started on ACEi + BB.', provider: 'Dr. Peter Ho' },
+    { date: '2026-06-19', type: '入院', detail: 'Admitted via A&E with acute decompensated HF NYHA III. Orthopnea, pedal oedema 2+, BNP 1,200. IV Furosemide initiated. Echo: LVEF 30%, moderate MR.', provider: '香港养和医院' },
+    { date: '2026-06-14', type: '入院', detail: 'Admitted with worsening dyspnoea, weight +3kg in 5 days. CXR: pulmonary congestion, small bilateral pleural effusions. GDMT optimised: Sacubitril/Valsartan initiated.', provider: '姜珊' },
+    { date: '2024-01-15', type: 'Diagnosis', detail: 'Type 2 Diabetes Mellitus diagnosed. HbA1c: 8.2%. Started on Metformin 500mg BID.', provider: '姜珊' },
+    { date: '2023-03-10', type: 'Diagnosis', detail: 'CKD Stage 3 diagnosed. eGFR 42 mL/min. UACR 850 mg/g. Losartan initiated for renoprotection — stopped due to ACEi cough. Switched to ARB (Candesartan→Losartan).', provider: '姜珊' },
+    { date: '2021-08-22', type: 'Diagnosis', detail: 'Permanent Atrial Fibrillation diagnosed. CHA₂DS₂-VASc 4. Anticoagulation initiated (Warfarin→Apixaban). Rate control with Bisoprolol.', provider: '姜珊' },
+    { date: '2018-05-10', type: 'Diagnosis', detail: 'Hypertension diagnosed. BP 158/96. Started on antihypertensive therapy (Ramipril→Candesartan→Losartan).', provider: '待分配' },
+    { date: '2016-01-20', type: 'Diagnosis', detail: 'Heart Failure diagnosed (initial presentation). NYHA II. Echo: LVEF 40%. Started on ACEi + BB.', provider: '待分配' },
   ];
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-bold text-slate-700">Medical History Timeline</h3>
+      <h3 className="text-sm font-bold text-slate-700">病史 Timeline</h3>
       <div className="relative pl-6 border-l-2 border-slate-200 space-y-4">
         {events.map((e, i) => {
           const typeColors: Record<string, string> = {
-            Procedure: 'bg-blue-100 text-blue-700 border-blue-200',
-            Admission: 'bg-red-100 text-red-700 border-red-200',
+            操作/手术: 'bg-blue-100 text-blue-700 border-blue-200',
+            入院: 'bg-red-100 text-red-700 border-red-200',
             Diagnosis: 'bg-amber-100 text-amber-700 border-amber-200',
           };
           return (
             <div key={i} className="relative">
-              <div className={`absolute -left-[25px] top-1 w-3 h-3 rounded-full border-2 border-white ${e.type === 'Procedure' ? 'bg-blue-500' : e.type === 'Admission' ? 'bg-red-500' : 'bg-amber-500'}`} />
+              <div className={`absolute -left-[25px] top-1 w-3 h-3 rounded-full border-2 border-white ${e.type === '操作/手术' ? 'bg-blue-500' : e.type === '入院' ? 'bg-red-500' : 'bg-amber-500'}`} />
               <div className="bg-white border border-slate-200 rounded-xl p-3">
                 <div className="flex items-center justify-between mb-1">
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${typeColors[e.type]}`}>{e.type}</span>
@@ -573,7 +573,7 @@ const HistoryTab: FC<{ patient: Patient }> = () => {
   );
 };
 
-/* ─────────────── Follow-up Logs Tab ─────────────── */
+/* ─────────────── 随访记录 Tab ─────────────── */
 
 const FollowupLogsTab: FC<{ patient: PatientFull; editable: boolean }> = ({ patient: p, editable }) => {
   const plan = usePatientStore(s => s.carePlans[p.id]);
@@ -581,7 +581,7 @@ const FollowupLogsTab: FC<{ patient: PatientFull; editable: boolean }> = ({ pati
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-700">Follow-up Intervention Logs</h3>
+        <h3 className="text-sm font-bold text-slate-700">随访干预记录</h3>
         {editable && (
           <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700">
             <Plus className="w-3.5 h-3.5" /> Add Entry
@@ -617,11 +617,11 @@ const FollowupLogsTab: FC<{ patient: PatientFull; editable: boolean }> = ({ pati
   );
 };
 
-/* ─────────────── Devices Tab ─────────────── */
+/* ─────────────── 设备 Tab ─────────────── */
 
-const DevicesTab: FC<{ patient: Patient }> = () => (
+const 设备Tab: FC<{ patient: Patient }> = () => (
   <div className="space-y-4">
-    <h3 className="text-sm font-bold text-slate-700">Bound Monitoring Devices</h3>
+    <h3 className="text-sm font-bold text-slate-700">Bound Monitoring 设备</h3>
     <div className="bg-white border border-slate-200 rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
@@ -639,11 +639,11 @@ const DevicesTab: FC<{ patient: Patient }> = () => (
       </div>
       <div className="grid grid-cols-3 gap-3 text-xs">
         <div className="bg-slate-50 rounded-lg p-2 text-center">
-          <p className="text-slate-400">Sleep Score</p>
+          <p className="text-slate-400">睡眠评分</p>
           <p className="font-bold text-indigo-600">82/100</p>
         </div>
         <div className="bg-slate-50 rounded-lg p-2 text-center">
-          <p className="text-slate-400">Resp. Rate</p>
+          <p className="text-slate-400">呼吸频率</p>
           <p className="font-bold text-slate-700">16/min</p>
         </div>
         <div className="bg-slate-50 rounded-lg p-2 text-center">
@@ -654,27 +654,27 @@ const DevicesTab: FC<{ patient: Patient }> = () => (
     </div>
 
     <div className="bg-slate-900 rounded-xl p-4">
-      <p className="text-xs font-semibold text-white mb-3">Data Flow — End-to-End Encrypted</p>
+      <p className="text-xs font-semibold text-white mb-3">Data Flow — End-to-End 加密</p>
       <div className="flex items-center justify-between text-[10px]">
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center mx-auto mb-1">
             <WatchIcon small />
           </div>
-          <p className="text-slate-400">Devices</p>
+          <p className="text-slate-400">设备</p>
         </div>
         <span className="text-emerald-400 text-lg">→</span>
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center mx-auto mb-1">
             <span className="text-white text-[10px] font-bold">TLS</span>
           </div>
-          <p className="text-slate-400">Encrypted</p>
+          <p className="text-slate-400">加密</p>
         </div>
         <span className="text-emerald-400 text-lg">→</span>
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center mx-auto mb-1">
             <span className="text-white text-[10px] font-bold">HK</span>
           </div>
-          <p className="text-slate-400">Care Team</p>
+          <p className="text-slate-400">照护团队</p>
         </div>
       </div>
       <p className="text-[9px] text-slate-500 text-center mt-3">All data stored in Hong Kong · HIPAA compliant · 256-bit AES encryption</p>
