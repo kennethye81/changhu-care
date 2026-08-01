@@ -5,7 +5,7 @@ import {
   formatNewsHeadline,
   formatNewsTierLabel,
   isCopdDiagnosis,
-  P7_NEWS_ESCALATION_VITALS,
+  PATIENT1_ESCALATION_VITALS,
   type NewsAssessment,
 } from './newsScore';
 
@@ -48,7 +48,7 @@ export function buildClinicalAlertText(
   if (news.redScore) {
     return `⚠ ${formatNewsHeadline(news)} — ${vitalsLine}。${news.escalation} ${news.monitoringLabel}。`;
   }
-  if (patientId === 7) {
+  if (patientId === 1) {
     return `居家照护第1天 — ${formatNewsHeadline(news)}。${vitalsLine}。${news.monitoringLabel}。家属已培训血氧监测和COPD行动计划。`;
   }
   return `${formatNewsHeadline(news)} — ${news.monitoringLabel}. ${news.escalation}`;
@@ -68,28 +68,28 @@ export function formatNewsChatLine(
   return [prefix, newsPart, suffix].filter(Boolean).join('. ').replace(/\.\./g, '.');
 }
 
-export function formatP7EscalationChat(prefix: string, suffix = ''): string {
-  const news = calculateNews(P7_NEWS_ESCALATION_VITALS, 'COPD');
-  const line = formatSevenVitalLine(P7_NEWS_ESCALATION_VITALS);
+export function formatPatient1EscalationChat(prefix: string, suffix = ''): string {
+  const news = calculateNews(PATIENT1_ESCALATION_VITALS, 'COPD');
+  const line = formatSevenVitalLine(PATIENT1_ESCALATION_VITALS);
   const newsPart = `${formatNewsHeadline(news)} — ${news.monitoringLabel}。${news.escalation}`;
   return [prefix, line, newsPart, suffix].filter(Boolean).join('. ').replace(/\.\./g, '.');
 }
 
-export function formatP7BaselineChat(prefix: string, suffix = ''): string {
-  const v = ALL_DEFAULT_VITALS[7];
+export function formatPatient1BaselineChat(prefix: string, suffix = ''): string {
+  const v = ALL_DEFAULT_VITALS[1];
   const news = calculateNews(v, 'COPD');
   const line = formatSevenVitalLine(v);
   const newsPart = `${formatNewsHeadline(news)} — ${news.monitoringLabel}`;
   return [prefix, line, newsPart, suffix].filter(Boolean).join('. ').replace(/\.\./g, '.');
 }
 
-export function formatP7AlertBanner(vitals: Vitals, diagnosis = 'COPD'): string {
+export function formatPatient1AlertBanner(vitals: Vitals, diagnosis = 'COPD'): string {
   const news = calculateNews(vitals, diagnosis);
   return `${formatNewsHeadline(news)} — RR ${vitals.rr}次/分, SpO₂ ${vitals.spo2}%${vitals.onSupplementalO2 ? ' (量表' + vitals.spo2Scale + ' + 吸氧)' : ''}, 体温 ${vitals.temp.toFixed(1)}°C, HR ${vitals.hr}。${news.escalation}`;
 }
 
-export function formatHubP7InboxPreview(): { subject: string; preview: string } {
-  const v = P7_NEWS_ESCALATION_VITALS;
+export function formatHubPatient1InboxPreview(): { subject: string; preview: string } {
+  const v = PATIENT1_ESCALATION_VITALS;
   const news = calculateNews(v, 'COPD');
   return {
     subject: `${formatNewsHeadline(news)} — 冯存富 SpO₂ 下降`,
@@ -97,8 +97,8 @@ export function formatHubP7InboxPreview(): { subject: string; preview: string } 
   };
 }
 
-export function formatP7InfectionAlertDetail(): string {
-  const v = P7_NEWS_ESCALATION_VITALS;
+export function formatPatient1AlertDetail(): string {
+  const v = PATIENT1_ESCALATION_VITALS;
   const news = calculateNews(v, 'COPD');
   return `${formatNewsHeadline(news)} — SpO₂ ${v.spo2}%，体温 ${v.temp}°C，HR ${v.hr}，RR ${v.rr}。POCT CRP 68，PCT 0.8。居家照护升级预案已启动。${news.monitoringLabel}。`;
 }
@@ -117,7 +117,7 @@ export function buildVitalParameterAssessment(
   baseline?: Vitals,
 ): string {
   const news = calculateNews(vitals, diagnosis);
-  const base = baseline ?? ALL_DEFAULT_VITALS[7];
+  const base = baseline ?? ALL_DEFAULT_VITALS[1];
   const copd = isCopdDiagnosis(diagnosis);
   const mon = news.monitoringLabel;
 
@@ -184,7 +184,7 @@ export function buildOverallNewsAssessment(vitals: Vitals, diagnosis: string): s
   return `${formatNewsHeadline(news)} — ${line}。${news.monitoringLabel}。${news.escalation}`;
 }
 
-export function buildP7ClinicalRecommendations(news: NewsAssessment): string[] {
+export function buildPatient1ClinicalRecommendations(news: NewsAssessment): string[] {
   return [
     '1. 护士评估 — 汤菊玲（照护师）立即床旁评估',
     '2. POCT CRP/PCT — 排除细菌感染vs病毒感染',
@@ -195,15 +195,15 @@ export function buildP7ClinicalRecommendations(news: NewsAssessment): string[] {
   ];
 }
 
-export function buildFamilyInfectionFactor(p7Alert: boolean, vitals: Vitals, diagnosis: string): string {
-  if (!p7Alert) {
+export function buildFamilyInfectionFactor(alertActive: boolean, vitals: Vitals, diagnosis: string): string {
+  if (!alertActive) {
     return `CAP第1天 — 头孢曲松按药敏计划第2天起。基础无发热。SpO₂ ${vitals.spo2}%（室内空气）。`;
   }
   const news = calculateNews(vitals, diagnosis);
   return `体温 ${vitals.temp}°C，CRP 68，PCT 0.8 — IDSA指南标准下活动性感染。${formatNewsHeadline(news)} — ${news.escalation} 血培养待回报。`;
 }
 
-export interface P7HubBannerContent {
+export interface Patient1HubBannerContent {
   title: string;
   subtitle: string;
   headline: string;
@@ -211,7 +211,7 @@ export interface P7HubBannerContent {
   vitals: { value: string; label: string; sub: string }[];
 }
 
-export function buildP7HubBannerContent(vitals: Vitals, diagnosis = 'COPD'): P7HubBannerContent {
+export function buildPatient1HubBannerContent(vitals: Vitals, diagnosis = 'COPD'): Patient1HubBannerContent {
   const news = calculateNews(vitals, diagnosis);
   return {
     title: `${formatNewsHeadline(news)} 升级`,
@@ -232,8 +232,8 @@ export interface EliteVoiceBundle {
   fields: Record<string, string>;
 }
 
-export function buildP7EliteVoiceBundle(alertActive: boolean): EliteVoiceBundle {
-  const v = alertActive ? P7_NEWS_ESCALATION_VITALS : ALL_DEFAULT_VITALS[7];
+export function buildPatient1EliteVoiceBundle(alertActive: boolean): EliteVoiceBundle {
+  const v = alertActive ? PATIENT1_ESCALATION_VITALS : ALL_DEFAULT_VITALS[1];
   const news = calculateNews(v, 'COPD');
   const headline = formatNewsHeadline(news);
   const vitalsPhrase = `SpO₂ ${v.spo2}%${v.onSupplementalO2 ? ' 吸氧 量表' + v.spo2Scale : ' 室内空气'}, 体温 ${v.temp}°C, HR ${v.hr}, BP ${v.bpSystolic}/${v.bpDiastolic}, RR ${v.rr}。`;

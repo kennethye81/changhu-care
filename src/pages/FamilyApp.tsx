@@ -26,7 +26,7 @@ import {
 } from '../utils/chatBubbleStyles';
 import { usePatientStore, DEFAULT_VITALS } from '../store/patientStore';
 import { useCollaborationStore } from '../store/collaborationStore';
-import { buildFamilyHomeVitalCards, buildFamilyDetailVitalCards, formatP7AlertBanner, buildFamilyMentalStatus, buildFamilyIoSnapshot, buildFamilySleepSnapshot, buildFamilyMentalInsight } from '../utils/familyVitals';
+import { buildFamilyHomeVitalCards, buildFamilyDetailVitalCards, formatPatient1AlertBanner, buildFamilyMentalStatus, buildFamilyIoSnapshot, buildFamilySleepSnapshot, buildFamilyMentalInsight } from '../utils/familyVitals';
 import { FamilyBloodPressureSparkline, FamilyBloodPressureTrendChart } from '../components/BloodPressureCharts';
 import { FAMILY_SENDER_BY_PATIENT } from '../utils/chatSenders';
 import { getDemoTimeString, getDemoTimestamp } from '../utils/demoClock';
@@ -461,8 +461,8 @@ const VitalSparkline: FC<{ data: number[]; color: string }> = ({ data, color }) 
   );
 };
 
-function getHomeVitalStats(vitals: typeof DEFAULT_VITALS[number], p7Alert: boolean) {
-  return buildFamilyHomeVitalCards(vitals, p7Alert);
+function getHomeVitalStats(vitals: typeof DEFAULT_VITALS[number], alertActive: boolean) {
+  return buildFamilyHomeVitalCards(vitals, alertActive);
 }
 
 /* ─────────────── MOBILE SUB-TABS ─────────────── */
@@ -473,18 +473,18 @@ const CARE_PLAN_TYPE_LABEL: Record<string, string> = {
 };
 
 const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; familyPatientId: number; setFamilyPatientId: (id: number) => void }> = ({ onAlertClick, onCarePlanClick, familyPatientId, setFamilyPatientId }) => {
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const summary = usePatientStore(s => s.patientsSummary.find(p => p.id === familyPatientId));
-  const news = resolvePatientNews(familyPatientId, summary?.diagnosis ?? patient?.diagnosis ?? '', vitals, summary, p7Alert);
+  const news = resolvePatientNews(familyPatientId, summary?.diagnosis ?? patient?.diagnosis ?? '', vitals, summary, alertActive);
   const newsHeadline = formatNewsHeadline({ score: news.score, tier: news.tier, redScore: news.redScore });
   const newsAction = news.tier === 'high' ? 'Action Required' : news.redScore ? 'Clinician Review' : `${news.monitoringLabel}`;
   const carePlans = usePatientStore(s => s.carePlans);
   const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
   const careTeam = useMemo(() => getFamilyCareTeam(patient), [patient]);
-  const vitalStats = useMemo(() => getHomeVitalStats(vitals, p7Alert), [vitals, p7Alert]);
+  const vitalStats = useMemo(() => getHomeVitalStats(vitals, alertActive), [vitals, alertActive]);
   const todayActs = useMemo(
     () => getTodayActivities(carePlans[familyPatientId], familyPatientId, DEMO_CARE_PLAN_DATE, carePlanStatus).filter(a => a.type !== 'self_care'),
     [carePlans, carePlanStatus, familyPatientId],
@@ -500,12 +500,12 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
 
   return (
   <div className="p-4 space-y-4 w-full">
-    {news.tier === 'high' && isP7 && (
+    {news.tier === 'high' && isPatient1 && (
       <div className="bg-red-50 border border-red-200 rounded-2xl p-3 flex items-start gap-2">
         <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-xs font-bold text-red-700">{newsHeadline} — {patient?.name ?? '患者'}</p>
-          <p className="text-[10px] text-red-600 mt-0.5">{formatP7AlertBanner(vitals, summary?.diagnosis ?? '')}</p>
+          <p className="text-[10px] text-red-600 mt-0.5">{formatPatient1AlertBanner(vitals, summary?.diagnosis ?? '')}</p>
         </div>
       </div>
     )}
@@ -655,17 +655,17 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
 };
 
 const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const summary = usePatientStore(s => s.patientsSummary.find(p => p.id === familyPatientId));
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const diagnosis = summary?.diagnosis ?? patient?.diagnosis ?? '';
-  const vitalCards = useMemo(() => buildFamilyDetailVitalCards(vitals, p7Alert, diagnosis), [vitals, p7Alert, diagnosis]);
-  const mentalRows = useMemo(() => buildFamilyMentalStatus(vitals, p7Alert), [vitals, p7Alert]);
-  const ioSnapshot = useMemo(() => buildFamilyIoSnapshot(vitals, p7Alert), [vitals, p7Alert]);
-  const sleepSnapshot = useMemo(() => buildFamilySleepSnapshot(vitals, p7Alert), [vitals, p7Alert]);
-  const mentalInsight = useMemo(() => buildFamilyMentalInsight(p7Alert), [p7Alert]);
+  const vitalCards = useMemo(() => buildFamilyDetailVitalCards(vitals, alertActive, diagnosis), [vitals, alertActive, diagnosis]);
+  const mentalRows = useMemo(() => buildFamilyMentalStatus(vitals, alertActive), [vitals, alertActive]);
+  const ioSnapshot = useMemo(() => buildFamilyIoSnapshot(vitals, alertActive), [vitals, alertActive]);
+  const sleepSnapshot = useMemo(() => buildFamilySleepSnapshot(vitals, alertActive), [vitals, alertActive]);
+  const mentalInsight = useMemo(() => buildFamilyMentalInsight(alertActive), [p7Alert]);
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -795,7 +795,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <p className="text-lg font-bold text-slate-900">{s.value}</p>
               <p className="text-[8px] text-slate-400">{s.label}</p>
               <p className="text-[9px] text-slate-400 mt-0.5">{s.unit}</p>
-              <p className={`text-[8px] mt-0.5 ${p7Alert ? 'text-red-500' : 'text-[#006F80]'}`}>{s.sub}</p>
+              <p className={`text-[8px] mt-0.5 ${alertActive ? 'text-red-500' : 'text-[#006F80]'}`}>{s.sub}</p>
             </div>
           ))}
         </div>
@@ -913,36 +913,36 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId]);
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const summary = patientsSummary.find(p => p.id === familyPatientId);
-  const { score: newsScore, tier: newsTier, escalation, monitoringLabel, redScore, label } = resolvePatientNews(familyPatientId, summary?.diagnosis ?? '', vitals, summary, p7Alert);
+  const { score: newsScore, tier: newsTier, escalation, monitoringLabel, redScore, label } = resolvePatientNews(familyPatientId, summary?.diagnosis ?? '', vitals, summary, alertActive);
   const effectiveVitals = vitals ?? DEFAULT_VITALS[familyPatientId];
   const baseline = DEFAULT_VITALS[familyPatientId];
   const contributingFactors = useMemo(() => [
     {
-      vital: p7Alert ? 'SpO₂下降' : 'SpO₂ 基线',
+      vital: alertActive ? 'SpO₂下降' : 'SpO₂ 基线',
       risk: p7Alert
         ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%${effectiveVitals.onSupplementalO2 ? '。O₂已启动。' : '，未用氧。'}GOLD 2024：COPD G2目标92–96%。${monitoringLabel}。`
         : `SpO₂ ${effectiveVitals.spo2}%静息稳定。GOLD 2024：COPD G2预期基线(FEV₁ 55%)。O₂浓缩器待机。`,
       icon: Activity,
     },
     {
-      vital: p7Alert ? '感染指标' : '血压管理',
-      risk: buildFamilyInfectionFactor(p7Alert, effectiveVitals, summary?.diagnosis ?? ''),
+      vital: alertActive ? '感染指标' : '血压管理',
+      risk: buildFamilyInfectionFactor(alertActive, effectiveVitals, summary?.diagnosis ?? ''),
       icon: Droplets,
     },
     {
-      vital: p7Alert ? '急性意识障碍' : '用药依从性',
+      vital: alertActive ? '急性意识障碍' : '用药依从性',
       risk: p7Alert
         ? `AMTS下降10→7 — 低氧性谵妄。${monitoringLabel}。照护者已接受意识评估培训。`
         : '硝苯地平30mg QD确认服用。低盐低脂饮食依从良好。',
       icon: Heart,
     },
     { vital: '照护者支持', risk: '配偶为日常照护者。已培训压疮护理+防跌倒措施+血压监测+紧急联络流程。', icon: MessageCircle },
-  ], [p7Alert, effectiveVitals, monitoringLabel, summary?.diagnosis]);
+  ], [alertActive, effectiveVitals, monitoringLabel, summary?.diagnosis]);
   const careLogs = usePatientStore(s => s.carePlans[familyPatientId]?.logs);
   const submitted = useCollaborationStore(s => s.submittedCareLogs[familyPatientId]) ?? EMPTY_SUBMITTED_LOGS;
   const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
@@ -955,12 +955,12 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     [careLogs, submitted],
   );
   const progressNotes = useMemo(
-    () => getFamilyCareProgressNotes(mergedLogs, p7Alert, DEMO_CARE_PLAN_DATE, 6, vitals ?? DEFAULT_VITALS[familyPatientId]),
-    [mergedLogs, p7Alert, vitals, familyPatientId],
+    () => getFamilyCareProgressNotes(mergedLogs, alertActive, DEMO_CARE_PLAN_DATE, 6, vitals ?? DEFAULT_VITALS[familyPatientId]),
+    [mergedLogs, alertActive, vitals, familyPatientId],
   );
 
   const handleActivateProtocol = () => {
-    if (protocolActive || !isP7) return;
+    if (protocolActive || !isPatient1) return;
     const time = getDemoTimeString();
     setCarePlanTaskStatus(COPD_PROTOCOL_TASK_KEY, 'completed');
     appendMessage(familyPatientId, {
@@ -1037,7 +1037,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="space-y-2">
           {[
             { num: '1', action: '压疮护理：每2h翻身+检查皮肤+减压气垫床。Braden≤16需重点关注。', icon: BedDouble },
-            { num: '2', action: p7Alert ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0] ?? '社区医生'} 若>180/100。`, icon: Heart },
+            { num: '2', action: alertActive ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0] ?? '社区医生'} 若>180/100。`, icon: Heart },
             { num: '3', action: newsTier === 'high' || redScore ? '跌倒防控：检查助行器+地面防滑+夜间照明。有跌倒史需24h内上门。' : '跌倒防控：检查助行器+地面防滑+夜间照明。定期评估Barthel ADL。', icon: Footprints },
             { num: '4', action: `确保每日饮水~1,500 mL + 低盐低脂饮食。${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCareWorker?.split(' (')[0] ?? '护理员'}定期访视。`, icon: GlassWater },
           ].map((rec, i) => (
@@ -1060,8 +1060,8 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <CheckCircle2 className="w-4 h-4 text-[#006F80] flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-[10px] font-bold text-[#0B3550]">预期结果（30–90天）</p>
-            <p className="text-[9px] text-slate-600 mt-0.5">{p7Alert ? `若全部4项干预完成：SpO₂≥92%，体温≤37.5°C，${escalation}` : `若全部4项干预完成：跌倒0次，血压<150/90，压疮改善。${monitoringLabel}。`}</p>
-            {isP7 && (
+            <p className="text-[9px] text-slate-600 mt-0.5">{alertActive ? `若全部4项干预完成：SpO₂≥92%，体温≤37.5°C，${escalation}` : `若全部4项干预完成：跌倒0次，血压<150/90，压疮改善。${monitoringLabel}。`}</p>
+            {isPatient1 && (
             <button
               type="button"
               onClick={handleActivateProtocol}
@@ -1104,11 +1104,11 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
-  const meds = useMemo(() => getFamilyMedications(patient, p7Alert), [patient, p7Alert]);
-  const summary = useMemo(() => getFamilyMedSummary(patient, p7Alert), [patient, p7Alert]);
+  const meds = useMemo(() => getFamilyMedications(patient, alertActive), [patient, alertActive]);
+  const summary = useMemo(() => getFamilyMedSummary(patient, alertActive), [patient, alertActive]);
 
   return (
   <div className="space-y-3">
@@ -1208,8 +1208,8 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const devices = patient?.iotDevices ?? [];
@@ -1278,7 +1278,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded-full">{p}</span>
             ))}
           </div>
-          {dev.type === 'O₂ Concentrator' && p7Alert && (
+          {dev.type === 'O₂ Concentrator' && alertActive && (
             <div className="mt-2 p-2 bg-red-50 rounded-xl flex items-start gap-2">
               <AlertTriangle className="w-3 h-3 text-red-500 flex-shrink-0 mt-0.5" />
               <p className="text-[10px] text-red-700">Active — O₂ 2L/min. NEWS supplemental O₂ +2 applied.</p>
@@ -1325,12 +1325,12 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const [inputText, setInputText] = useState('');
   const msgEndRef = useRef<HTMLDivElement>(null);
-  const isP7 = familyPatientId === 7;
-  const p7Alert = usePatientStore(s => isP7 ? s.p7AlertActive : false);
+  const isPatient1 = familyPatientId === 7;
+  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
   const hubMessages = useCollaborationStore(s => s.messagesByPatient[familyPatientId]) ?? EMPTY_CHAT_MESSAGES;
   const appendMessage = useCollaborationStore(s => s.appendMessage);
   const messages = hubMessages;
-  const threadKey = `${p7Alert ? 'alert' : 'stable'}-${messages[0]?.id ?? 0}`;
+  const threadKey = `${alertActive ? 'alert' : 'stable'}-${messages[0]?.id ?? 0}`;
   const visibleCount = useWeChatChatReveal(messages.length, threadKey);
 
   useEffect(() => {
@@ -1359,14 +1359,14 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         avatar={<ChatBubbleAvatar msg={msg} size={28} />}
         header={
           <div className={`flex items-center gap-1.5 mb-0.5 ${isMe ? 'flex-row-reverse' : ''}`}>
-            <span className={`text-[9px] font-medium ${getChatSenderLabelClass(msg.from, p7Alert)}`}>
+            <span className={`text-[9px] font-medium ${getChatSenderLabelClass(msg.from, alertActive)}`}>
               {formatChatDisplayName(msg.senderName)}
             </span>
             <span className="text-[8px] text-slate-300">{msg.time}</span>
           </div>
         }
       >
-        <div className={getChatBubbleClasses(msg.from, { isMe, p7Alert })}>
+        <div className={getChatBubbleClasses(msg.from, { isMe, alertActive })}>
           {msg.text}
         </div>
       </WeChatChatRow>
@@ -1419,7 +1419,7 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <Send className="w-4 h-4 text-white" />
         </button>
       </div>
-      {isP7 && <AlertToggle />}
+      {isPatient1 && <AlertToggle />}
     </div>
   );
 };

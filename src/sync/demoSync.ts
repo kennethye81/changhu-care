@@ -94,13 +94,13 @@ function applyRemotePayload(raw: DemoSyncPayload) {
 
   applyingRemote = true;
   try {
-    const prevP7 = usePatientStore.getState().p7AlertActive;
+    const prevAlert = usePatientStore.getState().alertActive;
     usePatientStore.getState().applyDemoSync(merged);
-    if (merged.p7AlertActive !== prevP7) {
-      useCollaborationStore.getState().refreshP7Messages(merged.p7AlertActive);
+    if (merged.alertActive !== prevAlert) {
+      useCollaborationStore.getState().refreshAlertMessages(merged.alertActive);
     }
     if (merged.v >= 2) {
-      useCollaborationStore.getState().applyCollaborationSync(merged, merged.p7AlertActive);
+      useCollaborationStore.getState().applyCollaborationSync(merged, merged.alertActive);
     }
     lastSyncTs = merged.ts;
     lastPublishedSnapshot = snapshot;

@@ -7,7 +7,7 @@ import {
 import type { PatientFull } from '../data/patients';
 import { DEFAULT_VITALS, usePatientStore } from '../store/patientStore';
 import { generateBillingSummary } from '../utils/hubBillingSummary';
-import { TIER_LABEL, normalizeVitals, calculateNews, formatNewsTierLabel, P7_NEWS_ESCALATION_VITALS } from '../utils/newsScore';
+import { TIER_LABEL, normalizeVitals, calculateNews, formatNewsTierLabel, PATIENT1_ESCALATION_VITALS } from '../utils/newsScore';
 import { resolvePatientNews, type ResolvedPatientNews } from '../utils/patientNews';
 import { formatSevenVitalLine } from '../utils/medicalHistoryNews';
 import type { Vitals } from '../store/patientStore';
@@ -77,7 +77,7 @@ function formatSevenVitalLineFromPartial(vitals: Partial<Vitals>, diagnosis: str
 
 function generateVitalSummary(
   patient: PatientFull,
-  p7Alert = false,
+  alertActive = false,
   vitals?: Partial<Vitals>,
   news?: Pick<ResolvedPatientNews, 'score' | 'tier' | 'label' | 'monitoringLabel' | 'escalation' | 'redScore'>,
 ): string {
@@ -91,10 +91,10 @@ function generateVitalSummary(
   }
 
   const fallbackVitals =
-    patient.id === 7 && p7Alert ? P7_NEWS_ESCALATION_VITALS : DEFAULT_VITALS[patient.id];
+    patient.id === 1 && alertActive ? PATIENT1_ESCALATION_VITALS : DEFAULT_VITALS[patient.id];
   if (fallbackVitals) {
     const computed = calculateNews(fallbackVitals, patient.diagnosis);
-    return generateVitalSummary(patient, p7Alert, fallbackVitals, {
+    return generateVitalSummary(patient, alertActive, fallbackVitals, {
       score: computed.score,
       tier: computed.tier,
       label: formatNewsTierLabel(computed),
@@ -152,9 +152,9 @@ function generateVitalSummary(
   return 'Vital signs within expected range for clinical profile. No concerning trends detected in recent monitoring. Continue routine monitoring per care plan.';
 }
 
-function generateSleepSummary(patient: PatientFull, p7Alert = false): string {
-  if (patient.id === 7 && p7Alert) return 'Sleep disrupted — 4.2 hours with frequent awakenings due to dyspnea and fever. Nocturnal SpO₂ nadir 88% before O₂ initiation. Recommend continuous oximetry overnight.';
-  if (patient.id === 7) return 'Sleep 6.8h uninterrupted. No nocturnal desaturation. Respiratory rate stable during sleep. Adequate for recovery.';
+function generateSleepSummary(patient: PatientFull, alertActive = false): string {
+  if (patient.id === 1 && alertActive) return 'Sleep disrupted — 4.2 hours with frequent awakenings due to dyspnea and fever. Nocturnal SpO₂ nadir 88% before O₂ initiation. Recommend continuous oximetry overnight.';
+  if (patient.id === 1) return 'Sleep 6.8h uninterrupted. No nocturnal desaturation. Respiratory rate stable during sleep. Adequate for recovery.';
   const d = patient.diagnosis;
   if (d.includes('Heart Failure NYHA III')) return 'Sleep duration averaging 7.2 hours — adequate for recovery. Orthopnoea resolved with head-of-bed elevation. No nocturnal desaturation <92%. Sleep score 82/100 — good quality. Continue current sleep hygiene measures.';
   if (d.includes('Oncology — Breast')) return 'Sleep disrupted by chemotherapy-related fatigue and nausea — averaging 6.5 hours with frequent awakenings. Recommend daytime rest periods and antiemetics before bedtime during chemo cycles.';
@@ -165,9 +165,9 @@ function generateSleepSummary(patient: PatientFull, p7Alert = false): string {
   return 'Sleep duration and quality within normal range. No significant disruptions detected. Adequate for recovery and daily functioning.';
 }
 
-function generateIntakeOutputSummary(patient: PatientFull, p7Alert = false): string {
-  if (patient.id === 7 && p7Alert) return 'Oral intake reduced to ~900 mL (↓38%). Urine output ~600 mL. Net balance concerning in febrile state — encourage hydration if not contraindicated. Monitor for dehydration.';
-  if (patient.id === 7) return 'Oral intake ~1,400 mL. Urine output ~1,100 mL. Net balance +300 mL — acceptable. Appetite fair, hydration adequate for sputum clearance.';
+function generateIntakeOutputSummary(patient: PatientFull, alertActive = false): string {
+  if (patient.id === 1 && alertActive) return 'Oral intake reduced to ~900 mL (↓38%). Urine output ~600 mL. Net balance concerning in febrile state — encourage hydration if not contraindicated. Monitor for dehydration.';
+  if (patient.id === 1) return 'Oral intake ~1,400 mL. Urine output ~1,100 mL. Net balance +300 mL — acceptable. Appetite fair, hydration adequate for sputum clearance.';
   const d = patient.diagnosis;
   if (d.includes('Heart Failure NYHA III')) return 'Fluid intake 1,200mL vs output 1,500mL — net negative 300mL consistent with diuretic therapy. Weight stable at 68.0kg. Strict I/O monitoring essential. Fluid restriction 1.5L/day should be reinforced. No signs of dehydration despite negative balance.';
   if (d.includes('Heart Failure NYHA II')) return 'Fluid balance well-maintained. Weight stable at 58kg. No edema. Furosemide used prn only — patient managing well on sodium restriction. Continue daily weight monitoring.';
@@ -176,9 +176,9 @@ function generateIntakeOutputSummary(patient: PatientFull, p7Alert = false): str
   return 'Fluid balance within normal range. Oral intake adequate. Urine output consistent with intake. No signs of dehydration or fluid overload.';
 }
 
-function generateMentalStatusSummary(patient: PatientFull, p7Alert = false): string {
-  if (patient.id === 7 && p7Alert) return 'AMTS dropped 10→7 during SpO₂ desaturation — likely hypoxic delirium. Recovering to 9/10 on O₂ 2L/min. Mood anxious. Pain 3/10. Monitor q1h. 配偶（王小凤）在床旁 — trained on confusion assessment.';
-  if (patient.id === 7) return 'AMTS 10/10. Alert and oriented ×3. Mood calm. Wife present and trained on COPD action plan. No cognitive decline. Consistent with baseline.';
+function generateMentalStatusSummary(patient: PatientFull, alertActive = false): string {
+  if (patient.id === 1 && alertActive) return 'AMTS dropped 10→7 during SpO₂ desaturation — likely hypoxic delirium. Recovering to 9/10 on O₂ 2L/min. Mood anxious. Pain 3/10. Monitor q1h. 配偶（王小凤）在床旁 — trained on confusion assessment.';
+  if (patient.id === 1) return 'AMTS 10/10. Alert and oriented ×3. Mood calm. Wife present and trained on COPD action plan. No cognitive decline. Consistent with baseline.';
   const d = patient.diagnosis;
   if (d.includes('Post-Stroke') && patient.id === 4) return 'Alert and oriented ×3. Speech improving — 90% intelligibility with mild residual expressive aphasia. Mood positive and motivated for rehabilitation. NIHSS stable at 3. No depression or cognitive decline. Continue SLP support.';
   if (d.includes('Post-Stroke') && patient.id === 12) return 'Alert and oriented ×3. NIHSS 1 — excellent recovery. Left arm fine motor improving. Mood positive with good insight. Discharge from intensive rehab anticipated in 2 weeks.';
@@ -255,8 +255,8 @@ function generateIoTDeviceSummary(patient: PatientFull): string {
   return `All ${total} IoT devices online and transmitting at expected intervals. Battery levels adequate. No connectivity issues in the last 24 hours. Data quality meets monitoring requirements.`;
 }
 
-function generateBillingSummaryForPatient(patient: PatientFull, p7Alert: boolean): string {
-  return generateBillingSummary(patient, p7Alert);
+function generateBillingSummaryForPatient(patient: PatientFull, alertActive: boolean): string {
+  return generateBillingSummary(patient, alertActive);
 }
 
 const ST: FC<{ title: string; icon: FC<{ className?: string }> }> = ({ title, icon: Icon }) => (
@@ -266,7 +266,7 @@ const ST: FC<{ title: string; icon: FC<{ className?: string }> }> = ({ title, ic
 const SmartSummary: FC<{ patient: PatientFull }> = ({ patient }) => {
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
   const toggleItem = (id: string) => setChecklist(prev => ({ ...prev, [id]: !prev[id] }));
-  const p7Alert = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const storeVitals = usePatientStore(s => s.vitals[patient.id] ?? DEFAULT_VITALS[patient.id]);
   const summary = patientsSummary.find(p => p.id === patient.id);
@@ -275,12 +275,12 @@ const SmartSummary: FC<{ patient: PatientFull }> = ({ patient }) => {
     patient.diagnosis,
     storeVitals,
     summary,
-    p7Alert && patient.id === 7,
+    alertActive && patient.id === 1,
   );
-  const effectivePatient = p7Alert && patient.id === 7 ? { ...patient, riskLevel: 'Critical' as const } : patient;
+  const effectivePatient = alertActive && patient.id === 1 ? { ...patient, riskLevel: 'Critical' as const } : patient;
   const interventions = useMemo(() => deriveInterventions(effectivePatient), [effectivePatient]);
   const isCritical = news.tier === 'high';
-  const p7 = patient.id === 7 && p7Alert;
+  const p7 = patient.id === 1 && alertActive;
   const vitalSummaryText = useMemo(
     () => generateVitalSummary(effectivePatient, p7, storeVitals, news),
     [effectivePatient, p7, storeVitals, news],
@@ -333,7 +333,7 @@ const SmartSummary: FC<{ patient: PatientFull }> = ({ patient }) => {
       render: () => <p className="text-[11px] text-slate-700 leading-relaxed">{generateIoTDeviceSummary(patient)}</p>,
     },
     { icon: PhoneCall, title: 'Billing', color: 'text-teal-500',
-      render: () => <p className="text-[11px] text-slate-700 leading-relaxed">{generateBillingSummaryForPatient(patient, p7Alert)}</p>,
+      render: () => <p className="text-[11px] text-slate-700 leading-relaxed">{generateBillingSummaryForPatient(patient, alertActive)}</p>,
     },
   ];
 

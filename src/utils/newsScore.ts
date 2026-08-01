@@ -219,8 +219,8 @@ export function formatNewsHeadline(news: Pick<NewsAssessment, 'score' | 'tier' |
   return `NEWS ${news.score} — ${TIER_LABEL[news.tier]}`;
 }
 
-/** 演示升级体征（患者7）— NEWS 高危 (7+) 量表2 + 吸氧 */
-export const P7_NEWS_ESCALATION_VITALS: Vitals = {
+/** 演示升级体征（患者1 冯存富）— NEWS 中高危 量表1 */
+export const PATIENT1_ESCALATION_VITALS: Vitals = {
   hr: 98,
   bpSystolic: 140,
   bpDiastolic: 86,

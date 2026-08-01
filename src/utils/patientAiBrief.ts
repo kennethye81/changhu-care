@@ -1,20 +1,20 @@
 import type { PatientSummary, Vitals } from '../store/patientStore';
-import { TIER_LABEL, calculateNews, normalizeVitals, P7_NEWS_ESCALATION_VITALS } from './newsScore';
+import { TIER_LABEL, calculateNews, normalizeVitals, PATIENT1_ESCALATION_VITALS } from './newsScore';
 import { formatNewsHeadline } from './medicalHistoryNews';
 
 export function buildPatientAiBrief(
   summary: PatientSummary,
   vitals: Vitals | undefined,
-  p7AlertActive = false,
+  alertActive = false,
 ): { summary: string; recommendations: string[] } {
   const v =
-    summary.id === 7 && p7AlertActive
-      ? P7_NEWS_ESCALATION_VITALS
+    summary.id === 1 && alertActive
+      ? PATIENT1_ESCALATION_VITALS
       : normalizeVitals(vitals ?? {}, summary.diagnosis);
   const news = calculateNews(v, summary.diagnosis);
   const tierLabel = TIER_LABEL[news.tier];
 
-  if (summary.id === 7 && p7AlertActive) {
+  if (summary.id === 1 && alertActive) {
     return {
       summary: `🚨 ${formatNewsHeadline(news)} — ${summary.name}. SpO₂ ${v.spo2}% Scale 2 + O₂, Temp ${v.temp}°C, HR ${v.hr}, RR ${v.rr}/min, BP ${v.bpSystolic}/${v.bpDiastolic}. ${news.escalation} ${news.monitoringLabel}.`,
       recommendations: [

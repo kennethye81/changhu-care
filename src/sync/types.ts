@@ -9,7 +9,7 @@ export const DEMO_SYNC_STORAGE_KEY = 'ihomecare-demo-sync-state';
 export interface DemoSyncPayload extends CollaborationSyncSlice {
   v: typeof DEMO_SYNC_VERSION;
   ts: number;
-  p7AlertActive: boolean;
+  alertActive: boolean;
   vitals: Record<number, Vitals>;
   resolvedAlertIds: string[];
   iotDevicesByPatient?: Record<number, PatientFull['iotDevices']>;
@@ -21,13 +21,13 @@ export interface DemoSyncMessage {
   payload: DemoSyncPayload;
 }
 
-export function snapshotDemoSync(payload: Pick<DemoSyncPayload, 'p7AlertActive' | 'vitals' | keyof CollaborationSyncSlice>): string {
+export function snapshotDemoSync(payload: Pick<DemoSyncPayload, 'alertActive' | 'vitals' | keyof CollaborationSyncSlice>): string {
   return JSON.stringify(payload);
 }
 
 export function buildDemoSyncPayload(
   patient: {
-    p7AlertActive: boolean;
+    alertActive: boolean;
     vitals: Record<number, Vitals>;
     resolvedAlertIds: string[];
     patients?: PatientFull[];
@@ -43,7 +43,7 @@ export function buildDemoSyncPayload(
   return {
     v: DEMO_SYNC_VERSION,
     ts,
-    p7AlertActive: patient.p7AlertActive,
+    alertActive: patient.alertActive,
     vitals: patient.vitals,
     resolvedAlertIds: patient.resolvedAlertIds,
     iotDevicesByPatient,
@@ -64,7 +64,7 @@ export function isDemoSyncPayload(value: unknown): value is DemoSyncPayload {
   const p = value as DemoSyncPayload;
   return (
     (p.v === 3 || p.v === 2 || p.v === 1) &&
-    typeof p.p7AlertActive === 'boolean' &&
+    typeof p.alertActive === 'boolean' &&
     typeof p.vitals === 'object'
   );
 }
@@ -73,7 +73,7 @@ export function normalizeDemoSyncPayload(value: DemoSyncPayload): DemoSyncPayloa
   const normalized = value.v === 2 && value.messagesByPatient ? value : {
     v: DEMO_SYNC_VERSION,
     ts: value.ts || Date.now(),
-    p7AlertActive: value.p7AlertActive,
+    alertActive: value.alertActive,
     vitals: value.vitals,
     resolvedAlertIds: value.resolvedAlertIds || [],
     messagesByPatient: value.messagesByPatient || {},

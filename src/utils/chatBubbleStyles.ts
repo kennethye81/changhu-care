@@ -26,7 +26,7 @@ export function formatChatDisplayName(name: string): string {
 
 interface BubbleStyleOptions {
   isMe: boolean;
-  p7Alert?: boolean;
+  alertActive?: boolean;
   isLog?: boolean;
   textClass?: string;
 }
@@ -39,7 +39,7 @@ interface BubbleStyleOptions {
  */
 export function getChatBubbleClasses(
   from: ChatMessage['from'],
-  { isMe, p7Alert, isLog, textClass = 'text-xs' }: BubbleStyleOptions,
+  { isMe, alertActive, isLog, textClass = 'text-xs' }: BubbleStyleOptions,
 ): string {
   const corner = isMe ? 'rounded-tr-sm' : 'rounded-tl-sm';
   const base = `rounded-2xl px-3 py-2 ${textClass} leading-relaxed`;
@@ -49,7 +49,7 @@ export function getChatBubbleClasses(
   }
 
   if (from === 'ai') {
-    return p7Alert
+    return alertActive
       ? `${base} bg-red-50 border border-red-200 text-red-800 ${corner}`
       : `${base} bg-gradient-to-r from-[#FFFFFF] to-[#EBF5F9] border border-[#E1FCFF] text-slate-700 ${corner}`;
   }
@@ -73,10 +73,10 @@ export function getChatBubbleClasses(
   return `${base} bg-white border border-slate-100 text-slate-700 shadow-sm ${corner}`;
 }
 
-export function getChatSenderLabelClass(from: ChatMessage['from'], p7Alert?: boolean): string {
+export function getChatSenderLabelClass(from: ChatMessage['from'], alertActive?: boolean): string {
   if (from === 'doctor') return 'text-blue-600';
   if (from === 'nurse' || from === 'caseManager') return 'text-[#03304B]';
   if (from === 'family') return 'text-slate-600';
-  if (from === 'ai') return p7Alert ? 'text-red-500' : 'text-[#0B3550]';
+  if (from === 'ai') return alertActive ? 'text-red-500' : 'text-[#0B3550]';
   return 'text-slate-500';
 }

@@ -31,8 +31,8 @@ import { deriveEliteChatMeta, mapHubMessagesToEliteDisplay } from '../utils/elit
 import { getHubNurseSender } from '../utils/chatSenders';
 import { normalizeChatMessage, type ChatMessage } from '../data/chatMessages';
 import { buildPatientAiBrief } from '../utils/patientAiBrief';
-import { buildP7EliteVoiceBundle, formatP7EscalationChat, formatNewsHeadline } from '../utils/medicalHistoryNews';
-import { calculateNews, P7_NEWS_ESCALATION_VITALS } from '../utils/newsScore';
+import { buildPatient1EliteVoiceBundle, formatPatient1EscalationChat, formatNewsHeadline } from '../utils/medicalHistoryNews';
+import { calculateNews, PATIENT1_ESCALATION_VITALS } from '../utils/newsScore';
 import AlertToggle from '../components/AlertToggle';
 import { PENDING_PATIENTS } from '../data/pendingPatients';
 import PendingRegistrationAssessmentForm from '../components/PendingRegistrationAssessmentForm';
@@ -170,7 +170,7 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
 
 const ElitesDashboardTab: FC = () => {
   const { user } = useAuth();
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const carePlans = usePatientStore(s => s.carePlans);
   const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
   const visibleIds = user ? getVisiblePatientIds(user.role, user.account) : null;
@@ -220,12 +220,12 @@ const ElitesDashboardTab: FC = () => {
     </div>
 
     <div className="flex-1 overflow-y-auto min-h-0 px-4 pb-4 space-y-4">
-    {p7AlertActive && (
+    {alertActive && (
       <div className="bg-red-50 border border-red-200 rounded-2xl p-3 flex items-start gap-2">
         <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-xs font-bold text-red-700">{formatNewsHeadline(calculateNews(P7_NEWS_ESCALATION_VITALS, 'COPD'))}</p>
-          <p className="text-[10px] text-red-600 mt-0.5">{formatP7EscalationChat('Urgent clinical review required')}</p>
+          <p className="text-xs font-bold text-red-700">{formatNewsHeadline(calculateNews(PATIENT1_ESCALATION_VITALS, 'COPD'))}</p>
+          <p className="text-[10px] text-red-600 mt-0.5">{formatPatient1EscalationChat('Urgent clinical review required')}</p>
         </div>
       </div>
     )}
@@ -629,7 +629,7 @@ const ElitesPatientsTab: FC = () => {
   const { user } = useAuth();
   const visibleIds = user ? getVisiblePatientIds(user.role, user.account) : null;
   const patientsSummary = usePatientStore(s => s.patientsSummary);
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 18 ? -1 : b.id === 18 ? 1 : a.id - b.id));
   const TODAY = DEMO_CARE_PLAN_DATE;
   const [selectedPid, setSelectedPid] = useState<number | null>(null);
@@ -679,10 +679,10 @@ const ElitesPatientsTab: FC = () => {
   const patientAI = useMemo<Record<number, { summary: string; recommendations: string[] }>>(() => {
     const map: Record<number, { summary: string; recommendations: string[] }> = {};
     myPatients.forEach(p => {
-      map[p.id] = buildPatientAiBrief(p, vitals[p.id], p7AlertActive && p.id === 7);
+      map[p.id] = buildPatientAiBrief(p, vitals[p.id], alertActive && p.id === 1);
     });
     return map;
-  }, [myPatients, vitals, p7AlertActive]);
+  }, [myPatients, vitals, alertActive]);
 
   const handleClockIn = (taskKey: string) => {
     setEliteTaskClockIn(taskKey, getDemoClockTime());
@@ -739,10 +739,10 @@ const ElitesPatientsTab: FC = () => {
       fields: { condition: 'DVT — calf 38cm (↓). Pain 1/10. No PE symptoms. INR therapeutic at 2.1.', meds: 'Warfarin 5mg daily — INR 2.1. No missed doses.', response: 'POCT INR 2.1. Continue Warfarin. Reinforced compression stocking use and bleeding precautions.', mental: 'Alert ×3. Good anticoagulation education recall.', io: 'Intake/output normal.', diet: 'Consistent diet regarding vitamin K explained.', incidents: 'No bleeding. No falls.' },
     },
     7: (() => {
-      const bundle = buildP7EliteVoiceBundle(p7AlertActive);
+      const bundle = buildPatient1EliteVoiceBundle(alertActive);
       return { ttsSrc: null, phrases: bundle.phrases, fields: bundle.fields };
     })(),
-  }), [p7AlertActive]);
+  }), [alertActive]);
 
   const startRecording = () => {
     const data = patientLogData[selectedPid!];
@@ -817,7 +817,7 @@ const ElitesPatientsTab: FC = () => {
           detail: `${patientName}: ${detail.slice(0, 480)}`,
           author: user?.name ?? 'Sarah Leung',
           role: 'RN',
-          status: p7AlertActive && selectedPid === 7 ? 'escalated' : 'completed',
+          status: alertActive && selectedPid === 1 ? 'escalated' : 'completed',
         });
         setTimeout(() => { setSelectedPid(null); setUploading(false); }, 1200);
       }
@@ -1178,7 +1178,7 @@ const ElitesChatTab: FC = () => {
   const { user } = useAuth();
   const visibleIds = user ? getVisiblePatientIds(user.role, user.account) : null;
   const patientsSummary = usePatientStore(s => s.patientsSummary);
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const messagesByPatient = useCollaborationStore(s => s.messagesByPatient);
   const appendMessage = useCollaborationStore(s => s.appendMessage);
   const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 18 ? -1 : b.id === 18 ? 1 : a.id - b.id));
@@ -1194,16 +1194,16 @@ const ElitesChatTab: FC = () => {
       const msgs = messagesByPatient[p.id] || [];
       if (msgs.length === 0) continue;
       result[p.id] = {
-        ...deriveEliteChatMeta(p.id, msgs, p7AlertActive),
+        ...deriveEliteChatMeta(p.id, msgs, alertActive),
         messages: mapHubMessagesToEliteDisplay(msgs),
       };
     }
     return result;
-  }, [myPatients, messagesByPatient, p7AlertActive]);
+  }, [myPatients, messagesByPatient, alertActive]);
 
   const chatMessages = selectedChatPid != null ? (patientChats[selectedChatPid]?.messages ?? []) : [];
   const threadKey = selectedChatPid != null
-    ? `${selectedChatPid}-${p7AlertActive ? 'alert' : 'stable'}`
+    ? `${selectedChatPid}-${alertActive ? 'alert' : 'stable'}`
     : null;
   const visibleCount = useWeChatChatReveal(chatMessages.length, threadKey);
 
@@ -1312,14 +1312,14 @@ const ElitesChatTab: FC = () => {
             avatar={<ChatBubbleAvatar msg={raw} size={28} />}
             header={
               <div className={`flex items-center gap-1.5 mb-0.5 ${isMe ? 'flex-row-reverse' : ''}`}>
-                <span className={`text-[8px] font-medium ${getChatSenderLabelClass(raw.from, p7AlertActive)}`}>
+                <span className={`text-[8px] font-medium ${getChatSenderLabelClass(raw.from, alertActive)}`}>
                   {formatChatDisplayName(msg.from)}
                 </span>
                 <span className="text-[7px] text-slate-300">{msg.time}</span>
               </div>
             }
           >
-            <div className={getChatBubbleClasses(raw.from, { isMe, p7Alert: p7AlertActive, isLog, textClass: 'text-[10px]' })}>
+            <div className={getChatBubbleClasses(raw.from, { isMe, alertActive: alertActive, isLog, textClass: 'text-[10px]' })}>
               <pre className="whitespace-pre-wrap font-sans">{msg.text}</pre>
               {isLog && (
                 <div className="mt-2 pt-2 border-t border-[#99E7FF] flex items-center gap-1.5 text-[8px] text-[#006F80]">

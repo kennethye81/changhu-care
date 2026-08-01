@@ -4,7 +4,7 @@ import {
   Activity, AlertTriangle, CheckCircle2, ClipboardList, Heart, Stethoscope,
 } from 'lucide-react';
 import { DEMO_CARE_PLAN_DATE } from './carePlanSync';
-import { formatP7InfectionAlertDetail } from './medicalHistoryNews';
+import { formatPatient1AlertDetail } from './medicalHistoryNews';
 import type { Vitals } from '../store/patientStore';
 
 export interface FamilyProgressNote {
@@ -76,7 +76,7 @@ function buildP7RedAlertNote(vitals: Vitals): FamilyProgressNote {
 
 export function getFamilyCareProgressNotes(
   logs: FollowupLogEntry[] | undefined,
-  p7Alert: boolean,
+  alertActive: boolean,
   demoDate = DEMO_CARE_PLAN_DATE,
   limit = 6,
   vitals?: Vitals,
@@ -85,9 +85,9 @@ export function getFamilyCareProgressNotes(
   const fromStore = mapCarePlanLogsToFamilyNotes(dated.length ? dated : (logs || []), limit);
   if (fromStore.length > 0) return fromStore.slice(0, limit);
   const base = DAY1_FALLBACK_NOTES(vitals);
-  if (p7Alert && vitals) {
+  if (alertActive && vitals) {
     return [
-      { title: '⚠ AI感染提醒', detail: formatP7InfectionAlertDetail(), time: 'Thu 5:02 PM', icon: AlertTriangle, color: 'text-red-600' },
+      { title: '⚠ AI感染提醒', detail: formatPatient1AlertDetail(), time: 'Thu 5:02 PM', icon: AlertTriangle, color: 'text-red-600' },
       buildP7RedAlertNote(vitals),
       ...base,
     ].slice(0, limit);

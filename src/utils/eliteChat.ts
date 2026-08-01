@@ -1,6 +1,6 @@
 import { normalizeChatMessage, type ChatMessage } from '../data/chatMessages';
 import { formatNewsHeadline } from './medicalHistoryNews';
-import { calculateNews, P7_NEWS_ESCALATION_VITALS } from './newsScore';
+import { calculateNews, PATIENT1_ESCALATION_VITALS } from './newsScore';
 
 export interface EliteChatMessage {
   from: string;
@@ -47,12 +47,12 @@ export function mapHubMessagesToEliteDisplay(messages: ChatMessage[]): EliteChat
 export function deriveEliteChatMeta(
   patientId: number,
   messages: ChatMessage[],
-  p7AlertActive: boolean,
+  alertActive: boolean,
 ): { lastMsg: string; lastTime: string; aiAlert?: string } {
   const last = messages[messages.length - 1];
   const aiAlert =
-    patientId === 7 && p7AlertActive
-      ? `🚨 ${formatNewsHeadline(calculateNews(P7_NEWS_ESCALATION_VITALS, 'COPD'))} — Infection deterioration`
+    patientId === 1 && alertActive
+      ? `🚨 ${formatNewsHeadline(calculateNews(PATIENT1_ESCALATION_VITALS, 'COPD'))} — Infection deterioration`
       : messages.find((m) => m.from === 'ai' && (m.text.includes('⚠') || m.text.includes('🚨')))?.text.slice(0, 60);
 
   return {

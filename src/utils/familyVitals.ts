@@ -1,10 +1,10 @@
 import type { LucideIcon } from 'lucide-react';
 import { Activity, Droplets, Heart, Thermometer, Wind } from 'lucide-react';
 import { DEFAULT_VITALS, type Vitals } from '../store/patientStore';
-import { buildVitalParameterAssessment, formatP7AlertBanner } from './medicalHistoryNews';
+import { buildVitalParameterAssessment, formatPatient1AlertBanner } from './medicalHistoryNews';
 import { buildVitalTrends } from './vitalTrendSeries';
 
-export { formatP7AlertBanner };
+export { formatPatient1AlertBanner };
 
 export interface FamilyVitalTrendMeta {
   trend: number[];
@@ -30,17 +30,17 @@ export interface FamilyVitalCard {
   insight?: string;
 }
 
-// COPD clinical baseline for trend comparison — uses P7 (Chan Tai Ming, COPD GOLD 2) as reference.
-// TODO: pass patient-specific DEFAULT_VITALS[patientId] instead of hardcoding P7.
+// COPD clinical baseline for trend comparison — uses 患者1 (冯存富, 高血压+压疮) as reference.
+// TODO: pass patient-specific DEFAULT_VITALS[patientId] instead of hardcoding patient 1.
 const COPD_BASELINE = DEFAULT_VITALS[7];
 
-function trends(vitals: Vitals, p7Alert: boolean) {
-  return buildVitalTrends(vitals, p7Alert, COPD_BASELINE);
+function trends(vitals: Vitals, alertActive: boolean) {
+  return buildVitalTrends(vitals, alertActive, COPD_BASELINE);
 }
 
-export function buildFamilyHomeVitalCards(vitals: Vitals, p7Alert: boolean): FamilyVitalCard[] {
-  const t = trends(vitals, p7Alert);
-  const abnormal = p7Alert;
+export function buildFamilyHomeVitalCards(vitals: Vitals, alertActive: boolean): FamilyVitalCard[] {
+  const t = trends(vitals, alertActive);
+  const abnormal = alertActive;
   const glucoseAbnormal = vitals.bloodSugar < 80 || vitals.bloodSugar > 180;
   const card = (
     label: string,
@@ -83,23 +83,23 @@ export function buildFamilyHomeVitalCards(vitals: Vitals, p7Alert: boolean): Fam
   ];
 }
 
-export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, diagnosis = 'COPD'): FamilyVitalCard[] {
-  const t = trends(vitals, p7Alert);
+export function buildFamilyDetailVitalCards(vitals: Vitals, alertActive: boolean, diagnosis = 'COPD'): FamilyVitalCard[] {
+  const t = trends(vitals, alertActive);
   const glucoseAbnormal = vitals.bloodSugar < 80 || vitals.bloodSugar > 180;
   const baseline = COPD_BASELINE;
   const insight = (param: Parameters<typeof buildVitalParameterAssessment>[0]) =>
-    buildVitalParameterAssessment(param, vitals, diagnosis, p7Alert ? baseline : undefined);
+    buildVitalParameterAssessment(param, vitals, diagnosis, alertActive ? baseline : undefined);
   const detailMeta = [
     {
       label: 'Respiratory Rate',
       value: String(vitals.rr),
       unit: '/min',
       icon: Wind,
-      color: p7Alert ? '#ef4444' : '#0095D3',
-      bg: p7Alert ? 'bg-red-50' : 'bg-amber-50',
-      textColor: p7Alert ? 'text-red-600' : 'text-amber-600',
+      color: alertActive ? '#ef4444' : '#0095D3',
+      bg: alertActive ? 'bg-red-50' : 'bg-amber-50',
+      textColor: alertActive ? 'text-red-600' : 'text-amber-600',
       trend: t.rr,
-      trendDir: (p7Alert ? 'up' : 'flat') as 'up' | 'down' | 'flat',
+      trendDir: (alertActive ? 'up' : 'flat') as 'up' | 'down' | 'flat',
       device: 'Smart Bed Sensor',
       insight: insight('rr'),
     },
@@ -108,11 +108,11 @@ export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, di
       value: String(vitals.hr),
       unit: 'bpm',
       icon: Heart,
-      color: p7Alert ? '#ef4444' : '#f59e0b',
-      bg: p7Alert ? 'bg-red-50' : 'bg-amber-50',
-      textColor: p7Alert ? 'text-red-600' : 'text-amber-600',
+      color: alertActive ? '#ef4444' : '#f59e0b',
+      bg: alertActive ? 'bg-red-50' : 'bg-amber-50',
+      textColor: alertActive ? 'text-red-600' : 'text-amber-600',
       trend: t.hr,
-      trendDir: (p7Alert ? 'up' : 'flat') as 'up' | 'down' | 'flat',
+      trendDir: (alertActive ? 'up' : 'flat') as 'up' | 'down' | 'flat',
       device: 'Smartwatch S3',
       insight: insight('hr'),
     },
@@ -121,16 +121,16 @@ export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, di
       value: `${vitals.bpSystolic}/${vitals.bpDiastolic}`,
       unit: 'mmHg',
       icon: Activity,
-      color: p7Alert ? '#ef4444' : '#f59e0b',
-      bg: p7Alert ? 'bg-red-50' : 'bg-amber-50',
-      textColor: p7Alert ? 'text-red-600' : 'text-amber-600',
+      color: alertActive ? '#ef4444' : '#f59e0b',
+      bg: alertActive ? 'bg-red-50' : 'bg-amber-50',
+      textColor: alertActive ? 'text-red-600' : 'text-amber-600',
       trend: t.bpSys,
       trendDia: t.bpDia,
       dualLine: true,
-      trendDir: (p7Alert ? 'up' : 'flat') as 'up' | 'down' | 'flat',
+      trendDir: (alertActive ? 'up' : 'flat') as 'up' | 'down' | 'flat',
       device: 'Omron HEM-7361T',
       insight: `${insight('bpSystolic')} ${insight('bpDiastolic')}`,
-      abnormal: p7Alert || vitals.bpSystolic >= 140 || vitals.bpDiastolic >= 90,
+      abnormal: alertActive || vitals.bpSystolic >= 140 || vitals.bpDiastolic >= 90,
     },
     {
       label: 'SpO₂',
@@ -138,10 +138,10 @@ export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, di
       unit: '%',
       icon: Droplets,
       color: '#ef4444',
-      bg: p7Alert ? 'bg-red-50' : 'bg-amber-50',
-      textColor: p7Alert ? 'text-red-600' : 'text-amber-600',
+      bg: alertActive ? 'bg-red-50' : 'bg-amber-50',
+      textColor: alertActive ? 'text-red-600' : 'text-amber-600',
       trend: t.spo2,
-      trendDir: (p7Alert ? 'down' : 'flat') as 'up' | 'down' | 'flat',
+      trendDir: (alertActive ? 'down' : 'flat') as 'up' | 'down' | 'flat',
       device: 'Nonin Pulse Oximeter',
       insight: insight('spo2'),
     },
@@ -164,10 +164,10 @@ export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, di
       unit: '°C',
       icon: Thermometer,
       color: '#ef4444',
-      bg: p7Alert ? 'bg-red-50' : 'bg-amber-50',
-      textColor: p7Alert ? 'text-red-600' : 'text-amber-600',
+      bg: alertActive ? 'bg-red-50' : 'bg-amber-50',
+      textColor: alertActive ? 'text-red-600' : 'text-amber-600',
       trend: t.temp,
-      trendDir: (p7Alert ? 'up' : 'flat') as 'up' | 'down' | 'flat',
+      trendDir: (alertActive ? 'up' : 'flat') as 'up' | 'down' | 'flat',
       device: 'Infrared Thermometer',
       insight: insight('temp'),
     },
@@ -175,7 +175,7 @@ export function buildFamilyDetailVitalCards(vitals: Vitals, p7Alert: boolean, di
 
   return detailMeta.map(item => ({
     ...item,
-    abnormal: p7Alert
+    abnormal: alertActive
       || (item.label === 'Blood Glucose' && glucoseAbnormal)
       || (item.label === 'Blood Pressure' && (vitals.bpSystolic >= 140 || vitals.bpDiastolic >= 90)),
   }));
@@ -209,66 +209,66 @@ export interface FamilySleepSnapshot {
   insight: string;
 }
 
-export function buildFamilyMentalStatus(vitals: Vitals, p7Alert: boolean): FamilyMentalStatusRow[] {
-  const rr = vitals.rr ?? (p7Alert ? 26 : 20);
+export function buildFamilyMentalStatus(vitals: Vitals, alertActive: boolean): FamilyMentalStatusRow[] {
+  const rr = vitals.rr ?? (alertActive ? 26 : 20);
   void rr;
   return [
     {
       label: 'Alertness',
-      value: p7Alert ? 'Alert, intermittent confusion' : 'Alert',
-      score: p7Alert ? 'warn' : 'good',
+      value: alertActive ? 'Alert, intermittent confusion' : 'Alert',
+      score: alertActive ? 'warn' : 'good',
     },
     {
       label: 'Orientation',
-      value: p7Alert ? 'AMTS 7–9/10' : 'AMTS 10/10',
-      score: p7Alert ? 'warn' : 'good',
+      value: alertActive ? 'AMTS 7–9/10' : 'AMTS 10/10',
+      score: alertActive ? 'warn' : 'good',
     },
     {
       label: 'Mood',
-      value: p7Alert ? 'Anxious' : 'Calm',
-      score: p7Alert ? 'warn' : 'good',
+      value: alertActive ? 'Anxious' : 'Calm',
+      score: alertActive ? 'warn' : 'good',
     },
     {
       label: 'Pain Level',
-      value: p7Alert ? '3/10' : '2/10',
-      score: p7Alert ? 'warn' : 'good',
+      value: alertActive ? '3/10' : '2/10',
+      score: alertActive ? 'warn' : 'good',
     },
   ];
 }
 
-export function buildFamilyIoSnapshot(vitals: Vitals, p7Alert: boolean): FamilyIoSnapshot {
+export function buildFamilyIoSnapshot(vitals: Vitals, alertActive: boolean): FamilyIoSnapshot {
   return {
-    oralIntake: p7Alert ? '~1,200 mL' : '~1,500 mL',
-    oralPct: p7Alert ? 60 : 75,
-    urineOutput: p7Alert ? '~900 mL' : '~1,400 mL',
-    urinePct: p7Alert ? 45 : 70,
-    fluidBalance: p7Alert ? '+600 mL' : '+100 mL',
-    fluidWarn: p7Alert,
-    oralNote: p7Alert ? '↓ Reduced intake — encourage small frequent sips' : 'No fluid restriction — encourage hydration',
-    urineNote: p7Alert ? '⚠↓ Reduced — monitor for AKI with infection' : 'Adequate urine output',
-    insight: p7Alert
+    oralIntake: alertActive ? '~1,200 mL' : '~1,500 mL',
+    oralPct: alertActive ? 60 : 75,
+    urineOutput: alertActive ? '~900 mL' : '~1,400 mL',
+    urinePct: alertActive ? 45 : 70,
+    fluidBalance: alertActive ? '+600 mL' : '+100 mL',
+    fluidWarn: alertActive,
+    oralNote: alertActive ? '↓ Reduced intake — encourage small frequent sips' : 'No fluid restriction — encourage hydration',
+    urineNote: alertActive ? '⚠↓ Reduced — monitor for AKI with infection' : 'Adequate urine output',
+    insight: alertActive
       ? '⚠ Positive balance +600mL — febrile patient with reduced urine output. Monitor for AKI (KDIGO 2024). Encourage oral fluids. Check creatinine at next POCT.'
       : 'Adequate intake ~1,500mL. Urine output ~1,400mL. Net +100mL — no fluid overload concern. No diuretic therapy. Continue encouraging hydration for sputum clearance.',
   };
 }
 
-export function buildFamilySleepSnapshot(vitals: Vitals, p7Alert: boolean): FamilySleepSnapshot {
-  const rr = vitals.rr ?? (p7Alert ? 26 : 20);
+export function buildFamilySleepSnapshot(vitals: Vitals, alertActive: boolean): FamilySleepSnapshot {
+  const rr = vitals.rr ?? (alertActive ? 26 : 20);
   return {
-    duration: p7Alert ? '5.8' : '6.8',
+    duration: alertActive ? '5.8' : '6.8',
     respRate: String(rr),
-    sleepScore: p7Alert ? '58' : '76',
-    durationSub: p7Alert ? '↓ Disrupted by SpO₂ alarms' : 'Adequate for recovery',
-    respSub: p7Alert ? '⚠ Tachypneic' : 'COPD baseline',
-    scoreSub: p7Alert ? 'Poor — frequent arousals' : 'Fair quality',
-    insight: p7Alert
+    sleepScore: alertActive ? '58' : '76',
+    durationSub: alertActive ? '↓ Disrupted by SpO₂ alarms' : 'Adequate for recovery',
+    respSub: alertActive ? '⚠ Tachypneic' : 'COPD baseline',
+    scoreSub: alertActive ? 'Poor — frequent arousals' : 'Fair quality',
+    insight: alertActive
       ? '⚠ Sleep severely disrupted — only 5.8h with frequent arousals from SpO₂ alarms (O₂ desat to 90%). RR elevated. Sleep score 58/100 indicates poor recovery. Prioritise O₂ optimization to improve rest.'
       : `Sleep 6.8h, RR ${rr}/min (COPD baseline — GOLD 2024: tachypnea expected). Score 76/100 — fair quality. No significant nocturnal desaturation. O₂ concentrator on standby.`,
   };
 }
 
-export function buildFamilyMentalInsight(p7Alert: boolean): string {
-  return p7Alert
+export function buildFamilyMentalInsight(alertActive: boolean): string {
+  return alertActive
     ? 'SpO₂下降期间AMTS从10→7 — 疑为低氧性谵妄。吸氧2L/min后恢复至9/10。每小时监测一次。配偶王小凤在床旁 — 已培训意识模糊评估。'
     : 'AMTS 10/10。清醒，定向力×3。情绪平稳。配偶在场，已培训COPD行动计划。 No cognitive decline. Consistent with baseline.';
 }

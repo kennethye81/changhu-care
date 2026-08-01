@@ -31,7 +31,7 @@ MEDICAL_HISTORY[1] = {
   entries: [
     {
       date: '2026-06-18', type: 'discharge', facility: 'HK Sanatorium & Hospital', department: 'Cardiology',
-      physician: 'Dr. Chan Chi Keung', chiefComplaint: 'ADHF — stabilised for HaH discharge',
+      physician: '王医生（内科）', chiefComplaint: '高血压3级极高危 — 居家照护',
       diagnosis: 'Acute Decompensated Heart Failure (NYHA III→IV); Ischaemic Cardiomyopathy (LVEF 30%); Permanent AF; CKD Stage 3 (eGFR 42); T2DM',
       labs: 'BNP 850 (↓ from 2,200), Cr 138, eGFR 42, K⁺ 3.9, Hb 11.2, HbA1c 7.4%',
       imaging: 'ECHO: LVEF 30%, dilated LV, moderate MR, LA enlargement. CXR: pulmonary congestion improved.',
@@ -41,7 +41,7 @@ MEDICAL_HISTORY[1] = {
     },
     {
       date: '2026-06-14', type: 'admission', facility: 'HK Sanatorium & Hospital', department: 'Cardiology',
-      physician: 'Dr. Chan Chi Keung', chiefComplaint: 'Progressive dyspnoea, orthopnoea, bilateral leg swelling × 5 days',
+      physician: '王医生（内科）', chiefComplaint: 'Progressive dyspnoea, orthopnoea, bilateral leg swelling × 5 days',
       diagnosis: 'Acute Decompensated Heart Failure (NYHA III→IV); AF with RVR; Acute-on-Chronic Kidney Injury',
       labs: 'BNP 2,200, Troponin I 0.06, K⁺ 5.1, Cr 188, eGFR 28. CXR: pulmonary oedema, pleural effusions.',
       imaging: 'ECHO: LVEF 30% (no change from prior). CXR: bilateral pulmonary oedema, small bilateral pleural effusions.',
@@ -50,7 +50,7 @@ MEDICAL_HISTORY[1] = {
     },
     {
       date: '2026-01-10', type: 'outpatient', facility: 'HK Sanatorium & Hospital', department: 'Cardiology Clinic',
-      physician: 'Dr. Chan Chi Keung', chiefComplaint: 'HF follow-up — mild DOE, stable weight',
+      physician: '王医生（内科）', chiefComplaint: '高血压复诊 — 头晕好转, 体重稳定',
       diagnosis: 'Heart Failure NYHA II-III; Ischaemic Cardiomyopathy (inferior MI 2023); AF; CKD Stage 3',
       labs: 'BNP 420, Cr 130, K⁺ 4.2. INR 2.1 (on Warfarin→switched to Apixaban). HbA1c 7.1%.',
       imaging: 'ECHO: LVEF 30% — no change from 6 months ago.',
@@ -59,7 +59,7 @@ MEDICAL_HISTORY[1] = {
     },
     {
       date: '2023-08-22', type: 'admission', facility: 'United Christian Hospital', department: 'Cardiology',
-      physician: 'Dr. Lee Chi Wai', chiefComplaint: 'Severe chest pain + diaphoresis — inferior STEMI',
+      physician: '王医生（内科）', chiefComplaint: 'Severe chest pain + diaphoresis — inferior STEMI',
       diagnosis: 'Inferior STEMI; Complete Heart Block (transient); HF with reduced EF (post-MI)',
       labs: 'Troponin I 45.6 (peak), CK-MB 128. K⁺ 4.0, Cr 95.',
       imaging: 'ECG: ST elevation II, III, aVF. Coronary Angiogram: 100% proximal RCA occlusion.',
@@ -69,7 +69,7 @@ MEDICAL_HISTORY[1] = {
     },
     {
       date: '2023-02-15', type: 'outpatient', facility: 'Kwun Tong GOPC', department: 'Family Medicine',
-      physician: 'Dr. Lam Wai Keung', chiefComplaint: 'Routine check-up — mild HTN, overweight',
+      physician: '王医生（内科）', chiefComplaint: 'Routine check-up — mild HTN, overweight',
       diagnosis: 'Essential HTN (Stage 1, 142/88); Overweight (BMI 27.6); Impaired Fasting Glucose (FPG 6.4 mmol/L)',
       labs: 'FPG 6.4, HbA1c 6.2%, Cr 88, Lipids: TC 5.6, LDL 3.4, HDL 1.0, TG 2.2.',
       imaging: 'ECG: NSR, no LVH. BMI 27.6.',
@@ -87,8 +87,8 @@ MEDICAL_HISTORY[2] = {
   patientId: 2,
   entries: [
     {
-      date: '2026-06-18', type: 'discharge', facility: 'Queen Mary Hospital', department: 'Respiratory Medicine',
-      physician: 'Dr. Lee Mei Ling', chiefComplaint: 'COPD exacerbation — stabilised for HaH discharge',
+      date: '2026-06-18', type: 'discharge', facility: '常州市金坛区人民医院', department: 'Respiratory Medicine',
+      physician: '姜珊（护士经理）', chiefComplaint: 'COPD exacerbation — stabilised for HaH discharge',
       diagnosis: 'Acute COPD Exacerbation (infective — H. influenzae); COPD GOLD Stage 3 (FEV₁ 36%); Chronic Hypoxaemia',
       labs: 'ABG: pH 7.37, PaCO₂ 48, PaO₂ 70, HCO₃ 28. CBC: WBC 9.8 (↓ from 14.5). CRP 38 (↓ from 112). Sputum culture: H. influenzae, sensitive to Amoxicillin.',
       imaging: 'CXR: hyperinflation, no new infiltrate. Previous CXR comparison: stable emphysematous changes.',
@@ -96,8 +96,8 @@ MEDICAL_HISTORY[2] = {
       notes: 'Exacerbation managed with IV Ceftriaxone × 3 days + Prednisolone. Oral switch to Amoxicillin 500mg TID completed. Steroid taper ongoing. Home O₂ concentrator delivered. Pulmonary rehab enrolled. Discharged to HaH with RN visits 3×/week + PT 2×/week.',
     },
     {
-      date: '2026-06-14', type: 'admission', facility: 'Queen Mary Hospital', department: 'Respiratory Medicine',
-      physician: 'Dr. Lee Mei Ling', chiefComplaint: 'Acute COPD exacerbation — increased SOB, purulent sputum, wheeze × 3 days',
+      date: '2026-06-14', type: 'admission', facility: '常州市金坛区人民医院', department: 'Respiratory Medicine',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Acute COPD exacerbation — increased SOB, purulent sputum, wheeze × 3 days',
       diagnosis: 'COPD Exacerbation (infective — H. influenzae); Community-Acquired Pneumonia ruled out',
       labs: 'CRP 112, WBC 14.5. ABG: pH 7.33, PaCO₂ 52, PaO₂ 58 (on RA). Blood cultures: no growth. Sputum: H. influenzae.',
       imaging: 'CXR: hyperinflated lungs, flat diaphragms, no focal infiltrate. CT chest (2025): diffuse centrilobular emphysema.',
@@ -106,7 +106,7 @@ MEDICAL_HISTORY[2] = {
     },
     {
       date: '2026-02-01', type: 'admission', facility: 'Prince of Wales Hospital', department: 'Respiratory Medicine',
-      physician: 'Dr. Peter Ho', chiefComplaint: 'Acute COPD exacerbation — increased SOB, purulent sputum × 3 days',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Acute COPD exacerbation — increased SOB, purulent sputum × 3 days',
       diagnosis: 'COPD Exacerbation (infective); Community-Acquired Pneumonia (right lower lobe)',
       labs: 'CRP 86, WBC 13.2. ABG: pH 7.33, PaCO₂ 55, PaO₂ 58 (RA). Sputum culture: H. influenzae.',
       imaging: 'CXR: RLL consolidation, hyperinflation.',
@@ -115,7 +115,7 @@ MEDICAL_HISTORY[2] = {
     },
     {
       date: '2025-09-18', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Respiratory Clinic',
-      physician: 'Dr. Peter Ho', chiefComplaint: 'Annual COPD review — stable',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Annual COPD review — stable',
       diagnosis: 'COPD GOLD Stage 3 — FEV₁ 36% predicted, stable',
       labs: 'Spirometry: FEV₁ 36% pred, FVC 58%, FEV₁/FVC 0.47. ABG: compensated respiratory acidosis. 6MWT: 280m.',
       imaging: 'CXR: stable hyperinflation, no new changes.',
@@ -160,7 +160,7 @@ MEDICAL_HISTORY[3] = {
       notes: 'Moderate CAP. Penicillin allergy precludes beta-lactam therapy. Levofloxacin chosen per IDSA guidelines for penicillin-allergic CAP patients. Afebrile by Day 3. IV→oral switch Day 4. Clinically stable for HaH.',
     },
     {
-      date: '2018-07-22', type: 'er', facility: 'Queen Mary Hospital', department: 'Emergency',
+      date: '2018-07-22', type: 'er', facility: '常州市金坛区人民医院', department: 'Emergency',
       physician: 'Dr. Chan Tai Ming', chiefComplaint: 'Anaphylaxis — airway swelling, urticaria, hypotension after Amoxicillin',
       diagnosis: 'Anaphylactic Reaction to Amoxicillin (Penicillin) — confirmed IgE-mediated',
       labs: 'Tryptase: 24.5 (elevated — confirms anaphylaxis).',
@@ -198,7 +198,7 @@ MEDICAL_HISTORY[4] = {
   entries: [
     {
       date: '2026-06-18', type: 'discharge', facility: 'HK Sanatorium & Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Chan Chi Keung', chiefComplaint: 'Complicated UTI — stabilised for HaH discharge',
+      physician: '王医生（内科）', chiefComplaint: 'Complicated UTI — stabilised for HaH discharge',
       diagnosis: 'Complicated UTI (E. coli, ESBL-negative); Acute confusional state (resolved); T2DM; CKD Stage 3 (eGFR 48); HTN',
       labs: 'Cr 146, eGFR 48, K⁺ 4.6. Urine culture: E. coli >10⁵ CFU/mL, sensitive to Nitrofurantoin, Cephalexin, Ciprofloxacin. Blood cultures: no growth.',
       imaging: 'Renal US: bilateral medical renal disease, no hydronephrosis.',
@@ -207,7 +207,7 @@ MEDICAL_HISTORY[4] = {
     },
     {
       date: '2026-06-15', type: 'admission', facility: 'HK Sanatorium & Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Chan Chi Keung', chiefComplaint: 'Dysuria, frequency, suprapubic pain, new-onset confusion × 3 days',
+      physician: '王医生（内科）', chiefComplaint: 'Dysuria, frequency, suprapubic pain, new-onset confusion × 3 days',
       diagnosis: 'Complicated UTI (E. coli); Acute confusional state (infection-related delirium); T2DM; CKD Stage 3; HTN',
       labs: 'WBC 13.5, CRP 86. Urine: nitrite +, leukocyte esterase 3+, blood 2+. Cr 150, eGFR 46. AMTS 6/10 on admission.',
       imaging: 'Renal US (previous): bilateral medical renal disease, cortical thinning.',
@@ -234,7 +234,7 @@ MEDICAL_HISTORY[4] = {
     },
     {
       date: '2023-09-12', type: 'outpatient', facility: 'Kwun Tong GOPC', department: 'Family Medicine',
-      physician: 'Dr. Lam Wai Keung', chiefComplaint: 'Routine DM follow-up — suboptimal control',
+      physician: '王医生（内科）', chiefComplaint: 'Routine DM follow-up — suboptimal control',
       diagnosis: 'Type 2 DM (HbA1c 8.2%); HTN (148/90); Overweight (BMI 28.1)',
       labs: 'HbA1c 8.2%, FPG 7.8, Cr 88, eGFR 68. Lipids: TC 5.8, LDL 3.6.',
       imaging: 'ECG: NSR, no LVH.',
@@ -252,8 +252,8 @@ MEDICAL_HISTORY[5] = {
   patientId: 5,
   entries: [
     {
-      date: '2026-06-18', type: 'discharge', facility: 'Queen Mary Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Lee Mei Ling', chiefComplaint: 'Cellulitis — stabilised for HaH discharge',
+      date: '2026-06-18', type: 'discharge', facility: '常州市金坛区人民医院', department: 'Internal Medicine',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Cellulitis — stabilised for HaH discharge',
       diagnosis: 'Moderate Cellulitis (Eron Class III) — left lower limb, likely streptococcal; T2DM (HbA1c 7.8%); HTN',
       labs: 'WBC 10.5 (↓ from 14.2), CRP 48 (↓ from 128). Blood cultures: no growth. Wound swab: no growth.',
       imaging: 'No imaging required. Clinical assessment: erythema 15cm diameter (↓ from 25cm), well-demarcated.',
@@ -261,8 +261,8 @@ MEDICAL_HISTORY[5] = {
       notes: 'IV Clindamycin × 2 days → oral switch. Erythema reduced from 25→15cm. Afebrile × 36h. Pain 2/10. Discharged to HaH with daily RN for wound care. Complete 9-day antibiotic course. Leg elevation. Mark erythema margins daily.',
     },
     {
-      date: '2026-06-15', type: 'admission', facility: 'Queen Mary Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Lee Mei Ling', chiefComplaint: 'Progressive left leg erythema, swelling, warmth, pain × 4 days',
+      date: '2026-06-15', type: 'admission', facility: '常州市金坛区人民医院', department: 'Internal Medicine',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Progressive left leg erythema, swelling, warmth, pain × 4 days',
       diagnosis: 'Cellulitis (Eron Class III) — left lower limb; T2DM (HbA1c 7.8%); HTN; Portal of entry: shin abrasion from gardening',
       labs: 'WBC 14.2, CRP 128. Blood cultures: no growth. Wound swab: pending. HbA1c 7.8%.',
       imaging: 'No DVT — Doppler US negative. No gas on XR — necrotising fasciitis ruled out.',
@@ -271,7 +271,7 @@ MEDICAL_HISTORY[5] = {
     },
     {
       date: '2025-09-20', type: 'outpatient', facility: 'Kwun Tong GOPC', department: 'Family Medicine',
-      physician: 'Dr. Lam Wai Keung', chiefComplaint: 'DM follow-up — suboptimal control',
+      physician: '王医生（内科）', chiefComplaint: 'DM follow-up — suboptimal control',
       diagnosis: 'Type 2 DM (HbA1c 7.8%); HTN (suboptimal); Hyperlipidaemia',
       labs: 'HbA1c 7.8%, FPG 7.2, Cr 90, eGFR 65. Lipids: LDL 3.2.',
       imaging: 'Foot exam: normal sensation, no ulcers. Retinal screen: no retinopathy.',
@@ -280,7 +280,7 @@ MEDICAL_HISTORY[5] = {
     },
     {
       date: '2024-06-02', type: 'outpatient', facility: 'Kwun Tong GOPC', department: 'Family Medicine',
-      physician: 'Dr. Lam Wai Keung', chiefComplaint: 'Routine check-up — elevated glucose',
+      physician: '王医生（内科）', chiefComplaint: 'Routine check-up — elevated glucose',
       diagnosis: 'Type 2 DM (newly diagnosed, HbA1c 7.5%); Pre-HTN (138/86); Overweight (BMI 28.4)',
       labs: 'HbA1c 7.5%, FPG 7.8, Cr 85. Lipids: TC 5.8, LDL 3.8.',
       imaging: 'ECG: normal. BMI 28.4.',
@@ -381,7 +381,7 @@ export const PATIENT_7_HISTORY = {
     },
     {
       date: '2019-04-10', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Family Medicine',
-      physician: 'Dr. Lam Wai Keung', chiefComplaint: 'Routine check-up — elevated BP',
+      physician: '王医生（内科）', chiefComplaint: 'Routine check-up — elevated BP',
       diagnosis: 'Hypertension Stage 1 (BP 150/92). Ex-smoker.',
       labs: 'FPG 5.6, HbA1c 5.7% (pre-diabetic). Lipids: TC 5.4, LDL 3.2. Cr 88, eGFR 72. ECG: normal.',
       prescriptions: 'Amlodipine 5mg QD started. Lifestyle: low-salt diet, regular walking.',

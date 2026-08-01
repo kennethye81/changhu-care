@@ -44,9 +44,9 @@ const PatientProfilePage: FC = () => {
   
   const patient = PATIENTS_FULL.find(p => p.id === Number(id));
   const storePatient = usePatientStore(s => s.patients.find(p => p.id === Number(id)));
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const storeVitals = usePatientStore(s => s.vitals);
-  const isCrit = p7AlertActive && Number(id) === 7;
+  const isCrit = alertActive && Number(id) === 7;
   if (!patient) return <div className="p-6 text-slate-500">未找到病人</div>;
   const displayPatient = storePatient || patient;
 
@@ -104,13 +104,13 @@ const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: bool
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const summary = patientsSummary.find(p => p.id === patient.id);
   const v = storeVitals[patient.id] || DEFAULT_VITALS[patient.id] || DEFAULT_VITALS[1];
-  const p7Alert = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const { score: newsScore, tier: newsTier, label: newsLabel, monitoringLabel, escalation, redScore } = resolvePatientNews(
     patient.id,
     patient.diagnosis,
     v,
     summary,
-    p7Alert && patient.id === 7,
+    alertActive && patient.id === 1,
   );
   const sleepData = isCrit ? [{l:'Duration',v:'4.2 hrs'},{l:'Resp Rate',v:'24/min'},{l:'Score',v:'58/100'}] : [{l:'Duration',v:'6.8 hrs'},{l:'Resp Rate',v:'18/min'},{l:'Score',v:'82/100'}];
   const ioData = isCrit ? [{l:'Oral',v:'~900 mL'},{l:'Urine',v:'~600 mL'},{l:'Balance',v:'+300 mL'}] : [{l:'Oral',v:'~1,400 mL'},{l:'Urine',v:'~1,100 mL'},{l:'Balance',v:'+300 mL'}];
@@ -782,13 +782,13 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
 };
 
 const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan }) => {
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const planLogs = plan?.logs || [];
   const wardRoundLogs = patient.wardRounds.map(wr => ({
     date: wr.date, time: '—', type: 'Physician Ward Round',
     detail: wr.note, author: wr.physician, role: 'Physician', status: 'completed',
   }));
-  const alertLog = patient.id === 7 && p7AlertActive ? [{
+  const alertLog = patient.id === 1 && alertActive ? [{
     date: '2026-06-20', time: '14:30', type: 'RED ALERT — Nursing Visit',
     detail: 'URGENT Day 2 PM. SpO₂ 90%, Temp 38.3, RR 26, HR 98. POCT: CRP 68, PCT 0.8. IV Ceftriaxone + Doxycycline started. O₂ 2L/min.',
     author: 'Jenny Tam', role: 'RN', vitals: 'SpO₂ 90% | Temp 38.3 | RR 26 | HR 98 | CRP 68 | PCT 0.8', status: 'critical',
@@ -984,9 +984,9 @@ const billingStatusClass = (status: InvoiceStatus) => {
 };
 
 const BillingSection: FC<{ patientId: number }> = ({ patientId }) => {
-  const p7Alert = usePatientStore(s => s.p7AlertActive);
-  const rows = useMemo(() => buildPatientBillingRows(patientId, p7Alert), [patientId, p7Alert]);
-  const meta = useMemo(() => getPatientInvoiceMeta(patientId, p7Alert), [patientId, p7Alert]);
+  const alertActive = usePatientStore(s => s.alertActive);
+  const rows = useMemo(() => buildPatientBillingRows(patientId, alertActive), [patientId, alertActive]);
+  const meta = useMemo(() => getPatientInvoiceMeta(patientId, alertActive), [patientId, alertActive]);
 
   return (
     <div className="space-y-4">

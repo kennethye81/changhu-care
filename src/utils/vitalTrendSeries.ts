@@ -30,8 +30,8 @@ export interface VitalTrendBundle {
   glucose: number[];
 }
 
-export function buildVitalTrends(vitals: Vitals, p7Alert: boolean, baseline: Vitals): VitalTrendBundle {
-  if (p7Alert) {
+export function buildVitalTrends(vitals: Vitals, alertActive: boolean, baseline: Vitals): VitalTrendBundle {
+  if (alertActive) {
     return {
       rr: buildTrendSeries(baseline.rr, vitals.rr),
       hr: buildTrendSeries(baseline.hr, vitals.hr),

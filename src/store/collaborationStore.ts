@@ -49,14 +49,14 @@ export interface CollaborationStore {
   setMessagesByPatient: (messages: Record<number, ChatMessage[]>) => void;
   appendMessage: (patientId: number, message: ChatMessage) => void;
   markPatientMessagesRead: (patientId: number) => void;
-  refreshP7Messages: (p7AlertActive: boolean) => void;
+  refreshAlertMessages: (alertActive: boolean) => void;
   setEliteTaskClockIn: (taskKey: string, time: string) => void;
   setEliteTaskClockOut: (taskKey: string, time: string) => void;
   setEliteCareLogFields: (patientId: number, fields: EliteCareLogFields) => void;
   setEliteVoiceText: (patientId: number, text: string) => void;
   setCarePlanTaskStatus: (taskKey: string, status: CarePlanTaskStatus) => void;
   appendSubmittedCareLog: (patientId: number, log: FollowupLogEntry) => void;
-  applyCollaborationSync: (payload: CollaborationSyncSlice, p7AlertActive: boolean) => void;
+  applyCollaborationSync: (payload: CollaborationSyncSlice, alertActive: boolean) => void;
 }
 
 export interface CollaborationSyncSlice {
@@ -100,7 +100,7 @@ export const useCollaborationStore = create<CollaborationStore>((set, get) => ({
     }));
   },
 
-  refreshP7Messages: (_p7AlertActive: boolean) => {
+  refreshAlertMessages: (_alertActive: boolean) => {
     // P7 alert system removed — 长护险 no longer uses this
   },
 
@@ -149,8 +149,8 @@ export const useCollaborationStore = create<CollaborationStore>((set, get) => ({
     }));
   },
 
-  applyCollaborationSync: (payload, p7AlertActive) => {
-    set(state => mergeCollaborationSlice(state, payload, p7AlertActive));
+  applyCollaborationSync: (payload, alertActive) => {
+    set(state => mergeCollaborationSlice(state, payload, alertActive));
   },
 }));
 

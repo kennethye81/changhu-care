@@ -416,7 +416,7 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
 
   // Per-patient clinical context
   const context: Record<number, { name: string; conditions: string }> = {
-    1: { name: '冯存富', conditions: 'HF NYHA III, CKD3, T2DM, AF' },
+    1: { name: '冯存富', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
     2: { name: '待录入', conditions: 'COPD GOLD 3, HTN, Dyslipidaemia' },
     3: { name: '待录入', conditions: 'CAP (resolving), Penicillin anaphylaxis' },
     4: { name: '待录入', conditions: 'UTI, CKD3, T2DM, HTN, Delirium' },

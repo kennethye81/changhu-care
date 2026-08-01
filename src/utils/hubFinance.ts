@@ -7,12 +7,12 @@ export interface HubFinanceInvoice extends HubInvoiceTemplate {
 
 export function buildFinanceInvoices(
   patients: PatientFull[],
-  p7AlertActive: boolean,
+  alertActive: boolean,
 ): HubFinanceInvoice[] {
   return HUB_INVOICE_TEMPLATES.map((template) => {
     const patient = patients.find(p => p.id === template.patientId);
     let status: InvoiceStatus = template.status;
-    if (template.patientId === 7 && p7AlertActive) {
+    if (template.patientId === 1 && alertActive) {
       status = 'Unpaid';
     }
     return {

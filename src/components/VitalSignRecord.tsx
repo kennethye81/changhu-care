@@ -14,10 +14,10 @@ import { type PatientFull } from '../data/patients';
 import { DEFAULT_VITALS, usePatientStore } from '../store/patientStore';
 import {
   buildOverallNewsAssessment,
-  buildP7ClinicalRecommendations,
+  buildPatient1ClinicalRecommendations,
   buildVitalParameterAssessment,
 } from '../utils/medicalHistoryNews';
-import { calculateNews, P7_NEWS_ESCALATION_VITALS } from '../utils/newsScore';
+import { calculateNews, PATIENT1_ESCALATION_VITALS } from '../utils/newsScore';
 import { HubBloodPressureChart } from './BloodPressureCharts';
 
 const LINE_NORMAL = '#006F80';
@@ -177,7 +177,7 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
   const p7Alert = usePatientStore(s => s.p7AlertActive);
 
   const data = useMemo(() => {
-    if (!p7Alert || patient.id !== 7) return rawData;
+    if (!p7Alert || patient.id !== 1) return rawData;
     return rawData.map((pt, i) => {
       const total = rawData.length;
       const factor = Math.max(0, (i - (total - 4)) / 4);
@@ -200,9 +200,9 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
     ? resolveThresholds(PATIENT_THRESHOLDS[patient.id].thresholds)
     : undefined;
 
-  const p7Active = p7Alert && patient.id === 7;
-  const p7Vitals = P7_NEWS_ESCALATION_VITALS;
-  const p7Baseline = DEFAULT_VITALS[7];
+  const p7Active = p7Alert && patient.id === 1;
+  const p7Vitals = PATIENT1_ESCALATION_VITALS;
+  const p7Baseline = DEFAULT_VITALS[1];
   const p7News = useMemo(
     () => (p7Active ? calculateNews(p7Vitals, patient.diagnosis) : null),
     [p7Active, patient.diagnosis],
@@ -220,7 +220,7 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
         <span className="text-[10px] text-slate-400 ml-2">
           24小时 · 每小时 · {VITAL_RECORD_HOURS}条记录 · 6项指标
         </span>
-        {p7Alert && patient.id === 7 && (
+        {p7Alert && patient.id === 1 && (
           <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full ml-auto">⚠ 告警活跃</span>
         )}
       </div>
@@ -311,7 +311,7 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
             <p className="text-[11px] font-semibold text-amber-800 mb-2">临床建议</p>
             <ul className="space-y-1">
               {(p7Active && p7News
-                ? buildP7ClinicalRecommendations(p7News)
+                ? buildPatient1ClinicalRecommendations(p7News)
                 : summary.recommendations).map((r, i) => (
                 <li key={i} className="text-[10px] text-amber-700 flex items-start gap-1.5">
                   <span className="text-amber-500 mt-0.5">•</span> {r}

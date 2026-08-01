@@ -12,7 +12,7 @@ import { useCollaborationStore } from './collaborationStore';
 import {
   calculateNews,
   normalizeVitals,
-  P7_NEWS_ESCALATION_VITALS,
+  PATIENT1_ESCALATION_VITALS,
   type MonitoringInterval,
   type NewsTier,
 } from '../utils/newsScore';
@@ -125,7 +125,7 @@ function highlightVitals(
 function buildAlertsFromVitals(
   patients: PatientFull[],
   vitals: Record<number, Vitals>,
-  p7AlertActive = false,
+  alertActive = false,
   resolvedAlertIds: string[] = [],
 ): Alert[] {
   const alerts: Alert[] = [];
@@ -133,7 +133,7 @@ function buildAlertsFromVitals(
   const isResolved = (id: string) => resolvedAlertIds.includes(id);
 
   patients.forEach(p => {
-    if (p.id === 7 && p7AlertActive) return;
+    if (p.id === 1 && alertActive) return;
     const raw = vitals[p.id];
     if (!raw) return;
     const v = normalizeVitals(raw, p.diagnosis);
@@ -180,11 +180,11 @@ function buildAlertsFromVitals(
     }
   });
 
-  if (p7AlertActive) alerts.unshift(...buildP7Alerts(resolvedAlertIds));
+  if (alertActive) alerts.unshift(...buildPatient1Alerts(resolvedAlertIds));
   return alerts;
 }
 
-export const P7_ALERT_VITALS: Vitals = P7_NEWS_ESCALATION_VITALS;
+export const PATIENT1_ALERT_VITALS: Vitals = PATIENT1_ESCALATION_VITALS;
 
 function summaryFromVitals(base: Omit<PatientSummary, 'newsScore' | 'newsTier' | 'rr' | 'bloodSugar'>, v: Vitals): PatientSummary {
   const normalized = normalizeVitals(v, base.diagnosis);
@@ -224,10 +224,10 @@ function summaryFromVitals(base: Omit<PatientSummary, 'newsScore' | 'newsTier' |
   };
 }
 
-function buildP7Summary(vitals: Vitals, alertActive: boolean): PatientSummary {
-  const base = DEFAULT_SUMMARIES_BASE.find(s => s.id === 7)!;
+function buildPatient1Summary(vitals: Vitals, alertActive: boolean): PatientSummary {
+  const base = DEFAULT_SUMMARIES_BASE.find(s => s.id === 1)!;
   if (!alertActive) return summaryFromVitals(base, vitals);
-  const escalated = normalizeVitals(P7_NEWS_ESCALATION_VITALS, base.diagnosis);
+  const escalated = normalizeVitals(PATIENT1_ESCALATION_VITALS, base.diagnosis);
   const news = calculateNews(escalated, base.diagnosis);
   return {
     ...summaryFromVitals(base, escalated),
@@ -235,9 +235,9 @@ function buildP7Summary(vitals: Vitals, alertActive: boolean): PatientSummary {
   };
 }
 
-function computePatientSummaries(vitals: Record<number, Vitals>, p7AlertActive = false, extraIds: Set<number> = new Set()): PatientSummary[] {
+function computePatientSummaries(vitals: Record<number, Vitals>, alertActive = false, extraIds: Set<number> = new Set()): PatientSummary[] {
   const base = DEFAULT_SUMMARIES_BASE.map(s => {
-    if (s.id === 7) return buildP7Summary(vitals[7] || DEFAULT_VITALS[7], p7AlertActive);
+    if (s.id === 1) return buildPatient1Summary(vitals[7] || DEFAULT_VITALS[7], alertActive);
     const v = vitals[s.id];
     if (!v) {
       const normalized = normalizeVitals(DEFAULT_VITALS[s.id] ?? {}, s.diagnosis);
@@ -261,10 +261,10 @@ function computePatientSummaries(vitals: Record<number, Vitals>, p7AlertActive =
   return base;
 }
 
-function buildP7Alerts(resolvedAlertIds: string[] = []): Alert[] {
+function buildPatient1Alerts(resolvedAlertIds: string[] = []): Alert[] {
   const now = Date.now();
   const isResolved = (id: string) => resolvedAlertIds.includes(id);
-  const news = calculateNews(P7_NEWS_ESCALATION_VITALS, 'COPD');
+  const news = calculateNews(PATIENT1_ESCALATION_VITALS, 'COPD');
   return [
     {
       id: stableAlertId(7, 'news-high'),
@@ -298,7 +298,7 @@ export interface PatientStore {
   simulationActive: boolean;
   selectedPatientId: number | null;
   sidebarCollapsed: boolean;
-  p7AlertActive: boolean;
+  alertActive: boolean;
   resolvedAlertIds: string[];
   promotedPatientIds: Set<number>;
 
@@ -311,11 +311,11 @@ export interface PatientStore {
   setDeviceStatus: (serial: string, status: Partial<DeviceStatus>) => void;
   startSimulation: () => () => void;
   stopSimulation: () => void;
-  triggerP7Alert: () => void;
-  deactivateP7Alert: () => void;
+  triggerAlert: () => void;
+  deactivateAlert: () => void;
   promotePatient: (id: number) => void;
   applyDemoSync: (payload: {
-    p7AlertActive: boolean;
+    alertActive: boolean;
     vitals: Record<number, Vitals>;
     resolvedAlertIds?: string[];
     iotDevicesByPatient?: Record<number, PatientFull['iotDevices']>;
@@ -331,14 +331,14 @@ export const usePatientStore = create<PatientStore>((set, get) => {
   const syncDerivedState = (
     state: PatientStore,
     newVitals: Record<number, Vitals>,
-    p7AlertActive: boolean,
+    alertActive: boolean,
     patients = state.patients,
     resolvedAlertIds = state.resolvedAlertIds,
   ) => ({
     vitals: newVitals,
     patients,
-    alerts: buildAlertsFromVitals(patients, newVitals, p7AlertActive, resolvedAlertIds),
-    patientsSummary: computePatientSummaries(newVitals, p7AlertActive, state.promotedPatientIds),
+    alerts: buildAlertsFromVitals(patients, newVitals, alertActive, resolvedAlertIds),
+    patientsSummary: computePatientSummaries(newVitals, alertActive, state.promotedPatientIds),
     deviceStatuses: buildDeviceStatuses(patients),
   });
 
@@ -371,14 +371,14 @@ export const usePatientStore = create<PatientStore>((set, get) => {
     simulationActive: false,
     selectedPatientId: null,
     sidebarCollapsed: false,
-    p7AlertActive: false,
+    alertActive: false,
     resolvedAlertIds: [],
     promotedPatientIds: new Set(),
 
     updateVitals: (patientId, partial) => {
       set(state => {
         const newVitals = { ...state.vitals, [patientId]: { ...state.vitals[patientId], ...partial } as Vitals };
-        return syncDerivedState(state, newVitals, state.p7AlertActive);
+        return syncDerivedState(state, newVitals, state.alertActive);
       });
     },
 
@@ -402,7 +402,7 @@ export const usePatientStore = create<PatientStore>((set, get) => {
           : [...state.resolvedAlertIds, alertId];
         return {
           resolvedAlertIds,
-          ...syncDerivedState(state, state.vitals, state.p7AlertActive, state.patients, resolvedAlertIds),
+          ...syncDerivedState(state, state.vitals, state.alertActive, state.patients, resolvedAlertIds),
         };
       });
     },
@@ -440,7 +440,7 @@ export const usePatientStore = create<PatientStore>((set, get) => {
           newVitals[targetId].bpSystolic = Math.round(160 + Math.random() * 25);
           newVitals[targetId].hr = Math.round(100 + Math.random() * 20);
         }
-        set(syncDerivedState(state, newVitals, state.p7AlertActive));
+        set(syncDerivedState(state, newVitals, state.alertActive));
       }, 5000);
       set({ simulationActive: true });
       return () => {
@@ -451,22 +451,22 @@ export const usePatientStore = create<PatientStore>((set, get) => {
 
     stopSimulation: () => set({ simulationActive: false }),
 
-    triggerP7Alert: () => {
-      if (get().p7AlertActive) return;
+    triggerAlert: () => {
+      if (get().alertActive) return;
       const state = get();
-      const newVitals = { ...state.vitals, 7: P7_NEWS_ESCALATION_VITALS };
+      const newVitals = { ...state.vitals, 7: PATIENT1_ESCALATION_VITALS };
       const patients = patchP7Patient(state.patients, true);
-      set({ p7AlertActive: true, ...syncDerivedState(state, newVitals, true, patients) });
-      useCollaborationStore.getState().refreshP7Messages(true);
+      set({ alertActive: true, ...syncDerivedState(state, newVitals, true, patients) });
+      useCollaborationStore.getState().refreshAlertMessages(true);
     },
 
-    deactivateP7Alert: () => {
-      if (!get().p7AlertActive) return;
+    deactivateAlert: () => {
+      if (!get().alertActive) return;
       const state = get();
       const newVitals = { ...state.vitals, 7: DEFAULT_VITALS[7] };
       const patients = patchP7Patient(state.patients, false);
-      set({ p7AlertActive: false, ...syncDerivedState(state, newVitals, false, patients) });
-      useCollaborationStore.getState().refreshP7Messages(false);
+      set({ alertActive: false, ...syncDerivedState(state, newVitals, false, patients) });
+      useCollaborationStore.getState().refreshAlertMessages(false);
     },
 
     promotePatient: (id) => set(state => {
@@ -474,13 +474,13 @@ export const usePatientStore = create<PatientStore>((set, get) => {
       promoted.add(id);
       return {
         promotedPatientIds: promoted,
-        patientsSummary: computePatientSummaries(state.vitals, state.p7AlertActive, promoted),
+        patientsSummary: computePatientSummaries(state.vitals, state.alertActive, promoted),
       };
     }),
 
     applyDemoSync: (payload) => {
       const state = get();
-      let patients = patchP7Patient(state.patients, payload.p7AlertActive);
+      let patients = patchP7Patient(state.patients, payload.alertActive);
       if (payload.iotDevicesByPatient) {
         patients = patients.map(p => {
           const devices = payload.iotDevicesByPatient?.[p.id];
@@ -492,10 +492,10 @@ export const usePatientStore = create<PatientStore>((set, get) => {
         ? { ...buildDeviceStatuses(patients), ...payload.deviceStatuses }
         : buildDeviceStatuses(patients);
       set({
-        p7AlertActive: payload.p7AlertActive,
+        alertActive: payload.alertActive,
         resolvedAlertIds,
         deviceStatuses,
-        ...syncDerivedState(state, payload.vitals, payload.p7AlertActive, patients, resolvedAlertIds),
+        ...syncDerivedState(state, payload.vitals, payload.alertActive, patients, resolvedAlertIds),
       });
     },
   };

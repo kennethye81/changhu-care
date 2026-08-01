@@ -3,7 +3,7 @@ import {
   calculateNews,
   formatNewsTierLabel,
   normalizeVitals,
-  P7_NEWS_ESCALATION_VITALS,
+  PATIENT1_ESCALATION_VITALS,
   type NewsAssessment,
   type NewsTier,
 } from './newsScore';
@@ -20,9 +20,9 @@ export function resolvePatientNews(
   diagnosis: string,
   vitals: Vitals | undefined,
   summary?: PatientSummary | null,
-  p7AlertActive = false,
+  alertActive = false,
 ): ResolvedPatientNews {
-  if (summary?.id === patientId && !p7AlertActive) {
+  if (summary?.id === patientId && !alertActive) {
     return {
       score: summary.newsScore,
       tier: summary.newsTier,
@@ -36,8 +36,8 @@ export function resolvePatientNews(
     };
   }
   const v =
-    patientId === 7 && p7AlertActive
-      ? P7_NEWS_ESCALATION_VITALS
+    patientId === 1 && alertActive
+      ? PATIENT1_ESCALATION_VITALS
       : normalizeVitals(vitals ?? {}, diagnosis);
   const news = calculateNews(v, diagnosis);
   return {

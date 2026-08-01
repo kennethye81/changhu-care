@@ -222,11 +222,11 @@ export const FollowupWorkbench: FC = () => {
   const myName = user?.name || 'Staff';
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const carePlans = usePatientStore(s => s.carePlans);
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
   const allTasks = useMemo(
-    () => buildFollowupTasks(patientsSummary, carePlans, carePlanStatus, p7AlertActive),
-    [patientsSummary, carePlans, carePlanStatus, p7AlertActive],
+    () => buildFollowupTasks(patientsSummary, carePlans, carePlanStatus, alertActive),
+    [patientsSummary, carePlans, carePlanStatus, alertActive],
   );
   const tasks = filter === 'mine' ? allTasks.filter(t => t.assignee === myName) : allTasks;
 
@@ -393,10 +393,10 @@ export const MedicationPage: FC = () => (
 export const Finance: FC = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<any>(null);
   const patients = usePatientStore(s => s.patients);
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
+  const alertActive = usePatientStore(s => s.alertActive);
   const invoices = useMemo(
-    () => buildFinanceInvoices(patients, p7AlertActive),
-    [patients, p7AlertActive],
+    () => buildFinanceInvoices(patients, alertActive),
+    [patients, alertActive],
   );
   const { totalRevenue, outstanding, paidCount, avgPerPatient } = useMemo(
     () => summarizeFinance(invoices, patients.length),

@@ -13,9 +13,9 @@ import { getVisiblePatientIds } from '../auth/permissions';
 import MapView from './MapView';
 import AlertToggle from '../components/AlertToggle';
 import { PENDING_PATIENTS } from '../data/pendingPatients';
-import { buildP7HubBannerContent } from '../utils/medicalHistoryNews';
+import { buildPatient1HubBannerContent } from '../utils/medicalHistoryNews';
 import { computeCareTeamStats, computeDeviceStats } from '../utils/hubDashboardStats';
-import { P7_NEWS_ESCALATION_VITALS } from '../utils/newsScore';
+import { PATIENT1_ESCALATION_VITALS } from '../utils/newsScore';
 
 const PENDING_REG_BANNER = PENDING_PATIENTS.find(p => p.id === 114) ?? PENDING_PATIENTS[0];
 
@@ -250,16 +250,16 @@ const DesktopCommandCenter: FC = () => {
   const deviceStatuses = usePatientStore(s => s.deviceStatuses);
   const vitals7 = usePatientStore(s => s.vitals[7]);
   const eliteTaskTimes = useCollaborationStore(s => s.eliteTaskTimes);
-  const p7AlertActive = usePatientStore(s => s.p7AlertActive);
-  const triggerP7Alert = usePatientStore(s => s.triggerP7Alert);
-  const deactivateP7Alert = usePatientStore(s => s.deactivateP7Alert);
-  const [showP7Banner, setShowP7Banner] = useState(false);
+  const alertActive = usePatientStore(s => s.alertActive);
+  const triggerAlert = usePatientStore(s => s.triggerAlert);
+  const deactivateAlert = usePatientStore(s => s.deactivateAlert);
+  const [showAlertBanner, setShowP7Banner] = useState(false);
 
   // Show banner when alert activates
-  useEffect(() => { if (p7AlertActive) setShowP7Banner(true); else setShowP7Banner(false); }, [p7AlertActive]);
+  useEffect(() => { if (alertActive) setShowP7Banner(true); else setShowP7Banner(false); }, [alertActive]);
 
   const p7Banner = useMemo(
-    () => buildP7HubBannerContent(vitals7 ?? P7_NEWS_ESCALATION_VITALS, 'COPD'),
+    () => buildPatient1HubBannerContent(vitals7 ?? PATIENT1_ESCALATION_VITALS, 'COPD'),
     [vitals7],
   );
 
@@ -358,9 +358,9 @@ const DesktopCommandCenter: FC = () => {
     </div>
     </>
     )}
-    {(showBanner || showP7Banner) && (
+    {(showBanner || showAlertBanner) && (
       <div className="fixed bottom-12 right-4 z-[1990] flex flex-col-reverse gap-3 items-end pointer-events-none max-w-[calc(100vw-2rem)]">
-        {showP7Banner && (
+        {showAlertBanner && (
           <div className="pointer-events-auto w-80 bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 animate-alert-slide-in">
             <div className="flex items-center justify-between px-4 pt-3.5 pb-2">
               <div className="flex items-center gap-2.5">

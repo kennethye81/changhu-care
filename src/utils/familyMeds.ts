@@ -23,13 +23,13 @@ function mapFrequency(freq: string, route: string): { schedule: string; freq: st
   return { schedule: 'Scheduled', freq: freq };
 }
 
-export function getFamilyMedications(patient: PatientFull | undefined, p7Alert: boolean): FamilyMedRow[] {
+export function getFamilyMedications(patient: PatientFull | undefined, alertActive: boolean): FamilyMedRow[] {
   if (!patient) return [];
 
   return patient.medications
     .filter(med => {
       if (med.status !== 'Active') return false;
-      if (/Ceftriaxone/i.test(med.drug) && !p7Alert) {
+      if (/Ceftriaxone/i.test(med.drug) && !alertActive) {
         const enrollmentDate = patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date;
         if (enrollmentDate && med.startDate > enrollmentDate) return false;
       }
@@ -49,8 +49,8 @@ export function getFamilyMedications(patient: PatientFull | undefined, p7Alert: 
     });
 }
 
-export function getFamilyMedSummary(patient: PatientFull | undefined, p7Alert: boolean) {
-  const meds = getFamilyMedications(patient, p7Alert);
+export function getFamilyMedSummary(patient: PatientFull | undefined, alertActive: boolean) {
+  const meds = getFamilyMedications(patient, alertActive);
   const activeCount = meds.length;
   return {
     activeCount,

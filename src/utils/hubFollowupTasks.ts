@@ -31,9 +31,9 @@ function stripProvider(provider?: string): string {
 function priorityFor(
   patient: PatientSummary,
   act: DailyActivity,
-  p7AlertActive: boolean,
+  alertActive: boolean,
 ): FollowupTaskPriority {
-  if (patient.id === 7 && p7AlertActive) {
+  if (patient.id === 1 && alertActive) {
     if (act.type === 'nurse_visit' || act.activity.includes('IV')) return 'Critical';
     return 'High';
   }
@@ -54,7 +54,7 @@ export function buildFollowupTasks(
   patients: PatientSummary[],
   carePlans: Record<number, TwoWeekCarePlan | undefined>,
   carePlanStatus: Record<string, CarePlanTaskStatus>,
-  p7AlertActive: boolean,
+  alertActive: boolean,
   demoDate = DEMO_CARE_PLAN_DATE,
 ): FollowupTask[] {
   const byId = new Map(patients.map(p => [p.id, p]));
@@ -75,7 +75,7 @@ export function buildFollowupTasks(
         patientId,
         patient: patient.name,
         task: act.activity,
-        priority: priorityFor(patient, act, p7AlertActive),
+        priority: priorityFor(patient, act, alertActive),
         due: `Today ${act.time}`,
         assignee: stripProvider(act.provider) || patient.caseManager?.split('(')[0].trim() || 'Care Team',
         status: mapStatus(act.status),
