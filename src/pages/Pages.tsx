@@ -53,9 +53,18 @@ const NURSE_MAP: Record<number, string> = {
 };
 
 function statusFromSummary(p: PatientSummary): string {
-  if (p.newsTier === 'high') return 'Critical';
-  if (p.newsTier === 'medium') return 'Attention';
-  return 'Stable';
+  if (p.newsTier === 'high') return '预警';
+  if (p.newsTier === 'medium') return '关注';
+  return '稳定';
+}
+function genderCN(g: 'M'|'F'): string { return g === 'M' ? '男' : '女'; }
+function barthelLabel(score?: number): string {
+  if (score == null) return '—';
+  if (score <= 20) return '极重度依赖';
+  if (score <= 40) return '重度依赖';
+  if (score <= 60) return '中度依赖';
+  if (score <= 99) return '轻度依赖';
+  return '完全自理';
 }
 
 import { PATIENTS_FULL } from '../data/patients';
@@ -66,23 +75,28 @@ export const PatientRecords: FC = () => {
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const enriched = patientsSummary.map(p => {
     const full = PATIENTS_FULL.find(f => f.id === p.id);
-    return { ...p, status: statusFromSummary(p), lastVisit: full?.nursingRecords?.[0]?.date || '2026-06-25', nurse: full?.carePlan?.assignedNurse || '—', carePlan: full?.carePlan };
+    return {
+      ...p,
+      status: statusFromSummary(p),
+      carePlan: full?.carePlan,
+      barthelScore: full?.barthel?.score,
+    };
   });
   const filtered = enriched
-    .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.diagnosis.toLowerCase().includes(search.toLowerCase()))
+    .filter(p => !search || p.name.includes(search) || p.diagnosis.includes(search))
     .sort((a, b) => {
-      const order: Record<string, number> = { Critical: 0, Attention: 1, Stable: 2 };
+      const order: Record<string, number> = { '预警': 0, '关注': 1, '稳定': 2 };
       return (order[a.status] ?? 3) - (order[b.status] ?? 3);
     });
-  const stats = { total: enriched.length, critical: enriched.filter(p => p.status === 'Critical').length, attention: enriched.filter(p => p.status === 'Attention').length, stable: enriched.filter(p => p.status === 'Stable').length };
+  const stats = { total: enriched.length, critical: enriched.filter(p => p.status === '预警').length, attention: enriched.filter(p => p.status === '关注').length, stable: enriched.filter(p => p.status === '稳定').length };
 
   return (
     <div className="p-6">
-      <PageHeader title="Patient Records" icon={Users} subtitle="Complete patient archive with care status and assignment"
-        action={<button className="flex items-center gap-1.5 px-3 py-1.5 bg-gold-600 hover:bg-gold-700 text-white text-xs font-semibold rounded"><Plus className="w-3.5 h-3.5" /> Add Patient</button>}
+      <PageHeader title="病人档案" icon={Users} subtitle={`${stats.total} 位在管病人 · 按风险等级排序`}
+        action={<button className="flex items-center gap-1.5 px-3 py-1.5 bg-gold-600 hover:bg-gold-700 text-white text-xs font-semibold rounded"><Plus className="w-3.5 h-3.5" /> 添加病人</button>}
       />
       <div className="grid grid-cols-4 gap-4 mb-6">
-        {[{ label: 'Total', value: stats.total, color: 'text-teal-600', bg: 'bg-teal-50' }, { label: 'Critical', value: stats.critical, color: 'text-red-600', bg: 'bg-red-50' }, { label: 'Attention', value: stats.attention, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: 'Stable', value: stats.stable, color: 'text-emerald-600', bg: 'bg-emerald-50' }].map((s, i) => (
+        {[{ label: '总计', value: stats.total, color: 'text-teal-600', bg: 'bg-teal-50' }, { label: '预警', value: stats.critical, color: 'text-red-600', bg: 'bg-red-50' }, { label: '关注', value: stats.attention, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: '稳定', value: stats.stable, color: 'text-emerald-600', bg: 'bg-emerald-50' }].map((s, i) => (
           <div key={i} className={`${s.bg} rounded-xl p-4`}>
             <p className={`text-2xl font-extrabold ${s.color}`}>{s.value}</p>
             <p className="text-xs text-slate-500 mt-1">{s.label}</p>
@@ -92,44 +106,55 @@ export const PatientRecords: FC = () => {
       <div className="glass-card rounded-lg border border-slate-200 overflow-hidden">
         <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-3">
           <Search className="w-4 h-4 text-slate-400" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients by name or diagnosis..." className="flex-1 text-xs outline-none" />
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-warm-100 rounded-lg hover:bg-warm-200"><Filter className="w-3 h-3" /> Filter</button>
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="按姓名或诊断搜索..." className="flex-1 text-xs outline-none" />
+          <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-warm-100 rounded-lg hover:bg-warm-200"><Filter className="w-3 h-3" /> 筛选</button>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead className="bg-warm-50">
             <tr>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">病人</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">诊断</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">医生</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">个案经理</th>
-              <th className="text-left px-3 py-2 font-semibold text-slate-600">照护团队</th>
-              <th className="text-center px-3 py-2 font-semibold text-slate-600">状态</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600 w-[36px]"></th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">姓名</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">性别</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">年龄</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">临床诊断</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">失能级别</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">个案经理</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">护士</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">康复治疗师</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">营养师</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">护理员</th>
+              <th className="text-center px-2 py-2 font-semibold text-slate-600">状态</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map(p => {
-              const statusC = p.status === 'Critical' ? 'bg-red-100 text-red-700' : p.status === 'Attention' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700';
+              const statusC = p.status === '预警' ? 'bg-red-100 text-red-700' : p.status === '关注' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700';
               const cp = p.carePlan;
               return (
                 <tr key={p.id} className="border-t border-slate-50 hover:bg-teal-50/30 transition-colors cursor-pointer" onClick={() => navigate(`/patient/${p.id}`)}>
-                  <td className="px-3 py-2">
-                    <div className="flex items-center gap-2"><PatientAvatar patientId={p.id} size={28} /><span className="font-semibold text-slate-700 text-[11px]">{p.name}</span></div>
-                    <span className="text-[10px] text-slate-400 ml-8">{p.gender}, {p.age}</span>
+                  <td className="px-2 py-2.5"><PatientAvatar patientId={p.id} size={28} /></td>
+                  <td className="px-2 py-2.5 font-semibold text-slate-700">{p.name}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{genderCN(p.gender)}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{p.age}</td>
+                  <td className="px-2 py-2.5 text-slate-600 max-w-[180px] truncate" title={p.diagnosis}>{p.diagnosis}</td>
+                  <td className="px-2 py-2.5">
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${(p as any).barthelScore != null && (p as any).barthelScore <= 40 ? 'bg-red-50 text-red-600' : (p as any).barthelScore <= 60 ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                      {barthelLabel((p as any).barthelScore)}
+                    </span>
                   </td>
-                  <td className="px-3 py-2 text-[11px] text-slate-600">{p.diagnosis}</td>
-                  <td className="px-3 py-2 text-[10px] text-slate-600">{cp?.assignedDoctor?.split(' (')[0] || '—'}</td>
-                  <td className="px-3 py-2 text-[10px] text-slate-600">{cp?.assignedCaseManager?.split(' (')[0] || '—'}</td>
-                  <td className="px-3 py-2">
-                    <div className="text-[10px] text-slate-600">{cp?.assignedNurse?.split(' (')[0] || '—'}</div>
-                    {cp?.assignedCareWorker && <div className="text-[9px] text-slate-400">{cp.assignedCareWorker}</div>}
-                    {cp?.assignedRehabTherapist && <div className="text-[9px] text-slate-400">{cp.assignedRehabTherapist}</div>}
-                  </td>
-                  <td className="px-3 py-2 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusC}`}>{p.status}</span></td>
+                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCaseManager || '—'}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNurse || '—'}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedRehabTherapist || '—'}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNutritionist || '—'}</td>
+                  <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCareWorker || '—'}</td>
+                  <td className="px-2 py-2.5 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusC}`}>{p.status}</span></td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
