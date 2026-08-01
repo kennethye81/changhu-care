@@ -21,7 +21,7 @@ function displayFrom(msg: ChatMessage): string {
 }
 
 function displayRole(msg: ChatMessage): string {
-  if (msg.from === 'ai') return 'AI Monitor';
+  if (msg.from === 'ai') return 'AI监护';
   if (msg.from === 'system') return 'System';
   if (msg.from === 'nurse') return 'Nurse';
   if (msg.from === 'doctor') return 'Physician';

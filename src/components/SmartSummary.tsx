@@ -33,7 +33,7 @@ function deriveInterventions(patient: PatientFull): InterventionItem[] {
     for (const rec of recent) {
       const note = rec.note.toLowerCase();
       if (note.includes('elevated') || note.includes('alert') || note.includes('notified') || note.includes('abnormal')) {
-        items.push({ id: `escalate-${patient.id}-${rec.date}`, who: doctorName, action: 'Review escalated nursing note and confirm intervention plan', deadline: 'Within 24 hours' });
+        items.push({ id: `escalate-${patient.id}-${rec.date}`, who: doctorName, action: '审阅升级护理记录并确认干预方案', deadline: '24小时内' });
         break;
       }
     }
@@ -41,21 +41,21 @@ function deriveInterventions(patient: PatientFull): InterventionItem[] {
 
   // Risk-based interventions
   if (patient.riskLevel === 'Critical') {
-    items.push({ id: `vitals-${patient.id}`, who: nurseName, action: 'Verify vital sign trend — escalate if >2 consecutive abnormal readings', deadline: 'Next visit' });
-    items.push({ id: `med-${patient.id}`, who: nurseName, action: 'Confirm all medications taken on schedule — check for missed doses', deadline: 'End of day' });
-    items.push({ id: `family-${patient.id}`, who: cmName, action: 'Notify family contact of any deviations from baseline status', deadline: 'Within 4 hours' });
+    items.push({ id: `vitals-${patient.id}`, who: nurseName, action: '核实生命体征趋势 — 连续>2次异常则升级', deadline: '下次访视' });
+    items.push({ id: `med-${patient.id}`, who: nurseName, action: '确认所有药物按时服用 — 检查漏服情况', deadline: '当日结束前' });
+    items.push({ id: `family-${patient.id}`, who: cmName, action: '通知家属联系人任何偏离基线状态的情况', deadline: '4小时内' });
   } else if (patient.riskLevel === 'High') {
-    items.push({ id: `vitals-${patient.id}`, who: nurseName, action: 'Closely monitor vital sign trends — report deviations promptly', deadline: 'Daily' });
-    items.push({ id: `followup-${patient.id}`, who: doctorName, action: 'Review recent lab results and adjust treatment plan as needed', deadline: 'Within 48 hours' });
+    items.push({ id: `vitals-${patient.id}`, who: nurseName, action: '密切监测生命体征趋势 — 及时报告异常', deadline: '每日' });
+    items.push({ id: `followup-${patient.id}`, who: doctorName, action: '审阅近期检验结果并根据需要调整治疗方案', deadline: '48小时内' });
   } else {
-    items.push({ id: `routine-${patient.id}`, who: nurseName, action: 'Continue routine monitoring per care plan schedule', deadline: 'Per care plan' });
+    items.push({ id: `routine-${patient.id}`, who: nurseName, action: '按照护计划时间表继续常规监测', deadline: '按照护计划' });
   }
 
-  // Device check if any offline or low battery
+  // Device check if any offline or 电量低
   const offline = patient.iotDevices.filter(d => d.status === 'Disconnected');
   const lowBattery = patient.iotDevices.filter(d => d.battery < 25 && d.status !== 'Disconnected');
   if (offline.length > 0 || lowBattery.length > 0) {
-    items.push({ id: `device-${patient.id}`, who: cmName, action: `Address ${offline.length + lowBattery.length} IoT device issue(s) — ${offline.length} offline, ${lowBattery.length} low battery`, deadline: 'Within 24 hours' });
+    items.push({ id: `device-${patient.id}`, who: cmName, action: `处理 ${offline.length + lowBattery.length} IoT设备问题 — ${offline.length} 离线， ${lowBattery.length} 电量低`, deadline: '24小时内' });
   }
 
   // Medication stock check for critical meds
@@ -65,7 +65,7 @@ function deriveInterventions(patient: PatientFull): InterventionItem[] {
     m.drug.toLowerCase().includes('rivaroxaban') || m.purpose.toLowerCase().includes('chemotherapy')
   ));
   if (criticalMeds.length > 0) {
-    items.push({ id: `stock-${patient.id}`, who: nurseName, action: `Verify stock levels for ${criticalMeds.length} critical medication(s)`, deadline: 'Next visit' });
+    items.push({ id: `stock-${patient.id}`, who: nurseName, action: `核实库存水平： ${criticalMeds.length} 关键药物`, deadline: '下次访视' });
   }
 
   return items;
@@ -108,7 +108,7 @@ function generateVitalSummary(
 
   if (d.includes('Heart Failure NYHA III')) {
     if (patient.id === 1) return 'Weight 68.0kg stable. BP 118/72, HR 82 in AF (rate-controlled on Bisoprolol 5mg), SpO₂ 95% on room air. Pedal oedema trace. I/O net -270mL with Furosemide 40mg BID. BNP 850 trending down. GDMT compliance 94%. Renal panel stable (Cr 138, K⁺ 3.9). Continue daily weight + strict I/O monitoring.';
-    return 'HR 102 bpm in atrial fibrillation with controlled ventricular response. SpO₂ borderline at 89% on room air — requires 2L O₂ to maintain >94%. Bilateral pedal edema 1+ with fine crackles at lung bases suggest fluid overload. Weight trending warrants increased diuretic dosing. Daily weight and strict I/O monitoring essential.';
+    return 'HR 102 bpm in atrial fibrillation with controlled ventricular response. SpO₂ borderline at 89% on room air — requires 2L O₂ to maintain >94%. Bilateral pedal edema 1+ with fine crackles at lung bases suggest fluid overload. Weight trending warrants increased diuretic dosing. 每日 weight and strict I/O monitoring essential.';
   }
 
   if (d.includes('Heart Failure NYHA II')) {
@@ -234,13 +234,13 @@ function generateIoTDeviceSummary(patient: PatientFull): string {
     const names = offline.map(d => d.type).join(', ');
     let msg = `${offline.length} of ${total} device(s) offline: ${names}. `;
     msg += `Other ${total - offline.length} device(s) transmitting normally.`;
-    if (lowBattery.length > 0) msg += ` Additionally, ${lowBattery.map(d => d.type).join(', ')} has low battery.`;
+    if (lowBattery.length > 0) msg += ` Additionally, ${lowBattery.map(d => d.type).join(', ')} has 电量低.`;
     return msg;
   }
 
   if (lowBattery.length > 0) {
     const names = lowBattery.map(d => `${d.type} (${d.battery}%)`).join(', ');
-    return `All ${total} devices online but ${names} has low battery — recommend charging within 24 hours.`;
+    return `All ${total} devices online but ${names} has 电量低 — recommend charging within 24 hours.`;
   }
 
   // Check for devices that haven't synced in >1 hour
@@ -295,7 +295,7 @@ const SmartSummary: FC<{ patient: PatientFull }> = ({ patient }) => {
       render: () => (
         <div>
           <p className="text-[10px] text-slate-500 mb-3">
-            AI has identified {interventions.length} item{interventions.length !== 1 ? 's' : ''} requiring attention based on {effectivePatient.name}&apos;s current clinical status (NEWS {news.score} — {news.label}. {news.monitoringLabel}).
+            AI已识别 {interventions.length} 项 需要注意 基于 {effectivePatient.name}&apos;的当前临床状态 (NEWS {news.score} — {news.label}. {news.monitoringLabel}).
           </p>
           <div className="space-y-2">
             {interventions.map(item => (

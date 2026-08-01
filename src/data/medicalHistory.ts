@@ -77,7 +77,7 @@ MEDICAL_HISTORY[1] = {
       notes: 'Pre-diabetic range. BP borderline. Advised weight loss, exercise, dietary changes. Follow-up in 6 months. No prior significant medical history.',
     },
   ],
-  aiSummary: 'Cheung Wai Man\'s clinical trajectory shows progressive cardiovascular disease from pre-diabetes/HTN (Feb 2023) to inferior STEMI with PCI (Aug 2023) to advanced HFrEF (LVEF 30%) with permanent AF and CKD Stage 3. The rapid progression from pre-diabetes to STEMI within 6 months highlights aggressive underlying atherosclerosis. Recent ADHF hospitalisation (June 2026) triggered by medication non-adherence and dietary indiscretion underscores the critical importance of caregiver support and patient education in HF management. Key AI concerns: 1. NEWS Low (2) — highest HF vigilance in cohort due to advanced HF, recent decompensation, AF, CKD, and T2DM; 2. Weight trend positive (↓1.8kg) but strict I/O monitoring essential; 3. Renal function vulnerable — K⁺ and Cr monitoring with diuretic therapy; 4. GDMT optimisation ongoing — Entresto at target dose, Bisoprolol may be uptitrated if tolerated; 5. Caregiver support crucial for medication adherence, dietary compliance, and daily weight monitoring.',
+  aiSummary: '张伟文临床轨迹显示从糖尿病前期/高血压（2023年2月）→下壁STEMI行PCI（2023年8月）→晚期HFrEF（LVEF 30%）伴永久性房颤及CKD 3期的进展性心血管疾病。从糖尿病前期到STEMI仅6个月的快速进展提示潜在动脉粥样硬化进展迅速。近期ADHF住院（2026年6月）由用药依从性差和饮食不当诱发，凸显照护者支持和患者教育在HF管理中的关键作用。AI核心关注：1. NEWS低危（2分）— 因晚期HF、近期失代偿、AF、CKD和T2DM，为队列中最高心衰监护级别；2. 体重趋势向好（↓1.8kg）但严格出入量监测必不可少；3. 肾功能易损 — 利尿剂治疗期间需监测K⁺和Cr；4. GDMT持续优化中 — Entresto已达目标剂量，Bisoprolol如耐受可上调；5. 照护者支持对用药依从性、饮食控制和每日体重监测至关重要。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -132,7 +132,7 @@ MEDICAL_HISTORY[2] = {
       notes: 'First COPD diagnosis. 40 pack-year history. Referred for smoking cessation (already quit 2020 — maintained). Pulmonary rehab referral. Spirometry shows moderate obstruction with progression over 1 year.',
     },
   ],
-  aiSummary: 'Wong Chi Ming has advanced COPD (GOLD Stage 3, FEV₁ 36%) with a significant disease trajectory from initial diagnosis at FEV₁ 52% (2024) to 36% (2025), now stabilised on dual bronchodilator therapy. Two hospitalisations for infective exacerbations in the past 18 months (Feb 2026 with CAP, Jun 2026 without pneumonia). Key risk factors: 40 pack-year smoking history (quit 2020 — maintained 6 years), chronic hypoxaemia (PaO₂ 70), and recurrent H. influenzae infections. AI assessment: 1. Stable currently but exacerbation risk remains — early recognition of increased sputum/dyspnoea critical; 2. SpO₂ at lower threshold of acceptable — daily home oximetry; 3. Pulmonary rehab engagement (2/8 sessions completed) — key to functional improvement; 4. Vaccination status current — influenza/pneumococcal; 5. LTOT assessment pending — may qualify if SpO₂ <88% on exertion. NEWS Low (1) — COPD exacerbation vigilance reflects recent exacerbation history and moderate disease severity. The transition from Prince of Wales Hospital to Queen Mary Hospital care reflects patient relocation to Kowloon.',
+  aiSummary: '王志明患有晚期COPD（GOLD 3级，FEV₁ 36%），疾病轨迹显著：从初次诊断时FEV₁ 52%（2024年）降至36%（2025年），现经双支扩剂治疗后稳定。过去18个月内因感染性急性加重住院2次（2026年2月伴CAP，2026年6月无肺炎）。关键风险因素：40包年吸烟史（2020年已戒，维持6年），慢性低氧血症（PaO₂ 70），反复流感嗜血杆菌感染。AI评估：1. 目前稳定但急性加重风险仍存 — 早期识别痰量增多/呼吸困难加重至关重要；2. SpO₂处于可接受范围下限 — 每日家庭血氧监测；3. 肺康复参与度（2/8次已完成）— 功能改善的关键；4. 疫苗接种状态最新 — 流感/肺炎球菌；5. 长期氧疗评估待定 — 若活动时SpO₂<88%可考虑。NEWS低危（1分）— COPD急性加重监测反映近期急性加重史和中度疾病严重性。从Prince of Wales医院转至Queen Mary医院反映患者搬迁至九龙。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -187,7 +187,7 @@ MEDICAL_HISTORY[3] = {
       notes: 'Healthy 42-year-old. No chronic conditions. Non-smoker. Jogs 3×/week. Penicillin allergy alert reconfirmed. Up to date on vaccinations. No other significant medical history.',
     },
   ],
-  aiSummary: 'Lam Ka Chun is a 45-year-old previously healthy male with community-acquired pneumonia (RLL, S. pneumoniae, penicillin-resistant). CURB-65 1 indicates low mortality risk. The most significant clinical feature is SEVERE PENICILLIN ALLERGY (anaphylaxis, 2018) — this constrains antibiotic choice to non-beta-lactam agents (fluoroquinolone used). No comorbidities, non-smoker, active lifestyle. Expected full recovery within 2 weeks. AI assessment: 1. NEWS Low (0) — young, healthy, single-organ infection, excellent response to treatment; 2. Complete 7-day Levofloxacin course — despite feeling better, full course essential for eradication; 3. Monitor for fluoroquinolone side effects (tendonitis, rare in this age group); 4. Penicillin allergy documentation critical — all future healthcare encounters must flag this; 5. Return to exercise gradual after 2 weeks. Prognosis: excellent.',
+  aiSummary: '林家俊，45岁，既往健康男性，患社区获得性肺炎（右下肺，肺炎链球菌，青霉素耐药）。CURB-65 1分提示低死亡风险。最显著的临床特征是严重青霉素过敏（过敏性休克，2018年）— 限制抗生素选择为非β-内酰胺类药物（使用氟喹诺酮类）。无合并症，不吸烟，生活方式活跃。预期2周内完全康复。AI评估：1. NEWS低危（0分）— 年轻、健康、单器官感染，治疗反应极佳；2. 完成7天左氧氟沙星疗程 — 即使症状好转，完整疗程对根除感染至关重要；3. 监测氟喹诺酮类副作用（肌腱炎，该年龄段罕见）；4. 青霉素过敏记录至关重要 — 所有未来医疗就诊必须标注此项；5. 2周后逐渐恢复运动。预后：极佳。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -242,7 +242,7 @@ MEDICAL_HISTORY[4] = {
       notes: 'DM and HTN both above target. Lifestyle modifications reinforced. Metformin + Amlodipine started. Renal function borderline — monitor. Follow-up in 3 months.',
     },
   ],
-  aiSummary: 'Lau Suk Yee is an 81-year-old female with multiple comorbidities (T2DM, CKD Stage 3, HTN, anaemia of CKD) who presented with complicated UTI causing acute confusional state (infection-related delirium). The delirium resolved with antibiotic treatment — a classic presentation in elderly patients where UTI manifests as confusion rather than classic urinary symptoms. CKD Stage 3 (eGFR 48) is stable with slow progression (2mL/min/year). AI assessment: 1. NEWS Low–Medium (3) — driven by age, CKD, DM, and recent delirium; 2. Ciprofloxacin + Losartan interaction — monitor for hypotension; 3. C. difficile risk with fluoroquinolone in elderly — monitor for diarrhoea; 4. Cognitive baseline AMTS 9/10 — return to baseline expected; 5. UTI prevention: hydration, regular voiding, proper hygiene. Prognosis: good recovery expected; CKD management is the long-term priority.',
+  aiSummary: '刘淑仪，81岁女性，多种合并症（T2DM、CKD 3期、高血压、CKD贫血），因复杂性尿路感染导致急性意识模糊状态（感染相关性谵妄）就诊。谵妄经抗生素治疗后缓解 — 老年患者UTI典型表现：以意识模糊而非典型泌尿症状为主要表现。CKD 3期（eGFR 48）稳定伴缓慢进展（2mL/min/年）。AI评估：1. NEWS低-中危（3分）— 年龄、CKD、DM及近期谵妄所致；2. 环丙沙星与氯沙坦相互作用 — 监测低血压；3. 老年人使用氟喹诺酮类的艰难梭菌风险 — 监测腹泻；4. 认知基线AMTS 9/10 — 预期恢复至基线；5. UTI预防：充分饮水、规律排尿、保持卫生。预后：预期恢复良好；CKD管理为长期重点。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -288,7 +288,7 @@ MEDICAL_HISTORY[5] = {
       notes: 'New DM diagnosis. Overweight. Diabetes education provided. Self-monitoring of blood glucose. Lifestyle modifications. Follow-up in 3 months.',
     },
   ],
-  aiSummary: 'Ho Tai Wai is a 72-year-old male with T2DM (HbA1c 7.8% — suboptimal control) and HTN who developed moderate cellulitis (Eron Class III) of the left lower limb following a minor gardening abrasion. The combination of diabetes and age increases risk of skin infections, impaired wound healing, and potential for complications. Significant improvement with IV→oral Clindamycin transition. AI assessment: 1. NEWS Low–Medium (3) — driven by DM, age, and infection severity; 2. Clindamycin q6h dosing — adherence critical for full 9-day course; 3. C. difficile risk — monitor for diarrhoea; 4. DM control needs optimisation — HbA1c 7.8% above target; 5. Diabetic foot care education essential for prevention; 6. Wound healing expected within 14 days — daily monitoring for abscess formation. Prognosis: good with appropriate antibiotic therapy and wound care.',
+  aiSummary: '何大伟，72岁男性，T2DM（HbA1c 7.8% — 控制欠佳）和高血压，继发于轻微园艺擦伤后出现左下肢中度蜂窝织炎（Eron III级）。糖尿病和年龄增加皮肤感染风险、伤口愈合受损及潜在并发症。静脉→口服克林霉素转换后显著改善。AI评估：1. NEWS低-中危（3分）— DM、年龄及感染严重度所致；2. 克林霉素q6h给药 — 完整9天疗程的依从性至关重要；3. 艰难梭菌风险 — 监测腹泻；4. 糖尿病控制需要优化 — HbA1c 7.8%高于目标值；5. 糖尿病足护理教育对预防至关重要；6. 伤口预期14天内愈合 — 每日监测脓肿形成。预后：适当的抗生素治疗和伤口护理下预后良好。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -335,7 +335,7 @@ MEDICAL_HISTORY[6] = {
       notes: 'Healthy 63-year-old. No chronic conditions. Active lifestyle — walks daily. No significant medical history. Family history: father had DVT at age 72 (post-hip surgery). Mother HTN. Advised to maintain active lifestyle.',
     },
   ],
-  aiSummary: 'Ng Siu Wan is a 67-year-old female with previously well-controlled HTN and hyperlipidaemia who developed acute proximal DVT (left femoral + popliteal) without clear provoking factor. No PE on CTPA. Family history notable for father\'s DVT at age 72 (post-surgical). Currently on Warfarin (INR 2.1, target 2.0-3.0) with LMWH bridging completed. AI assessment: 1. NEWS Medium (4) — driven by anticoagulation management (bleeding risk, INR instability), potential for thrombus extension, and PE risk; 2. Daily INR monitoring via POCT until stable × 3 days — critical for Warfarin safety; 3. Patient education paramount — Warfarin has narrow therapeutic index, multiple drug/food interactions; 4. Consistent vitamin K intake essential — avoid sudden dietary changes; 5. Compression stockings for post-thrombotic syndrome prevention; 6. Thrombophilia screen pending — may determine duration of anticoagulation (3 months vs indefinite); 7. Family history of DVT — possible genetic predisposition. Prognosis: good with therapeutic anticoagulation; key risk is bleeding or recurrent thrombosis if INR subtherapeutic.',
+  aiSummary: '吴小云，67岁女性，既往高血压和高脂血症控制良好，无明显诱因发生急性近端深静脉血栓（左股静脉+腘静脉）。CTPA未见肺栓塞。家族史显著：父亲72岁时DVT（术后）。目前服用华法林（INR 2.1，目标2.0-3.0），低分子肝素桥接已完成。AI评估：1. NEWS中危（4分）— 抗凝管理（出血风险、INR不稳定）、血栓扩展和肺栓塞风险；2. 每日POCT监测INR直至连续稳定×3天 — 对华法林安全性至关重要；3. 患者教育至关重要 — 华法林治疗窗狭窄，多种药物/食物相互作用；4. 保持维生素K摄入量一致至关重要 — 避免饮食骤然变化；5. 弹力袜预防血栓后综合征；6. 易栓症筛查待定 — 可能决定抗凝疗程（3个月 vs 长期）；7. 家族DVT史 — 可能存在遗传易感性。预后：治疗性抗凝下预后良好；关键风险：INR未达治疗范围时出血或血栓复发。',
 };
 
 export default MEDICAL_HISTORY;
@@ -396,7 +396,7 @@ export const PATIENT_7_HISTORY = {
       notes: 'Successful smoking cessation. Quit at age 71 after 50+ years of smoking. Strong family support. Maintains smoke-free home environment.',
     },
   ],
-  aiSummary: 'Chan Tai Ming is an 82-year-old male with moderate COPD (GOLD Stage 2, FEV₁ 55%, diagnosed 2022) complicated by recent community-acquired pneumonia (June 2026, CURB-65: 2). Significant history: 30 pack-year smoking (quit 2015), penicillin allergy (rash), HTN (diagnosed 2019, controlled on Amlodipine 5mg). AI assessment: 1. COPD well-controlled prior to June 2026 CAP — no exacerbations in 12 months pre-admission; 2. Post-pneumonia clinical instability is highest risk — elderly COPD after CAP need vigilant NEWS2 monitoring (target NEWS Low 0–2); 3. Infection recurrence risk elevated due to COPD structural lung changes + impaired mucociliary clearance; 4. Penicillin allergy limits empirical antibiotic choices — Ceftriaxone has <1% cross-reactivity, safe for use; 5. Vaccination status current (influenza + pneumococcal); 6. Home environment favourable — wife caregiver, elevator access, non-smoking home; 7. GOLD 2024 recommends: LAMA for maintenance, SABA for rescue, pulmonary rehab for functional status, and prompt recognition/treatment of exacerbations. Prognosis: good with vigilant monitoring — key to avoid recurrent infection is early detection (SpO₂ trend + POCT escalation) rather than waiting for clinical deterioration.',
+  aiSummary: '陈大明，82岁男性，中度COPD（GOLD 2级，FEV₁ 55%，2022年确诊）合并近期社区获得性肺炎（2026年6月，CURB-65：2分）。显著病史：30包年吸烟（2015年已戒）、青霉素过敏（皮疹）、高血压（2019年确诊，氨氯地平5mg控制良好）。AI评估：1. 此前COPD控制良好 — 入院前12个月无急性加重；2. 肺炎后临床不稳定是最高风险 — 老年COPD患者CAP后需严密NEWS2监测（目标NEWS低危0-2分）；3. 感染复发风险增高 — COPD肺结构改变+黏液纤毛清除功能受损；4. 青霉素过敏限制经验性抗生素选择 — 头孢曲松<1%交叉反应性，可安全使用；5. 疫苗接种状态最新（流感+肺炎球菌）；6. 居家环境良好 — 配偶照护、有电梯、无烟家庭；7. GOLD 2024推荐：LAMA维持治疗、SABA急救、肺康复改善功能状态、及时识别/治疗急性加重。预后：严密监测下预后良好 — 避免复发感染的关键在于早期发现（SpO₂趋势+POCT升级）而非等待临床恶化。',
 };
 
 

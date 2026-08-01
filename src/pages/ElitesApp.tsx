@@ -209,7 +209,7 @@ const ElitesDashboardTab: FC = () => {
             <p className="text-xs text-slate-400">Primary Nurse · 8 yrs exp</p>
             <div className="flex items-center gap-1.5 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-[#006F80]" />
-              <span className="text-xs text-[#006F80] font-medium">On duty · {workOrders.today.total} visits today</span>
+              <span className="text-xs text-[#006F80] font-medium">在岗 · {workOrders.today.total} 次访视</span>
             </div>
           </div>
           <button className="bg-[#CCF0FE] text-[#006F80] text-[10px] font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1">
@@ -235,13 +235,13 @@ const ElitesDashboardTab: FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg font-bold">{formatDemoDateLabel()}</p>
-          <p className="text-[10px] text-[#99E7FF] mt-0.5">Week 25 · Daily Work Report</p>
+          <p className="text-[10px] text-[#99E7FF] mt-0.5">第25周 · 每日工作报告</p>
         </div>
         <div className="flex items-center gap-2 bg-white/15 rounded-xl px-3 py-2">
           <CloudSun className="w-5 h-5 text-yellow-200" />
           <div>
             <p className="text-sm font-bold">28°C</p>
-            <p className="text-[9px] text-[#99E7FF]">Partly Cloudy</p>
+            <p className="text-[9px] text-[#99E7FF]">多云</p>
           </div>
         </div>
       </div>
@@ -675,7 +675,7 @@ const ElitesPatientsTab: FC = () => {
 
   const vitals = usePatientStore(s => s.vitals);
 
-  // ── Per-patient AI recommendations (NEWS2-driven, all visible patients) ──
+  // ── 每位患者的AI建议 (NEWS2-driven, all visible patients) ──
   const patientAI = useMemo<Record<number, { summary: string; recommendations: string[] }>>(() => {
     const map: Record<number, { summary: string; recommendations: string[] }> = {};
     myPatients.forEach(p => {
@@ -780,7 +780,7 @@ const ElitesPatientsTab: FC = () => {
     setRecordingTime(0);
   };
 
-  // AI auto-fill structured fields after recording
+  // AI自动填充结构化字段 after recording
   useEffect(() => {
     if (!isRecording && voiceText && !uploading && selectedPid) {
       const data = patientLogData[selectedPid];
@@ -851,7 +851,7 @@ const ElitesPatientsTab: FC = () => {
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-shrink-0 px-4 pt-4 pb-2 bg-slate-50 z-10 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-[#006F80]" /> My Patients</h3>
+          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-[#006F80]" /> 我的患者</h3>
           <span className="text-[10px] text-slate-400">{myPatients.length} assigned</span>
         </div>
         <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-slate-200">
@@ -1023,7 +1023,7 @@ const ElitesPatientsTab: FC = () => {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <Mic className="w-3.5 h-3.5 text-[#006F80]" /> NLP Voice-to-Text
+                  <Mic className="w-3.5 h-3.5 text-[#006F80]" /> NLP语音转文字
                 </span>
                 {isRecording && (
                   <span className="text-[9px] text-red-500 font-semibold animate-pulse flex items-center gap-1">
@@ -1057,7 +1057,7 @@ const ElitesPatientsTab: FC = () => {
                       <span className="w-2 h-2 bg-[#006F80] rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
                       <span className="w-2 h-2 bg-[#006F80] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
                       <span className="w-2 h-2 bg-[#006F80] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
-                      <span className="text-[10px] text-[#006F80] ml-2 font-medium">Listening...</span>
+                      <span className="text-[10px] text-[#006F80] ml-2 font-medium">聆听中...</span>
                     </div>
                   ) : voiceText ? (
                     <p className="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap">
@@ -1153,7 +1153,7 @@ const ElitesPatientsTab: FC = () => {
       </div>
     )}
 
-    {/* AI Assessment */}
+    {/* AI评估 */}
     {patientAI[p.id] && (
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="bg-gradient-to-r from-[#0B3550] to-[#00263F] px-4 py-3 flex items-center gap-2">
@@ -1230,7 +1230,7 @@ const ElitesChatTab: FC = () => {
   if (selectedChatPid === null) {
     return (
     <div className="p-4 space-y-4">
-      <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-[#006F80]" /> Patient Conversations</h3>
+      <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><MessageCircle className="w-4 h-4 text-[#006F80]" /> 患者对话</h3>
       <div className="space-y-2">
         {myPatients.map((p) => {
           const chat = patientChats[p.id];
@@ -1250,7 +1250,7 @@ const ElitesChatTab: FC = () => {
             </div>
             <p className="text-[10px] text-slate-500 leading-relaxed line-clamp-2 ml-[52px]">{chat.lastMsg}</p>
             <div className="flex items-center gap-2 mt-2 ml-[52px]">
-              {chat.aiAlert && <span className="text-[8px] text-red-500 font-semibold flex items-center gap-1"><AlertTriangle className="w-2.5 h-2.5" /> AI Alert Active</span>}
+              {chat.aiAlert && <span className="text-[8px] text-red-500 font-semibold flex items-center gap-1"><AlertTriangle className="w-2.5 h-2.5" /> AI告警活跃</span>}
               <span className="text-[8px] text-slate-400">{chat.messages.length} messages</span>
             </div>
           </div>
@@ -1285,7 +1285,7 @@ const ElitesChatTab: FC = () => {
         )}
       </div>
 
-      {/* AI Warning Banner */}
+      {/* AI预警横幅 */}
       {chat.aiAlert && (
         <div className="bg-gradient-to-r from-red-50 to-red-100 px-4 py-2 border-b border-red-100 flex items-start gap-2 flex-shrink-0">
           <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" />

@@ -303,7 +303,7 @@ const VitalsTab: FC<{ patient: Patient }> = ({ patient: p }) => {
       <div className={`${statusStyle.bg} border ${statusStyle.border} rounded-xl p-4 text-xs`}>
         <div className="flex items-center gap-2 mb-2">
           <div className={`w-2 h-2 rounded-full ${statusStyle.badgeC} animate-pulse`} />
-          <strong className={statusStyle.text}>AI Insight · {statusStyle.badge}</strong>
+          <strong className={statusStyle.text}>AI洞察 · {statusStyle.badge}</strong>
           <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded ${overall状态 === 'critical' ? 'text-red-600 bg-red-100' : overall状态 === 'attention' ? 'text-amber-600 bg-amber-100' : 'text-emerald-600 bg-emerald-100'}`}>NEWS Tier: {s.newsLabel}</span>
         </div>
         <p className={`${statusStyle.text} leading-relaxed mb-2`}>{summary}</p>

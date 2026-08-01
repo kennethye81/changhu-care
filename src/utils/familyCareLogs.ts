@@ -87,7 +87,7 @@ export function getFamilyCareProgressNotes(
   const base = DAY1_FALLBACK_NOTES(vitals);
   if (p7Alert && vitals) {
     return [
-      { title: '⚠ AI Infection Alert', detail: formatP7InfectionAlertDetail(), time: 'Thu 5:02 PM', icon: AlertTriangle, color: 'text-red-600' },
+      { title: '⚠ AI感染提醒', detail: formatP7InfectionAlertDetail(), time: 'Thu 5:02 PM', icon: AlertTriangle, color: 'text-red-600' },
       buildP7RedAlertNote(vitals),
       ...base,
     ].slice(0, limit);

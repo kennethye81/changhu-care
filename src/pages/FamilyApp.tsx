@@ -1027,7 +1027,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         </div>
       </div>
 
-      {/* AI Interventions */}
+      {/* AI干预建议 */}
       <div className="border-t border-slate-100 px-4 py-3 bg-amber-50/50">
         <div className="flex items-center gap-2 mb-2">
           <Zap className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
@@ -1117,7 +1117,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     <div className="flex items-start gap-3">
     <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5 animate-pulse" />
     <div>
-      <p className="text-xs font-semibold text-red-700">AI Alert: Infection Risk — Medication Review</p>
+      <p className="text-xs font-semibold text-red-700">AI提醒：感染风险 — 用药审查</p>
       <p className="text-[10px] text-[#006F80] mt-0.5">{summary.aiSummary}</p>
     </div>
     </div>
@@ -1149,7 +1149,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     </div>
     </div>
 
-    {/* AI Refill Alert */}
+    {/* AI续药提醒 */}
     <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4 border border-amber-200">
       <div className="flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -1385,7 +1385,7 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="flex-1">
           <p className="text-sm font-semibold text-white">照护消息</p>
           <p className="text-[9px] text-[#99E7FF] flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#99E7FF]" /> Online — AI Monitor · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
+            <span className="w-1.5 h-1.5 rounded-full bg-[#99E7FF]" /> 在线 — AI监护 · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
           </p>
         </div>
         <Phone className="w-4 h-4 text-white/90" />
