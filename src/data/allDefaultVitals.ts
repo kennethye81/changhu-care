@@ -11,4 +11,5 @@ function v(
 /** Canonical default vitals — 长护险 patients */
 export const ALL_DEFAULT_VITALS: Record<number, Vitals> = {
   1: v(78, 160, 82, 96, 36.7, 17, 105, '高血压'),
+  10001: v(72, 145, 88, 97, 36.5, 18, 100, '脑出血术后'),
 };

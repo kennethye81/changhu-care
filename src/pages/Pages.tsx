@@ -83,6 +83,11 @@ const staffAvatar: Record<string, string> = {
   '周明': '/avatars/zhou-ming.png',
   '陈雅文': '/avatars/chen-yawen.png',
   '汤菊玲': '/avatars/tang-juling.png',
+  '张丽华': '/avatars/zhang-lihua.png',
+  '刘敏': '/avatars/liu-min.png',
+  '陈军': '/avatars/chen-jun.png',
+  '赵静': '/avatars/zhao-jing.png',
+  '王秀英': '/avatars/wang-xiuying.png',
 };
 
 import { PATIENTS_FULL } from '../data/patients';

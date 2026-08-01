@@ -43,6 +43,16 @@ export interface PatientFull {
   assessmentAgency?: string;
   assessor?: string;
   idCard?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  ethnicity?: string;
+  insuranceType?: string;
+  undergoingRehab?: boolean;
+  isFirstApplication?: boolean;
+  applicationType?: string;
+  applicationDate?: string;
+  disabilityCert?: { number?: string; category?: string; level?: string; impairment?: string; issueDate?: string; expiryDate?: string; issuer?: string } | null;
+  actualCaregiver?: string;
   emergencyContact?: { name: string; phone: string; relation: string };
   livingArrangement?: string;
   // 评估量表

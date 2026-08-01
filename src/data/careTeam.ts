@@ -316,6 +316,11 @@ export const FAMILY_COMMS: Record<number, FamilyComm[]> = {
     { date: '2026-06-20', time: '08:30', contact: 'Emily Chan (Daughter)', method: 'Phone', summary: 'Infection Watch triggered: SpO₂ 91%, Temp 37.8, green sputum. Maggie Lam + Dr. Lee notified.', actionItems: 'Standby for update. Will call if POCT needed.', direction: 'outgoing' },
     { date: '2026-06-19', time: '09:00', contact: 'Mrs. Chan (Wife)', method: 'In-Person', summary: 'Initial HaH education: SpO₂/BP/Temp monitoring, escalation call, O₂ safety, Spiriva technique. Demonstrated correctly.', actionItems: 'Practice SpO₂ at 14:00 + 20:00. Call if <92%. Grab bars Day 2.', direction: 'outgoing' },
   ],
+  10001: [
+    { date: '2026-03-27', time: '11:00', contact: '李小鹏（儿子）', method: '上门面谈', summary: '长护险初次评估访视。与家属确认照护需求：右侧偏瘫全部需他人照护、二便失禁管理、右下肢血栓每日观察、q2h翻身。家属表示愿意配合护理计划，已签署知情同意。', actionItems: '个案经理制定月度服务方案。护理员次日开始首次访视。', direction: '去电' },
+    { date: '2026-03-30', time: '15:00', contact: '李小鹏（儿子）', method: '电话', summary: '首次护理访视后反馈：护理员王秀英已完成床单位整理、面部清洁、口腔护理。家属表示满意。提醒右下肢血栓观察要点：每日检查肿胀/皮温/颜色变化。', actionItems: '家属每日记录血压和血栓观察。如有异常立即联系护士刘敏。', direction: '去电' },
+    { date: '2026-04-05', time: '10:00', contact: '李小鹏（儿子）', method: '上门面谈', summary: '护士刘敏月度评估访视。Braden维持14分，无压疮。血压145/88。被动ROM训练指导（康复师陈军方案）。家属翻身和ROM操作技术达标。右下肢血栓无明显变化。', actionItems: '继续现有方案。营养师赵静下周上门评估营养状况。心内科随访血压管理。', direction: '去电' },
+  ],
 };
 
 const CHAN_TAI_MING_FAMILY_CONTACTS: FamilyContact[] = [
@@ -343,6 +348,9 @@ export const PATIENT_FAMILY: Record<number, FamilyContact[]> = {
     { name: 'Ng Ka Yan', relationship: 'Daughter', phone: '+852 9789 0123', email: 'ka.yan@email.com', isPrimary: true, livingWith: false, notes: 'Lives in same building (different floor). Visits daily. Manages Warfarin administration, INR POCT monitoring, compression stockings, and medical appointments. Trained on bleeding precautions and emergency protocol.' },
   ],
   7: CHAN_TAI_MING_FAMILY_CONTACTS,
+  10001: [
+    { name: '李小鹏', relationship: '子女', phone: '13486293959', email: '', isPrimary: true, livingWith: true, notes: '同住。主要照护者。负责用药管理、血压监测、翻身协助、血栓腿部观察。已培训偏瘫护理和二便管理。' },
+  ],
 };
 
 import { NEW_PATIENT_FAMILY, NEW_FAMILY_COMMS } from './newPatients/careTeamExtras';
@@ -405,6 +413,62 @@ export const CN_CARE_TEAM: Record<string, TeamMember> = {
     bio: '8年居家养老护理经验，先后服务过12位失能/半失能老人。熟练掌握助餐（包括鼻饲辅助）、助浴、助行、体位转移（床上↔轮椅）、翻身拍背、二便护理等核心技能。负责冯存富的日常生活照料、每2小时翻身执行、压疮部位皮肤观察及用药提醒。',
     avatar: '/avatars/tang-juling.png',
     registrationNo: 'CN3204-CW001',
+  },
+  // ── 台州路桥团队（李玉富 | ID:10001）──
+  '张丽华': {
+    id: 'CN_CM002', name: '张丽华', role: '个案经理',
+    gender: '女', age: 38, yearsExperience: 10,
+    specialty: '长护险服务管理 · 脑卒中术后个案管理 · 失能等级评估 · 服务方案制定',
+    certifications: ['中级社会工作师', '老年人能力评估师', '长护险专员', '脑卒中康复个案管理师'],
+    institution: '路桥区护理站',
+    education: '社会工作硕士（温州医科大学）',
+    bio: '10年养老服务管理经验，2023年起专注台州路桥区长护险居家护理协调。熟悉浙江省长护险政策及路桥区本地服务资源。擅长脑卒中术后患者的整合照护方案设计，包括Barthel/Braden动态评估、多学科团队协调及家属照护者培训。负责李玉富的服务方案制定、月度护理计划审核及家属李小鹏的定期沟通。',
+    avatar: '/avatars/zhang-lihua.png',
+    registrationNo: 'CM-3310-002',
+  },
+  '刘敏': {
+    id: 'CN_N002', name: '刘敏', role: '护士',
+    gender: '女', age: 33, yearsExperience: 11,
+    specialty: '神经外科护理 · 居家护理 · 压疮预防 · DVT管理 · 偏瘫护理',
+    certifications: ['主管护师', '伤口造口专科护士', '神经外科专科护士', 'BLS/ACLS'],
+    institution: '路桥区护理站',
+    education: '护理学本科（温州医科大学）',
+    bio: '原台州恩泽医疗中心神经外科主管护师，2024年转入居家护理领域。11年临床护理经验，擅长脑出血术后偏瘫患者的居家护理、Braden压疮风险评估与预防、下肢深静脉血栓(Caprini)居家管理、二便失禁护理及血压远程监测。主导李玉富的压疮预防方案、右下肢血栓每日观察、偏瘫侧护理指导。',
+    avatar: '/avatars/liu-min.png',
+    registrationNo: 'CN3310-N001',
+  },
+  '陈军': {
+    id: 'CN_RT002', name: '陈军', role: '康复治疗师',
+    gender: '男', age: 36, yearsExperience: 12,
+    specialty: '神经康复 · 偏瘫康复 · 被动关节活动度训练 · 体位管理',
+    certifications: ['康复治疗师（中级）', 'Bobath技术认证', '神经发育疗法（NDT）认证'],
+    institution: '路桥区护理站',
+    education: '康复治疗学本科（浙江中医药大学）',
+    bio: '12年康复治疗经验，原台州恩泽医疗中心康复科治疗师长。擅长脑卒中后偏瘫康复训练，包括Brunnstrom分期评估、被动ROM训练、痉挛管理、体位摆放及早期肘腕关节功能锻炼（李玉富医嘱要求）。负责李玉富的右侧肢体被动ROM训练、翻身拍背技术指导、防关节挛缩方案及家属康复技能培训。',
+    avatar: '/avatars/chen-jun.png',
+    registrationNo: 'RT-3310-002',
+  },
+  '赵静': {
+    id: 'CN_NT002', name: '赵静', role: '营养师',
+    gender: '女', age: 32, yearsExperience: 8,
+    specialty: '老年营养 · 脑卒中营养支持 · 低盐膳食管理 · 便秘干预',
+    certifications: ['注册营养师', '临床营养师', '肠内营养支持（CSPEN）'],
+    institution: '路桥区护理站',
+    education: '营养与食品卫生学硕士（浙江大学）',
+    bio: '8年临床营养经验，原台州第一人民医院营养科营养师。擅长脑卒中后营养风险评估（NRS2002）、低盐低脂膳食配方制定、管饲/ONS营养支持方案及长期卧床便秘干预。负责李玉富的营养状况评估、低盐膳食指导、便秘饮食调整及家属鼻饲/喂食技能培训。',
+    avatar: '/avatars/zhao-jing.png',
+    registrationNo: 'NT-3310-002',
+  },
+  '王秀英': {
+    id: 'CN_CW002', name: '王秀英', role: '护理员',
+    gender: '女', age: 46, yearsExperience: 7,
+    specialty: '偏瘫生活照料 · 二便护理 · 翻身拍背 · 辅助进食 · 助浴',
+    certifications: ['养老护理员（中级）', '急救员证', '偏瘫护理技能证书'],
+    institution: '路桥区护理站',
+    education: '养老护理专业培训（台州职业技术学院）',
+    bio: '7年居家养老护理经验，先后服务过8位失能/半失能老人，其中4位为脑卒中后偏瘫患者。熟练掌握偏瘫侧护理（体位摆放+皮肤检查）、二便失禁管理（尿垫/纸尿裤更换+会阴清洁）、翻身叩背排痰、床上擦浴、鼻饲辅助等核心技能。负责李玉富的日常生活照料、每2小时翻身执行、偏瘫侧皮肤观察及血栓腿部每日观察。',
+    avatar: '/avatars/wang-xiuying.png',
+    registrationNo: 'CN3310-CW001',
   },
 };
 

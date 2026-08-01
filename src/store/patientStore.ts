@@ -92,6 +92,7 @@ export const DEFAULT_VITALS: Record<number, Vitals> = ALL_DEFAULT_VITALS;
 
 const DEFAULT_SUMMARIES_BASE: Omit<PatientSummary, 'newsScore' | 'newsTier' | 'rr' | 'bloodSugar'>[] = [
   { id: 1, name: '冯存富', gender: 'M', age: 77, diagnosis: '高血压 · 双侧肢体异常 · 压疮 · 中度失能', temp: 36.7, hr: 78, bpSystolic: 160, bpDiastolic: 82, spo2: 96, hospital: '易得康（常州金坛）', address: '江苏省常州市金坛区指前镇解放村接王家村3号', doctor: '社区医生（定期随访）', caseManager: '林晓东' },
+  { id: 10001, name: '李玉富', gender: 'M', age: 64, diagnosis: '脑出血术后 · 右侧偏瘫 · 右下肢DVT · 高血压', temp: 36.5, hr: 72, bpSystolic: 145, bpDiastolic: 88, spo2: 97, hospital: '路桥区护理站（台州）', address: '台州市路桥区金清镇上盟村6区25号', doctor: '恩泽医院神经外科', caseManager: '张丽华' },
 ];
   
 
