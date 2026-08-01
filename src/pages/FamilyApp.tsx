@@ -468,8 +468,8 @@ function getHomeVitalStats(vitals: typeof DEFAULT_VITALS[number], alertActive: b
 /* ─────────────── MOBILE SUB-TABS ─────────────── */
 
 const CARE_PLAN_TYPE_LABEL: Record<string, string> = {
-  medication: 'med', therapy: 'exercise', nurse_visit: 'visit',
-  doctor_consult: 'consult', monitoring: 'monitor', self_care: 'self', care_worker: 'care',
+  medication: '用药', therapy: '康复', nurse_visit: '访视',
+  doctor_consult: '会诊', monitoring: '监测', self_care: '自理', care_worker: '照护',
 };
 
 const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; familyPatientId: number; setFamilyPatientId: (id: number) => void }> = ({ onAlertClick, onCarePlanClick, familyPatientId, setFamilyPatientId }) => {
@@ -1065,7 +1065,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
     {/* Progress Notes */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={ClipboardList} title="Progress Notes" />
+      <SectionHeader icon={ClipboardList} title="照护记录" />
       <div className="p-4 space-y-3">
         {progressNotes.map((note, i) => (
           <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
@@ -1107,7 +1107,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
     {/* Medication List */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-    <SectionHeader icon={Pill} title="Current Medications" right={<span className="text-[10px] text-white/80">{summary.activeCount} active · {summary.missedCount} missed</span>} />
+    <SectionHeader icon={Pill} title="当前用药" right={<span className="text-[10px] text-white/80">{summary.activeCount}种在用 · {summary.missedCount}种遗漏</span>} />
     <div>
     {meds.map((med, i) => (
         <div key={i} className={`px-4 py-3 border-b border-slate-50 last:border-0 ${med.adherent ? 'bg-white' : 'bg-red-50'}`}>
@@ -1139,7 +1139,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <p className="text-xs font-semibold text-amber-800">AI提醒：补充+依从</p>
           <p className="text-[10px] text-amber-700 mt-0.5">{summary.refillSummary}</p>
           <button className="mt-2 text-[10px] font-semibold text-white bg-amber-600 hover:bg-amber-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-1">
-            <Send className="w-3 h-3" /> Request Refill
+          <Send className="w-3 h-3" /> 申请续药
           </button>
         </div>
       </div>
@@ -1147,34 +1147,34 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
     {/* Schedule Summary */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={Sun} title="Today's Schedule" />
+      <SectionHeader icon={Sun} title="今日用药时间表" />
       <div className="p-4 grid grid-cols-2 gap-2">
         <div className="bg-[#CCF0FE] rounded-xl p-3 border border-[#99E7FF]">
           <div className="flex items-center gap-1.5 mb-1">
             <Sun className="w-3 h-3 text-amber-500" />
-            <span className="text-[10px] font-semibold text-slate-700">Morning (8 AM)</span>
+            <span className="text-[10px] font-semibold text-slate-700">早晨（8点）</span>
             <CheckCircle2 className="w-3 h-3 text-[#006F80] ml-auto" />
           </div>
-          <p className="text-[9px] text-slate-600">Tiotropium · Amlodipine · Ceftriaxone IV</p>
+          <p className="text-[9px] text-slate-600">硝苯地平缓释片 30mg · 阿司匹林 100mg</p>
         </div>
         <div className="bg-red-50 rounded-xl p-3 border border-red-100">
           <div className="flex items-center gap-1.5 mb-1">
             <Moon className="w-3 h-3 text-indigo-500" />
-            <span className="text-[10px] font-semibold text-slate-700">按需(PRN)</span>
+            <span className="text-[10px] font-semibold text-slate-700">按需（PRN）</span>
             <AlertTriangle className="w-3 h-3 text-amber-400 ml-auto" />
           </div>
-          <p className="text-[9px] text-amber-600 font-medium">Salbutamol 100mcg — 2× today · Monitor usage &gt;4×/day</p>
+          <p className="text-[9px] text-amber-600 font-medium">硝苯地平 30mg — 每日一次 · 监测血压＜150/90</p>
         </div>
       </div>
     </div>
 
     {/* Adherence Trend */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={CheckCircle2} title="7-Day Adherence Trend" right={<span className="text-[10px] font-bold text-[#006F80]">{summary.adherencePct}%</span>} />
+      <SectionHeader icon={CheckCircle2} title="7天用药依从趋势" right={<span className="text-[10px] font-bold text-[#006F80]">{summary.adherencePct}%</span>} />
       <div className="p-4 flex gap-2">
         {[
-          { day: 'M', ok: true }, { day: 'T', ok: true }, { day: 'W', ok: true }, 
-          { day: 'T', ok: true }, { day: 'F', ok: true }, { day: 'S', ok: true }, { day: 'S', ok: true },
+          { day: '一', ok: true }, { day: '二', ok: true }, { day: '三', ok: true }, 
+          { day: '四', ok: true }, { day: '五', ok: true }, { day: '六', ok: true }, { day: '日', ok: true },
         ].map((d, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold ${d.ok ? 'bg-[#CCF0FE] text-[#006F80]' : 'bg-red-100 text-red-600'}`}>

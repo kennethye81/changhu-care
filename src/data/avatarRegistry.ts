@@ -1,4 +1,4 @@
-import { CARE_TEAM } from './careTeam';
+import { CARE_TEAM, CN_CARE_TEAM } from './careTeam';
 
 /** Bump when regenerating staff PNGs — appended as ?v= query on avatar URLs. */
 export const STAFF_AVATAR_VERSION = '4';
@@ -65,6 +65,13 @@ export function resolveStaffAvatarPath(senderName: string): string | null {
 
   for (const [key, member] of Object.entries(CARE_TEAM)) {
     if (raw === key || raw.startsWith(`${key} `)) {
+      if (member.avatar?.startsWith('/')) return withVersion(member.avatar);
+    }
+  }
+
+  // CN_CARE_TEAM fallback for mainland staff
+  for (const [key, member] of Object.entries(CN_CARE_TEAM)) {
+    if (raw === key || raw === member.name || raw.startsWith(`${key} `) || raw.startsWith(`${member.name} `)) {
       if (member.avatar?.startsWith('/')) return withVersion(member.avatar);
     }
   }
