@@ -1,6 +1,6 @@
 import type { DailyActivity, TwoWeekCarePlan } from '../data/carePlans';
 
-export const DEMO_CARE_PLAN_DATE = '2026-07-08';
+export const DEMO_CARE_PLAN_DATE = '2026-08-16';
 /** HaH narrative day for 患者1 (start 2026-06-18) on DEMO_CARE_PLAN_DATE. */
 export const DEMO_HAH_DAY = 21;
 

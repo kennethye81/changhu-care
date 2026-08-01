@@ -2,6 +2,8 @@
 // 参照：中国高血压防治指南2024 · 中国压疮诊疗与预防指南 · 中国脑卒中康复治疗指南 · 中国老年患者营养支持指南 · 中国老年人跌倒干预技术指南
 // 频率：每周4次（周一/周三/周五/周日），每次60-90分钟
 
+import type { DailyActivity } from './carePlans';
+
 export interface ScheduleRow {
   d: string;
   t: string;
@@ -28,3 +30,153 @@ export const MONTHLY_SCHEDULE: ScheduleRow[] = [
   { d: '8/28(五)', t: '09:00-10:00', r: '护理员', c: '翻身护理 + 血压监测 + 皮肤检查 + 清洁 + 用药提醒', ref: '常规照护' },
   { d: '8/30(日)', t: '08:30-10:00', r: '护理员', c: '月度收尾：全面护理复核 + 月度小结（零跌倒/血压趋势/压疮状况/营养依从性）+ 家属沟通会 + 下月计划预告', ref: '月度服务总结' },
 ];
+
+/** 将月度排程某一行拆分为 DailyActivity 列表（模拟当日服务执行状态） */
+export function getDailyActivitiesFromSchedule(date: string): DailyActivity[] {
+  // date format: '2026-08-16' → match '8/16'
+  const m = date.match(/^\d{4}-(\d{2})-(\d{2})$/);
+  if (!m) return [];
+  const short = `${parseInt(m[1])}/${parseInt(m[2])}`;
+  const row = MONTHLY_SCHEDULE.find(r => r.d.startsWith(short));
+  if (!row) return [];
+
+  const [startTime, endTime] = row.t.split('-');
+  const roles = row.r.split('+').map(s => s.trim());
+  const content = row.c;
+
+  const activities: DailyActivity[] = [];
+
+  // 护理员任务
+  if (roles.includes('护理员')) {
+    // 根据日期内容提取护理员具体任务
+    if (content.includes('翻身')) {
+      activities.push({
+        time: startTime,
+        activity: '翻身护理 + 皮肤检查',
+        type: 'care_worker',
+        detail: 'q2h翻身核查 · 压疮部位皮肤完整性评估',
+        status: 'completed',
+        provider: '汤菊玲',
+      });
+    }
+    if (content.includes('清洁') || content.includes('助餐')) {
+      activities.push({
+        time: startTime,
+        activity: content.includes('助餐') ? '助餐 + 个人清洁' : '个人清洁护理',
+        type: 'care_worker',
+        detail: '床上擦浴 · 口腔护理 · 低盐低脂助餐',
+        status: 'completed',
+        provider: '汤菊玲',
+      });
+    }
+    if (content.includes('血压')) {
+      activities.push({
+        time: startTime,
+        activity: '血压监测',
+        type: 'monitoring',
+        detail: 'BP测量 + 记录 · 硝苯地平用药提醒',
+        status: 'completed',
+        provider: '汤菊玲',
+      });
+    }
+    // 通用护理员到场标记（若上面都没命中）
+    if (activities.length === 0 || !activities.some(a => a.type === 'care_worker')) {
+      activities.push({
+        time: startTime,
+        activity: '基础照护',
+        type: 'care_worker',
+        detail: '翻身护理 · 清洁 · 安全巡查',
+        status: 'completed',
+        provider: '汤菊玲',
+      });
+    }
+  }
+
+  // 护士任务
+  if (roles.includes('护士')) {
+    activities.push({
+      time: startTime,
+      activity: content.includes('月初') || content.includes('月末') ? '综合护理评估' : '护理随访评估',
+      type: 'nurse_visit',
+      detail: '生命体征全套 · Braden评分 · 用药审查',
+      status: content.includes('月末') ? 'in_progress' : 'completed',
+      provider: '姜珊',
+    });
+  }
+
+  // 康复师任务
+  if (roles.includes('康复师')) {
+    if (content.includes('被动ROM') || content.includes('关节活动')) {
+      activities.push({
+        time: startTime,
+        activity: '被动关节活动训练',
+        type: 'therapy',
+        detail: '双上肢+双下肢ROM · MMT肌力评估',
+        status: 'in_progress',
+        provider: '周明',
+      });
+    }
+    if (content.includes('肌力') || content.includes('抗阻')) {
+      activities.push({
+        time: endTime ? `${parseInt(endTime)-30}:00` : startTime,
+        activity: '肌力渐进训练',
+        type: 'therapy',
+        detail: '抗阻训练 · 床上活动训练',
+        status: 'pending',
+        provider: '周明',
+      });
+    }
+    if (content.includes('按摩')) {
+      activities.push({
+        time: endTime ? `${parseInt(endTime)-15}:00` : startTime,
+        activity: '治疗性按摩',
+        type: 'therapy',
+        detail: '肌肉放松 · 促进血液循环',
+        status: 'pending',
+        provider: '周明',
+      });
+    }
+  }
+
+  // 营养师任务
+  if (roles.includes('营养师')) {
+    activities.push({
+      time: startTime,
+      activity: '营养风险筛查',
+      type: 'therapy',
+      detail: 'NRS2002量表评估 · 人体测量',
+      status: 'completed',
+      provider: '陈雅文',
+    });
+    activities.push({
+      time: `${parseInt(startTime) + 30}:00`,
+      activity: '膳食调查',
+      type: 'therapy',
+      detail: '24h回顾法 · 膳食结构分析',
+      status: 'in_progress',
+      provider: '陈雅文',
+    });
+    activities.push({
+      time: `${parseInt(startTime) + 60}:00`,
+      activity: '个性化营养方案',
+      type: 'therapy',
+      detail: '蛋白补充方案(1.2g/kg/日) · 低盐低脂饮食指导',
+      status: 'pending',
+      provider: '陈雅文',
+    });
+  }
+
+  // 安全巡查（有防跌倒内容的日期）
+  if (content.includes('跌倒') || content.includes('安全巡查')) {
+    activities.push({
+      time: endTime || startTime,
+      activity: '居家安全巡查',
+      type: 'care_worker',
+      detail: '地面防滑 · 扶手稳固 · 照明检查 · 呼叫铃测试',
+      status: 'completed',
+      provider: '汤菊玲',
+    });
+  }
+
+  return activities;
+}

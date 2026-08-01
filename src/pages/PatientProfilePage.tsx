@@ -1,8 +1,8 @@
 import { useState, type FC, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PATIENTS_FULL, type PatientFull } from '../data/patients';
+import { MONTHLY_SCHEDULE, getDailyActivitiesFromSchedule } from '../data/monthlySchedule';
 import { CARE_TEAM, getPatientFamily, FAMILY_COMMS, CN_CARE_TEAM, type FamilyContact } from '../data/careTeam';
-import { MONTHLY_SCHEDULE } from '../data/monthlySchedule';
 import { MEDICAL_HISTORY } from '../data/medicalHistory';
 import { DEFAULT_VITALS } from '../store/patientStore';
 import { usePatientStore } from '../store/patientStore';
@@ -57,7 +57,12 @@ const PatientProfilePage: FC = () => {
   const family = getPatientFamily(patient.id);
   const today = DEMO_CARE_PLAN_DATE;
   const todaySchedule = useMemo(
-    () => getTodayActivities(plan, patient.id, today, carePlanStatus),
+    () => {
+      const monthlyActs = getDailyActivitiesFromSchedule(today);
+      if (monthlyActs.length > 0) return monthlyActs;
+      // fallback to old plan system for non-Aug dates
+      return getTodayActivities(plan, patient.id, today, carePlanStatus);
+    },
     [plan, patient.id, today, carePlanStatus],
   );
   const cp = patient.carePlan;
