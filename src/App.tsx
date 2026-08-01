@@ -118,7 +118,7 @@ const HomeScreen: FC = () => {
   const navigate = useNavigate();
   const titleRef = useRef<HTMLHeadingElement>(null);
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-[#FFFFFF] via-[#FAF7F2] to-[#F3EBE0] flex flex-col items-center justify-center p-6 sm:p-10 font-body">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#FFFFFF] via-[#E1FCFF] to-[#CCF0FE] flex flex-col items-center justify-center p-6 sm:p-10 font-body">
       <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-10">
         <YDCareLogo height={48} />
       </div>

@@ -19,10 +19,10 @@
 
 :root {
   /* Warm Neutral Base */
-  --color-warm-50:  #FBFAF8;
-  --color-warm-100: #F5F3EF;
-  --color-warm-200: #EDE9E3;
-  --color-warm-300: #DED9D1;
+  --color-warm-50:  #FFFFFF;
+  --color-warm-100: #E1FCFF;
+  --color-warm-200: #CCF0FE;
+  --color-warm-300: #EBF5F9;
   --color-warm-400: #C4BDB3;
   --color-warm-500: #A3998E;
   --color-warm-600: #7A7168;
@@ -69,10 +69,10 @@
   --color-gold-900: #001A2B;
 
   /* Warm Neutrals (replaces slate for base) */
-  --color-warm-50:  #FBFAF8;
-  --color-warm-100: #F5F3EF;
-  --color-warm-200: #EDE9E3;
-  --color-warm-300: #DED9D1;
+  --color-warm-50:  #FFFFFF;
+  --color-warm-100: #E1FCFF;
+  --color-warm-200: #CCF0FE;
+  --color-warm-300: #EBF5F9;
   --color-warm-400: #C4BDB3;
   --color-warm-500: #A3998E;
   --color-warm-600: #7A7168;
@@ -305,10 +305,10 @@ body,
   --color-gold-900: #001A2B;
 
   /* Page surfaces — warm cream linen (replaces cool slate gray) */
-  --color-warm-50:  #FAF7F2;
-  --color-warm-100: #F3EBE0;
-  --color-warm-200: #E1FCFF;
-  --color-warm-300: #4DCEFF;
+  --color-warm-50:  #FFFFFF;
+  --color-warm-100: #E1FCFF;
+  --color-warm-200: #CCF0FE;
+  --color-warm-300: #EBF5F9;
   --color-warm-400: #0B3550;
   --color-warm-500: #03304B;
   --color-warm-600: #0B3550;
@@ -355,9 +355,9 @@ body,
 .hub-shell .border-slate-200 { border-color: #f1f5f9; }
 .hub-shell .border-slate-100 { border-color: #f1f5f9; }
 .hub-shell .border-slate-50 { border-color: #f8fafc; }
-.hub-shell .bg-slate-50 { background-color: #FAF7F2; }
-.hub-shell .bg-slate-100 { background-color: #F3EBE0; }
-.hub-shell .bg-slate-200 { background-color: #EDE4D6; }
+.hub-shell .bg-slate-50 { background-color: #E1FCFF; }
+.hub-shell .bg-slate-100 { background-color: #CCF0FE; }
+.hub-shell .bg-slate-200 { background-color: #EBF5F9; }
 .hub-shell .hover\:bg-slate-50:hover { background-color: #FFFFFF; }
 .hub-shell .hover\:bg-blue-50:hover { background-color: #FFFFFF; }
 
