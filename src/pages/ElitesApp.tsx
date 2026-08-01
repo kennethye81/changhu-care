@@ -79,10 +79,10 @@ const MobileElitesApp: FC<{ tab: ElitesTab; setTab: (t: ElitesTab) => void }> = 
   }, [showSplash]);
 
   const tabs: { key: ElitesTab; label: string; icon: FC<{ className?: string }> }[] = [
-    { key: 'today', label: 'Dashboard', icon: CalendarDays },
+    { key: 'today', label: '今日任务', icon: CalendarDays },
     { key: 'candidate', label: '待入组', icon: ClipboardCheck },
-    { key: 'patients', label: 'Patients', icon: Users },
-    { key: 'chat', label: 'Chat', icon: MessageCircle },
+    { key: 'patients', label: '在管客户', icon: Users },
+    { key: 'chat', label: '聊天', icon: MessageCircle },
   ];
 
   return (
@@ -710,33 +710,20 @@ const ElitesPatientsTab: FC = () => {
   const patientLogData = useMemo<Record<number, PatientLogData>>(() => ({
     1: {
       ttsSrc: '/care-log-tts.mp3',
-      phrases: ['Patient Cheung Wai Man, 78-year-old male, HF NYHA III · CKD 3 · T2DM · AF. ', 'Vitals: BP 118/72, HR 82 AF, SpO₂ 95% on room air, Temp 36.6°C. ', 'AM meds given at 8:02 — Sacubitril/Valsartan, Bisoprolol, Furosemide, Spironolactone, Apixaban, Metformin. Tolerated well. ', 'Daily weight 68.0kg — stable, within target range. Pedal oedema trace. ', 'Patient reports no orthopnoea, mild exertional dyspnoea. No chest pain. Pain 1/10. ', 'Mental: alert, oriented ×3. Mood calm. Wife present and engaged. ', 'I/O: intake 1,380mL, output 1,650mL — net negative 270mL. Fluid restriction 1.5L compliant. ', 'Renal panel: Cr 138, K⁺ 3.9. BNP 850 trending down. Continue GDMT. ', 'No acute events. Continue current plan. End of report.'],
-      fields: { condition: 'HF assessment: bibasilar crackles improved. Pedal oedema trace bilaterally — significantly improved from 1+ at discharge. JVP 3cm. Weight 68.0kg stable. No orthopnoea. SpO₂ 95% on room air.', meds: 'Sacubitril/Valsartan 97/103mg BID, Bisoprolol 5mg daily, Furosemide 40mg BID, Spironolactone 25mg daily, Apixaban 5mg BID, Metformin 500mg BID — all 6 medications confirmed. No missed doses. Adherence 94%.', response: 'Full HF assessment completed. Vital signs stable: BP 118/72, HR 82 AF rate-controlled, SpO₂ 95%. I/O net negative (-270mL). Renal panel stable. Continue current GDMT per Dr. Chan Chi Keung.', mental: 'Alert and oriented ×3. GCS 15. Mood calm and positive. Wife (primary caregiver) demonstrated correct I/O tracking and daily weight measurement. Good understanding of fluid restriction and sodium limits.', io: '24h intake: 1,380mL (within 1.5L restriction). 24h output: 1,650mL. Net balance: -270mL — consistent with diuretic therapy. Weight 68.0kg. Continue daily weight + strict I/O.', diet: 'Low-sodium diet (<2g/day) adhered to. Breakfast: oatmeal with fruit. Lunch: steamed fish with vegetables. Appetite good. Using measured water bottle for fluid tracking — wife verified accurate.', incidents: 'No falls, no acute decompensation. No medication errors. No new arrhythmia symptoms. All HF monitoring per protocol. Renal panel q3d. BNP recheck in 48h.' },
+      phrases: ['沈国栋，78岁男性，高血压3级极高危 · 心力衰竭 · 压疮II期。', '生命体征：BP 160/82，HR 78，SpO₂ 96%，体温36.5°C。', '硝苯地平控释片30mg每日一次已服用。低盐低脂饮食依从良好。', '翻身护理q2h执行中。髋部压疮II期面积未扩大，敷料已更换。', '患者意识清醒，对答切题。配偶陈玉兰在场协助照护。', '出入量：摄入约1300mL，排尿约1500mL。', '跌倒风险Morse评分105高危，助行器+地面防滑+夜间照明已检查。', '无急性事件。照护计划继续执行。'],
+      fields: { condition: '高血压随访：BP 160/82 mmHg，HR 78。硝苯地平30mg qd继续。低盐低脂饮食执行率良好。压疮II期面积稳定（3.5×2.8cm），敷料已更换无渗出增多。', meds: '硝苯地平控释片30mg qd — 依从性100%。配偶协助服药提醒。无漏服记录。无需追加剂量。', response: '护士姜珊常规访视完成。生命体征稳定。压疮护理+翻身q2h执行。血压较基线升高需关注。配偶陈玉兰护理操作培训完成。', mental: '意识清醒×3。GCS 15。情绪平稳。配偶（主要照护者）正确演示了翻身操作和血压测量。对低盐饮食和液体限制理解良好。', io: '24h摄入：约1300mL（包括饮食水分）。24h排尿：约1500mL。出入量基本平衡。经口进食为主、无鼻饲。', diet: '低盐饮食（<3g/日）依从良好。早餐：粥+鸡蛋+小菜。午餐：米饭+蔬菜+少量瘦肉。晚餐：面条+豆腐。食欲可。使用带刻度水杯控制饮水——配偶监督准确。', incidents: '无跌倒、无急性心衰发作。无用药错误。无心律失常。按长护险计划完成所有照护项目。' },
     },
     2: {
       ttsSrc: '/care-log-tts-2.mp3',
-      phrases: ['Patient Wong Chi Ming, 72-year-old male, COPD. ', 'Vitals: BP 134/84, HR 88, SpO₂ 94%, Temp 37.1°C. ', 'Inhaler Stiolto Respimat — 2 puffs administered, technique correct. ', 'Pursed-lip breathing exercises completed. Lungs clear bilaterally. ', 'No wheeze, no increased sputum. ', 'Patient reports mild dyspnea on exertion only. ', 'Mental: alert and oriented. Mood stable. ', 'I/O: intake adequate. Urine output normal. ', 'No acute events to report. Continue current plan.'],
-      fields: { condition: 'Breath sounds clear bilaterally, no wheeze or crackles. Pursed-lip breathing technique demonstrated correctly. SpO₂ stable at 94% on room air. Mild exertional dyspnea reported — consistent with baseline.', meds: 'Stiolto Respimat (Tiotropium/Olodaterol) 2.5/2.5mcg — 2 puffs administered. Inhaler technique observed and confirmed correct. No rescue inhaler needed today.', response: 'Routine COPD monitoring visit. SpO₂ checked ×3 — all readings ≥93%. Breathing exercises supervised. No escalation needed. Patient independent with inhaler.', mental: 'Alert and oriented ×3. Mood euthymic. Engaged in conversation. No cognitive deficits noted. Good understanding of COPD self-management.', io: 'Oral intake adequate. Hydration encouraged — patient reports drinking ~1.2L. Urine output normal. No signs of fluid retention.', diet: 'Regular diet tolerated. Appetite good. Soft foods preferred due to dentition. No dietary restrictions beyond low-sodium preference.', incidents: 'No falls, no acute exacerbations. No medication errors. No equipment issues. All routine checks within expected parameters.' },
+      phrases: ['周志强，64岁男性，左侧基底节脑出血术后·右侧偏瘫·右下肢DVT。', '生命体征：BP 146/88，HR 82，SpO₂ 97%，体温36.4°C。', '右侧偏瘫卧床，被动ROM完成。右下肢肿胀观察：无加重、皮温正常。', '翻身护理q2h执行，目前无压疮（Braden 14分高危）。', '患者意识清醒，对答切题。儿子周明辉同住为主要照护者。', '出入量：摄入约1200mL，排尿约1300mL。血压控制尚可。', 'Caprini评分7分高危，右下肢避免挤压、抬高患肢、每日观察。', '无急性事件。照护计划继续执行。'],
+      fields: { condition: '脑出血术后随访：BP 146/88 mmHg（目标<150/90），HR 82。右侧偏瘫肌张力无明显变化。右下肢DVT观察：肿胀无加重、皮温正常、无发红。被动ROM执行。', meds: '降压药（方案待心内科确认），每日一次已服用。依从性100%。儿子周明辉负责用药提醒。无漏服。', response: '护士刘敏常规访视完成。生命体征稳定。翻身+被动ROM+血栓观察均完成。血压146/88较上次略降。儿子周明辉照护操作培训达标。', mental: '意识清醒×3。GCS 15。对答切题。情绪稳定。儿子（主要照护者）正确演示了翻身护理、被动关节活动度训练和血压测量。对血栓预防和紧急联络流程理解良好。', io: '24h摄入：约1200mL。24h排尿：约1300mL。出入量平衡。经口进食、无鼻饲。', diet: '常规饮食依从良好。早餐：粥+蒸蛋。午餐：软米饭+鱼肉+蔬菜。晚餐：面条+豆腐。食欲一般、食物偏好软食。儿子协助进食。', incidents: '无跌倒、无压疮新发。无血栓进展症状（无呼吸困难、胸痛）。无用药错误。按长护险计划完成所有照护项目。' },
     },
-    3: {
-      ttsSrc: '/care-log-tts-3.mp3',
-      phrases: ['Patient Lam Ka Chun, 45-year-old male, community-acquired pneumonia. ', 'Vitals: BP 118/74, HR 72, SpO₂ 97%, Temp 36.8°C. ', 'Breath sounds: crackles RLL improving. Cough productive — sputum decreasing. ', 'Oral Levofloxacin Day 3 tolerated without GI upset. ', 'Patient reports feeling much better than admission. ', 'Mental: alert and oriented. Mood positive. ', 'Hydration and appetite improving. ', 'No acute events. Continue current plan. End of report.'],
-      fields: { condition: 'CAP Day 3 — afebrile x48h. SpO₂ 97% RA. RR 18. Crackles RLL improving. Cough improved.', meds: 'Levofloxacin 750mg PO daily — Day 3 of 7. Compliance confirmed. No adverse effects.', response: 'RN home visit completed. Vitals stable. Patient ambulating independently. Educated on completing full antibiotic course.', mental: 'Alert ×3. Mood improved. Good understanding of when to escalate.', io: 'Oral intake ~1.4L. Output normal. No dehydration signs.', diet: 'Regular diet tolerating well. Encouraged protein intake for recovery.', incidents: 'No desaturation. No acute events. Continue q2d RN visits per plan.' },
-    },
-    4: {
-      ttsSrc: null,
-      phrases: ['Patient Lau Suk Yee, 81-year-old female, complicated UTI. ', 'Vitals: BP 138/84, HR 88, SpO₂ 96%, Temp 36.7°C. ', 'AMTS 9/10 — improved from admission. Urinary symptoms minimal. ', 'Oral Ciprofloxacin Day 3 — tolerated. ', 'Family monitoring for confusion. Hydration encouraged. ', 'No acute events. End of report.'],
-      fields: { condition: 'UTI Day 3 — afebrile. Dysuria resolved. No suprapubic tenderness. AMTS 9/10.', meds: 'Ciprofloxacin 500mg BID — Day 3 of 7. All doses confirmed.', response: 'Routine RN visit. Vitals stable. Mental status improved. Continue oral antibiotics.', mental: 'AMTS 9/10. Alert. Family monitoring for confusion per protocol.', io: 'Intake ~1.2L. Output adequate.', diet: 'Regular diet. Fluid targets explained.', incidents: 'No falls. No recurrence of confusion.' },
-    },
-    5: {
-      ttsSrc: '/care-log-tts-5.mp3',
-      phrases: ['Patient Ho Tai Wai, 72-year-old male, cellulitis left lower limb. ', 'Vitals: BP 136/82, HR 78, SpO₂ 97%, Temp 36.6°C. ', 'Erythema 18cm — down from 22cm. Pain 2/10. ', 'Oral Clindamycin Day 3. Leg elevated. ', 'Wife assisting with dressing changes. ', 'No acute events. End of report.'],
-      fields: { condition: 'Cellulitis LLL — erythema improving. Pain 2/10. No streaking. Wound clean and dry.', meds: 'Clindamycin 300mg QID PO — Day 3 of 9. Adherence confirmed.', response: 'Wound care and vitals completed. Continue elevation and antibiotics.', mental: 'Alert ×3. Cooperative with care. Wife engaged.', io: 'Intake adequate. Output normal.', diet: 'High-protein diet for healing.', incidents: 'No spread. No systemic signs of infection.' },
-    },
+    // 患者3-5：预留，暂无长护险数据
+    /* 3-5 removed — HK patients */
     6: {
       ttsSrc: null,
-      phrases: ['Patient Ng Siu Wan, 68-year-old female, DVT left leg on Warfarin. ', 'Vitals: BP 132/80, HR 74, SpO₂ 97%, Temp 36.5°C. ', 'INR 2.1 — therapeutic. Calf 38cm. Pain 1/10. ', 'Compression stockings worn 18 hours yesterday. ', 'No bleeding signs. ', 'No acute events. End of report.'],
-      fields: { condition: 'DVT — calf 38cm (↓). Pain 1/10. No PE symptoms. INR therapeutic at 2.1.', meds: 'Warfarin 5mg daily — INR 2.1. No missed doses.', response: 'POCT INR 2.1. Continue Warfarin. Reinforced compression stocking use and bleeding precautions.', mental: 'Alert ×3. Good anticoagulation education recall.', io: 'Intake/output normal.', diet: 'Consistent diet regarding vitamin K explained.', incidents: 'No bleeding. No falls.' },
+      phrases: ['待分配患者。暂无数据。', '暂无记录。'],
+      fields: { condition: '—', meds: '—', response: '—', mental: '—', io: '—', diet: '—', incidents: '—' },
     },
     7: (() => {
       const bundle = buildPatient1EliteVoiceBundle(alertActive);
