@@ -1123,22 +1123,6 @@ const ElitesPatientsTab: FC = () => {
       </div>
     )}
 
-    {/* AI评估 */}
-    {patientAI[p.id] && (
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-[#0B3550] to-[#00263F] px-4 py-3 flex items-center gap-2">
-          <Brain className="w-4 h-4 text-white" /><span className="text-xs font-bold text-white">AI评估</span>
-        </div>
-        <div className="p-4 space-y-2">
-          <p className="text-[10px] text-slate-600 leading-relaxed">{patientAI[p.id].summary}</p>
-          <div className="space-y-0.5">
-            {patientAI[p.id].recommendations.map((rec, j) => (
-              <div key={j} className="flex items-start gap-1.5"><span className="text-[8px] text-[#006F80] font-bold flex-shrink-0 mt-0.5">•</span><span className="text-[8px] text-slate-500 leading-relaxed">{rec}</span></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )}
     </div>
   </div>
   );
