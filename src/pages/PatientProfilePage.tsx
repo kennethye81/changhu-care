@@ -98,14 +98,211 @@ const ST: FC<{ title: string; icon: FC<{ className?: string }> }> = ({ title, ic
 );
 
 const AssessmentSection: FC<{ patient: PatientFull; family: FamilyContact[] }> = ({ patient }) => {
+  const sectionTitle = 'text-sm font-semibold text-warm-900 font-display';
+  const labelStyle = 'text-[10px] text-slate-400 font-medium';
+  const assessDate = patient.nursingRecords?.[(patient.nursingRecords?.length ?? 1) - 1]?.date || '2026-06-16';
+  const caseManager = patient.carePlan?.assignedCaseManager?.split(' (')[0] || '待分配';
+
   return (
-    <div>
+    <div className="space-y-5">
       <ST title="评估情况" icon={ClipboardList} />
-      <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
-        <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-        <p className="text-sm text-slate-500">评估情况模块即将上线</p>
-        <p className="text-xs text-slate-400 mt-1">Barthel指数、Braden评分、跌倒风险评估等综合评估内容</p>
+
+      {/* Patient Info + Assessment Meta */}
+      <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <h3 className={`${sectionTitle} mb-3`}>综合初评信息</h3>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div><span className={labelStyle}>评估日期</span><p className="text-slate-700 font-medium">{assessDate}</p></div>
+          <div><span className={labelStyle}>个案经理</span><p className="text-slate-700 font-medium">{caseManager}</p></div>
+          <div><span className={labelStyle}>评估地点</span><p className="text-slate-700 font-medium">江苏省常州市金坛区指前镇解放村接王家村3号</p></div>
+          <div><span className={labelStyle}>家属在场</span><p className="text-slate-700 font-medium">王小凤（配偶）</p></div>
+        </div>
       </div>
+
+      {/* Clinical Background */}
+      <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <h3 className={`${sectionTitle} mb-2`}>临床病史</h3>
+        <p className="text-sm text-slate-700 leading-relaxed">{patient.clinicalSummary || '无'}</p>
+      </div>
+
+      {/* Assessment Scales: Barthel + Braden + Fall Risk */}
+      <div className="bg-white rounded-xl border border-slate-200 p-5">
+        <h3 className={`${sectionTitle} mb-3`}>评估量表</h3>
+        <div className="grid grid-cols-3 gap-4">
+          {patient.barthel && (
+            <div className="bg-teal-50 rounded-xl p-4 border border-teal-200">
+              <p className="text-xs font-bold text-teal-700 mb-1">Barthel ADL</p>
+              <p className="text-2xl font-extrabold text-teal-600">{patient.barthel.score}
+                <span className="text-xs text-teal-400">/{patient.barthel.items.reduce((s,i) => s + i.maxScore, 0)}</span>
+              </p>
+              <p className="text-[10px] text-teal-500 mt-1">重度依赖</p>
+              {/* Barthel item breakdown */}
+              <div className="mt-3 space-y-1">
+                {patient.barthel.items.map((item, i) => (
+                  <div key={i} className="flex justify-between text-[10px]">
+                    <span className="text-slate-500">{item.name}</span>
+                    <span className="font-semibold text-teal-700">{item.score}/{item.maxScore}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {patient.braden && (
+            <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+              <p className="text-xs font-bold text-amber-700 mb-1">Braden 压疮风险</p>
+              <p className="text-2xl font-extrabold text-amber-600">{patient.braden.score}</p>
+              <p className="text-[10px] text-amber-500 mt-1">{patient.braden.score <= 16 ? '有压疮风险' : '低风险'}</p>
+              {/* Braden dimension breakdown */}
+              <div className="mt-3 space-y-1">
+                {patient.braden.dimensions.map((dim, i) => (
+                  <div key={i} className="flex justify-between text-[10px]">
+                    <span className="text-slate-500">{dim.name}</span>
+                    <span className="font-semibold text-amber-700">{dim.score}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {patient.fallRisk && (
+            <div className={`rounded-xl p-4 border ${patient.fallRisk.score > 35 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
+              <p className={`text-xs font-bold ${patient.fallRisk.score > 35 ? 'text-red-700' : 'text-green-700'} mb-1`}>跌倒风险</p>
+              <p className={`text-2xl font-extrabold ${patient.fallRisk.score > 35 ? 'text-red-600' : 'text-green-600'}`}>{patient.fallRisk.score}</p>
+              <p className={`text-[10px] ${patient.fallRisk.score > 35 ? 'text-red-500' : 'text-green-500'} mt-1`}>
+                {patient.fallRisk.score > 35 ? '极高危 ⚠️' : '正常'}
+              </p>
+              {patient.fallRisk.factors && (
+                <div className="mt-3 space-y-1">
+                  {patient.fallRisk.factors.map((f, i) => (
+                    <div key={i} className="flex justify-between text-[10px]">
+                      <span className="text-slate-500">{f.name}</span>
+                      <span className="font-semibold text-slate-700">{f.score}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Cognitive + Home Safety */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Cognitive */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className={`${sectionTitle} mb-2`}>认知能力</h3>
+          <div className="text-sm text-slate-700 space-y-2">
+            <div className="flex justify-between">
+              <span className="text-slate-500">意识状态</span>
+              <span className="font-semibold">清醒，定向力完整</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">沟通能力</span>
+              <span className="font-semibold">正常，可自主表达</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500">记忆力</span>
+              <span className="font-semibold">轻度减退（符合年龄）</span>
+            </div>
+            <div className="mt-2 pt-2 border-t border-slate-100">
+              <span className="text-[10px] text-slate-400">注：认知评估基于护理记录和家属反馈，非标准化MMSE。</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Home Safety */}
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className={`${sectionTitle} mb-2`}>居家安全</h3>
+          {(patient as any).homeSafety ? (
+            <div className="text-sm text-slate-700 space-y-2">
+              <div className="flex justify-between">
+                <span className="text-slate-500">总体风险</span>
+                <span className="font-semibold text-amber-600">{(patient as any).homeSafety.overallRisk}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">地面类型</span>
+                <span className="font-semibold">{(patient as any).homeSafety.floorType}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">照明</span>
+                <span className="font-semibold">{(patient as any).homeSafety.lighting}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">卫生间</span>
+                <span className="font-semibold">{(patient as any).homeSafety.bathroom}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">扶手/抓杆</span>
+                <span className="font-semibold">{(patient as any).homeSafety.grabBars}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">紧急呼叫</span>
+                <span className="font-semibold">{(patient as any).homeSafety.emergencyCall}</span>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-slate-400">暂无居家安全评估数据</p>
+          )}
+        </div>
+      </div>
+
+      {/* Key Indicators Table */}
+      {patient.careType === '长护险' && patient.keyIndicators && (
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className={`${sectionTitle} mb-3`}>关键指标监测</h3>
+          <div className="overflow-hidden rounded-lg border border-slate-200">
+            <table className="w-full text-xs">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">指标</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">基线</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">阈值</th>
+                  <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">触发行动</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {patient.keyIndicators.map((ki, i) => (
+                  <tr key={i} className="hover:bg-slate-50">
+                    <td className="px-3 py-2 font-semibold text-slate-700">{ki.name}</td>
+                    <td className="px-3 py-2 text-slate-500">{ki.baseline}</td>
+                    <td className="px-3 py-2"><span className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">{ki.threshold}</span></td>
+                    <td className="px-3 py-2 text-slate-500 text-[10px]">{ki.action}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Outcome Targets */}
+      {patient.careType === '长护险' && (patient as any).outcomeTargets && (
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className={`${sectionTitle} mb-3`}>转归目标</h3>
+          <div className="overflow-hidden rounded-lg border border-slate-200">
+            <table className="w-full text-xs">
+              <thead className="bg-emerald-50">
+                <tr>
+                  <th className="text-left px-3 py-2 text-[10px] font-semibold text-emerald-700">指标</th>
+                  <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">基线</th>
+                  <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">30天</th>
+                  <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">90天</th>
+                  <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">180天</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(patient as any).outcomeTargets.map((ot: any, i: number) => (
+                  <tr key={i} className="hover:bg-slate-50">
+                    <td className="px-3 py-2 font-semibold text-slate-700">{ot.indicator}</td>
+                    <td className="px-2 py-2 text-center text-slate-500">{ot.baseline}</td>
+                    <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day30}</span></td>
+                    <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day90}</span></td>
+                    <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day180}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -336,7 +533,6 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
     [todaySchedule],
   );
   const pendingCount = todaySchedule.filter(a => a.status === 'pending').length;
-  const [assessmentModal, setAssessmentModal] = useState(false);
   const [carePlanModal, setCarePlanModal] = useState(false);
   const [medicationModal, setMedicationModal] = useState(false);
   const startDate = plan?.startDate || '2026-06-16';
@@ -384,23 +580,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
 
       <div className="flex-1 space-y-4 overflow-y-auto min-h-0 pr-1">
 
-      {/* TOP ROW
-
-      {/* ──────── Comprehensive Initial Assessment ──────── */}
-      <div className="glass-card rounded-lg border border-slate-200 p-5">
-        <h3 className={`${sectionTitle} mb-3`}>
-          <ClipboardList className="w-4 h-4 text-teal-600 flex-shrink-0" /> Comprehensive Initial Assessment
-          <button onClick={() => setAssessmentModal(true)} className={`ml-auto ${sectionLink}`}>View full assessment report →</button>
-        </h3>
-        <div className="grid grid-cols-2 gap-3 text-sm font-body">
-          <div><span className={modalLabel}>评估日期</span><p className="text-slate-700 font-medium mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
-          <div><span className={modalLabel}>个案经理</span><p className="text-slate-700 font-medium mt-0.5">{patient.carePlan?.assignedCaseManager?.split(' (')[0] || 'Peter Ho'}</p></div>
-          <div><span className={modalLabel}>评估地点</span><p className="text-slate-700 font-medium mt-0.5">{patient.id<=5?'Patient Home — Kwun Tong District':'Patient Home — New Territories'}</p></div>
-          <div><span className={modalLabel}>家属在场</span><p className="text-slate-700 font-medium mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse'}</p></div>
-        </div>
-      </div>
-
-{/* TOP ROW: Care Plan Summary + Medication Overview side-by-side */}
+      {/* TOP ROW: Care Plan Summary + Medication Overview side-by-side */}
       <div className="grid grid-cols-2 gap-4">
 
       {/* ──────── Care Plan Summary ──────── */}
@@ -591,153 +771,6 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
       </div>
 
       {/* ─── Assessment Modal ─── */}
-      {assessmentModal && (
-        <div className={modalOverlay} onClick={() => setAssessmentModal(false)}>
-          <div className={`${modalShell} w-[580px]`} onClick={e => e.stopPropagation()}>
-            <div className={modalHeader}>
-              <div className="flex items-center gap-2"><ClipboardList className="w-5 h-5 text-gold-200" /><span className={modalTitle}>综合初评报告</span></div>
-              <button onClick={() => setAssessmentModal(false)} className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"><X className="w-3.5 h-3.5 text-white" /></button>
-            </div>
-            <div className="p-6 space-y-5 font-body">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div><span className={modalLabel}>病人</span><p className="text-slate-800 font-semibold font-display mt-0.5">{patient.name}</p></div>
-                <div><span className={modalLabel}>出生日期 / 年龄</span><p className="text-slate-800 mt-0.5">{2026 - patient.age} | {patient.gender} | {patient.age} yrs</p></div>
-                <div><span className={modalLabel}>评估日期</span><p className="text-slate-800 mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
-                <div><span className={modalLabel}>个案经理</span><p className="text-slate-800 mt-0.5">{patient.carePlan?.assignedCaseManager || 'Peter Ho'}</p></div>
-                <div><span className={modalLabel}>评估地点</span><p className="text-slate-800 mt-0.5">Patient Home — Residential Address</p></div>
-                <div><span className={modalLabel}>家属在场</span><p className="text-slate-800 mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse / Family Member'}</p></div>
-              </div>
-              <div className="border-t border-slate-200" />
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">临床病史</h3><p className={modalBody}>{patient.clinicalSummary}</p></div>
-              {patient.careType === '长护险' && (
-                <>
-                  <div className="border-t border-slate-200 my-2" />
-                  <h3 className="text-xs font-semibold text-teal-600 uppercase tracking-wider mb-2">长护险评估量表</h3>
-                  <div className="grid grid-cols-3 gap-3 text-sm">
-                    {patient.barthel && (
-                      <div className="bg-teal-50 rounded-lg p-3 border border-teal-200">
-                        <p className="text-[10px] font-bold text-teal-700">Barthel ADL</p>
-                        <p className="text-xl font-extrabold text-teal-600">{patient.barthel.score}<span className="text-xs text-teal-400">/{patient.barthel.items.reduce((s,i)=>s+i.maxScore,0)}</span></p>
-                        <p className="text-[9px] text-teal-500">{patient.careLevel ?? '—'}依赖</p>
-                      </div>
-                    )}
-                    {patient.braden && (
-                      <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
-                        <p className="text-[10px] font-bold text-amber-700">Braden 压疮</p>
-                        <p className="text-xl font-extrabold text-amber-600">{patient.braden.score}</p>
-                        <p className="text-[9px] text-amber-500">{patient.braden.score <= 16 ? '有风险' : '低风险'}</p>
-                      </div>
-                    )}
-                    {patient.fallRisk && (
-                      <div className={`rounded-lg p-3 border ${patient.fallRisk.score > 35 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}`}>
-                        <p className={`text-[10px] font-bold ${patient.fallRisk.score > 35 ? 'text-red-700' : 'text-green-700'}`}>跌倒风险</p>
-                        <p className={`text-xl font-extrabold ${patient.fallRisk.score > 35 ? 'text-red-600' : 'text-green-600'}`}>{patient.fallRisk.score}</p>
-                        <p className={`text-[9px] ${patient.fallRisk.score > 35 ? 'text-red-500' : 'text-green-500'}`}>{patient.fallRisk.score > 35 ? '极高危⚠️' : '正常'}</p>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-              {patient.careType === '长护险' && patient.keyIndicators && (
-                <>
-                  <div className="border-t border-slate-200 my-2" />
-                  <h3 className="text-xs font-semibold text-purple-600 uppercase tracking-wider mb-2">关键指标监测</h3>
-                  <div className="overflow-hidden rounded-lg border border-slate-200">
-                    <table className="w-full text-xs">
-                      <thead className="bg-slate-50">
-                        <tr>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">指标</th>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">基线</th>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">阈值</th>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-slate-500">触发行动</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {patient.keyIndicators.map((ki, i) => (
-                          <tr key={i} className="hover:bg-slate-50">
-                            <td className="px-3 py-2 font-semibold text-slate-700">{ki.name}</td>
-                            <td className="px-3 py-2 text-slate-500">{ki.baseline}</td>
-                            <td className="px-3 py-2"><span className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">{ki.threshold}</span></td>
-                            <td className="px-3 py-2 text-slate-500 text-[10px]">{ki.action}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-              {patient.careType === '长护险' && patient.outcomeTargets && (
-                <>
-                  <div className="border-t border-slate-200 my-2" />
-                  <h3 className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-2">转归目标</h3>
-                  <div className="overflow-hidden rounded-lg border border-slate-200">
-                    <table className="w-full text-xs">
-                      <thead className="bg-emerald-50">
-                        <tr>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-emerald-700">指标</th>
-                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">基线</th>
-                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">30天</th>
-                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">90天</th>
-                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-emerald-700">180天</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {patient.outcomeTargets.map((ot, i) => (
-                          <tr key={i} className="hover:bg-slate-50">
-                            <td className="px-3 py-2 font-semibold text-slate-700">{ot.indicator}</td>
-                            <td className="px-2 py-2 text-center text-slate-500">{ot.baseline}</td>
-                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day30}</span></td>
-                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day90}</span></td>
-                            <td className="px-2 py-2 text-center"><span className="text-[10px] font-semibold text-emerald-600">{ot.day180}</span></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-              {patient.careType === '长护险' && patient.serviceModules && (
-                <>
-                  <div className="border-t border-slate-200 my-2" />
-                  <h3 className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">增值服务包 · {patient.serviceTier === 'standard' ? '标准' : patient.serviceTier === 'premium' ? '全面' : '基础+'}</h3>
-                  <div className="grid grid-cols-3 gap-2 mb-3 text-center">
-                    <div className="rounded-lg border border-slate-200 p-2"><div className="text-[10px] text-slate-400">基础+</div><div className="text-lg font-extrabold">¥5,000</div><div className="text-[9px] text-slate-400">/月</div></div>
-                    <div className="rounded-lg border-2 border-blue-500 bg-blue-50 p-2"><div className="text-[9px] bg-blue-500 text-white inline-block px-1.5 py-0.5 rounded mb-1">推荐</div><div className="text-[10px] text-slate-400">标准</div><div className="text-lg font-extrabold text-blue-600">¥7,000</div><div className="text-[9px] text-slate-400">/月</div></div>
-                    <div className="rounded-lg border border-slate-200 p-2"><div className="text-[10px] text-slate-400">全面</div><div className="text-lg font-extrabold">¥9,500</div><div className="text-[9px] text-slate-400">/月</div></div>
-                  </div>
-                  <div className="overflow-hidden rounded-lg border border-slate-200">
-                    <table className="w-full text-xs">
-                      <thead className="bg-blue-50">
-                        <tr>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-blue-700">模块</th>
-                          <th className="text-left px-3 py-2 text-[10px] font-semibold text-blue-700">内容</th>
-                          <th className="text-center px-2 py-2 text-[10px] font-semibold text-blue-700">节奏</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {patient.serviceModules.map((m, i) => (
-                          <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                            <td className="px-3 py-2 font-semibold text-blue-700">{m.id} {m.name}</td>
-                            <td className="px-3 py-2 text-slate-600">{m.content}</td>
-                            <td className="px-2 py-2 text-center text-[10px] text-slate-500">{m.frequency}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">当前用药</h3><div className="space-y-1.5">{patient.medications.filter(m=>m.status==='Active').map((m,i)=>(<div key={i} className="text-sm text-slate-700 flex items-start gap-1.5"><span className="text-slate-300 mt-0.5 flex-shrink-0">•</span><span><span className="font-medium">{m.drug} {m.dose}</span><span className="text-slate-400 mx-1">—</span>{m.frequency}<span className="text-slate-400 ml-1">({m.purpose})</span></span></div>))}</div></div>
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">体格检查</h3><div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-slate-700"><div>• General: Alert, well-groomed</div><div>• Skin: Warm, dry, intact</div><div>• CV: Regular rhythm</div><div>• Resp: Clear to auscultation</div><div>• Abdomen: Soft, non-tender</div><div>• Neuro: Cranial nerves intact</div><div>• Mobility: Ambulates with/without aid</div><div>• Pain: 0-3/10 at rest</div></div></div>
-              <div className="grid grid-cols-2 gap-4">
-                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">照护计划目标</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.goals.map((g,i)=>(<div key={i}>• {g}</div>))}</div></div>
-                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">注意事项</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.precautions.map((p,i)=>(<div key={i}>• {p}</div>))}</div></div>
-              </div>
-            </div>
-            <div className="border-t border-[#99E7FF] px-5 py-3 flex items-center gap-2 text-xs text-slate-500 font-body"><CheckCircle2 className="w-3 h-3 text-emerald-600" />Signed: Case Manager · Assessment reviewed by Nursing Director</div>
-          </div>
-        </div>
-      )}
 
       {/* ─── Care Plan Modal ─── */}
       {carePlanModal && (
