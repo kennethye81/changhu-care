@@ -17,9 +17,9 @@ const CATALOG_MATCHERS: { catalogId: string; test: (type: string, model: string)
 ];
 
 const FALLBACK_ASSIGNMENTS: Record<string, string> = {
-  'DEV-006': '冯存富',
+  'DEV-006': '沈国栋',
   'DEV-007': 'On-demand',
-  'DEV-008': '冯存富',
+  'DEV-008': '沈国栋',
 };
 
 function formatAssignedNames(names: string[], patientCount: number): string {

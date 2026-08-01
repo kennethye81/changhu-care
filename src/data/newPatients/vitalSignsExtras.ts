@@ -122,7 +122,7 @@ export const NEW_PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThreshol
     },
     guidelines: 'NEWS2 (NICE 2017) Scale 1 · ERAS Thoracic 2019 · NCCN NSCLC 2025',
   },
-  // 长护险 李玉富 (10001) — 脑出血术后偏瘫+DVT+HTN
+  // 长护险 周志强 (10001) — 脑出血术后偏瘫+DVT+HTN
   2: {
     thresholds: {
       hr: { green: [60, 100], amber: [100, 120] },
@@ -162,7 +162,7 @@ export const NEW_VITALS_BASELINES: Record<number, { hr: number; bpS: number; bpD
   16: { hr: 80, bpS: 128, bpD: 74, spo2: 97, temp: 36.6, rr: 16 },
   17: { hr: 82, bpS: 134, bpD: 80, spo2: 94, temp: 36.8, rr: 20 },
   18: { hr: 72, bpS: 122, bpD: 78, spo2: 97, temp: 36.7, rr: 15 },
-  // 长护险 李玉富 (10001) — 脑出血术后偏瘫+DVT+HTN
+  // 长护险 周志强 (10001) — 脑出血术后偏瘫+DVT+HTN
   2: { hr: 72, bpS: 145, bpD: 88, spo2: 97, temp: 36.5, rr: 18 },
 };
 

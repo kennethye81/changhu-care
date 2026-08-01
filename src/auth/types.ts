@@ -82,7 +82,7 @@ export const MOCK_USERS: Record<string, { password: string; user: User }> = {
   },
   'wang.xiaofeng': {
     password: '123456',
-    user: { id: 'FM001', name: '王小凤', role: 'family', avatar: 'WXF', institutionId: 'CH-001', account: 'wang.xiaofeng' },
+    user: { id: 'FM001', name: '陈玉兰', role: 'family', avatar: 'WXF', institutionId: 'CH-001', account: 'wang.xiaofeng' },
   },
   'rehab.pt': {
     password: '123456',

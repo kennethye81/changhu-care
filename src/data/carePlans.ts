@@ -66,7 +66,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[1] = {
-    patientName: '冯存富', startDate: dates[0], endDate: dates[13],
+    patientName: '沈国栋', startDate: dates[0], endDate: dates[13],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '08:30', type: 'RN Visit', detail: 'Weight 68.0kg stable. BP 118/72. HR 82 AF. SpO₂ 95%. Pedal oedema trace. I/O: net -270mL. AM meds confirmed. Wife demonstrating correct weight log technique.', author: 'Sarah Leung', role: 'RN', vitals: 'BP 118/72 | HR 82 | SpO₂ 95% | Wt 68.0kg', status: 'completed' },

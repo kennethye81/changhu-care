@@ -65,7 +65,7 @@ export function resolveThresholds(th: VitalsThresholds): ResolvedVitalsThreshold
 // ═══ Clinical Thresholds Per Patient (国际指南依据) ═══
 
 export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; guidelines: string }> = {
-  // P1: 冯存富 — HF NYHA III + CKD3 + T2DM + AF (78M, 常州)
+  // P1: 沈国栋 — HF NYHA III + CKD3 + T2DM + AF (78M, 常州)
   // ESC 2021 HF guidelines: HR target <70 in AF; BP target <130/80; SpO₂ ≥95%
   1: {
     thresholds: {
@@ -184,7 +184,7 @@ export function getVitalColor(
 // ═══ Patient admission dates (for X-axis labeling) ═══
 
 const PATIENT_START_DATES: Record<number, string> = {
-  1: '2026-06-18',  // 患者1 冯存富 — 高血压/压疮基线
+  1: '2026-06-18',  // 患者1 沈国栋 — 高血压/压疮基线
   2: '2026-06-18',  // 待录入
   3: '2026-06-19',  // 待录入
   4: '2026-06-19',  // 待录入
@@ -416,13 +416,13 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
 
   // Per-patient clinical context
   const context: Record<number, { name: string; conditions: string }> = {
-    1: { name: '冯存富', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
+    1: { name: '沈国栋', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
     2: { name: '待录入', conditions: 'COPD GOLD 3, HTN, Dyslipidaemia' },
     3: { name: '待录入', conditions: 'CAP (resolving), Penicillin anaphylaxis' },
     4: { name: '待录入', conditions: 'UTI, CKD3, T2DM, HTN, Delirium' },
     5: { name: '待录入', conditions: 'Cellulitis Eron III, T2DM, HTN' },
     6: { name: '待录入', conditions: 'DVT LL, HTN, Dyslipidaemia, Warfarin' },
-    7: { name: '患者1 冯存富', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
+    7: { name: '患者1 沈国栋', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
     ...NEW_VITALS_CONTEXT,
   };
   const ctx = context[patientId] || { name: 'Unknown', conditions: '' };

@@ -3,7 +3,7 @@
 import { type PatientSummary } from '../store/patientStore';
 
 export const HK_GEO: Record<string, [number, number]> = {
-  '江苏省常州市金坛区指前镇解放村接王家村3号': [31.678, 119.535], // 常州金坛
+  '江苏省苏州市吴中区木渎镇金山南路168号': [31.678, 119.535], // 常州金坛
 };
 
 export function getPatientCoords(p: PatientSummary): [number, number] {

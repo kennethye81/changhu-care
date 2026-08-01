@@ -40,7 +40,7 @@ export const FAMILY_CONTACT_BY_PATIENT: Record<number, FamilyContact> = {
   4:  parseFamilyEntry('Lau Wai Hung (Son)', 52, 'M'),
   5:  parseFamilyEntry('Mrs. Ho (Chan Siu Ling)', 70, 'F'),
   6:  parseFamilyEntry('Ng Ka Yan (Daughter)', 40, 'F'),
-  7:  parseFamilyEntry('王小凤', 78, 'F'),
+  7:  parseFamilyEntry('陈玉兰', 78, 'F'),
   8:  parseFamilyEntry('Chow Mei Ling (Daughter)', 45, 'F'),
   9:  parseFamilyEntry('Lam Ka Ho (Son)', 42, 'M'),
   10: parseFamilyEntry('Cheung Lai King (Wife)', 74, 'F'),

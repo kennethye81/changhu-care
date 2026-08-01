@@ -30,7 +30,7 @@ export interface FamilyVitalCard {
   insight?: string;
 }
 
-// COPD clinical baseline for trend comparison — uses 患者1 (冯存富, 高血压+压疮) as reference.
+// COPD clinical baseline for trend comparison — uses 患者1 (沈国栋, 高血压+压疮) as reference.
 // TODO: pass patient-specific DEFAULT_VITALS[patientId] instead of hardcoding patient 1.
 const COPD_BASELINE = DEFAULT_VITALS[1];
 
@@ -269,6 +269,6 @@ export function buildFamilySleepSnapshot(vitals: Vitals, alertActive: boolean): 
 
 export function buildFamilyMentalInsight(alertActive: boolean): string {
   return alertActive
-    ? 'SpO₂下降期间AMTS从10→7 — 疑为低氧性谵妄。吸氧2L/min后恢复至9/10。每小时监测一次。配偶王小凤在床旁 — 已培训意识模糊评估。'
+    ? 'SpO₂下降期间AMTS从10→7 — 疑为低氧性谵妄。吸氧2L/min后恢复至9/10。每小时监测一次。配偶陈玉兰在床旁 — 已培训意识模糊评估。'
     : 'AMTS 10/10。清醒，定向力×3。情绪平稳。配偶在场，已培训COPD行动计划。 No cognitive decline. Consistent with baseline.';
 }

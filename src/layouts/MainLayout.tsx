@@ -90,7 +90,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const currentPath = location.pathname;
 
   const quickSearchPatients = [
-    '冯存富',
+    '沈国栋',
     'Chan Tai Ming',
     'Chow Kwok Fai', 'Lam Siu Wan', 'Cheung Siu Ming',
     'Wong Lai Chun', 'Fok Wai Keung', 'Lau Wai Yin',

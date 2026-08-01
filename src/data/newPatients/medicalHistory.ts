@@ -1,4 +1,4 @@
-// === 长护险 病史记录 — 患者1(冯存富) + 患者10001(李玉富) ===
+// === 长护险 病史记录 — 患者1(沈国栋) + 患者10001(周志强) ===
 import type { HistoryEntry as MedicalEntry } from '../medicalHistory';
 
 export const NEW_MEDICAL_HISTORY: Record<number, MedicalEntry[]> = {
@@ -61,7 +61,7 @@ export const NEW_MEDICAL_HISTORY: Record<number, MedicalEntry[]> = {
       facility: '路桥区长期护理保险失能等级评估委员会', department: '失能评估',
       physician: '黄碧 评估员',
       chiefComplaint: '长护险初次评估 — 脑出血术后2年余，右侧偏瘫，全部生活需他人照护',
-      note: '评估结论：重度失能。Barthel 20/100（重度依赖），Braden 14（压疮高危，目前无压疮），跌倒风险7分（高危）。右下肢肌层静脉血栓需持续观察。意识清醒、对答切题。与儿子李小鹏同住，子女为主要照护者。建议：减压气垫床、q2h翻身、被动ROM康复、二便管理、血压监测。',
+      note: '评估结论：重度失能。Barthel 20/100（重度依赖），Braden 14（压疮高危，目前无压疮），跌倒风险7分（高危）。右下肢肌层静脉血栓需持续观察。意识清醒、对答切题。与儿子周明辉同住，子女为主要照护者。建议：减压气垫床、q2h翻身、被动ROM康复、二便管理、血压监测。',
       followUp: '月度护理计划执行',
     },
   ],

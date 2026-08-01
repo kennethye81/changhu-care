@@ -15,7 +15,7 @@ function senderDisplayName(senderName: string): string {
     .replace(' (RN)', '')
     .replace(' (Respiratory)', '')
     .replace(' (Case Manager)', '')
-    .replace('王小凤', '王小凤');
+    .replace('陈玉兰', '陈玉兰');
 }
 
 function avatarMeta(from: ChatMessage['from'], senderName: string): Pick<FamilyChatMessage, 'avatar' | 'color' | 'img'> {

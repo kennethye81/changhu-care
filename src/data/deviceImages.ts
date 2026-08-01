@@ -16,7 +16,7 @@ export const DEVICE_IMAGE_BY_MODEL: Record<string, string> = {
   'GaitKeeper Pro': '/devices/gaitkeeper-pro.webp',
   'ResMed AirSense 11 AutoSet': '/devices/resmed-airsense-11.webp',
   'Abbott i-STAT CG4+': '/devices/poct-terminal.png',
-  // 冯存富 IoT 设备 — Fal.ai 生成
+  // 沈国栋 IoT 设备 — Fal.ai 生成
   '智能守护 S2': '/devices/fall-bracelet.png',
   '欧姆龙 HEM-7361T': '/devices/bp-monitor.png',
   '迈德康 防压疮型': '/devices/air-mattress.png',

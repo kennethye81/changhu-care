@@ -134,7 +134,7 @@ const AssessmentSection: FC<{ patient: PatientFull; family: FamilyContact[] }> =
           </div>
           <div className="p-2.5 bg-white rounded-lg border border-slate-100">
             <span className={labelStyle}>评估地点</span>
-            <p className="text-xs text-slate-700 font-medium">江苏省常州市金坛区指前镇解放村接王家村3号</p>
+            <p className="text-xs text-slate-700 font-medium">江苏省苏州市吴中区木渎镇金山南路168号</p>
           </div>
           <div className="p-2.5 bg-white rounded-lg border border-slate-100">
             <span className={labelStyle}>评估人员</span>
@@ -142,7 +142,7 @@ const AssessmentSection: FC<{ patient: PatientFull; family: FamilyContact[] }> =
           </div>
           <div className="p-2.5 bg-white rounded-lg border border-slate-100">
             <span className={labelStyle}>家属在场</span>
-            <p className="text-xs text-slate-700 font-medium">王小凤（配偶）</p>
+            <p className="text-xs text-slate-700 font-medium">陈玉兰（配偶）</p>
           </div>
         </div>
       </div>
@@ -910,10 +910,10 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
 const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan }) => {
   const alertActive = usePatientStore(s => s.alertActive);
 
-  // 冯存富血压预警场景（替代HK RED ALERT）
+  // 沈国栋血压预警场景（替代HK RED ALERT）
   const alertLog = patient.id === 1 && alertActive ? [{
     date: '2026-08-14', time: '09:30', type: '⚠ 血压预警 — 护理访视',
-    detail: '血压168/95 mmHg（基线160/82），连续2次访视超标。HR 82，SpO₂ 96%，无头晕心悸。个案经理林晓东已通知社区医生，建议硝苯地平剂量优化或加用血管紧张素受体阻滞剂。配偶王小凤在场，情绪平稳。下次访视（8/16）复查血压。',
+    detail: '血压168/95 mmHg（基线160/82），连续2次访视超标。HR 82，SpO₂ 96%，无头晕心悸。个案经理林晓东已通知社区医生，建议硝苯地平剂量优化或加用血管紧张素受体阻滞剂。配偶陈玉兰在场，情绪平稳。下次访视（8/16）复查血压。',
     author: '姜珊', role: '护士', vitals: 'BP 168/95 | HR 82 | SpO₂ 96% | Temp 36.8', status: '预警',
   }] : [];
 

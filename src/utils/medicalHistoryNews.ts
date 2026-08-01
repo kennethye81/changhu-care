@@ -91,7 +91,7 @@ export function formatHubPatient1InboxPreview(): { subject: string; preview: str
   const v = PATIENT1_ESCALATION_VITALS;
   const news = calculateNews(v, 'COPD');
   return {
-    subject: `${formatNewsHeadline(news)} — 冯存富 SpO₂ 下降`,
+    subject: `${formatNewsHeadline(news)} — 沈国栋 SpO₂ 下降`,
     preview: `${formatNewsHeadline(news)} — SpO₂ ${v.spo2}%, 体温 ${v.temp}°C, HR ${v.hr}, RR ${v.rr}。${news.escalation} 姜珊30分钟内远程复评。`,
   };
 }
@@ -214,7 +214,7 @@ export function buildPatient1HubBannerContent(vitals: Vitals, diagnosis = 'COPD'
   const news = calculateNews(vitals, diagnosis);
   return {
     title: `${formatNewsHeadline(news)} 升级`,
-    subtitle: `冯存富 · Score ${news.score}`,
+    subtitle: `沈国栋 · Score ${news.score}`,
     headline: `${formatNewsHeadline(news)} — ${news.escalation}`,
     detail: `量表${vitals.spo2Scale} SpO₂ ${vitals.spo2}%${vitals.onSupplementalO2 ? ' + 吸氧' : ''} · RR ${vitals.rr} · 体温 ${vitals.temp}°C · HR ${vitals.hr} · ${news.monitoringLabel}`,
     vitals: [
@@ -240,13 +240,13 @@ export function buildPatient1EliteVoiceBundle(alertActive: boolean): EliteVoiceB
   if (alertActive) {
     return {
       phrases: [
-        '患者冯存富，82岁男性，COPD GOLD 2级合并CAP。',
+        '患者沈国栋，82岁男性，COPD GOLD 2级合并CAP。',
         `${headline}. ${vitalsPhrase}`,
         'AMTS 7/10 — 间歇性意识模糊。痰绿色，量增加。',
         'POCT CRP 68，PCT 0.8 — 确认细菌感染。',
         '已启动制氧机2升/分吸氧。',
         '已开始静注头孢曲松2g。血培养已送检。',
-        '王小凤在床旁，情绪平稳并持续监测。',
+        '陈玉兰在床旁，情绪平稳并持续监测。',
         `紧急升级，执行人：姜珊（护士经理）。${news.monitoringLabel}。报告结束。`
       ],
       fields: {
@@ -263,11 +263,11 @@ export function buildPatient1EliteVoiceBundle(alertActive: boolean): EliteVoiceB
 
   return {
     phrases: [
-      '患者冯存富，82岁男性，COPD GOLD 2级合并CAP — 居家照护第1天。',
+      '患者沈国栋，82岁男性，COPD GOLD 2级合并CAP — 居家照护第1天。',
       `${headline}. Vitals: ${vitalsPhrase}`,
       'AMTS 10/10。初始呼吸评估已完成。',
       '基线用药已确认：噻托溴铵 + 氨氯地平。制氧机待命测试通过。',
-      '王小凤已完成血氧监测和升级预案培训。',
+      '陈玉兰已完成血氧监测和升级预案培训。',
       '扶手安装已确认。',
       `居家照护第1天接收完成。${news.monitoringLabel}。`,
       '无急性事件。继续当前计划。报告结束。',
