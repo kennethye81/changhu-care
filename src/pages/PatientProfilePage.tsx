@@ -23,24 +23,23 @@ import {
   Phone, Mail, Clock, Pill, Stethoscope, FlaskConical, Microscope, X, CheckCircle2,
 } from 'lucide-react';
 
-type ProfileSection = 'smart_summary' | 'overview' | 'vitals' | 'care_team' | 'medical' | 'services' | 'logs' | 'iot' | 'billing';
+type ProfileSection = 'smart_summary' | 'assessment' | 'medical' | 'vitals' | 'care_info' | 'logs' | 'iot' | 'billing';
 
 const SECTIONS: { key: ProfileSection; label: string; icon: FC<{ className?: string }> }[] = [
   { key: 'smart_summary', label: '智能摘要', icon: Brain },
-  { key: 'overview', label: '概览', icon: User },
-  { key: 'vitals', label: '体征记录', icon: Heart },
-  { key: 'care_team', label: '照护团队', icon: Users },
+  { key: 'assessment', label: '评估情况', icon: ClipboardList },
   { key: 'medical', label: '病史档案', icon: FileText },
-  { key: 'services', label: '照护信息', icon: CalendarDays },
-  { key: 'logs', label: '记录', icon: ClipboardList },
-  { key: 'iot', label: '设备', icon: Smartphone },
-  { key: 'billing', label: '账单', icon: PhoneCall },
+  { key: 'vitals', label: '体征记录', icon: Heart },
+  { key: 'care_info', label: '照护信息', icon: Users },
+  { key: 'logs', label: '照护记录', icon: CalendarDays },
+  { key: 'iot', label: '设备串联', icon: Smartphone },
+  { key: 'billing', label: '客户账单', icon: PhoneCall },
 ];
 
 const PatientProfilePage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [section, setSection] = useState<ProfileSection>('overview');
+  const [section, setSection] = useState<ProfileSection>('smart_summary');
   
   const patient = PATIENTS_FULL.find(p => p.id === Number(id));
   const storePatient = usePatientStore(s => s.patients.find(p => p.id === Number(id)));
@@ -81,11 +80,10 @@ const PatientProfilePage: FC = () => {
       </aside>
       <main className="flex-1 overflow-y-auto bg-warm-50 p-6">
         {section==='smart_summary'&&<SmartSummary patient={patient}/>}
-        {section==='overview'&&<Overview patient={patient} family={family} isCrit={isCrit} displayPatient={displayPatient}/>}
-        {section==='vitals'&&<VitalSignRecord patient={patient}/>}
-        {section==='care_team'&&<CareTeamSection patient={patient} teamMembers={teamMembers}/>}
+        {section==='assessment'&&<AssessmentSection patient={patient} family={family}/>}
         {section==='medical'&&<MedicalSection patient={patient}/>}
-        {section==='services'&&<ServicesSection patient={patient} todaySchedule={todaySchedule} today={today}/>}
+        {section==='vitals'&&<VitalSignRecord patient={patient}/>}
+        {section==='care_info'&&<CareInfoSection patient={patient} teamMembers={teamMembers} todaySchedule={todaySchedule} today={today}/>}
         {section==='logs'&&<LogsSection patient={displayPatient} plan={plan}/>}
         {section==='iot'&&<IoTDevicesSection patient={displayPatient}/>}
         {section==='billing'&&<BillingSection patientId={patient.id}/>}
@@ -98,6 +96,19 @@ const PatientProfilePage: FC = () => {
 const ST: FC<{ title: string; icon: FC<{ className?: string }> }> = ({ title, icon: Icon }) => (
   <div className="flex items-center gap-2 mb-4"><Icon className="w-5 h-5 text-teal-600"/><h2 className="text-base font-semibold text-slate-800 font-display">{title}</h2></div>
 );
+
+const AssessmentSection: FC<{ patient: PatientFull; family: FamilyContact[] }> = ({ patient }) => {
+  return (
+    <div>
+      <ST title="评估情况" icon={ClipboardList} />
+      <div className="bg-white rounded-xl border border-slate-200 p-8 text-center">
+        <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+        <p className="text-sm text-slate-500">评估情况模块即将上线</p>
+        <p className="text-xs text-slate-400 mt-1">Barthel指数、Braden评分、跌倒风险评估等综合评估内容</p>
+      </div>
+    </div>
+  );
+};
 
 const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: boolean; displayPatient: PatientFull }> = ({ patient, family, isCrit, displayPatient }) => {
   const storeVitals = usePatientStore(s => s.vitals);
@@ -140,6 +151,13 @@ const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: bool
     </div>
     <div className={`rounded-xl p-4 ${alertTone === 'crit' ? 'bg-red-50 border border-red-200' : alertTone === 'warn' ? 'bg-amber-50 border border-amber-200' : 'bg-emerald-50 border border-emerald-200'}`}><div className="flex items-start gap-2"><AlertTriangle className={`w-4 h-4 mt-0.5 ${alertTone === 'crit' ? 'text-red-500' : alertTone === 'warn' ? 'text-amber-500' : 'text-emerald-500'}`}/><div className="text-xs"><p className="font-bold text-slate-700">AI临床提醒</p><p className="text-slate-600 mt-0.5">{clinicalAlertText}</p></div></div></div>
   </div>);}
+
+const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySchedule: any[]; today: string }> = ({ patient, teamMembers, todaySchedule, today }) => (
+  <div className="space-y-6">
+    <CareTeamSection patient={patient} teamMembers={teamMembers} />
+    <ServicesSection patient={patient} todaySchedule={todaySchedule} today={today} />
+  </div>
+);
 
 const CareTeamSection: FC<{ patient: PatientFull; teamMembers: string[] }> = ({ teamMembers }) => (
   <div className="space-y-4"><ST title="Care Team" icon={Users}/>
