@@ -436,8 +436,8 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
                 { role: '个案经理', service: '服务协调、进度跟踪、家属沟通、长护险对接', freq: '持续', duration: '按需', color: 'border-l-teal-600' },
                 { role: '护理员', service: '助餐、助浴、助行、用药提醒、翻身、压疮护理', freq: patient.carePlan.serviceFrequency, duration: patient.carePlan.visitDuration, color: 'border-l-amber-500' },
                 { role: '护士', service: '生命体征监测、压疮评估、用药依从性检查、健康教育', freq: '每周1次', duration: '45 min', color: 'border-l-teal-500' },
-                ...(cp.assignedRehabTherapist && cp.assignedRehabTherapist !== '—' ? [{ role: '康复师', service: '被动关节活动、肌力训练、助行器训练', freq: '2次/周', duration: '45 min', color: 'border-l-purple-500' }] : []),
-                ...(cp.assignedNutritionist && cp.assignedNutritionist !== '—' ? [{ role: '营养师', service: '营养评估、膳食指导、蛋白补充方案', freq: '每月1次', duration: '30 min', color: 'border-l-emerald-500' }] : []),
+                ...(patient.carePlan.assignedRehabTherapist && patient.carePlan.assignedRehabTherapist !== '—' ? [{ role: '康复师', service: '被动关节活动、肌力训练、助行器训练', freq: '2次/周', duration: '45 min', color: 'border-l-purple-500' }] : []),
+                ...(patient.carePlan.assignedNutritionist && patient.carePlan.assignedNutritionist !== '—' ? [{ role: '营养师', service: '营养评估、膳食指导、蛋白补充方案', freq: '每月1次', duration: '30 min', color: 'border-l-emerald-500' }] : []),
               ].map((r, i) => (
                 <div key={i} className={`grid grid-cols-[72px_1fr_80px_64px] gap-2 px-5 py-2.5 text-xs items-start border-l-2 ${r.color} bg-slate-50/50 border-b border-slate-100`}>
                   <span className="font-semibold text-slate-700 text-[11px]">{r.role}</span>
@@ -595,11 +595,11 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
                 <p className="text-[10px] text-slate-400 font-medium mb-2">人员分配</p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {[
-                    { label: '个案经理', value: cp.assignedCaseManager },
-                    { label: '护士', value: cp.assignedNurse },
-                    { label: '护理员', value: cp.assignedCareWorker },
-                    { label: '康复治疗师', value: cp.assignedRehabTherapist },
-                    { label: '营养师', value: cp.assignedNutritionist },
+                    { label: '个案经理', value: patient.carePlan.assignedCaseManager },
+                    { label: '护士', value: patient.carePlan.assignedNurse },
+                    { label: '护理员', value: patient.carePlan.assignedCareWorker },
+                    { label: '康复治疗师', value: patient.carePlan.assignedRehabTherapist },
+                    { label: '营养师', value: patient.carePlan.assignedNutritionist },
                   ].map((r, i) => (
                     <div key={i} className="bg-slate-50 rounded-lg px-3 py-2">
                       <span className="text-[10px] text-slate-400">{r.label}</span>
