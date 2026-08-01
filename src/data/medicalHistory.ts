@@ -77,7 +77,7 @@ MEDICAL_HISTORY[1] = {
       notes: 'Pre-diabetic range. BP borderline. Advised weight loss, exercise, dietary changes. Follow-up in 6 months. No prior significant medical history.',
     },
   ],
-  aiSummary: '张伟文临床轨迹显示从糖尿病前期/高血压（2023年2月）→下壁STEMI行PCI（2023年8月）→晚期HFrEF（LVEF 30%）伴永久性房颤及CKD 3期的进展性心血管疾病。从糖尿病前期到STEMI仅6个月的快速进展提示潜在动脉粥样硬化进展迅速。近期ADHF住院（2026年6月）由用药依从性差和饮食不当诱发，凸显照护者支持和患者教育在HF管理中的关键作用。AI核心关注：1. NEWS低危（2分）— 因晚期HF、近期失代偿、AF、CKD和T2DM，为队列中最高心衰监护级别；2. 体重趋势向好（↓1.8kg）但严格出入量监测必不可少；3. 肾功能易损 — 利尿剂治疗期间需监测K⁺和Cr；4. GDMT持续优化中 — Entresto已达目标剂量，Bisoprolol如耐受可上调；5. 照护者支持对用药依从性、饮食控制和每日体重监测至关重要。',
+  aiSummary: '冯存富，77岁男性，高血压3级极高危10年病史，不规则服药。临床轨迹：2025年11月初诊BP 172/95伴双下肢乏力（Barthel 30分重度依赖，Braden 10分压疮高危）→ 2025年12月血压部分控制（155/88）→ 2026年3月骶尾部压疮II期入院（3cm×4cm），提示长期卧床+营养不良导致皮肤完整性受损。AI核心关注：1. 血压管理 — 氨氯地平5mg+厄贝沙坦150mg方案下BP控制不充分，需优化GDMT并加强服药依从性监督；2. 压疮防控 — Braden 16分中度风险，翻身q2h+泡沫敷料+营养支持必不可少，社区护士每周换药监督；3. 跌倒风险极高（Morse 105分）— 助行器适配+居家安全改造+防跌倒教育；4. 功能衰退 — Barthel 30分重度依赖，双侧上下肢活动异常，需持续ADL协助；5. 照护者支持 — 王小凤（配偶）为主要照护者，需护理技巧培训及喘息服务。',
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -410,7 +410,21 @@ MEDICAL_HISTORY[7] = {
 };
 
 import { NEW_MEDICAL_HISTORY } from './newPatients/medicalHistory';
-Object.assign(MEDICAL_HISTORY, NEW_MEDICAL_HISTORY);
+// Proper merge: NEW_MEDICAL_HISTORY uses Record<number, MedicalEntry[]> — wrap into PatientHistory
+for (const [pid, entries] of Object.entries(NEW_MEDICAL_HISTORY)) {
+  const id = Number(pid);
+  if (MEDICAL_HISTORY[id]) {
+    // Extend existing patient's entries
+    MEDICAL_HISTORY[id].entries = [...entries, ...MEDICAL_HISTORY[id].entries];
+  } else {
+    // New patient: build PatientHistory wrapper
+    MEDICAL_HISTORY[id] = {
+      patientId: id,
+      entries,
+      aiSummary: '',
+    } as any;
+  }
+}
 
 import { syncAiSummaryNews } from '../utils/medicalHistoryNews';
 import { PATIENTS_FULL } from './patients';

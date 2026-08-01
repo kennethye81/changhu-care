@@ -118,12 +118,6 @@ const AssessmentSection: FC<{ patient: PatientFull; family: FamilyContact[] }> =
         </div>
       </div>
 
-      {/* Clinical Background */}
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
-        <h3 className={`${sectionTitle} mb-2`}>临床病史</h3>
-        <p className="text-sm text-slate-700 leading-relaxed">{patient.clinicalSummary || '无'}</p>
-      </div>
-
       {/* Assessment Scales: Barthel + Braden + Fall Risk */}
       <div className="bg-white rounded-xl border border-slate-200 p-5">
         <h3 className={`${sectionTitle} mb-3`}>评估量表</h3>
@@ -373,7 +367,7 @@ const CareTeamSection: FC<{ patient: PatientFull; teamMembers: string[] }> = ({ 
 
 const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const history = MEDICAL_HISTORY[patient.id];
-  const entries = history?.entries || [];
+  const entries = Array.isArray(history) ? history : (history?.entries || []);
   const [reportModal, setReportModal] = useState<string | null>(null);
 
   const typeIcon: Record<string, FC<{ className?: string }>> = {
@@ -440,6 +434,58 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   <div>
     <div className="sticky top-0 z-10 bg-warm-50 -mx-6 px-6 pt-6 pb-3">
       <ST title="病史档案" icon={FileText} />
+    </div>
+    {/* ─── 临床病史分类 ─── */}
+    <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
+      <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+        <Stethoscope className="w-4 h-4 text-teal-600" /> 临床病史
+      </h3>
+      <div className="grid grid-cols-2 gap-3 text-xs">
+        <div className="bg-slate-50 rounded-lg p-3">
+          <span className="text-[10px] text-slate-400 font-medium">基本信息</span>
+          <p className="text-slate-700 font-medium mt-0.5">{patient.age}岁 男性 — 身高{patient.height || 164}cm / 体重{patient.weight || 70}kg</p>
+        </div>
+        <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
+          <span className="text-[10px] text-teal-500 font-medium">主要诊断</span>
+          <p className="text-teal-800 font-medium mt-0.5">{patient.diagnosis || '高血压'}</p>
+        </div>
+        <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
+          <span className="text-[10px] text-blue-500 font-medium">功能状态 · Barthel {patient.barthel?.score || 30}/100</span>
+          <p className="text-slate-700 mt-0.5">重度依赖 — 双侧上下肢活动异常，需助行器辅助</p>
+        </div>
+        <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
+          <span className="text-[10px] text-amber-600 font-medium">皮肤/压疮 · Braden {patient.braden?.score || 16}分</span>
+          <p className="text-slate-700 mt-0.5">已有压疮，Braden 16分提示中度风险，需翻身q2h</p>
+        </div>
+        <div className="bg-red-50 rounded-lg p-3 border border-red-100">
+          <span className="text-[10px] text-red-500 font-medium">跌倒风险 · Morse {patient.fallRisk?.score || 105}</span>
+          <p className="text-slate-700 mt-0.5">极高危 — 近3月有跌倒史，步态异常，需持续防跌倒措施</p>
+        </div>
+        <div className="bg-purple-50 rounded-lg p-3 border border-purple-100">
+          <span className="text-[10px] text-purple-500 font-medium">认知/意识</span>
+          <p className="text-slate-700 mt-0.5">意识清醒，定向力完整；半自理，需部分生活协助</p>
+        </div>
+        <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-100 col-span-2">
+          <span className="text-[10px] text-emerald-600 font-medium">照护需求</span>
+          <div className="flex flex-wrap gap-1.5 mt-1">
+            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">翻身 q2h</span>
+            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">压疮护理</span>
+            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">血压监测</span>
+            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">防跌倒</span>
+            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">助行器辅助</span>
+          </div>
+        </div>
+        <div className="bg-slate-50 rounded-lg p-3 col-span-2 border border-dashed border-slate-200">
+          <div className="flex items-start gap-2">
+            <span className="text-[10px] text-slate-400 font-medium flex-shrink-0 mt-px">评估来源</span>
+            <p className="text-slate-500 text-[11px]">易得康评估机构 · 评估者：李妍 · 评估日期：2026.04.01</p>
+          </div>
+          <div className="flex items-start gap-2 mt-1.5">
+            <span className="text-[10px] text-amber-500 font-medium flex-shrink-0 mt-px">⚠ 待确认</span>
+            <p className="text-amber-600 text-[11px]">Barthel ADL：手写总分=60 vs 勾选累加=30，差异待确认</p>
+          </div>
+        </div>
+      </div>
     </div>
     {history?.aiSummary && (
       <div className="sticky top-14 z-[5] bg-warm-50 -mx-6 px-6 pb-3">
