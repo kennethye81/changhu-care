@@ -52,7 +52,7 @@ const STAT_CARD_HOVER = 'hover:border-[#4DCEFF]/55 hover:shadow-[0_4px_12px_rgba
 
 const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: string; iconColor: string; label: string; value: string; sub: string; hover: string }> = {
   gold: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#0B3550] border border-[#E1FCFF]/80',
     icon: 'bg-[#FFFFFF] border border-[#E1FCFF]',
     iconColor: 'text-[#03304B]',
@@ -62,7 +62,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
     hover: STAT_CARD_HOVER,
   },
   red: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#C47070] border border-[#E1FCFF]/80',
     icon: 'bg-[#FCF6F5] border border-[#EDD8D5]',
     iconColor: 'text-[#B85C5C]',
@@ -72,7 +72,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
     hover: STAT_CARD_HOVER,
   },
   amber: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#FEB903] border border-[#E1FCFF]/80',
     icon: 'bg-[#FFFFFF] border border-[#FEB903]/60',
     iconColor: 'text-[#FEB903]',
@@ -82,7 +82,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
     hover: STAT_CARD_HOVER,
   },
   green: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#7A9A72] border border-[#E1FCFF]/80',
     icon: 'bg-[#F4F7F3] border border-[#D5E0D2]',
     iconColor: 'text-[#6B8A62]',
@@ -92,7 +92,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
     hover: STAT_CARD_HOVER,
   },
   teal: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#03304B] border border-[#E1FCFF]/80',
     icon: 'bg-[#EBF5F9] border border-[#E1FCFF]',
     iconColor: 'text-[#03304B]',
@@ -102,7 +102,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
     hover: STAT_CARD_HOVER,
   },
   purple: {
-    card: 'glass-card',
+    card: 'bg-white shadow-md',
     border: 'border-l-[#A3998E] border border-[#E1FCFF]/80',
     icon: 'bg-[#F8F6F4] border border-[#E8E4DF]',
     iconColor: 'text-[#7A7168]',
@@ -150,11 +150,11 @@ const PatientCard: FC<{ patient: PatientSummary; onSelect?: () => void }> = ({ p
   const isMedium = tier === 'medium';
   const isRed = p.newsRedScore;
   const isAlert = isHigh || isMedium || isRed || !!p.alertMsg;
-  const borderC = isHigh ? 'border-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)] critical-pulse' : isMedium || isRed ? 'border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.15)] alert-pulse' : 'border-slate-200 shadow-sm hover:border-teal-300';
+  const borderC = isHigh ? 'border-red-400 shadow-[0_0_20px_rgba(239,68,68,0.15)] critical-pulse' : isMedium || isRed ? 'border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.15)] alert-pulse' : 'border-slate-200 shadow-md hover:border-teal-300 hover:shadow-lg';
   const diagTag = DIAGNOSIS_TAG[p.diagnosis] ?? 'bg-slate-50 text-slate-600 border-slate-200';
 
   return (
-    <div onClick={onSelect} className={`relative glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-[0_8px_20px_rgba(29,27,26,0.04)] hover:-translate-y-0.5 cursor-pointer overflow-visible ${borderC}`}>
+    <div onClick={onSelect} className={`relative bg-white rounded-2xl p-4 transition-all duration-300 hover:shadow-[0_8px_20px_rgba(29,27,26,0.04)] hover:-translate-y-0.5 cursor-pointer overflow-visible ${borderC}`}>
       {isAlert && p.alertMsg && <AlertOverlay msg={p.alertMsg} tier={isHigh ? 'high' : 'medium'} />}
       <div className="flex items-center gap-2.5 mb-3">
         <PatientAvatar patientId={p.id} size={40} />
