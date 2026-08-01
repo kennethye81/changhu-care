@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-const LOGO_ASPECT = 800 / 317;
+const LOGO_ASPECT = 1270 / 486; // 易得康横版logo 1270×486
 
 /** Official YDCare brand mark — 800×317 PNG with transparency */
 const YDCareLogo: FC<{ className?: string; height?: number }> = ({ className = '', height = 44 }) => (
