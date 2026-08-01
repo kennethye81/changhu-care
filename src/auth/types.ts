@@ -67,14 +67,15 @@ export const MOCK_USERS: Record<string, { password: string; user: User }> = {
     password: '123456',
     user: { id: 'A001', name: '系统管理员', role: 'admin', avatar: 'SA', institutionId: 'CH-001', account: 'admin' },
   },
+  'li.yan': {
+    password: '123456',
+    user: { id: 'CM001', name: '李妍', role: 'case_manager', avatar: 'LY', institutionId: 'CH-001', account: 'li.yan' },
+  },
   'jiang.shan': {
     password: '123456',
     user: { id: 'N001', name: '姜珊', role: 'nurse', avatar: 'JS', institutionId: 'CH-001', account: 'jiang.shan' },
   },
-  'li.yan': {
-    password: '123456',
-    user: { id: 'AS001', name: '李妍', role: 'assessor', avatar: 'LY', institutionId: 'CH-001', account: 'li.yan' },
-  },
+  // 照护团队成员（非Hub登录用户）
   'tang.juling': {
     password: '123456',
     user: { id: 'CW001', name: '汤菊玲', role: 'care_worker', avatar: 'TJL', institutionId: 'CH-001', account: 'tang.juling' },
@@ -96,7 +97,7 @@ export const MOCK_USERS: Record<string, { password: string; user: User }> = {
 export const ROLE_LABELS: Record<Role, string> = {
   admin: '系统管理员',
   doctor: '社区医生',
-  nurse: '责任护士',
+  nurse: '护士经理',
   case_manager: '个案经理',
   assessor: '评估员',
   care_worker: '长期照护师',

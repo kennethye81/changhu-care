@@ -33,15 +33,11 @@ const ALL_NAV: NavItem[] = [
   { key: 'messages', label: '消息中心', icon: MessageCircle, route: '/messages' },
 ];
 
-// Available roles for switching
+// Available roles for switching — 仅系统用户
 const ROLES = [
   { id: 'admin', label: '系统管理员', subtitle: 'Administrator', role: 'admin' },
-  { id: 'jiang.shan', label: '姜珊', subtitle: '责任护士', role: 'nurse' },
-  { id: 'li.yan', label: '李妍', subtitle: '评估员', role: 'assessor' },
-  { id: 'tang.juling', label: '汤菊玲', subtitle: '长期照护师', role: 'care_worker' },
-  { id: 'wang.xiaofeng', label: '王小凤', subtitle: '家属', role: 'family' },
-  { id: 'rehab.pt', label: '康复师（待分配）', subtitle: '康复治疗师', role: 'rehab_therapist' },
-  { id: 'dietitian', label: '营养师（待分配）', subtitle: '营养师', role: 'dietitian' },
+  { id: 'jiang.shan', label: '姜珊', subtitle: '护士经理', role: 'nurse' },
+  { id: 'li.yan', label: '李妍', subtitle: '个案经理', role: 'case_manager' },
 ];
 
 const AVATARS: Record<string, string> = {
