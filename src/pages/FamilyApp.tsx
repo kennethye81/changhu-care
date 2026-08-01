@@ -665,7 +665,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const mentalRows = useMemo(() => buildFamilyMentalStatus(vitals, alertActive), [vitals, alertActive]);
   const ioSnapshot = useMemo(() => buildFamilyIoSnapshot(vitals, alertActive), [vitals, alertActive]);
   const sleepSnapshot = useMemo(() => buildFamilySleepSnapshot(vitals, alertActive), [vitals, alertActive]);
-  const mentalInsight = useMemo(() => buildFamilyMentalInsight(alertActive), [p7Alert]);
+  const mentalInsight = useMemo(() => buildFamilyMentalInsight(alertActive), [alertActive]);
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -924,7 +924,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const contributingFactors = useMemo(() => [
     {
       vital: alertActive ? 'SpO₂下降' : 'SpO₂ 基线',
-      risk: p7Alert
+      risk: alertActive
         ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%${effectiveVitals.onSupplementalO2 ? '。O₂已启动。' : '，未用氧。'}GOLD 2024：COPD G2目标92–96%。${monitoringLabel}。`
         : `SpO₂ ${effectiveVitals.spo2}%静息稳定。GOLD 2024：COPD G2预期基线(FEV₁ 55%)。O₂浓缩器待机。`,
       icon: Activity,
@@ -936,7 +936,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     },
     {
       vital: alertActive ? '急性意识障碍' : '用药依从性',
-      risk: p7Alert
+      risk: alertActive
         ? `AMTS下降10→7 — 低氧性谵妄。${monitoringLabel}。照护者已接受意识评估培训。`
         : '硝苯地平30mg QD确认服用。低盐低脂饮食依从良好。',
       icon: Heart,
