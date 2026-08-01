@@ -110,7 +110,7 @@ export const HubBloodPressureChart: FC<{
       <div className="flex items-center justify-between mb-2 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <Activity className="w-4 h-4 text-teal-600 flex-shrink-0" />
-          <h3 className="text-sm font-bold text-slate-800 truncate">Blood Pressure (SYS / DIA)</h3>
+          <h3 className="text-sm font-bold text-slate-800 truncate">血压 (收缩/舒张)</h3>
           <span className="text-[10px] text-slate-400 flex-shrink-0">mmHg</span>
         </div>
         <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0 ${zoneClass}`}>{zoneLabel}</span>
@@ -140,8 +140,8 @@ export const HubBloodPressureChart: FC<{
           <Tooltip
             contentStyle={{ fontSize: 11, borderRadius: 8, border: '1px solid #e2e8f0' }}
             formatter={(v: number, name: string) => {
-              if (name === 'DIA' || name === 'Diastolic') return [`${v} mmHg`, 'Diastolic'];
-              return [`${v} mmHg`, 'Systolic'];
+              if (name === 'DIA' || name === 'Diastolic') return [`${v} mmHg`, '舒张压'];
+              return [`${v} mmHg`, '收缩压'];
             }}
             labelFormatter={(_t: string, payload) => (payload?.[0]?.payload as VitalsPoint)?.dateTime ?? _t}
           />
@@ -151,7 +151,7 @@ export const HubBloodPressureChart: FC<{
             iconType="plainline"
             wrapperStyle={{ fontSize: 9, paddingBottom: 4 }}
           />
-          <Line type="linear" dataKey="bpSystolic__normal" name="SYS" stroke={LINE_SYS_NORMAL} strokeWidth={2} dot={false} connectNulls isAnimationActive={false} />
+          <Line type="linear" dataKey="bpSystolic__normal" name="收缩压" stroke={LINE_SYS_NORMAL} strokeWidth={2} dot={false} connectNulls isAnimationActive={false} />
           <Line type="linear" dataKey="bpSystolic__amber" stroke={LINE_SYS_AMBER} strokeWidth={2} dot={false} connectNulls isAnimationActive={false} legendType="none" />
           <Line type="linear" dataKey="bpSystolic__abnormal" stroke={LINE_SYS_ABNORMAL} strokeWidth={2} dot={false} connectNulls isAnimationActive={false} legendType="none" />
           <Line type="linear" dataKey="bpDiastolic__normal" name="DIA" stroke={LINE_DIA_NORMAL} strokeWidth={2} dot={false} connectNulls isAnimationActive={false} />

@@ -462,24 +462,24 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
   // Overall assessment
   const reds = [rrStats.pctRed, hrStats.pctRed, sysStats.pctRed, spo2Stats.pctRed, glucoseStats.pctRed, tempStats.pctRed];
   const maxRed = Math.max(...reds);
-  const overallRisk = maxRed > 5 ? 'HIGH — Immediate clinical review recommended' : maxRed > 0 ? 'MODERATE — Scheduled review advised' : 'LOW — Routine monitoring adequate';
+  const overallRisk = maxRed > 5 ? '高危 — 建议立即临床复审' : maxRed > 0 ? '中危 — 建议择期复审' : '低危 — 常规监测即可';
 
   const overall = maxRed > 5
-    ? `⚠️ Seven-parameter vital sign review indicates clinical instability over the past 24 hours. RR mean ${rrStats.mean}/min, HR ${hrStats.mean} bpm, BP ${sysStats.mean}/${diaStats.mean} mmHg, SpO₂ ${spo2Stats.mean}%, glucose ${glucoseStats.mean} mg/dL, temp ${tempStats.mean}°C. ${spo2Stats.pctRed > 5 ? 'Significant desaturation requires urgent evaluation. ' : ''}${rrStats.pctRed > 5 ? 'Tachypnoea concerning. ' : ''}${tempStats.pctRed > 3 ? 'Febrile episodes suggest ongoing infection. ' : ''}${glucoseStats.pctRed > 3 ? 'Glucose excursions require separate alert review. ' : ''}Recommend immediate physician review.`
+    ? `⚠️ 七参数生命体征回顾显示过去24小时临床不稳定。RR均值${rrStats.mean}次/分，HR ${hrStats.mean} bpm，BP ${sysStats.mean}/${diaStats.mean} mmHg，SpO₂ ${spo2Stats.mean}%，血糖${glucoseStats.mean} mg/dL，体温${tempStats.mean}°C。${spo2Stats.pctRed > 5 ? '显著低氧血症需紧急评估。' : ''}${rrStats.pctRed > 5 ? '呼吸急促需关注。' : ''}${tempStats.pctRed > 3 ? '发热提示持续感染。' : ''}${glucoseStats.pctRed > 3 ? '血糖波动需独立预警复核。' : ''}建议立即医生复审。`
     : maxRed > 0
     ? `七参数每小时监测（24次读数）显示RR（${rrStats.mean}次/分）、HR（${hrStats.mean} bpm）、BP（${sysStats.mean}/${diaStats.mean} mmHg）、SpO₂（${spo2Stats.mean}%）、血糖（${glucoseStats.mean} mg/dL）、体温（${tempStats.mean}°C）存在轻度异常 — 与${ctx.conditions}表现一致。继续居家照护监测并行NEWS分级评估。`
     : `24小时每小时监测中，全部七项生命体征参数均在${ctx.conditions}可接受范围内。RR ${rrStats.mean}次/分，HR ${hrStats.mean} bpm，BP ${sysStats.mean}/${diaStats.mean} mmHg，SpO₂ ${spo2Stats.mean}%，血糖${glucoseStats.mean} mg/dL（仅预警），体温${tempStats.mean}°C。患者临床状态稳定。`;
 
   const recommendations = [
-    rrStats.pctRed > 5 ? 'Escalate respiratory monitoring — ABG if SpO₂ <88% persists; chest imaging if new infiltrate suspected' : null,
-    hrStats.pctRed > 5 ? 'Increase HR monitoring frequency to continuous; notify physician if HR >120 persists >30min' : null,
-    spo2Stats.pctRed > 5 ? 'Escalate O₂ therapy per COPD protocol; repeat ABG if SpO₂ <88% persists; consider chest X-ray to exclude new infiltrate' : null,
-    tempStats.pctRed > 3 ? 'Repeat septic workup (CBC, CRP, PCT, blood cultures x2); review antibiotic regimen per C&S results' : null,
-    glucoseStats.pctRed > 3 ? 'Glucose alert protocol — recheck capillary glucose, review diabetic medications, consider DKA/HHS screen if symptomatic' : null,
-    sysStats.pctRed > 3 ? 'Optimise antihypertensive regimen; home BP log BID; renal function monitoring per KDIGO CKD protocol' : null,
-    'Continue current HaH RN visit schedule with all seven vitals at each visit',
-    'Maintain family education on escalation criteria and device use',
-    'Schedule MDT review within 48 hours to reassess care plan and NEWS tier',
+    rrStats.pctRed > 5 ? '升级呼吸监测 — 如SpO₂持续<88%查动脉血气；疑似新浸润者查胸部影像' : null,
+    hrStats.pctRed > 5 ? '提高心率监测频率至持续监测；如HR>120持续>30分钟通知医生' : null,
+    spo2Stats.pctRed > 5 ? '按COPD方案升级氧疗；如SpO₂持续<88%复查动脉血气；考虑胸片排除新浸润' : null,
+    tempStats.pctRed > 3 ? '复查感染指标（血常规、CRP、PCT、血培养×2）；按药敏结果评估抗生素方案' : null,
+    glucoseStats.pctRed > 3 ? '血糖预警预案 — 复测末梢血糖，复查降糖药物，有症状者考虑DKA/HHS筛查' : null,
+    sysStats.pctRed > 3 ? '优化降压方案；家庭血压日志bid；按KDIGO CKD方案监测肾功能' : null,
+    '继续当前居家照护护士访视计划，每次访视记录全部七项生命体征',
+    '持续家属教育：升级标准和设备使用',
+    '48小时内安排多学科团队复评照护计划和NEWS分级',
   ].filter(Boolean) as string[];
 
   return {
@@ -489,7 +489,7 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     spo2: { ...spo2Stats, assessment: assessSpO2() },
     bloodSugar: { ...glucoseStats, assessment: assessGlucose() },
     temp: { ...tempStats, assessment: assessTemp() },
-    overall: `${overall}\n\nRisk Level: ${overallRisk}`,
+    overall: `${overall}\n\n风险等级：${overallRisk}`,
     recommendations,
   };
 }
