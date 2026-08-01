@@ -956,10 +956,10 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     appendSubmittedCareLog(familyPatientId, {
       date: DEMO_CARE_PLAN_DATE,
       time,
-      type: 'Family Action',
+      type: '家属操作',
       detail: '照护协议已激活 — 由家属周明辉确认。',
-      author: 'Mrs. Chan',
-      role: 'Family',
+      author: '周明辉',
+      role: '家属',
       status: 'completed',
     });
   };
@@ -978,12 +978,12 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       </div>
 
       <div className="px-4 py-3">
-        <p className="text-[10px] text-slate-500 mb-2">National Early Warning Score (NEWS2)</p>
+        <p className="text-[10px] text-slate-500 mb-2">国家早期预警评分（NEWS2）</p>
         <div className="flex items-center gap-4">
           <div className={`text-3xl font-extrabold ${newsTier === 'high' ? 'text-red-600' : newsTier === 'medium' ? 'text-amber-600' : redScore ? 'text-orange-600' : 'text-emerald-600'}`}>{newsScore}</div>
           <div className="flex-1">
             <p className="text-[10px] font-semibold text-slate-700">{escalation}</p>
-            <p className="text-[9px] text-slate-500 mt-0.5">{monitoringLabel}{redScore ? ' · RED score' : ''}</p>
+            <p className="text-[9px] text-slate-500 mt-0.5">{monitoringLabel}{redScore ? ' · 单参数红色警报' : ''}</p>
             {vitals && (
               <p className="text-[9px] text-slate-400 mt-1">
                 RR {vitals.rr}/min · SpO₂ {vitals.spo2}% Scale {vitals.spo2Scale ?? 2}{vitals.onSupplementalO2 ? ' + O₂' : ''} · AVPU {vitals.avpu ?? 'A'}
@@ -1014,7 +1014,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="flex items-center gap-2 mb-2">
           <Zap className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
           <p className="text-[10px] font-bold text-amber-800">AI推荐干预</p>
-          <span className="text-[8px] text-amber-500 ml-auto">24h window</span>
+          <span className="text-[8px] text-amber-500 ml-auto">24小时内</span>
         </div>
         <div className="space-y-2">
           {[
