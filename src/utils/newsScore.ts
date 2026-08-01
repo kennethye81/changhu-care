@@ -27,20 +27,20 @@ export interface NewsAssessment {
 }
 
 export const MONITORING_LABEL: Record<MonitoringInterval, string> = {
-  '12h': 'Minimum every 12 hours',
-  '4-6h': 'Minimum every 4–6 hours',
-  '1h': 'Minimum every 1 hour',
-  continuous: 'Continuous monitoring',
+  '12h': '至少每12小时',
+  '4-6h': '至少每4–6小时',
+  '1h': '至少每小时',
+  continuous: '持续监测',
 };
 
 const TIER_ESCALATION: Record<NewsTier, string> = {
-  low: 'Routine monitoring — continue standard observation.',
-  medium: 'Urgent review by clinician (registered nurse or doctor) — increase monitoring frequency.',
-  high: 'Emergency response — urgent assessment by senior clinician or critical care team.',
+  low: '常规监测 — 继续标准观察。',
+  medium: '紧急复查（注册护士或医生）— 提高监测频率。',
+  high: '应急响应 — 由高年资医生或急救团队紧急评估。',
 };
 
 const RED_SCORE_ESCALATION =
-  'Urgent review by clinician (registered nurse or doctor) — single parameter score 3 within low aggregate score.';
+  '紧急复查（注册护士或医生）— 低总分下单参数评分3分。';
 
 export function isCopdDiagnosis(diagnosis: string): boolean {
   return diagnosis.toLowerCase().includes('copd');
@@ -194,15 +194,15 @@ export function calculateNews(vitals: Partial<Vitals>, diagnosis = ''): NewsAsse
 }
 
 export const TIER_LABEL: Record<NewsTier, string> = {
-  low: 'Low (0–4)',
-  medium: 'Medium (5–6)',
-  high: 'High (7+)',
+  low: '低危 (0–4)',
+  medium: '中危 (5–6)',
+  high: '高危 (7+)',
 };
 
 export const TIER_SHORT: Record<NewsTier, string> = {
-  low: 'Low',
-  medium: 'Medium',
-  high: 'High',
+  low: '低危',
+  medium: '中危',
+  high: '高危',
 };
 
 export function newsTierLabel(tier: NewsTier): string {
@@ -210,16 +210,16 @@ export function newsTierLabel(tier: NewsTier): string {
 }
 
 export function formatNewsTierLabel(news: Pick<NewsAssessment, 'score' | 'tier' | 'redScore'>): string {
-  if (news.redScore) return `Low (${news.score}) — RED score`;
+  if (news.redScore) return `低危 (${news.score}) — RED评分`;
   return TIER_LABEL[news.tier];
 }
 
 export function formatNewsHeadline(news: Pick<NewsAssessment, 'score' | 'tier' | 'redScore'>): string {
-  if (news.redScore) return `NEWS ${news.score} — Low (RED score)`;
+  if (news.redScore) return `NEWS ${news.score} — 低危 (RED评分)`;
   return `NEWS ${news.score} — ${TIER_LABEL[news.tier]}`;
 }
 
-/** Demo escalation vitals for Patient 7 — NEWS High (7+) with Scale 2 + O₂ */
+/** 演示升级体征（患者7）— NEWS 高危 (7+) 量表2 + 吸氧 */
 export const P7_NEWS_ESCALATION_VITALS: Vitals = {
   hr: 98,
   bpSystolic: 140,

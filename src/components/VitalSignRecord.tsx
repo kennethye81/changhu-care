@@ -165,11 +165,11 @@ const VitalChart: FC<{
 };
 
 const VITAL_CHARTS = [
-  { title: 'Respiratory Rate (RR)', unit: '/min', icon: Wind, dataKey: 'rr', thKey: 'rr' as const, yMin: 8, yMax: 32 },
-  { title: 'Pulse (HR)', unit: 'bpm', icon: Heart, dataKey: 'hr', thKey: 'hr' as const },
-  { title: 'Oxygen Saturation (SpO₂)', unit: '%', icon: Droplets, dataKey: 'spo2', thKey: 'spo2' as const },
-  { title: 'Blood Glucose', unit: 'mg/dL', icon: Activity, dataKey: 'bloodSugar', thKey: 'bloodSugar' as const, yMin: 50, yMax: 280 },
-  { title: 'Body Temperature', unit: '°C', icon: Thermometer, dataKey: 'temp', thKey: 'temp' as const, yMin: 34, yMax: 40 },
+  { title: '呼吸频率 (RR)', unit: '次/分', icon: Wind, dataKey: 'rr', thKey: 'rr' as const, yMin: 8, yMax: 32 },
+  { title: '脉搏 (HR)', unit: 'bpm', icon: Heart, dataKey: 'hr', thKey: 'hr' as const },
+  { title: '血氧饱和度 (SpO₂)', unit: '%', icon: Droplets, dataKey: 'spo2', thKey: 'spo2' as const },
+  { title: '血糖', unit: 'mg/dL', icon: Activity, dataKey: 'bloodSugar', thKey: 'bloodSugar' as const, yMin: 50, yMax: 280 },
+  { title: '体温', unit: '°C', icon: Thermometer, dataKey: 'temp', thKey: 'temp' as const, yMin: 34, yMax: 40 },
 ];
 
 const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
@@ -210,18 +210,18 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
   const p7Assessment = (param: Parameters<typeof buildVitalParameterAssessment>[0]) =>
     buildVitalParameterAssessment(param, p7Vitals, patient.diagnosis, p7Baseline);
 
-  if (!th || data.length === 0) return <div className="text-slate-400 p-8">No vital sign data available.</div>;
+  if (!th || data.length === 0) return <div className="text-slate-400 p-8">暂无体征数据。</div>;
 
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-2 mb-2">
         <Activity className="w-5 h-5 text-teal-600" />
-        <h2 className="text-base font-semibold text-slate-800">Vital Sign Record</h2>
+        <h2 className="text-base font-semibold text-slate-800">体征记录</h2>
         <span className="text-[10px] text-slate-400 ml-2">
-          24h · hourly · {VITAL_RECORD_HOURS} readings · 6 parameters
+          24小时 · 每小时 · {VITAL_RECORD_HOURS}条记录 · 6项指标
         </span>
         {p7Alert && patient.id === 7 && (
-          <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full ml-auto">⚠ ALERT ACTIVE</span>
+          <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded-full ml-auto">⚠ 告警活跃</span>
         )}
       </div>
 
@@ -260,20 +260,20 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
       <div className="glass-card rounded-xl border border-slate-200 p-5">
         <div className="flex items-center gap-2 mb-4">
           <Brain className="w-5 h-5 text-teal-600" />
-          <h3 className="text-sm font-bold text-slate-800">AI Clinical Summary</h3>
-          <span className="text-[9px] text-slate-400 ml-1">Generated from 24h hourly · 6-parameter data</span>
+          <h3 className="text-sm font-bold text-slate-800">AI 临床摘要</h3>
+          <span className="text-[9px] text-slate-400 ml-1">基于24小时每小时 · 6项指标生成</span>
         </div>
         <div className="space-y-4 text-xs">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-            <SummaryCard icon={Wind} label="Respiratory Rate" stats={{
+            <SummaryCard icon={Wind} label="呼吸频率" stats={{
               ...summary.rr,
               assessment: p7Active ? p7Assessment('rr') : summary.rr.assessment
-            }} unit="/min" />
-            <SummaryCard icon={Heart} label="Pulse (HR)" stats={{
+            }} unit="次/分" />
+            <SummaryCard icon={Heart} label="脉搏 (HR)" stats={{
               ...summary.hr,
               assessment: p7Active ? p7Assessment('hr') : summary.hr.assessment
             }} unit="bpm" />
-            <SummaryCard icon={Activity} label="Blood Pressure (SYS/DIA)"
+            <SummaryCard icon={Activity} label="血压 (收缩/舒张)"
               stats={{
                 mean: `${summary.bp.sysMean}/${summary.bp.diaMean}`,
                 min: `${summary.bp.sysMin}/${Math.round(data.reduce((a, d) => Math.min(a, d.bpDiastolic), 200))}`,
@@ -283,24 +283,24 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
                 trend: summary.bp.trend,
                 assessment: p7Active
                   ? `${p7Assessment('bpSystolic')} ${p7Assessment('bpDiastolic')}`
-                  : `${summary.bp.assessment} Diastolic mean ${summary.bp.diaMean} mmHg — not scored in NEWS2.`,
+                  : `${summary.bp.assessment} 舒张压均值 ${summary.bp.diaMean} mmHg — 未纳入NEWS2评分.`,
               }}
               unit="mmHg" />
-            <SummaryCard icon={Droplets} label="SpO₂" stats={{
+            <SummaryCard icon={Droplets} label="血氧饱和度" stats={{
               ...summary.spo2,
               assessment: p7Active ? p7Assessment('spo2') : summary.spo2.assessment
             }} unit="%" />
-            <SummaryCard icon={Activity} label="Blood Glucose" stats={{
+            <SummaryCard icon={Activity} label="血糖" stats={{
               ...summary.bloodSugar,
               assessment: p7Active ? p7Assessment('bloodSugar') : summary.bloodSugar.assessment
             }} unit="mg/dL" />
-            <SummaryCard icon={Thermometer} label="Temperature" stats={{
+            <SummaryCard icon={Thermometer} label="体温" stats={{
               ...summary.temp,
               assessment: p7Active ? p7Assessment('temp') : summary.temp.assessment
             }} unit="°C" />
           </div>
           <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
-            <p className="text-[11px] font-semibold text-teal-800 mb-1">Overall Assessment (6 Parameters · 24h)</p>
+            <p className="text-[11px] font-semibold text-teal-800 mb-1">综合评估（6项指标 · 24小时）</p>
             <p className="text-[11px] text-teal-700 leading-relaxed whitespace-pre-line">
               {p7Active && p7News
                 ? buildOverallNewsAssessment(p7Vitals, patient.diagnosis)
@@ -308,7 +308,7 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
             </p>
           </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-[11px] font-semibold text-amber-800 mb-2">Clinical Recommendations</p>
+            <p className="text-[11px] font-semibold text-amber-800 mb-2">临床建议</p>
             <ul className="space-y-1">
               {(p7Active && p7News
                 ? buildP7ClinicalRecommendations(p7News)
@@ -320,7 +320,7 @@ const VitalSignRecord: FC<{ patient: PatientFull }> = ({ patient }) => {
             </ul>
           </div>
           <div className="text-[9px] text-slate-400 text-right">
-            Guidelines: {PATIENT_THRESHOLDS[patient.id]?.guidelines}
+            指南: {PATIENT_THRESHOLDS[patient.id]?.guidelines}
           </div>
         </div>
       </div>
@@ -343,7 +343,7 @@ const SummaryCard: FC<{
       <span className="text-[10px] text-slate-400">{unit}</span>
     </div>
     <div className="text-[9px] text-slate-500 mb-1">
-      Range: {stats.min}–{stats.max} · {stats.trend}
+      范围: {stats.min}–{stats.max} · {stats.trend}
     </div>
     <div className="text-[9px] leading-relaxed text-slate-600">{stats.assessment}</div>
   </div>

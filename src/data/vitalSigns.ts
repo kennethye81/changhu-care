@@ -430,7 +430,7 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
   // Assess each vital sign
   const assessRR = () => {
     if (rrStats.pctRed > 5) return `Tachypnoea episodes — ${rrStats.pctRed}% of readings in red zone (max ${rrStats.max}/min, ${rrStats.trend}). ${ctx.conditions.includes('COPD') || ctx.conditions.includes('CAP') ? 'Per GOLD 2024 / IDSA CAP, RR >24 with hypoxaemia suggests acute deterioration — correlate with SpO₂ and infection markers.' : 'Requires clinical correlation for respiratory or metabolic cause.'}`;
-    if (rrStats.pctAmber > 10) return `RR mildly elevated in ${rrStats.pctAmber}% of readings (mean ${rrStats.mean}/min, ${rrStats.trend}). Monitor trend with full NEWS assessment.`;
+    if (rrStats.pctAmber > 10) return `呼吸频率在${rrStats.pctAmber}%读数中轻度升高（均值${rrStats.mean}次/分，${rrStats.trend}）。持续监测趋势并行完整NEWS评估。`;
     return `Respiratory rate ${rrStats.trend.toLowerCase()} — mean ${rrStats.mean}/min. Within green zone ${100 - rrStats.pctAmber - rrStats.pctRed}% of time.`;
   };
   const assessHR = () => {
@@ -439,9 +439,9 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     return `Heart rate ${hrStats.trend.toLowerCase()} throughout monitoring period (mean ${hrStats.mean} bpm). Within green zone ${100 - hrStats.pctAmber - hrStats.pctRed}% of time.`;
   };
   const assessBP = () => {
-    if (sysStats.pctRed > 3) return `Hypertensive excursions noted (SBP max ${sysStats.max} mmHg) — ${sysStats.pctRed}% of readings in red zone. ${ctx.conditions.includes('CKD') ? 'Per KDIGO 2024, BP control critical for renoprotection in CKD3.' : 'ESC 2021 HTN guidelines recommend target <140/90.'}`;
-    if (sysStats.pctAmber > 15) return `BP moderately elevated in ${sysStats.pctAmber}% of readings (mean SBP ${sysStats.mean} mmHg, ${sysStats.trend}). Monitor for worsening trend.`;
-    return `Blood pressure well-controlled — mean ${sysStats.mean}/${diaStats.mean} mmHg, ${sysStats.trend.toLowerCase()}. ${100 - sysStats.pctAmber - sysStats.pctRed}% in green zone.`;
+    if (sysStats.pctRed > 3) return `检测到高血压波动（收缩压最高${sysStats.max} mmHg）— ${sysStats.pctRed}%读数处于红色区域。${ctx.conditions.includes('CKD') ? '依据KDIGO 2024，血压控制对CKD3期肾脏保护至关重要。' : '中国高血压防治指南2024推荐目标<140/90。'}`;
+    if (sysStats.pctAmber > 15) return `血压在${sysStats.pctAmber}%读数中中度升高（收缩压均值${sysStats.mean} mmHg，${sysStats.trend}）。监测恶化趋势。`;
+    return `血压控制良好 — 均值${sysStats.mean}/${diaStats.mean} mmHg，${sysStats.trend}。${100 - sysStats.pctAmber - sysStats.pctRed}%处于绿色区域。`;
   };
   const assessSpO2 = () => {
     if (spo2Stats.pctRed > 5) return `⚠️ Significant desaturation episodes — ${spo2Stats.pctRed}% of readings in red zone (nadir ${spo2Stats.min}%). ${ctx.conditions.includes('COPD') ? 'Per GOLD 2024, SpO₂ <88% in COPD GOLD 2 indicates severe hypoxaemia requiring O₂ therapy and urgent clinical review. Exclude infective exacerbation.' : ctx.conditions.includes('CAP') ? 'Per IDSA CAP guidelines, SpO₂ <92% defines severe CAP. Post-pneumonia desaturation may indicate incomplete resolution.' : 'Desaturation requires urgent evaluation for pulmonary or cardiac aetiology.'}`;
@@ -449,14 +449,14 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     return `Oxygen saturation ${spo2Stats.trend.toLowerCase()} — mean ${spo2Stats.mean}%, ${100 - spo2Stats.pctAmber - spo2Stats.pctRed}% in green zone.`;
   };
   const assessGlucose = () => {
-    if (glucoseStats.pctRed > 3) return `⚠️ Blood sugar out of safe range — ${glucoseStats.pctRed}% critical readings (${glucoseStats.min}–${glucoseStats.max} mg/dL). ${ctx.conditions.includes('T2DM') || ctx.conditions.includes('Diabetes') ? 'Per ADA 2024, review insulin/oral hypoglycaemic regimen and check for infection-related hyperglycaemia.' : 'Not scored in NEWS — separate glucose alert protocol applies (<70 or >250 critical). Review immediately.'}`;
+    if (glucoseStats.pctRed > 3) return `⚠️ 血糖超出安全范围 — ${glucoseStats.pctRed}%读数处于危急值（${glucoseStats.min}–${glucoseStats.max} mg/dL）。${ctx.conditions.includes('T2DM') || ctx.conditions.includes('Diabetes') ? '依据ADA 2024，复查胰岛素/口服降糖方案并排查感染相关性高血糖。' : '未纳入NEWS评分 — 适用独立血糖预警协议（<70或>250为危急值）。立即复阅。'}`;
     if (glucoseStats.pctAmber > 10) return `Glucose intermittently outside target in ${glucoseStats.pctAmber}% of readings (mean ${glucoseStats.mean} mg/dL). Alert-only metric — not included in NEWS score. Encourage dietary review and SMBG log.`;
     return `Blood sugar ${glucoseStats.trend.toLowerCase()} — mean ${glucoseStats.mean} mg/dL, within acceptable range. Display-only; excluded from NEWS scoring.`;
   };
   const assessTemp = () => {
     if (tempStats.pctRed > 3) return `⚠️ Febrile episodes detected (max ${tempStats.max}°C) — ${tempStats.pctRed}% of readings in red zone. ${ctx.conditions.includes('UTI') ? 'Fever in complicated UTI per IDSA 2024 — check urine culture, CRP, PCT. Ensure IV antibiotic compliance. Escalate per NEWS2 if score ≥5.' : ctx.conditions.includes('CAP') || ctx.conditions.includes('Cellulitis') ? 'Fever may reflect ongoing infectious process per IDSA guidelines — verify antibiotic sensitivity, consider source control. Monitor NEWS2 trend.' : 'Contributes to NEWS escalation — HaH protocol: blood cultures, CRP, PCT, lactate if NEWS ≥5.'}`;
     if (tempStats.pctAmber > 15) return `Low-grade temperature elevation in ${tempStats.pctAmber}% of readings (${tempStats.trend}). Consistent with resolving infection.`;
-    return `Temperature ${tempStats.trend.toLowerCase()} — mean ${tempStats.mean}°C, afebrile throughout monitoring. Infection resolving.`;
+    return `体温${tempStats.trend} — 均值${tempStats.mean}°C，监测期间无发热。感染正在缓解。`;
   };
 
   // Overall assessment
@@ -467,8 +467,8 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
   const overall = maxRed > 5
     ? `⚠️ Seven-parameter vital sign review indicates clinical instability over the past 24 hours. RR mean ${rrStats.mean}/min, HR ${hrStats.mean} bpm, BP ${sysStats.mean}/${diaStats.mean} mmHg, SpO₂ ${spo2Stats.mean}%, glucose ${glucoseStats.mean} mg/dL, temp ${tempStats.mean}°C. ${spo2Stats.pctRed > 5 ? 'Significant desaturation requires urgent evaluation. ' : ''}${rrStats.pctRed > 5 ? 'Tachypnoea concerning. ' : ''}${tempStats.pctRed > 3 ? 'Febrile episodes suggest ongoing infection. ' : ''}${glucoseStats.pctRed > 3 ? 'Glucose excursions require separate alert review. ' : ''}Recommend immediate physician review.`
     : maxRed > 0
-    ? `Seven-parameter hourly monitoring (24 readings) shows mild abnormalities across RR (${rrStats.mean}/min), HR (${hrStats.mean} bpm), BP (${sysStats.mean}/${diaStats.mean}), SpO₂ (${spo2Stats.mean}%), glucose (${glucoseStats.mean} mg/dL), temp (${tempStats.mean}°C) — consistent with ${ctx.conditions}. Continue HaH monitoring with NEWS tier review.`
-    : `All seven vital parameters within acceptable range for ${ctx.conditions} over 24 hourly readings. RR ${rrStats.mean}/min, HR ${hrStats.mean} bpm, BP ${sysStats.mean}/${diaStats.mean} mmHg, SpO₂ ${spo2Stats.mean}%, glucose ${glucoseStats.mean} mg/dL (alert-only), temp ${tempStats.mean}°C. Patient clinically stable.`;
+    ? `七参数每小时监测（24次读数）显示RR（${rrStats.mean}次/分）、HR（${hrStats.mean} bpm）、BP（${sysStats.mean}/${diaStats.mean} mmHg）、SpO₂（${spo2Stats.mean}%）、血糖（${glucoseStats.mean} mg/dL）、体温（${tempStats.mean}°C）存在轻度异常 — 与${ctx.conditions}表现一致。继续居家照护监测并行NEWS分级评估。`
+    : `24小时每小时监测中，全部七项生命体征参数均在${ctx.conditions}可接受范围内。RR ${rrStats.mean}次/分，HR ${hrStats.mean} bpm，BP ${sysStats.mean}/${diaStats.mean} mmHg，SpO₂ ${spo2Stats.mean}%，血糖${glucoseStats.mean} mg/dL（仅预警），体温${tempStats.mean}°C。患者临床状态稳定。`;
 
   const recommendations = [
     rrStats.pctRed > 5 ? 'Escalate respiratory monitoring — ABG if SpO₂ <88% persists; chest imaging if new infiltrate suspected' : null,
