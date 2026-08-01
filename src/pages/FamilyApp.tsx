@@ -480,7 +480,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
   const summary = usePatientStore(s => s.patientsSummary.find(p => p.id === familyPatientId));
   const news = resolvePatientNews(familyPatientId, summary?.diagnosis ?? patient?.diagnosis ?? '', vitals, summary, alertActive);
   const newsHeadline = formatNewsHeadline({ score: news.score, tier: news.tier, redScore: news.redScore });
-  const newsAction = news.tier === 'high' ? 'Action Required' : news.redScore ? 'Clinician Review' : `${news.monitoringLabel}`;
+  const newsAction = news.tier === 'high' ? '需处理' : news.redScore ? '临床复核' : `${news.monitoringLabel}`;
   const carePlans = usePatientStore(s => s.carePlans);
   const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
   const careTeam = useMemo(() => getFamilyCareTeam(patient), [patient]);
@@ -509,25 +509,6 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
         </div>
       </div>
     )}
-
-    {/* Date Hero */}
-    <div className={`${FAMILY_CLASS.heroGradient} rounded-2xl p-4 text-white shadow-md`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-bold">{formatDemoDateLabel()}</p>
-          <p className="text-[10px] text-[#99E7FF] mt-0.5">照护 Day {DEMO_HAH_DAY} · {patient?.name ?? '患者'}</p>
-          <div className="flex items-center gap-1.5 mt-2">
-            <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-300 animate-pulse' : news.tier === 'medium' ? 'bg-amber-300' : news.redScore ? 'bg-orange-300' : 'bg-[#99E7FF]'}`} />
-            <span className="text-xs font-medium">{news.tier === 'high' ? `${newsHeadline} — ${newsAction}` : `${newsHeadline} · ${newsAction}`}</span>
-          </div>
-        </div>
-        <div className="text-right bg-white/15 rounded-xl px-3 py-2">
-          <p className="text-sm font-bold">17:00</p>
-          <p className="text-[9px] text-[#99E7FF]">下次访视</p>
-        </div>
-      </div>
-    </div>
-
     {/* Patient Profile Card */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <SectionHeader icon={Heart} title="患者概览" />
@@ -540,7 +521,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
           <div className="flex items-center gap-2">
             <h3 className="text-base font-bold text-slate-900">{patient?.name ?? '患者'}</h3>
           </div>
-          <p className="text-xs text-slate-400">{patient?.gender ?? ''}, {patient?.age ?? ''} yrs · {patient?.diagnosis ?? ''}</p>
+          <p className="text-xs text-slate-400">{patient?.gender ?? ''}, {patient?.age ?? ''} 岁 · {patient?.diagnosis ?? ''}</p>
           <div className="flex items-center gap-1.5 mt-1.5">
           <div className={`w-2 h-2 rounded-full ${news.tier === 'high' ? 'bg-red-500 animate-pulse' : news.tier === 'medium' ? 'bg-amber-500' : news.redScore ? 'bg-orange-500' : 'bg-[#006F80]'}`} />
           <span className={`text-xs font-medium ${news.tier === 'high' ? 'text-red-600' : news.tier === 'medium' ? 'text-amber-600' : news.redScore ? 'text-orange-600' : 'text-[#006F80]'}`}>{newsHeadline}</span>
@@ -584,31 +565,6 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       ))}
     </div>
 
-    {/* Care Team */}
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={Users} title="照护团队" />
-      <div className="p-4 space-y-3">
-        {careTeam.map((member) => (
-          <div key={member.name} className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-[#99E7FF]">
-              <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-slate-800">{member.name}</p>
-              <p className="text-[10px] text-slate-400">{member.role}</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setCallTarget(`${member.name} · ${member.phone}`)}
-              className="flex items-center gap-1 text-[10px] text-[#006F80] font-medium bg-[#CCF0FE] px-2.5 py-1 rounded-lg hover:bg-[#99E7FF] transition-colors"
-            >
-              <Phone className="w-3 h-3" /> Call
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-
     {/* 今日照护计划 */}
     <div onClick={onCarePlanClick} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
       <SectionHeader
@@ -634,10 +590,36 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       </div>
     </div>
 
+    
+{/* Care Team */}
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+      <SectionHeader icon={Users} title="照护团队" />
+      <div className="p-4 space-y-3">
+        {careTeam.map((member) => (
+          <div key={member.name} className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-[#99E7FF]">
+              <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-slate-800">{member.name}</p>
+              <p className="text-[10px] text-slate-400">{member.role}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setCallTarget(`${member.name} · ${member.phone}`)}
+              className="flex items-center gap-1 text-[10px] text-[#006F80] font-medium bg-[#CCF0FE] px-2.5 py-1 rounded-lg hover:bg-[#99E7FF] transition-colors"
+            >
+              <Phone className="w-3 h-3" /> Call
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+
     {callTarget && (
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 animate-in fade-in">
         <Phone className="w-3.5 h-3.5 text-[#006F80]" />
-        <span>Calling {callTarget}</span>
+        <span>正在呼叫 {callTarget}</span>
       </div>
     )}
 
@@ -647,7 +629,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
       className="fixed bottom-6 right-6 z-50 bg-[#006F80] hover:bg-[#B0895E] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg transition-all flex items-center gap-2"
     >
       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-      Switch to {PATIENTS_FULL.find(p => p.id === familyPatientId)?.name ?? 'other patient'}
+      切换到 {PATIENTS_FULL.find(p => p.id === familyPatientId)?.name ?? 'other patient'}
     </button>
 
   </div>

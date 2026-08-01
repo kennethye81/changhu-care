@@ -1,4 +1,4 @@
-import { CARE_TEAM } from '../data/careTeam';
+import { CARE_TEAM, CN_CARE_TEAM } from '../data/careTeam';
 import type { PatientFull } from '../data/patients';
 
 export interface FamilyCareTeamMember {
@@ -37,15 +37,19 @@ export function getFamilyCareTeam(patient: PatientFull | undefined): FamilyCareT
 
   const entries: { name: string; role: string }[] = [
     { name: stripRole(cp.assignedCaseManager), role: roleLabel(cp.assignedCaseManager, '个案经理') },
-    { name: stripRole(cp.assignedNurse), role: roleLabel(cp.assignedNurse, 'Primary Nurse') },
+    { name: stripRole(cp.assignedNurse), role: roleLabel(cp.assignedNurse, '护士') },
   ];
 
   if (cp.assignedRehabTherapist) {
-    entries.push({ name: stripRole(cp.assignedRehabTherapist), role: roleLabel(cp.assignedRehabTherapist, 'Rehab Therapist') });
+    entries.push({ name: stripRole(cp.assignedRehabTherapist), role: roleLabel(cp.assignedRehabTherapist, '康复治疗师') });
+  }
+
+  if (cp.assignedNutritionist) {
+    entries.push({ name: stripRole(cp.assignedNutritionist), role: roleLabel(cp.assignedNutritionist, '营养师') });
   }
 
   if (cp.assignedCareWorker) {
-    entries.push({ name: stripRole(cp.assignedCareWorker), role: roleLabel(cp.assignedCareWorker, 'Care Worker') });
+    entries.push({ name: stripRole(cp.assignedCareWorker), role: roleLabel(cp.assignedCareWorker, '护理员') });
   }
 
   return entries
@@ -53,7 +57,7 @@ export function getFamilyCareTeam(patient: PatientFull | undefined): FamilyCareT
     .map(({ name, role }) => ({
       name,
       role,
-      img: CARE_TEAM[name]?.avatar ?? '/avatars/default-staff.png',
+      img: CN_CARE_TEAM[name]?.avatar ?? CARE_TEAM[name]?.avatar ?? '/avatars/default-staff.png',
       phone: getStaffDemoPhone(name),
     }));
 }
