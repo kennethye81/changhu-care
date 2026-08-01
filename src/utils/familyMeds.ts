@@ -16,11 +16,11 @@ function formatMedName(drug: string): string {
 }
 
 function mapFrequency(freq: string, route: string): { schedule: string; freq: string } {
-  if (/PRN/i.test(freq)) return { schedule: 'As needed (PRN)', freq: freq.replace(/^PRN\s*/i, 'Up to ') };
-  if (/IV/i.test(route) || /IV/i.test(freq)) return { schedule: 'Morning', freq: freq };
-  if (/BID/i.test(freq)) return { schedule: 'Morning + Evening', freq: freq };
-  if (/QD|Once daily|daily/i.test(freq)) return { schedule: 'Morning', freq: 'Once daily' };
-  return { schedule: 'Scheduled', freq: freq };
+  if (/PRN/i.test(freq)) return { schedule: '必要时', freq: freq.replace(/^PRN\s*/i, 'Up to ') };
+  if (/IV/i.test(route) || /IV/i.test(freq)) return { schedule: '早晨', freq: freq };
+  if (/BID/i.test(freq)) return { schedule: '早+晚', freq: freq };
+  if (/QD|Once daily|daily/i.test(freq)) return { schedule: '早晨', freq: '每日一次' };
+  return { schedule: '按时', freq: freq };
 }
 
 export function getFamilyMedications(patient: PatientFull | undefined, alertActive: boolean): FamilyMedRow[] {
@@ -56,11 +56,11 @@ export function getFamilyMedSummary(patient: PatientFull | undefined, alertActiv
     activeCount,
     missedCount: 0,
     adherencePct: 100,
-    aiSummary: p7Alert
-      ? 'Medication adherence: 100% — all scheduled doses confirmed. IV Ceftriaxone 2g initiated for infection. Salbutamol PRN within safe range. Continue Amlodipine for HTN.'
+    aiSummary: alertActive
+      ? '降压药每日一次确认服用。血压145/88 mmHg（脑出血术后，降压方案待心内科确认）。家属负责用药监督，依从性良好。右下肢DVT — 避免挤压，持续观察。'
       : `Medication adherence: 100% — ${activeCount} oral medications confirmed taken. IV Ceftriaxone scheduled from Day 2 per CAP protocol. Salbutamol PRN not needed this morning.`,
-    refillSummary: p7Alert
-      ? 'IV Ceftriaxone supply active. Tiotropium + Amlodipine oral: 14 days remaining. Jenny Tam to coordinate pharmacy if oral switch needed after afebrile period.'
-      : 'Tiotropium + Amlodipine oral: 14 days remaining. IV antibiotics start Day 2 — pharmacy delivery confirmed for home visit.',
+    refillSummary: alertActive
+      ? '降压药口服: 30天库存。社区药房定期配送。家属可联系护士刘敏咨询用药调整。'
+      : '降压药口服: 30天库存。药房配送已确认。',
   };
 }

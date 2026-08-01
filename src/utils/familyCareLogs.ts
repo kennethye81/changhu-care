@@ -4,7 +4,6 @@ import {
   Activity, AlertTriangle, CheckCircle2, ClipboardList, Heart, Stethoscope,
 } from 'lucide-react';
 import { DEMO_CARE_PLAN_DATE } from './carePlanSync';
-import { formatPatient1AlertDetail } from './medicalHistoryNews';
 import type { Vitals } from '../store/patientStore';
 
 export interface FamilyProgressNote {
@@ -17,7 +16,7 @@ export interface FamilyProgressNote {
 
 function formatLogTime(date: string, time: string): string {
   const d = new Date(`${date}T12:00:00`);
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
   return `${dayNames[d.getDay()]} ${time}`;
 }
 
@@ -50,25 +49,25 @@ export function mapCarePlanLogsToFamilyNotes(logs: FollowupLogEntry[], limit = 6
 }
 
 const DAY1_FALLBACK_NOTES = (vitals?: Vitals): FamilyProgressNote[] => [
-  { title: 'RN — Initial HaH Assessment', detail: 'Primary nurse — baseline vitals recorded, caregiver trained on SpO₂/BP monitoring and escalation protocol. AMTS 10/10.', time: 'Thu 9:30 AM', icon: ClipboardList, color: 'text-[#0095D3]' },
-  { title: 'Attending Physician Tele-consult', detail: 'Day 1 plan confirmed. Continue clinical protocol per care plan. Medication reconciliation completed.', time: 'Thu 9:38 AM', icon: Stethoscope, color: 'text-[#0095D3]' },
-  { title: 'AM Medication', detail: 'Tiotropium 18mcg + Amlodipine 5mg — confirmed taken at 8:00 AM. Salbutamol PRN not needed this morning.', time: 'Thu 8:00 AM', icon: CheckCircle2, color: 'text-[#06B0EF]' },
+  { title: '护士刘敏 — 初始评估', detail: '长护险初次评估完成。Barthel 20/100（重度失能），Braden 14（高危），右下肢DVT（Caprini 7）。家属周明辉已培训翻身、ROM操作和血压监测。', time: '周五 10:00', icon: ClipboardList, color: 'text-[#0095D3]' },
+  { title: '个案经理 — 方案确认', detail: '个案经理张丽华确认月度服务方案：20次/月上门，q2h翻身+被动ROM+二便管理+血压监测。家属签字确认。', time: '周五 10:15', icon: CheckCircle2, color: 'text-[#0095D3]' },
+  { title: '护理员 — 首次访视', detail: '护理员王秀英完成床单位整理、面部清洁、口腔护理。家属满意。右下肢血栓观察要点已再次强调。', time: '周六 09:00', icon: Heart, color: 'text-[#06B0EF]' },
   {
-    title: 'Vitals + SpO₂ Check',
+    title: '生命体征监测',
     detail: vitals
-      ? `BP ${vitals.bpSystolic}/${vitals.bpDiastolic}, HR ${vitals.hr} sinus, SpO₂ ${vitals.spo2}% on room air, Temp ${vitals.temp}°C. Breath sounds: coarse rhonchi RLL, mild wheeze. Comfortable at rest.`
-      : 'BP 138/84, HR 84 sinus, SpO₂ 93% on room air, Temp 37.0°C. Breath sounds: coarse rhonchi RLL, mild wheeze. Comfortable at rest.',
-    time: 'Thu 9:30 AM',
+      ? `血压 ${vitals.bpSystolic}/${vitals.bpDiastolic}，心率 ${vitals.hr}，血氧 ${vitals.spo2}%，体温 ${vitals.temp}°C。右侧偏瘫卧床，左肢正常。目前无压疮。`
+      : '血压145/88，心率72，血氧97%，体温36.5°C。右侧偏瘫卧床，左肢正常。目前无压疮。',
+    time: '周五 10:00',
     icon: Heart,
     color: 'text-[#06B0EF]',
   },
 ];
 
-function buildP7RedAlertNote(vitals: Vitals): FamilyProgressNote {
+function buildAlertNote(vitals: Vitals): FamilyProgressNote {
   return {
-    title: 'RN — RED Alert + POCT',
-    detail: `SpO₂ ${vitals.spo2}%, Temp ${vitals.temp}°C, RR ${vitals.rr}, HR ${vitals.hr}. POCT: CRP 68, PCT 0.8. IV Ceftriaxone 2g started. O₂ at 2L/min.`,
-    time: 'Thu 2:30 PM',
+    title: '护士刘敏 — 紧急访视',
+    detail: `血压 ${vitals.bpSystolic}/${vitals.bpDiastolic}，血氧 ${vitals.spo2}%，心率 ${vitals.hr}，体温 ${vitals.temp}°C。血压异常，需立即评估。通知家属周明辉就医。`,
+    time: '周五 14:30',
     icon: ClipboardList,
     color: 'text-red-600',
   };
@@ -87,8 +86,8 @@ export function getFamilyCareProgressNotes(
   const base = DAY1_FALLBACK_NOTES(vitals);
   if (alertActive && vitals) {
     return [
-      { title: '⚠ AI感染提醒', detail: formatPatient1AlertDetail(), time: 'Thu 5:02 PM', icon: AlertTriangle, color: 'text-red-600' },
-      buildP7RedAlertNote(vitals),
+      { title: '⚠ AI风险提醒', detail: 'AI检测到血压异常 — 需立即评估。通知护士刘敏。家属周明辉已收到短信提醒。', time: '周五 14:30', icon: AlertTriangle, color: 'text-red-600' },
+      buildAlertNote(vitals),
       ...base,
     ].slice(0, limit);
   }
