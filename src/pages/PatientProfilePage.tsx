@@ -47,7 +47,7 @@ const PatientProfilePage: FC = () => {
   const p7AlertActive = usePatientStore(s => s.p7AlertActive);
   const storeVitals = usePatientStore(s => s.vitals);
   const isCrit = p7AlertActive && Number(id) === 7;
-  if (!patient) return <div className="p-6 text-slate-500">Patient not found</div>;
+  if (!patient) return <div className="p-6 text-slate-500">未找到病人</div>;
   const displayPatient = storePatient || patient;
 
   const carePlans = usePatientStore(s => s.carePlans);
@@ -129,13 +129,13 @@ const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: bool
       </div>
       <div className="glass-card rounded-xl border border-slate-200 p-4"><h3 className="text-xs font-bold text-slate-600 mb-3">家庭联系人</h3>
         {family.length === 0 ? (
-          <p className="text-xs text-slate-400">No family contact on file.</p>
-        ) : family.map((f,i)=>(<div key={i} className={`pb-3 mb-3 ${i<family.length-1?'border-b border-slate-100':''}`}><div className="flex items-center gap-2 mb-1"><span className="text-xs font-bold text-slate-700">{f.name}</span>{f.isPrimary&&<span className="text-[9px] bg-blue-100 text-teal-700 px-1.5 py-0.5 rounded-full font-bold">Primary</span>}{f.livingWith&&<span className="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">Live-in</span>}</div><p className="text-[10px] text-slate-400">{f.relationship}</p><div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500"><span className="flex items-center gap-1"><Phone className="w-3 h-3"/>{f.phone}</span>{f.email&&<span className="flex items-center gap-1"><Mail className="w-3 h-3"/>{f.email}</span>}</div>{f.notes&&<p className="text-[10px] text-slate-400 mt-1">{f.notes}</p>}</div>))}
+          <p className="text-xs text-slate-400">未登记家属联系方式。</p>
+        ) : family.map((f,i)=>(<div key={i} className={`pb-3 mb-3 ${i<family.length-1?'border-b border-slate-100':''}`}><div className="flex items-center gap-2 mb-1"><span className="text-xs font-bold text-slate-700">{f.name}</span>{f.isPrimary&&<span className="text-[9px] bg-blue-100 text-teal-700 px-1.5 py-0.5 rounded-full font-bold">主要</span>}{f.livingWith&&<span className="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">同住</span>}</div><p className="text-[10px] text-slate-400">{f.relationship}</p><div className="flex items-center gap-3 mt-1 text-[10px] text-slate-500"><span className="flex items-center gap-1"><Phone className="w-3 h-3"/>{f.phone}</span>{f.email&&<span className="flex items-center gap-1"><Mail className="w-3 h-3"/>{f.email}</span>}</div>{f.notes&&<p className="text-[10px] text-slate-400 mt-1">{f.notes}</p>}</div>))}
       </div>
     </div>
     <div className="grid grid-cols-3 gap-4">
       <div className="glass-card rounded-xl border border-slate-200 p-4"><h3 className="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5 text-indigo-500"/>睡眠</h3><div className="space-y-1.5 text-xs">{sleepData.map((s,i)=>(<div key={i} className="flex justify-between"><span className="text-slate-400">{s.l}</span><span className="font-semibold text-slate-700">{s.v}</span></div>))}</div></div>
-      <div className="glass-card rounded-xl border border-slate-200 p-4"><h3 className="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1.5"><GlassWater className="w-3.5 h-3.5 text-cyan-500"/>Intake/Output</h3><div className="space-y-1.5 text-xs">{ioData.map((s,i)=>(<div key={i} className="flex justify-between"><span className="text-slate-400">{s.l}</span><span className="font-semibold text-slate-700">{s.v}</span></div>))}</div></div>
+      <div className="glass-card rounded-xl border border-slate-200 p-4"><h3 className="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1.5"><GlassWater className="w-3.5 h-3.5 text-cyan-500"/>出入量</h3><div className="space-y-1.5 text-xs">{ioData.map((s,i)=>(<div key={i} className="flex justify-between"><span className="text-slate-400">{s.l}</span><span className="font-semibold text-slate-700">{s.v}</span></div>))}</div></div>
       <div className="glass-card rounded-xl border border-slate-200 p-4"><h3 className="text-xs font-bold text-slate-600 mb-2 flex items-center gap-1.5"><Brain className="w-3.5 h-3.5 text-purple-500"/>精神状态</h3><div className="space-y-1.5 text-xs">{mentalData.map((s,i)=>(<div key={i} className="flex justify-between"><span className="text-slate-400">{s.l}</span><span className="font-semibold text-slate-700">{s.v}</span></div>))}</div></div>
     </div>
     <div className={`rounded-xl p-4 ${alertTone === 'crit' ? 'bg-red-50 border border-red-200' : alertTone === 'warn' ? 'bg-amber-50 border border-amber-200' : 'bg-emerald-50 border border-emerald-200'}`}><div className="flex items-start gap-2"><AlertTriangle className={`w-4 h-4 mt-0.5 ${alertTone === 'crit' ? 'text-red-500' : alertTone === 'warn' ? 'text-amber-500' : 'text-emerald-500'}`}/><div className="text-xs"><p className="font-bold text-slate-700">AI临床提醒</p><p className="text-slate-600 mt-0.5">{clinicalAlertText}</p></div></div></div>
@@ -150,7 +150,7 @@ const CareTeamSection: FC<{ patient: PatientFull; teamMembers: string[] }> = ({ 
           isImg
             ? <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 shadow-md"><img src={m.avatar} alt={m.name} className="w-full h-full object-cover" /></div>
             : <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-lg font-bold flex-shrink-0 shadow-md">{m.avatar}</div>
-        }<div className="flex-1 min-w-0"><p className="text-sm font-bold text-slate-800">{m.name}</p><p className="text-[10px] text-teal-600 font-semibold">{m.role}{m.registrationNo ? <span className="ml-1 text-[9px] text-slate-400 font-mono">#{m.registrationNo}</span> : null}</p><p className="text-[10px] text-slate-400 mt-0.5">{m.gender}, {m.age} · {m.yearsExperience}yrs exp</p><p className="text-[10px] text-slate-500 mt-1"><strong>Specialty:</strong> {m.specialty}</p><p className="text-[10px] text-slate-500"><strong>Institution:</strong> {m.institution}</p><p className="text-[10px] text-slate-500"><strong>Education:</strong> {m.education}</p><div className="flex flex-wrap gap-1 mt-2">{m.certifications.map((c,j)=>(<span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>))}</div><p className="text-[10px] text-slate-600 mt-2 leading-relaxed">{m.bio}</p></div></div></div>);
+        }<div className="flex-1 min-w-0"><p className="text-sm font-bold text-slate-800">{m.name}</p><p className="text-[10px] text-teal-600 font-semibold">{m.role}{m.registrationNo ? <span className="ml-1 text-[9px] text-slate-400 font-mono">#{m.registrationNo}</span> : null}</p><p className="text-[10px] text-slate-400 mt-0.5">{m.gender}, {m.age} · {m.yearsExperience}yrs exp</p><p className="text-[10px] text-slate-500 mt-1"><strong>专科:</strong> {m.specialty}</p><p className="text-[10px] text-slate-500"><strong>机构:</strong> {m.institution}</p><p className="text-[10px] text-slate-500"><strong>健康教育:</strong> {m.education}</p><div className="flex flex-wrap gap-1 mt-2">{m.certifications.map((c,j)=>(<span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>))}</div><p className="text-[10px] text-slate-600 mt-2 leading-relaxed">{m.bio}</p></div></div></div>);
       })}
     </div>
   </div>
@@ -224,7 +224,7 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   return (
   <div>
     <div className="sticky top-0 z-10 bg-warm-50 -mx-6 px-6 pt-6 pb-3">
-      <ST title="Medical History" icon={FileText} />
+      <ST title="病史档案" icon={FileText} />
     </div>
     {history?.aiSummary && (
       <div className="sticky top-14 z-[5] bg-warm-50 -mx-6 px-6 pb-3">
@@ -232,7 +232,7 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
           <div className="flex items-start gap-3 mb-3">
             <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"><Brain className="w-5 h-5 text-white" /></div>
             <div>
-              <div className="flex items-center gap-2"><span className="text-sm font-bold text-indigo-800">AI Medical History Summary</span><span className="text-[9px] bg-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded-full font-semibold">Analysis</span></div>
+              <div className="flex items-center gap-2"><span className="text-sm font-bold text-indigo-800">智能病史分析</span><span className="text-[9px] bg-indigo-200 text-indigo-700 px-1.5 py-0.5 rounded-full font-semibold">分析</span></div>
             </div>
           </div>
           <div className="space-y-2 ml-[52px]">
@@ -262,22 +262,22 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
             <span className="text-[10px] text-slate-500">{entry.physician}</span>
           </div>
           <div className="px-5 py-3 space-y-2.5">
-            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Chief Complaint</span><p className="text-xs text-slate-700 mt-0.5">{entry.chiefComplaint}</p></div>
-            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Diagnosis</span><p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{entry.diagnosis}</p></div>
+            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">主诉</span><p className="text-xs text-slate-700 mt-0.5">{entry.chiefComplaint}</p></div>
+            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">诊断</span><p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{entry.diagnosis}</p></div>
             {entry.labs && (
               <div className="flex items-start gap-2 cursor-pointer hover:bg-purple-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.labs!, 'lab'))}>
                 <FlaskConical className="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">Lab Results</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
+                <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">检验结果</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
               </div>
             )}
             {entry.imaging && (
               <div className="flex items-start gap-2 cursor-pointer hover:bg-indigo-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.imaging!, 'imaging'))}>
                 <Microscope className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">Imaging</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
+                <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">影像</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">View full report →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
               </div>
             )}
-            {entry.prescriptions && (<div className="flex items-start gap-2"><Pill className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-teal-600">Prescriptions</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.prescriptions}</p></div></div>)}
-            {entry.procedures && (<div className="flex items-start gap-2"><Activity className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-red-600">Procedures</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.procedures}</p></div></div>)}
+            {entry.prescriptions && (<div className="flex items-start gap-2"><Pill className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-teal-600">处方</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.prescriptions}</p></div></div>)}
+            {entry.procedures && (<div className="flex items-start gap-2"><Activity className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-red-600">手术/操作</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.procedures}</p></div></div>)}
             <div className="pt-2 border-t border-slate-50"><p className="text-[10px] text-slate-600 leading-relaxed italic">{entry.notes}</p></div>
           </div>
         </div>
@@ -361,7 +361,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
     <div className="flex flex-col h-full min-h-0">
       {/* Sticky overall title */}
       <div className="flex-shrink-0 sticky top-0 z-10 bg-warm-50 pb-3 -mx-6 px-6">
-        <ST title="Care Information" icon={CalendarDays} />
+        <ST title="照护信息" icon={CalendarDays} />
       </div>
 
       <div className="flex-1 space-y-4 overflow-y-auto min-h-0 pr-1">
@@ -375,10 +375,10 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
           <button onClick={() => setAssessmentModal(true)} className={`ml-auto ${sectionLink}`}>View full assessment report →</button>
         </h3>
         <div className="grid grid-cols-2 gap-3 text-sm font-body">
-          <div><span className={modalLabel}>Assessment Date</span><p className="text-slate-700 font-medium mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
-          <div><span className={modalLabel}>Case Manager</span><p className="text-slate-700 font-medium mt-0.5">{patient.carePlan?.assignedCaseManager?.split(' (')[0] || 'Peter Ho'}</p></div>
-          <div><span className={modalLabel}>Assessment Location</span><p className="text-slate-700 font-medium mt-0.5">{patient.id<=5?'Patient Home — Kwun Tong District':'Patient Home — New Territories'}</p></div>
-          <div><span className={modalLabel}>Family Present</span><p className="text-slate-700 font-medium mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse'}</p></div>
+          <div><span className={modalLabel}>评估日期</span><p className="text-slate-700 font-medium mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
+          <div><span className={modalLabel}>个案经理</span><p className="text-slate-700 font-medium mt-0.5">{patient.carePlan?.assignedCaseManager?.split(' (')[0] || 'Peter Ho'}</p></div>
+          <div><span className={modalLabel}>评估地点</span><p className="text-slate-700 font-medium mt-0.5">{patient.id<=5?'Patient Home — Kwun Tong District':'Patient Home — New Territories'}</p></div>
+          <div><span className={modalLabel}>家属在场</span><p className="text-slate-700 font-medium mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse'}</p></div>
         </div>
       </div>
 
@@ -399,10 +399,10 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             </span>
           </h3>
           <div className={`grid grid-cols-[80px_1fr_90px_80px] gap-2 px-4 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span className="text-left">Role</span>
-            <span className="text-left">Service</span>
-            <span className="text-left">Frequency</span>
-            <span className="text-right">Duration</span>
+            <span className="text-left">角色</span>
+            <span className="text-left">服务</span>
+            <span className="text-left">频率</span>
+            <span className="text-right">时长</span>
           </div>
         </div>
         <div className="max-h-64 overflow-y-auto">
@@ -431,10 +431,10 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             <button onClick={() => setMedicationModal(true)} className={`ml-auto ${sectionLink}`}>View full Medication Info →</button>
           </h3>
           <div className={`grid grid-cols-[1fr_100px_100px_76px] gap-2 px-4 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span>Drug</span>
-            <span>Dosage</span>
-            <span>Frequency</span>
-            <span className="text-right">Stock</span>
+            <span>药品</span>
+            <span>剂量</span>
+            <span>频率</span>
+            <span className="text-right">库存</span>
           </div>
         </div>
         <div className="max-h-64 overflow-y-auto">
@@ -465,11 +465,11 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             <Clock className="w-4 h-4 text-teal-600" /> Today's Schedule
           </h3>
           <div className={`grid grid-cols-[64px_0.9fr_1.2fr_0.9fr_70px] gap-2.5 px-5 pb-2 ${tableHead} border-b border-slate-100`}>
-            <span>Time</span>
-            <span>Care Item</span>
-            <span>Details</span>
-            <span>Actual</span>
-            <span className="text-right">Status</span>
+            <span>时间</span>
+            <span>照护项</span>
+            <span>详情</span>
+            <span>实际</span>
+            <span className="text-right">状态</span>
           </div>
         </div>
         <div className="max-h-80 overflow-y-auto">
@@ -517,7 +517,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
               </div>
               );
             })
-          ) : <p className="text-xs text-slate-400 px-5 py-4">No scheduled activities for today.</p>}
+          ) : <p className="text-xs text-slate-400 px-5 py-4">今日暂无排程。</p>}
         </div>
 
         {/* AI Service Evaluation */}
@@ -528,27 +528,27 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             </div>
             <div className="flex-1 min-w-0 space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[11px] font-semibold text-teal-800 font-display">AI Service Evaluation</span>
-                <span className="text-[10px] bg-gold-100 text-gold-800 px-1.5 py-0.5 rounded-full font-semibold">Real-time</span>
+                <span className="text-[11px] font-semibold text-teal-800 font-display">AI服务评估</span>
+                <span className="text-[10px] bg-gold-100 text-gold-800 px-1.5 py-0.5 rounded-full font-semibold">实时</span>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] font-body">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">Adherence:</span>
+                  <span className="text-slate-500">依从率:</span>
                   <span className="font-semibold text-emerald-700">{progressPct}%</span>
                   <span className="w-16 h-1.5 bg-warm-200 rounded-full overflow-hidden">
                     <div className="h-full bg-emerald-600 rounded-full" style={{ width: `${progressPct}%` }} />
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">Completed:</span>
+                  <span className="text-slate-500">已完成:</span>
                   <span className="font-semibold text-teal-700">{completed}/{total}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">Pending:</span>
+                  <span className="text-slate-500">待完成:</span>
                   <span className="font-semibold text-amber-700">{pendingCount}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500">Missed:</span>
+                  <span className="text-slate-500">已错过:</span>
                   <span className="font-semibold text-red-700">{missed}</span>
                 </div>
               </div>
@@ -577,20 +577,20 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
         <div className={modalOverlay} onClick={() => setAssessmentModal(false)}>
           <div className={`${modalShell} w-[580px]`} onClick={e => e.stopPropagation()}>
             <div className={modalHeader}>
-              <div className="flex items-center gap-2"><ClipboardList className="w-5 h-5 text-gold-200" /><span className={modalTitle}>Comprehensive Initial Assessment</span></div>
+              <div className="flex items-center gap-2"><ClipboardList className="w-5 h-5 text-gold-200" /><span className={modalTitle}>综合初评报告</span></div>
               <button onClick={() => setAssessmentModal(false)} className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"><X className="w-3.5 h-3.5 text-white" /></button>
             </div>
             <div className="p-6 space-y-5 font-body">
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div><span className={modalLabel}>Patient</span><p className="text-slate-800 font-semibold font-display mt-0.5">{patient.name}</p></div>
-                <div><span className={modalLabel}>DOB / Age</span><p className="text-slate-800 mt-0.5">{2026 - patient.age} | {patient.gender} | {patient.age} yrs</p></div>
-                <div><span className={modalLabel}>Assessment Date</span><p className="text-slate-800 mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
-                <div><span className={modalLabel}>Case Manager</span><p className="text-slate-800 mt-0.5">{patient.carePlan?.assignedCaseManager || 'Peter Ho'}</p></div>
-                <div><span className={modalLabel}>Assessment Location</span><p className="text-slate-800 mt-0.5">Patient Home — Residential Address</p></div>
-                <div><span className={modalLabel}>Family Present</span><p className="text-slate-800 mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse / Family Member'}</p></div>
+                <div><span className={modalLabel}>病人</span><p className="text-slate-800 font-semibold font-display mt-0.5">{patient.name}</p></div>
+                <div><span className={modalLabel}>出生日期 / 年龄</span><p className="text-slate-800 mt-0.5">{2026 - patient.age} | {patient.gender} | {patient.age} yrs</p></div>
+                <div><span className={modalLabel}>评估日期</span><p className="text-slate-800 mt-0.5">{patient.nursingRecords?.[patient.nursingRecords.length - 1]?.date || '2026-06-16'}</p></div>
+                <div><span className={modalLabel}>个案经理</span><p className="text-slate-800 mt-0.5">{patient.carePlan?.assignedCaseManager || 'Peter Ho'}</p></div>
+                <div><span className={modalLabel}>评估地点</span><p className="text-slate-800 mt-0.5">Patient Home — Residential Address</p></div>
+                <div><span className={modalLabel}>家属在场</span><p className="text-slate-800 mt-0.5">{patient.id===1?'Daughter — Emily Chan':patient.id===3?'Husband — Mr. Lee':patient.id===5?'Son — Cheung Ka Ming':'Spouse / Family Member'}</p></div>
               </div>
               <div className="border-t border-slate-200" />
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Clinical History</h3><p className={modalBody}>{patient.clinicalSummary}</p></div>
+              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">临床病史</h3><p className={modalBody}>{patient.clinicalSummary}</p></div>
               {patient.careType === '长护险' && (
                 <>
                   <div className="border-t border-slate-200 my-2" />
@@ -709,11 +709,11 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
                   </div>
                 </>
               )}
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Current Medications</h3><div className="space-y-1.5">{patient.medications.filter(m=>m.status==='Active').map((m,i)=>(<div key={i} className="text-sm text-slate-700 flex items-start gap-1.5"><span className="text-slate-300 mt-0.5 flex-shrink-0">•</span><span><span className="font-medium">{m.drug} {m.dose}</span><span className="text-slate-400 mx-1">—</span>{m.frequency}<span className="text-slate-400 ml-1">({m.purpose})</span></span></div>))}</div></div>
-              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Physical Assessment</h3><div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-slate-700"><div>• General: Alert, well-groomed</div><div>• Skin: Warm, dry, intact</div><div>• CV: Regular rhythm</div><div>• Resp: Clear to auscultation</div><div>• Abdomen: Soft, non-tender</div><div>• Neuro: Cranial nerves intact</div><div>• Mobility: Ambulates with/without aid</div><div>• Pain: 0-3/10 at rest</div></div></div>
+              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">当前用药</h3><div className="space-y-1.5">{patient.medications.filter(m=>m.status==='Active').map((m,i)=>(<div key={i} className="text-sm text-slate-700 flex items-start gap-1.5"><span className="text-slate-300 mt-0.5 flex-shrink-0">•</span><span><span className="font-medium">{m.drug} {m.dose}</span><span className="text-slate-400 mx-1">—</span>{m.frequency}<span className="text-slate-400 ml-1">({m.purpose})</span></span></div>))}</div></div>
+              <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">体格检查</h3><div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-sm text-slate-700"><div>• General: Alert, well-groomed</div><div>• Skin: Warm, dry, intact</div><div>• CV: Regular rhythm</div><div>• Resp: Clear to auscultation</div><div>• Abdomen: Soft, non-tender</div><div>• Neuro: Cranial nerves intact</div><div>• Mobility: Ambulates with/without aid</div><div>• Pain: 0-3/10 at rest</div></div></div>
               <div className="grid grid-cols-2 gap-4">
-                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Care Plan Goals</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.goals.map((g,i)=>(<div key={i}>• {g}</div>))}</div></div>
-                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Precautions</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.precautions.map((p,i)=>(<div key={i}>• {p}</div>))}</div></div>
+                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">照护计划目标</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.goals.map((g,i)=>(<div key={i}>• {g}</div>))}</div></div>
+                <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">注意事项</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.precautions.map((p,i)=>(<div key={i}>• {p}</div>))}</div></div>
               </div>
             </div>
             <div className="border-t border-[#d2c4be] px-5 py-3 flex items-center gap-2 text-xs text-slate-500 font-body"><CheckCircle2 className="w-3 h-3 text-emerald-600" />Signed: Case Manager · Assessment reviewed by Nursing Director</div>
@@ -760,7 +760,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             <div className="p-5 font-body">
               <div className="rounded-lg border border-[#d2c4be] overflow-hidden bg-white">
                 <div className={`grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2 bg-warm-100 ${tableHead} border-b border-[#d2c4be]`}>
-                  <span>Medication</span><span>Dose</span><span>Frequency</span><span>Purpose</span><span className="text-right">Status</span>
+                  <span>药品</span><span>剂量</span><span>频率</span><span>用途</span><span className="text-right">状态</span>
                 </div>
                 {patient.medications.map((med,i) => (
                   <div key={i} className="grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2.5 text-sm items-center border-b border-[#ede7e5] last:border-0 hover:bg-warm-50">
@@ -824,7 +824,7 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
 
   return (
     <div className="space-y-4">
-      <ST title="All Logs & Records" icon={ClipboardList} />
+      <ST title="全部日志与记录" icon={ClipboardList} />
 
       {/* 1. Physician Follow-ups */}
       <div className="glass-card rounded-xl border border-slate-200 p-4">
@@ -833,7 +833,7 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
         </h3>
         <div className="space-y-2">
           {doctorLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
-          {doctorLogs.length === 0 && <p className="text-xs text-slate-400">No physician follow-up records yet.</p>}
+          {doctorLogs.length === 0 && <p className="text-xs text-slate-400">暂无医生随访记录。</p>}
         </div>
       </div>
 
@@ -845,7 +845,7 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
         <div className="space-y-2">
           {nurseLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
           {otherLogs.map((log: any, i: number) => <LogItem key={`o${i}`} log={log} />)}
-          {nurseLogs.length === 0 && otherLogs.length === 0 && <p className="text-xs text-slate-400">No nursing or care records yet.</p>}
+          {nurseLogs.length === 0 && otherLogs.length === 0 && <p className="text-xs text-slate-400">暂无护理或照护记录。</p>}
         </div>
       </div>
 
@@ -885,10 +885,10 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
                 <span className="text-[10px] text-slate-400">{comm.date} · {comm.time}</span>
               </div>
               <p className="text-slate-600">{comm.summary}</p>
-              <p className="text-[10px] text-amber-600 mt-0.5"><strong>Action:</strong> {comm.actionItems}</p>
+              <p className="text-[10px] text-amber-600 mt-0.5"><strong>操作:</strong> {comm.actionItems}</p>
             </div>
           ))}
-          {familyComms.length === 0 && <p className="text-xs text-slate-400">No family communication records yet.</p>}
+          {familyComms.length === 0 && <p className="text-xs text-slate-400">暂无家属沟通记录。</p>}
         </div>
       </div>
     </div>
@@ -913,7 +913,7 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
 
   return (
   <div className="space-y-4">
-    <ST title="IoT Devices" icon={Smartphone}/>
+    <ST title="物联网设备" icon={Smartphone}/>
     {patient.iotDevices.map((dev,i) => {
       const isBP = dev.type === 'Blood Pressure Monitor';
       return (
@@ -938,29 +938,29 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
           </span>
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">Battery</span><p className="font-bold text-slate-700">{dev.battery}%</p></div>
-          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">Last Sync</span><p className="font-bold text-slate-700">{isBP ? '30 sec ago' : dev.lastSync}</p></div>
+          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">电量</span><p className="font-bold text-slate-700">{dev.battery}%</p></div>
+          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">上次同步</span><p className="font-bold text-slate-700">{isBP ? '30 sec ago' : dev.lastSync}</p></div>
         </div>
         {isBP && (
           <div className="bg-gradient-to-r from-red-50 to-rose-50 rounded-lg border border-red-100 p-3 mb-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-semibold text-red-600 uppercase">Live Blood Pressure Reading</span>
+              <span className="text-[10px] font-semibold text-red-600 uppercase">实时血压读数</span>
               <button onClick={startBpMeasure} disabled={measuring} className="text-[9px] font-semibold bg-red-500 hover:bg-red-600 disabled:bg-slate-300 text-white px-3 py-1 rounded-full transition-colors">
                 {measuring ? 'Measuring...' : bpReading ? 'Re-measure' : 'Take Reading'}
               </button>
             </div>
             {measuring ? (
               <div className="flex items-center gap-2 py-3">
-                <span className="text-sm text-red-400 animate-pulse">Cuff inflating...</span>
+                <span className="text-sm text-red-400 animate-pulse">袖带充气中...</span>
                 <svg className="animate-spin h-4 w-4 text-red-400" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
               </div>
             ) : bpReading ? (
               <div className="flex items-center gap-4">
-                <div className="text-center"><span className="text-[10px] text-red-400 block">SYS</span><span className="text-xl font-extrabold text-red-700">{bpReading.sys}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
+                <div className="text-center"><span className="text-[10px] text-red-400 block">收缩压</span><span className="text-xl font-extrabold text-red-700">{bpReading.sys}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
                 <span className="text-red-300 text-lg">/</span>
-                <div className="text-center"><span className="text-[10px] text-red-400 block">DIA</span><span className="text-xl font-extrabold text-red-700">{bpReading.dia}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
+                <div className="text-center"><span className="text-[10px] text-red-400 block">舒张压</span><span className="text-xl font-extrabold text-red-700">{bpReading.dia}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
                 <div className="w-px h-8 bg-red-200" />
-                <div className="text-center"><span className="text-[10px] text-slate-400 block">Pulse</span><span className="text-xl font-extrabold text-slate-700">{bpReading.hr}</span><span className="text-[10px] text-slate-400 ml-0.5">bpm</span></div>
+                <div className="text-center"><span className="text-[10px] text-slate-400 block">脉搏</span><span className="text-xl font-extrabold text-slate-700">{bpReading.hr}</span><span className="text-[10px] text-slate-400 ml-0.5">bpm</span></div>
                 <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${bpReading.sys>=140?'bg-red-100 text-red-700':bpReading.sys>=130?'bg-amber-100 text-amber-700':'bg-emerald-100 text-emerald-700'}`}>
                   {bpReading.sys>=140?'Stage 2 HTN':bpReading.sys>=130?'Stage 1 HTN':'Normal'}
                 </span>
@@ -970,7 +970,7 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
             )}
           </div>
         )}
-        <p className="text-[10px] font-semibold text-slate-600 mb-1">Parameters:</p>
+        <p className="text-[10px] font-semibold text-slate-600 mb-1">参数:</p>
         <div className="flex flex-wrap gap-1">{dev.parameters.map((p,j)=>(<span key={j} className="text-[9px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full">{p}</span>))}</div>
       </div>
     )})}
@@ -990,12 +990,12 @@ const BillingSection: FC<{ patientId: number }> = ({ patientId }) => {
 
   return (
     <div className="space-y-4">
-      <ST title="Billing" icon={PhoneCall}/>
+      <ST title="账单" icon={PhoneCall}/>
       {meta && (
         <div className="glass-card rounded-xl border border-slate-200 p-4 flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-teal-600">{meta.id}</p>
-            <p className="text-[10px] text-slate-400 mt-0.5">Current HaH invoice</p>
+            <p className="text-[10px] text-slate-400 mt-0.5">当前居家照护账单</p>
           </div>
           <div className="text-right">
             <p className="text-sm font-extrabold text-slate-800">HK$ {meta.total.toLocaleString()}</p>
@@ -1005,15 +1005,15 @@ const BillingSection: FC<{ patientId: number }> = ({ patientId }) => {
       )}
       <div className="glass-card rounded-xl border border-slate-200 overflow-hidden">
         {rows.length === 0 ? (
-          <p className="px-4 py-6 text-xs text-slate-400 text-center">No billing records on file for this patient.</p>
+          <p className="px-4 py-6 text-xs text-slate-400 text-center">此病人暂无账单记录。</p>
         ) : (
           <table className="w-full text-xs">
             <thead className="bg-warm-50">
               <tr>
-                <th className="text-left px-4 py-2 font-semibold text-slate-600">Date</th>
-                <th className="text-left px-4 py-2 font-semibold text-slate-600">Service</th>
-                <th className="text-right px-4 py-2 font-semibold text-slate-600">HKD</th>
-                <th className="text-center px-4 py-2 font-semibold text-slate-600">Status</th>
+                <th className="text-left px-4 py-2 font-semibold text-slate-600">日期</th>
+                <th className="text-left px-4 py-2 font-semibold text-slate-600">服务</th>
+                <th className="text-right px-4 py-2 font-semibold text-slate-600">金额</th>
+                <th className="text-center px-4 py-2 font-semibold text-slate-600">状态</th>
               </tr>
             </thead>
             <tbody>
