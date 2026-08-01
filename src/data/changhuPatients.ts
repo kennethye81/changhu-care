@@ -5,7 +5,7 @@ import type { PatientFull } from '../patients';
 
 export const CHANGHU_PATIENTS: PatientFull[] = [
   // ═══════════════════════════════════════════════════════════
-  // PATIENT 1 — 冯存富 — 中度失能 · 高血压 · 压疮 · 极高跌倒风险
+  // PATIENT 1 — 冯存富 — Barthel 30分（重度依赖） · 高血压 · 压疮 · 极高跌倒风险
   // 常州金坛 | 指前镇解放村 | 评估机构：易得康
   // ═══════════════════════════════════════════════════════════
   {
@@ -14,12 +14,12 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
     gender: 'M',
     age: 77,
     address: '江苏省常州市金坛区指前镇解放村接王家村3号',
-    diagnosis: '高血压 · 双侧肢体活动异常 · 压疮 · 中度失能',
+    diagnosis: '高血压2级 · 双侧肢体活动异常 · 压疮 · Barthel 30分（重度依赖）',
     diagnosisCodes: ['I10', 'L89', 'R26.8'],
     allergies: ['无'],
     physician: '—（社区医生定期随访）',
-    admittingDiagnosis: '长护险中度等级评估。77岁男性，高血压病史，血压160/82mmHg。双侧肢体活动异常，Barthel ADL 30/60，中度依赖。Braden 16分，有压疮风险。跌倒风险评估105分（极高危），有跌倒史。意识清醒，半自理状态。配偶同住为主要照护者。',
-    clinicalSummary: '77岁男性，身高164cm，体重70kg。高血压患者，中度失能。双侧上下肢活动异常，需助行器辅助。已有压疮（部位待确认），Braden 16分提示压疮风险。跌倒风险极高（105分），有近3月跌倒史。意识清醒，半自理。需持续照护：翻身q2h、压疮护理、血压监测、防跌倒措施。评估机构：易得康，评估者李妍，评估日期2026.4.1。⚠️ Barthel ADL：手写总分=60 vs 勾选位置累加=30，差异待确认。',
+    admittingDiagnosis: '长护险中度等级评估。77岁男性，高血压病史，血压160/82mmHg。双侧肢体活动异常，Barthel ADL 30/100（重度依赖），重度依赖。Braden 16分，有压疮风险。跌倒风险评估105分（极高危，自制量表非Morse标准），有跌倒史。意识清醒，半自理状态。配偶同住为主要照护者。',
+    clinicalSummary: '77岁男性，身高164cm，体重70kg。高血压患者，Barthel 30分（重度依赖）。双侧上下肢活动异常，需助行器辅助。已有压疮（部位待确认），Braden 16分提示压疮风险。跌倒风险极高（105分），有近3月跌倒史。意识清醒，半自理。需持续照护：翻身q2h、压疮护理、血压监测、防跌倒措施。评估机构：易得康，评估者李妍，评估日期2026.4.1。⚠️ Barthel ADL：手写总分=60 vs 勾选位置累加=30，差异待确认。',
 
     careType: '长护险',
     careLevel: '中度',
@@ -86,9 +86,9 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
     // ── 关键指标 ──
     keyIndicators: [
       { name: '跌倒事件', baseline: '已有跌倒史', threshold: '再次发生', action: '24h内上门+安全改造' },
-      { name: '血压', baseline: '160/82', threshold: '>180/100', action: '通知家属就医' },
-      { name: 'Braden评分', baseline: '16', threshold: '≤14', action: '升级高风险管理' },
-      { name: 'Barthel ADL', baseline: '30/60', threshold: '↓≥10分', action: '重新评估' },
+      { name: '血压 | 160/82 | ≥160/100 | 通知家属就医' },
+      { name: 'Braden评分 | 16 | ≤16=加强预防，≤12=升级高风险' },
+      { name: 'Barthel ADL', baseline: '30/100', threshold: '↓≥10分', action: '重新评估' },
     ],
 
     wardRounds: [],
@@ -119,7 +119,7 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
       {
         date: '2026-04-01',
         time: '10:00',
-        note: '长护险初始评估。Barthel 30/60，中度依赖。血压160/82，双侧肢体异常，已有压疮。跌倒风险105分极高危。配偶王小凤为紧急联系人。制定护理计划：q2h翻身、压疮护理、防跌倒措施、血压监测。',
+        note: '长护险初始评估。Barthel 30/100（重度依赖）。血压160/82，双侧肢体异常，已有压疮。跌倒风险105分极高危。配偶王小凤为紧急联系人。制定护理计划：q2h翻身、压疮护理、防跌倒措施、血压监测。',
         nurse: '姜珊',
         vitals: 'BP 160/82 | HR 78 | Temp 36.7 | RR 17',
       },
@@ -142,7 +142,7 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
       { type: '减压气垫床', model: '迈德康 防压疮型', serial: 'AM-2026-00001', status: 'Connected', battery: 100, parameters: ['压力交替周期', '使用时长', '气泵状态'], lastSync: '5分钟前' },
     ],
 
-    riskLevel: 'Moderate',
+    riskLevel: '中',
     readmissionRisk: 30,
 
     // ── 增值服务 ──

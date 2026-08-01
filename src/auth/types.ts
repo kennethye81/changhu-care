@@ -1,5 +1,5 @@
-// === Role & Permission Definitions ===
-export type Role = 'admin' | 'doctor' | 'nursing_director' | 'case_manager' | 'finance';
+// === 长护险 角色与权限定义 ===
+export type Role = 'admin' | 'doctor' | 'nurse' | 'case_manager' | 'assessor' | 'care_worker' | 'rehab_therapist' | 'dietitian' | 'family' | 'finance';
 
 const ALL_TOP = ['command_center', 'patient_records', 'iot_devices', 'followup_workbench', 'clinical_reports', 'medication', 'billing', 'reports'];
 const ALL_SIDE = ['risk_alerts', 'followup_calendar', 'chronic_care', 'messages', 'knowledge_base'];
@@ -14,87 +14,94 @@ export interface User {
   account: string;
 }
 
-// Navigation visibility per role
 export const ROLE_NAV: Record<Role, string[]> = {
   admin: ALL_TOP,
   doctor: ['command_center', 'patient_records', 'followup_workbench', 'clinical_reports', 'medication'],
-  nursing_director: ['command_center', 'patient_records', 'iot_devices', 'followup_workbench', 'clinical_reports'],
+  nurse: ['command_center', 'patient_records', 'iot_devices', 'followup_workbench', 'clinical_reports'],
   case_manager: ['command_center', 'patient_records', 'followup_workbench'],
+  assessor: ['command_center', 'patient_records', 'followup_workbench'],
+  care_worker: ['command_center', 'patient_records'],
+  rehab_therapist: ['command_center', 'patient_records'],
+  dietitian: ['command_center', 'patient_records'],
+  family: ['patient_records'],
   finance: ['billing', 'reports'],
 };
 
 export const ROLE_SIDE_NAV: Record<Role, string[]> = {
   admin: ALL_SIDE,
   doctor: ['risk_alerts', 'followup_calendar', 'messages', 'knowledge_base'],
-  nursing_director: ['risk_alerts', 'followup_calendar', 'chronic_care', 'messages', 'knowledge_base'],
+  nurse: ['risk_alerts', 'followup_calendar', 'chronic_care', 'messages', 'knowledge_base'],
   case_manager: ['risk_alerts', 'followup_calendar', 'messages'],
+  assessor: ['risk_alerts', 'messages'],
+  care_worker: ['messages'],
+  rehab_therapist: ['messages'],
+  dietitian: ['messages'],
+  family: ['messages'],
   finance: ['messages'],
 };
 
-// Patient detail tab permissions: 'r' = read, 'w' = read+write, '-' = hidden
 export type TabKey = 'vitals' | 'history' | 'medication' | 'followup_logs' | 'care_plan' | 'devices' | 'billing';
 export const ROLE_TAB_PERMS: Record<Role, Record<TabKey, 'r' | 'w' | '-'>> = {
   admin:       ALL_TABS,
   doctor:      { vitals: 'r', history: 'r', medication: 'w', followup_logs: 'w', care_plan: 'r', devices: 'r', billing: '-' },
-  nursing_director: { vitals: 'r', history: 'r', medication: 'r', followup_logs: 'w', care_plan: 'w', devices: 'r', billing: '-' },
+  nurse:       { vitals: 'r', history: 'r', medication: 'r', followup_logs: 'w', care_plan: 'w', devices: 'r', billing: '-' },
   case_manager: { vitals: 'r', history: 'r', medication: '-', followup_logs: '-', care_plan: 'r', devices: '-', billing: '-' },
+  assessor:    { vitals: 'r', history: 'w', medication: '-', followup_logs: 'w', care_plan: 'w', devices: '-', billing: '-' },
+  care_worker: { vitals: 'r', history: 'r', medication: '-', followup_logs: 'w', care_plan: 'r', devices: '-', billing: '-' },
+  rehab_therapist: { vitals: 'r', history: 'r', medication: '-', followup_logs: 'w', care_plan: 'r', devices: '-', billing: '-' },
+  dietitian:   { vitals: '-', history: 'r', medication: '-', followup_logs: 'w', care_plan: 'r', devices: '-', billing: '-' },
+  family:      { vitals: 'r', history: 'r', medication: '-', followup_logs: '-', care_plan: 'r', devices: '-', billing: '-' },
   finance:     { vitals: '-', history: '-', medication: '-', followup_logs: '-', care_plan: '-', devices: '-', billing: 'w' },
 };
 
-// Permission checks
 export function canAccess(role: Role, feature: string, navType: 'top' | 'side'): boolean {
   const list = navType === 'top' ? ROLE_NAV[role] : ROLE_SIDE_NAV[role];
   return list.includes(feature);
 }
+export function canEdit(role: Role, tab: TabKey): boolean { return ROLE_TAB_PERMS[role][tab] === 'w'; }
+export function canRead(role: Role, tab: TabKey): boolean { return ROLE_TAB_PERMS[role][tab] !== '-'; }
 
-export function canEdit(role: Role, tab: TabKey): boolean {
-  return ROLE_TAB_PERMS[role][tab] === 'w';
-}
-
-export function canRead(role: Role, tab: TabKey): boolean {
-  return ROLE_TAB_PERMS[role][tab] !== '-';
-}
-
-// Mock users for demo
+// 长护险 Mock Users
 export const MOCK_USERS: Record<string, { password: string; user: User }> = {
-  'chan.chi.keung': {
-    password: '123456',
-    user: { id: 'D001', name: 'Dr. Chan Chi Keung', role: 'doctor', avatar: 'KW', institutionId: 'HK-INST-001', account: 'chan.chi.keung' },
-  },
-  'peter.ho': {
-    password: '123456',
-    user: { id: 'C001', name: 'Peter Ho', role: 'case_manager', avatar: 'PH', institutionId: 'HK-INST-001', account: 'peter.ho' },
-  },
-  'sarah.leung': {
-    password: '123456',
-    user: { id: 'N001', name: 'Sarah Leung', role: 'nursing_director', avatar: 'SL', institutionId: 'HK-INST-001', account: 'sarah.leung' },
-  },
   'admin': {
     password: '123456',
-    user: { id: 'A001', name: 'System Admin', role: 'admin', avatar: 'SA', institutionId: 'HK-INST-001', account: 'admin' },
+    user: { id: 'A001', name: '系统管理员', role: 'admin', avatar: 'SA', institutionId: 'CH-001', account: 'admin' },
   },
-  'finance': {
+  'jiang.shan': {
     password: '123456',
-    user: { id: 'F001', name: 'Margaret Chan', role: 'finance', avatar: 'MC', institutionId: 'HK-INST-001', account: 'finance' },
+    user: { id: 'N001', name: '姜珊', role: 'nurse', avatar: 'JS', institutionId: 'CH-001', account: 'jiang.shan' },
   },
-  'grace.tang': {
+  'li.yan': {
     password: '123456',
-    user: { id: 'CM001', name: 'Grace Tang', role: 'case_manager', avatar: 'GT', institutionId: 'HK-INST-001', account: 'grace.tang' },
+    user: { id: 'AS001', name: '李妍', role: 'assessor', avatar: 'LY', institutionId: 'CH-001', account: 'li.yan' },
   },
-  'tony.lam': {
+  'tang.juling': {
     password: '123456',
-    user: { id: 'CM002', name: 'Tony Lam', role: 'case_manager', avatar: 'TL', institutionId: 'HK-INST-001', account: 'tony.lam' },
+    user: { id: 'CW001', name: '汤菊玲', role: 'care_worker', avatar: 'TJL', institutionId: 'CH-001', account: 'tang.juling' },
   },
-  'anna.leung': {
+  'wang.xiaofeng': {
     password: '123456',
-    user: { id: 'CM003', name: 'Anna Leung', role: 'case_manager', avatar: 'AL', institutionId: 'HK-INST-001', account: 'anna.leung' },
+    user: { id: 'FM001', name: '王小凤', role: 'family', avatar: 'WXF', institutionId: 'CH-001', account: 'wang.xiaofeng' },
+  },
+  'rehab.pt': {
+    password: '123456',
+    user: { id: 'PT001', name: '康复师（待分配）', role: 'rehab_therapist', avatar: 'PT', institutionId: 'CH-001', account: 'rehab.pt' },
+  },
+  'dietitian': {
+    password: '123456',
+    user: { id: 'DT001', name: '营养师（待分配）', role: 'dietitian', avatar: 'DT', institutionId: 'CH-001', account: 'dietitian' },
   },
 };
 
 export const ROLE_LABELS: Record<Role, string> = {
-  admin: 'Administrator',
-  doctor: 'Physician',
-  nursing_director: 'Nursing Director',
-  case_manager: 'Case Manager',
-  finance: 'Finance',
+  admin: '系统管理员',
+  doctor: '社区医生',
+  nurse: '责任护士',
+  case_manager: '个案经理',
+  assessor: '评估员',
+  care_worker: '长期照护师',
+  rehab_therapist: '康复治疗师',
+  dietitian: '营养师',
+  family: '家属',
+  finance: '财务',
 };

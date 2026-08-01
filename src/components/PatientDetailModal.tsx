@@ -476,7 +476,7 @@ const CarePlanTab: FC<{ editable: boolean; role: Role; patient: PatientFull }> =
         <strong>Physician Note:</strong> You have read-only access to the Care Plan. The Nursing Director manages plan creation and staff assignment.
       </div>
     )}
-    {role === 'nursing_director' && (
+    {role === 'nurse' && (
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-700">
         <strong>Nursing Director:</strong> You have full edit rights. Adjust frequency, assign staff, and set care priorities based on physician orders.
       </div>

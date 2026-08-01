@@ -6,7 +6,7 @@ import { Activity, Eye, EyeOff, Smartphone, Shield } from 'lucide-react';
 const ROLE_ACCOUNTS: Record<string, string> = {
   doctor: 'chan.chi.keung',
   case_manager: 'peter.ho',
-  nursing_director: 'sarah.leung',
+  nurse: 'jiang.shan',
   admin: 'admin',
   finance: 'finance',
 };

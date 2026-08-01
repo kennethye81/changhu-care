@@ -35,14 +35,13 @@ const ALL_NAV: NavItem[] = [
 
 // Available roles for switching
 const ROLES = [
-  { id: 'admin', label: 'Admin', subtitle: 'System Administrator', role: 'admin' },
-  { id: 'chan.chi.keung', label: 'Dr. Chan Chi Keung', subtitle: 'Cardiologist', role: 'doctor' },
-  { id: 'sarah.leung', label: 'Nurse Sarah', subtitle: 'Nursing Director', role: 'nursing_director' },
-  { id: 'peter.ho', label: 'Peter Ho', subtitle: 'Case Manager', role: 'case_manager' },
-  { id: 'grace.tang', label: 'Grace Tang', subtitle: 'Case Manager', role: 'case_manager' },
-  { id: 'tony.lam', label: 'Tony Lam', subtitle: 'Case Manager', role: 'case_manager' },
-  { id: 'anna.leung', label: 'Anna Leung', subtitle: 'Case Manager', role: 'case_manager' },
-  { id: 'finance', label: 'Margaret Chan', subtitle: 'Finance', role: 'finance' },
+  { id: 'admin', label: '系统管理员', subtitle: 'Administrator', role: 'admin' },
+  { id: 'jiang.shan', label: '姜珊', subtitle: '责任护士', role: 'nurse' },
+  { id: 'li.yan', label: '李妍', subtitle: '评估员', role: 'assessor' },
+  { id: 'tang.juling', label: '汤菊玲', subtitle: '长期照护师', role: 'care_worker' },
+  { id: 'wang.xiaofeng', label: '王小凤', subtitle: '家属', role: 'family' },
+  { id: 'rehab.pt', label: '康复师（待分配）', subtitle: '康复治疗师', role: 'rehab_therapist' },
+  { id: 'dietitian', label: '营养师（待分配）', subtitle: '营养师', role: 'dietitian' },
 ];
 
 const AVATARS: Record<string, string> = {

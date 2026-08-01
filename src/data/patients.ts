@@ -32,7 +32,7 @@ export interface PatientFull {
   nursingRecords: { date: string; time: string; note: string; nurse: string; vitals?: string }[];
   medications: { drug: string; dose: string; route: string; frequency: string; purpose: string; startDate: string; status: 'Active' | 'Discontinued' }[];
   iotDevices: { type: string; model: string; serial: string; status: 'Connected' | 'Syncing' | 'Disconnected'; battery: number; parameters: string[]; lastSync: string }[];
-  riskLevel: 'Low' | 'Moderate' | 'High' | 'Critical';
+  riskLevel: '低' | '中' | '高' | '危重';
   readmissionRisk: number;
 
   // ── 长护险 (ChangHu Care) 专用字段 ──
