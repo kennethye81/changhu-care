@@ -34,8 +34,8 @@ function parseFamilyEntry(name: string, age: number, gender?: 'M' | 'F'): Family
 
 /** Ages aligned to patient age + relationship (see patients.ts / patientRecords). */
 export const FAMILY_CONTACT_BY_PATIENT: Record<number, FamilyContact> = {
-  1:  parseFamilyEntry('Mrs. Cheung (Lee Mei Ling)', 76, 'F'),
-  2:  parseFamilyEntry('Wong Siu Ming (Daughter)', 45, 'F'),
+  1:  parseFamilyEntry('陈玉兰（配偶）', 78, 'F'),
+  2:  parseFamilyEntry('周明辉（儿子）', 44, 'M'),
   3:  parseFamilyEntry('Lam Wai Leng (Spouse)', 43, 'F'),
   4:  parseFamilyEntry('Lau Wai Hung (Son)', 52, 'M'),
   5:  parseFamilyEntry('Mrs. Ho (Chan Siu Ling)', 70, 'F'),
