@@ -352,33 +352,33 @@ const Overview: FC<{ patient: PatientFull; family: FamilyContact[]; isCrit: bool
 const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySchedule: any[]; today: string }> = ({ patient, teamMembers, todaySchedule, today }) => {
   const plan = usePatientStore(s => s.carePlans[patient.id]);
   const taskTimes = useCollaborationStore(s => s.eliteTaskTimes);
-  const { completed, total, progressPct, missed } = useMemo(
+  const { completed, total, missed } = useMemo(
     () => summarizeCarePlanProgress(todaySchedule),
     [todaySchedule],
   );
   const [carePlanModal, setCarePlanModal] = useState(false);
 
-  const typeLabels: Record<string, string> = {
-    medication: '用药', monitoring: '监测', therapy: '康复',
-    nurse_visit: '护理', doctor_consult: '医生', care_worker: '照护', self_care: '自理',
-  };
-  const typeBadgeColors: Record<string, string> = {
-    medication: 'bg-amber-50 text-amber-700', nurse_visit: 'bg-teal-50 text-teal-700',
-    doctor_consult: 'bg-teal-100 text-teal-800', therapy: 'bg-purple-50 text-purple-700',
-    care_worker: 'bg-warm-100 text-warm-700', monitoring: 'bg-blue-50 text-blue-700',
-    self_care: 'bg-slate-50 text-slate-600',
+  const statusDot = (status: string) => {
+    switch (status) {
+      case 'completed': return { color: 'bg-emerald-500', text: '已完成', pulse: true };
+      case 'in_progress': return { color: 'bg-teal-500', text: '进行中', pulse: true };
+      case 'missed': return { color: 'bg-red-500', text: '异常', pulse: true };
+      default: return { color: 'bg-amber-400', text: '待完成', pulse: false };
+    }
   };
 
   return (
     <div className="-mt-6">
-      <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
-        <ST title="照护信息" icon={Users} />
+      <div className="sticky top-0 z-10 bg-warm-50 -mx-6 px-6 pt-6 pb-3">
+        <ST title="照护信息" icon={Brain} />
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 mt-1">
+
         {/* ━━━ 1. 护理团队 ━━━ */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-teal-500" /> 护理团队
+        <div className="bg-white rounded-lg border border-slate-200 p-5">
+          <h3 className="text-[13px] font-bold text-slate-800 mb-3 flex items-center gap-2">
+            <Users className="w-4 h-4 text-teal-600" />
+            护理团队
           </h3>
           <div className="grid grid-cols-2 gap-3">
             {teamMembers.map((name, i) => {
@@ -401,7 +401,7 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
                           <p className="text-[10px] text-slate-400 mt-0.5">{m.specialty}</p>
                           <p className="text-[10px] text-slate-500 mt-0.5">{m.institution}</p>
                           <div className="flex flex-wrap gap-1 mt-2">
-                            {m.certifications.map((c, j) => (
+                            {m.certifications.map((c: string, j: number) => (
                               <span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>
                             ))}
                           </div>
@@ -415,87 +415,86 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
           </div>
         </div>
 
-        {/* ━━━ 2. 护理计划 + 3. 用药概览 (并排) ━━━ */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* 护理计划 */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="px-5 pt-5 pb-3 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-teal-500" /> 护理计划
-              </h3>
-              <button onClick={() => setCarePlanModal(true)} className="text-[10px] font-medium text-teal-600 hover:text-teal-800">查看完整计划 →</button>
-            </div>
-            <div className="border-b border-slate-100 grid grid-cols-[72px_1fr_80px_64px] gap-2 px-5 pb-2">
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">角色</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">服务内容</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">频次</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase text-right">时长</span>
-            </div>
-            <div className="max-h-52 overflow-y-auto">
-              {[
-                { role: '个案经理', service: '服务协调、进度跟踪、家属沟通、长护险对接', freq: '持续', duration: '按需', color: 'border-l-teal-600' },
-                { role: '护理员', service: '助餐、助浴、助行、用药提醒、翻身、压疮护理', freq: patient.carePlan.serviceFrequency, duration: patient.carePlan.visitDuration, color: 'border-l-amber-500' },
-                { role: '护士', service: '生命体征监测、压疮评估、用药依从性检查、健康教育', freq: '每周1次', duration: '45 min', color: 'border-l-teal-500' },
-                ...(patient.carePlan.assignedRehabTherapist && patient.carePlan.assignedRehabTherapist !== '—' ? [{ role: '康复师', service: '被动关节活动、肌力训练、助行器训练', freq: '2次/周', duration: '45 min', color: 'border-l-purple-500' }] : []),
-                ...(patient.carePlan.assignedNutritionist && patient.carePlan.assignedNutritionist !== '—' ? [{ role: '营养师', service: '营养评估、膳食指导、蛋白补充方案', freq: '每月1次', duration: '30 min', color: 'border-l-emerald-500' }] : []),
-              ].map((r, i) => (
-                <div key={i} className={`grid grid-cols-[72px_1fr_80px_64px] gap-2 px-5 py-2.5 text-xs items-start border-l-2 ${r.color} bg-slate-50/50 border-b border-slate-100`}>
-                  <span className="font-semibold text-slate-700 text-[11px]">{r.role}</span>
-                  <span className="text-slate-600 text-[11px] leading-relaxed">{r.service}</span>
-                  <span className="text-[10px] text-slate-500">{r.freq}</span>
-                  <span className="text-[10px] text-slate-400 text-right">{r.duration}</span>
-                </div>
-              ))}
-            </div>
+        {/* ━━━ 2. 护理概览 ━━━ */}
+        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+          <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+            <h3 className="text-[13px] font-bold text-slate-800 flex items-center gap-2">
+              <ClipboardList className="w-4 h-4 text-teal-600" />
+              护理概览
+            </h3>
+            <button onClick={() => setCarePlanModal(true)} className="text-[10px] font-medium text-teal-600 hover:text-teal-800">查看完整计划 →</button>
           </div>
+          <div className="border-b border-slate-100 grid grid-cols-[80px_1fr_88px_72px] gap-2 px-5 pb-2">
+            <span className="text-[10px] font-semibold text-slate-400">角色</span>
+            <span className="text-[10px] font-semibold text-slate-400">服务内容</span>
+            <span className="text-[10px] font-semibold text-slate-400">频次</span>
+            <span className="text-[10px] font-semibold text-slate-400 text-right">时长</span>
+          </div>
+          <div>
+            {[
+              { role: '个案经理', service: '服务协调、进度跟踪、家属沟通、长护险对接', freq: '持续', duration: '按需', color: 'border-l-teal-600' },
+              { role: '护理员', service: '助餐、助浴、助行、用药提醒、翻身、压疮护理', freq: patient.carePlan.serviceFrequency, duration: patient.carePlan.visitDuration, color: 'border-l-amber-500' },
+              { role: '护士', service: '生命体征监测、压疮评估、用药依从性检查、健康教育', freq: '每周1次', duration: '45 min', color: 'border-l-teal-500' },
+              ...(patient.carePlan.assignedRehabTherapist && patient.carePlan.assignedRehabTherapist !== '—' ? [{ role: '康复师', service: '被动关节活动、肌力训练、助行器训练', freq: '2次/周', duration: '45 min', color: 'border-l-purple-500' }] : []),
+              ...(patient.carePlan.assignedNutritionist && patient.carePlan.assignedNutritionist !== '—' ? [{ role: '营养师', service: '营养评估、膳食指导、蛋白补充方案', freq: '每月1次', duration: '30 min', color: 'border-l-emerald-500' }] : []),
+            ].map((r, i) => (
+              <div key={i} className={`grid grid-cols-[80px_1fr_88px_72px] gap-2 px-5 py-2.5 text-xs items-start border-l-2 ${r.color} bg-slate-50/50 border-b border-slate-100`}>
+                <span className="font-semibold text-slate-700 text-[11px]">{r.role}</span>
+                <span className="text-slate-600 text-[11px] leading-relaxed">{r.service}</span>
+                <span className="text-[10px] text-slate-500">{r.freq}</span>
+                <span className="text-[10px] text-slate-400 text-right">{r.duration}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {/* 用药概览 */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-            <div className="px-5 pt-5 pb-3">
-              <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-teal-500" /> 用药概览
-              </h3>
-            </div>
-            <div className="border-b border-slate-100 grid grid-cols-[1fr_72px_72px_56px] gap-2 px-5 pb-2">
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">药品</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">剂量</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase">频率</span>
-              <span className="text-[10px] font-semibold text-slate-400 uppercase text-right">库存</span>
-            </div>
-            <div className="max-h-52 overflow-y-auto">
-              {patient.medications.map((med, i) => {
-                const todayObj = new Date(today);
-                const start = new Date(med.startDate);
-                const daysSince = Math.max(0, Math.floor((todayObj.getTime() - start.getTime()) / 86400000));
-                const stockDays = med.status === 'Active' ? Math.max(1, (daysSince > 90 ? 30 : 30) - (daysSince % 30)) : 0;
-                const totalSupply = daysSince > 90 ? 30 : 30;
-                const stockLow = stockDays <= 7;
-                const stockWarn = !stockLow && stockDays <= 14;
-                const stockColor = stockLow ? 'text-red-600' : stockWarn ? 'text-amber-600' : 'text-emerald-600';
-                return (
-                  <div key={i} className="grid grid-cols-[1fr_72px_72px_56px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-100 bg-slate-50/50">
-                    <span className="font-semibold text-slate-700 text-[11px]">{med.drug}</span>
-                    <span className="text-slate-500 text-[10px]">{med.dose}·{med.route}</span>
-                    <span className="text-slate-500 text-[10px]">{med.frequency}</span>
-                    <span className={`font-semibold text-[10px] text-right ${stockColor} ${stockLow ? 'animate-pulse' : ''}`}>{stockDays}/{totalSupply}d</span>
-                  </div>
-                );
-              })}
-            </div>
+        {/* ━━━ 3. 用药概览 ━━━ */}
+        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+          <div className="px-5 pt-5 pb-3">
+            <h3 className="text-[13px] font-bold text-slate-800 flex items-center gap-2">
+              <Pill className="w-4 h-4 text-teal-600" />
+              用药概览
+            </h3>
+          </div>
+          <div className="border-b border-slate-100 grid grid-cols-[1fr_80px_80px_60px] gap-2 px-5 pb-2">
+            <span className="text-[10px] font-semibold text-slate-400">药品</span>
+            <span className="text-[10px] font-semibold text-slate-400">剂量</span>
+            <span className="text-[10px] font-semibold text-slate-400">频率</span>
+            <span className="text-[10px] font-semibold text-slate-400 text-right">库存</span>
+          </div>
+          <div>
+            {patient.medications.map((med, i) => {
+              const todayObj = new Date(today);
+              const start = new Date(med.startDate);
+              const daysSince = Math.max(0, Math.floor((todayObj.getTime() - start.getTime()) / 86400000));
+              const stockDays = med.status === 'Active' ? Math.max(1, 30 - (daysSince % 30)) : 0;
+              const stockLow = stockDays <= 7;
+              const stockWarn = !stockLow && stockDays <= 14;
+              const stockColor = stockLow ? 'text-red-600' : stockWarn ? 'text-amber-600' : 'text-emerald-600';
+              return (
+                <div key={i} className="grid grid-cols-[1fr_80px_80px_60px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-100 bg-slate-50/50">
+                  <span className="font-semibold text-slate-700 text-[11px]">{med.drug}</span>
+                  <span className="text-slate-500 text-[10px]">{med.dose}·{med.route}</span>
+                  <span className="text-slate-500 text-[10px]">{med.frequency}</span>
+                  <span className={`font-semibold text-[10px] text-right ${stockColor} ${stockLow ? 'animate-pulse' : ''}`}>{stockDays}/30d</span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* ━━━ 4. 增值服务 ━━━ */}
         {patient.serviceModules && patient.serviceModules.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-teal-500" /> 增值服务 · 标准版
+          <div className="bg-white rounded-lg border border-slate-200 p-5">
+            <h3 className="text-[13px] font-bold text-slate-800 mb-3 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-teal-600" />
+              增值服务
             </h3>
             <div className="grid grid-cols-2 gap-2">
-              {patient.serviceModules.map(m => {
+              {patient.serviceModules.map((m: any) => {
                 const iconMap: Record<string, string> = { M1: '🛏️', M2: '🦯', M3: '💪', M4: '💊', M5: '🥗', M6: '🩺', M7: '📊' };
                 return (
-                  <div key={m.id} className="bg-slate-50/50 border border-slate-200 rounded-xl px-3 py-2.5">
+                  <div key={m.id} className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5">
                     <div className="flex items-center gap-2 mb-0.5">
                       <span className="text-sm">{iconMap[m.id] || '📋'}</span>
                       <span className="text-[11px] font-bold text-slate-800">{m.name}</span>
@@ -510,51 +509,43 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
         )}
 
         {/* ━━━ 5. 当日完成情况 ━━━ */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="px-5 pt-5 pb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-teal-500" /> 当日完成情况
+        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+          <div className="px-5 pt-5 pb-3">
+            <h3 className="text-[13px] font-bold text-slate-800 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-teal-600" />
+              当日完成情况
             </h3>
-            <div className="flex items-center gap-3 text-[10px] text-slate-400">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />已完成 {completed}</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" />待处理 {total - completed - missed}</span>
-              {missed > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />逾期 {missed}</span>}
-            </div>
           </div>
-          <div className="border-b border-slate-100 grid grid-cols-[56px_1fr_1.2fr_1fr_80px] gap-2 px-5 pb-2">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase">时间</span>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase">照护项</span>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase">详情</span>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase">实际</span>
-            <span className="text-[10px] font-semibold text-slate-400 uppercase text-center">状态</span>
+          <div className="border-b border-slate-100 grid grid-cols-[1fr_1.2fr_1fr_1fr_80px] gap-2 px-5 pb-2">
+            <span className="text-[10px] font-semibold text-slate-400">项目</span>
+            <span className="text-[10px] font-semibold text-slate-400">详情</span>
+            <span className="text-[10px] font-semibold text-slate-400">计划时段</span>
+            <span className="text-[10px] font-semibold text-slate-400">实际时段</span>
+            <span className="text-[10px] font-semibold text-slate-400 text-center">状态</span>
           </div>
           <div className="max-h-72 overflow-y-auto">
             {todaySchedule.length > 0 ? todaySchedule.map((act: any, i: number) => {
               const taskKey = eliteTaskKey(patient.id, act.time, act.activity);
               const times = taskTimes[taskKey] || {};
-              const hasActual = !!times.clockIn;
-              const dotColor = act.status === 'completed' ? 'bg-emerald-500 animate-pulse' : act.status === 'in_progress' ? 'bg-teal-500 animate-pulse' : act.status === 'missed' ? 'bg-red-500 animate-pulse' : 'bg-amber-400';
-              const statusText = act.status === 'completed' ? '完成' : act.status === 'in_progress' ? '进行中' : act.status === 'missed' ? '逾期' : '待处理';
+              const sd = statusDot(act.status);
               return (
-                <div key={i} className="grid grid-cols-[56px_1fr_1.2fr_1fr_80px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-slate-50/50">
-                  <span className="text-[11px] font-bold text-slate-400">{act.time}</span>
-                  <div className="flex items-start gap-1.5 min-w-0">
-                    <span className={`text-[8px] font-semibold px-1 py-0.5 rounded-full flex-shrink-0 mt-px ${typeBadgeColors[act.type] || 'bg-slate-100 text-slate-600'}`}>{typeLabels[act.type] || act.type}</span>
-                    <span className="text-slate-700 font-medium text-[11px] leading-relaxed">{act.activity}</span>
-                  </div>
+                <div key={i} className="grid grid-cols-[1fr_1.2fr_1fr_1fr_80px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-slate-50/50">
+                  <span className="text-slate-700 font-medium text-[11px] leading-relaxed">{act.activity}</span>
                   <span className="text-[11px] text-slate-500 leading-relaxed">{act.detail}</span>
+                  <span className="text-[10px] text-slate-500 font-mono">{act.scheduled || '—'}</span>
                   <span className="text-[10px] text-slate-500 font-mono">
-                    {hasActual ? `${times.clockIn}${times.clockOut ? `–${times.clockOut}` : '–...'}` : '—:—'}
+                    {times.clockIn ? `${times.clockIn}${times.clockOut ? ` – ${times.clockOut}` : ''}` : '—'}
                   </span>
                   <div className="flex items-center gap-1.5 justify-center">
-                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dotColor}`} />
-                    <span className="text-[10px] text-slate-500">{statusText}</span>
+                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${sd.color} ${sd.pulse ? 'animate-pulse' : ''}`} />
+                    <span className="text-[10px] text-slate-500">{sd.text}</span>
                   </div>
                 </div>
               );
             }) : <p className="text-xs text-slate-400 px-5 py-4 text-center">今日暂无排程</p>}
           </div>
         </div>
+
       </div>
 
       {/* ── 护理计划完整弹窗 ── */}
@@ -615,6 +606,7 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
     </div>
   );
 };
+
 
 const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const history = MEDICAL_HISTORY[patient.id];
