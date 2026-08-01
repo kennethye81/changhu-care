@@ -118,13 +118,17 @@ function generateVitalSummary(
   }
 
   // 冯存富真实体征基线
-  return 'BP 160/82 mmHg — 高于目标＜150/90，硝苯地平30mg qd方案下血压控制不充分。HR 78 bpm规律，SpO₂ 96%正常，体温36.7°C，呼吸17次/分。需优化降压方案并加强服药依从性监督。';
+  if (patient.id === 1) return 'BP 160/82 mmHg — 高于目标＜150/90，硝苯地平30mg qd方案下血压控制不充分。HR 78 bpm规律，SpO₂ 96%正常，体温36.7°C，呼吸17次/分。需优化降压方案并加强服药依从性监督。';
+  // 李玉富体征基线(脑出血术后偏瘫)
+  if (patient.id === 10001) return 'BP 145/88 mmHg — 脑出血术后，降压方案待心内科确认。HR 72 bpm规律，SpO₂ 97%正常，体温36.5°C，呼吸18次/分。右侧偏瘫卧床，需注意体位性低血压风险。右下肢DVT(Caprini 7分)需持续观察。';
+  return '生命体征数据待录入。';
 }
 
 function generateSleepSummary(patient: PatientFull, alertActive = false): string {
   // 冯存富真实睡眠
   if (patient.id === 1 && alertActive) return '睡眠受扰 — 约5.2小时，因压疮不适及翻身中断2-3次。建议评估减压气垫床压力设置及睡前皮肤护理方案。';
   if (patient.id === 1) return '睡眠约6.5小时，基本连续。减压气垫床辅助下压疮部位不适减轻。配偶王小凤同室照护，夜间有异常可及时发现。睡眠质量尚可。';
+  if (patient.id === 10001) return '睡眠约7小时，q2h翻身中断2-3次。减压气垫床辅助下无明显压疮不适。儿子李小鹏同住，夜间有异常可及时发现。睡眠质量可，翻身中断影响轻微。';
   return '睡眠时长与质量在正常范围内。未见明显异常。';
 }
 
@@ -132,6 +136,7 @@ function generateIntakeOutputSummary(patient: PatientFull, alertActive = false):
   // 冯存富出入量
   if (patient.id === 1 && alertActive) return '经口摄入减少至约1,000mL（↓25%）。尿量约800mL。发热状态下出入量需密切监测。鼓励口服补液，必要时联系社区护士评估。';
   if (patient.id === 1) return '经口摄入约1,300mL/日。尿量约1,100mL。出入量基本平衡。食欲可，配偶协助备餐，低盐低脂饮食依从性良好。';
+  if (patient.id === 10001) return '经口摄入约1,200mL/日。尿量约1,000mL（二便失禁，使用尿垫/纸尿裤）。出入量基本平衡。儿子李小鹏协助进食，低盐低脂饮食。大便失禁需护理员按时更换护理。';
   return '出入量在正常范围。经口摄入充足，尿量与摄入匹配。未见脱水或液体负荷过重迹象。';
 }
 
@@ -139,20 +144,25 @@ function generateMentalStatusSummary(patient: PatientFull, alertActive = false):
   // 冯存富精神状态
   if (patient.id === 1 && alertActive) return '意识清楚但出现短暂焦虑 — 可能与血压波动或压疮疼痛有关。疼痛评分3/10。配偶王小凤在旁陪护，情绪已安抚。持续观察。';
   if (patient.id === 1) return '意识清醒，定向力完整×3。精神状态稳定，与基线一致。半自理状态，日常决策需配偶协助。无认知功能减退征象。';
+  if (patient.id === 10001) return '意识清醒，对答切题，定向力完整。脑出血术后无认知功能减退征象。情绪平稳，配合照护。右侧偏瘫卧床，日常决策需儿子李小鹏协助。Caprini 7分血栓风险需持续心理疏导。';
   return '意识清醒，定向力完整×3。情绪平稳，配合照护。疼痛控制良好。与基线一致。';
 }
 
 function generateCarePlanExecutionSummary(patient: PatientFull): string {
   // 冯存富照护计划 — 每周4次上门（隔日），60-90分钟/次
   const d = patient.diagnosis;
-  return '每周上门4次（隔日一次），每次60-90分钟。8月份排程含16次服务，覆盖翻身护理、压疮评估、血压监测、营养筛查、康复训练及居家安全巡查。服务团队5人协同（护士姜珊/个案经理林晓东/护理员汤菊玲/康复师周明/营养师陈雅文）。8月16日当日5项任务中4项已完成，营养风险筛查因营养师迟到45分钟标记为异常。整体照护执行率良好。';
+  if (patient.id === 1) return '每周上门4次（隔日一次），每次60-90分钟。8月份排程含16次服务，覆盖翻身护理、压疮评估、血压监测、营养筛查、康复训练及居家安全巡查。服务团队5人协同（护士姜珊/个案经理林晓东/护理员汤菊玲/康复师周明/营养师陈雅文）。8月16日当日5项任务中4项已完成，营养风险筛查因营养师迟到45分钟标记为异常。整体照护执行率良好。';
+  if (patient.id === 10001) return '每月上门20次，每次30-90分钟（依服务项目）。覆盖20项生活照护（翻身拍背/口腔护理/面部清洁/会阴护理/压疮预防/生命体征监测等）+ 被动ROM康复 + 营养支持 + 家属培训。服务团队5人协同（护士刘敏/个案经理张丽华/护理员王秀英/康复师陈军/营养师赵静）。3月27日初评后启动服务，家属李小鹏已培训翻身和ROM操作。整体照护执行率良好。';
+  return '照护计划执行中。服务频率与安排符合临床要求。';
 }
 
 function generateMedicationSummary(patient: PatientFull): string {
   const activeMeds = patient.medications.filter(m => m.status === 'Active');
   const count = activeMeds.length;
   // 冯存富用药
-  return `${count}种药物：硝苯地平30mg每日一次（CCB — 高血压控制）。不规则服药史，需持续用药依从性监督。血压基线160/82，目标＜150/90 mmHg，当前控制不充分，需考虑剂量优化或联合用药（血管紧张素受体阻滞剂）。低盐低脂饮食辅助管理。药物库存充足（30天量），下次复诊2026年8月底。`;
+  if (patient.id === 1) return `${count}种药物：硝苯地平30mg每日一次（CCB — 高血压控制）。不规则服药史，需持续用药依从性监督。血压基线160/82，目标＜150/90 mmHg，当前控制不充分，需考虑剂量优化或联合用药（血管紧张素受体阻滞剂）。低盐低脂饮食辅助管理。药物库存充足（30天量），下次复诊2026年8月底。`;
+  if (patient.id === 10001) return `${count}种药物：降压药（具体方案待心内科确认）。脑出血术后，血压管理方案需心内科专科随访后制定。目前每日一次口服降压药，方案可能包括CCB/ACEI/ARB单药或联合。注意右下肢DVT — 抗凝方案需根据Caprini 7分高危评估，避免挤压右下肢。家属李小鹏负责用药监督。`;
+  return `${count}种药物：当前用药方案待完善。`;
 }
 
 function generateIoTDeviceSummary(patient: PatientFull): string {
