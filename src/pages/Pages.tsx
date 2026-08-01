@@ -58,13 +58,23 @@ function statusFromSummary(p: PatientSummary): string {
   return '稳定';
 }
 function genderCN(g: 'M'|'F'): string { return g === 'M' ? '男' : '女'; }
-function barthelLabel(score?: number): string {
+function disabilityLevel(score?: number): string {
   if (score == null) return '—';
-  if (score <= 20) return '极重度依赖';
-  if (score <= 40) return '重度依赖';
-  if (score <= 60) return '中度依赖';
-  if (score <= 99) return '轻度依赖';
-  return '完全自理';
+  if (score <= 40) return '重度';
+  if (score <= 60) return '中度';
+  return '轻度';
+}
+function bradenRisk(score?: number): string {
+  if (score == null) return '—';
+  if (score <= 12) return '高';
+  if (score <= 16) return '中';
+  return '低';
+}
+function fallRiskLevel(score?: number): string {
+  if (score == null) return '—';
+  if (score >= 45) return '高';
+  if (score >= 25) return '中';
+  return '低';
 }
 
 import { PATIENTS_FULL } from '../data/patients';
@@ -80,6 +90,8 @@ export const PatientRecords: FC = () => {
       status: statusFromSummary(p),
       carePlan: full?.carePlan,
       barthelScore: full?.barthel?.score,
+      bradenScore: full?.braden?.score,
+      fallRiskScore: full?.fallRisk?.score,
     };
   });
   const filtered = enriched
@@ -118,7 +130,9 @@ export const PatientRecords: FC = () => {
               <th className="text-left px-2 py-2 font-semibold text-slate-600">性别</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">年龄</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">临床诊断</th>
-              <th className="text-left px-2 py-2 font-semibold text-slate-600">失能级别</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">失能等级</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">压疮风险</th>
+              <th className="text-left px-2 py-2 font-semibold text-slate-600">跌倒风险</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">个案经理</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">护士</th>
               <th className="text-left px-2 py-2 font-semibold text-slate-600">康复治疗师</th>
@@ -140,8 +154,14 @@ export const PatientRecords: FC = () => {
                   <td className="px-2 py-2.5 text-slate-600 max-w-[180px] truncate" title={p.diagnosis}>{p.diagnosis}</td>
                   <td className="px-2 py-2.5">
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${(p as any).barthelScore != null && (p as any).barthelScore <= 40 ? 'bg-red-50 text-red-600' : (p as any).barthelScore <= 60 ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'}`}>
-                      {barthelLabel((p as any).barthelScore)}
+                      {disabilityLevel((p as any).barthelScore)}
                     </span>
+                  </td>
+                  <td className="px-2 py-2.5">
+                    <span className="text-[10px] font-semibold text-slate-600">{bradenRisk((p as any).bradenScore)}</span>
+                  </td>
+                  <td className="px-2 py-2.5">
+                    <span className="text-[10px] font-semibold text-slate-600">{fallRiskLevel((p as any).fallRiskScore)}</span>
                   </td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedCaseManager || '—'}</td>
                   <td className="px-2 py-2.5 text-slate-600">{cp?.assignedNurse || '—'}</td>
