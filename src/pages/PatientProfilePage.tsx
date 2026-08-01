@@ -357,6 +357,7 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
     [todaySchedule],
   );
   const [carePlanModal, setCarePlanModal] = useState(false);
+  const [cvMember, setCvMember] = useState<any>(null);
 
   const statusDot = (status: string) => {
     switch (status) {
@@ -384,29 +385,25 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
             {teamMembers.map((name, i) => {
               const m = CN_CARE_TEAM[name];
               if (!m) return null;
-              const isPlaceholder = m.yearsExperience === 0;
               return (
-                <div key={i} className={`rounded-xl border p-4 ${isPlaceholder ? 'border-dashed border-slate-300 bg-slate-50/50' : 'border-slate-200 bg-white shadow-sm'}`}>
+                <div key={i} className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 cursor-pointer hover:shadow-md hover:border-teal-300 transition-all group" onClick={() => setCvMember(m)}>
                   <div className="flex items-start gap-3">
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-base font-bold flex-shrink-0 shadow-sm ${isPlaceholder ? 'bg-slate-200 text-slate-400' : 'bg-gradient-to-br from-teal-500 to-teal-700 text-white'}`}>
-                      {m.avatar}
+                    <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
+                      <img src={m.avatar} alt={m.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-bold ${isPlaceholder ? 'text-slate-400' : 'text-slate-800'}`}>{m.name}</p>
-                      <p className={`text-[10px] font-medium ${isPlaceholder ? 'text-slate-300' : 'text-teal-600'}`}>
+                      <p className="text-xs font-bold text-slate-800 group-hover:text-teal-700">{m.name}</p>
+                      <p className="text-[10px] font-medium text-teal-600">
                         {m.role}{m.registrationNo ? <span className="ml-1 text-[9px] text-slate-400">#{m.registrationNo}</span> : null}
                       </p>
-                      {!isPlaceholder && (
-                        <>
-                          <p className="text-[10px] text-slate-400 mt-0.5">{m.specialty}</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{m.institution}</p>
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {m.certifications.map((c: string, j: number) => (
-                              <span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>
-                            ))}
-                          </div>
-                        </>
-                      )}
+                      <p className="text-[10px] text-slate-400 mt-0.5">{m.specialty}</p>
+                      <p className="text-[10px] text-slate-500 mt-0.5">{m.institution}</p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {m.certifications.slice(0, 2).map((c: string, j: number) => (
+                          <span key={j} className="text-[8px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded font-medium">{c}</span>
+                        ))}
+                        {m.certifications.length > 2 && <span className="text-[8px] text-teal-400">+{m.certifications.length - 2}</span>}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -548,61 +545,121 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
 
       </div>
 
-      {/* ── 护理计划完整弹窗 ── */}
-      {carePlanModal && (
-        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/30" onClick={() => setCarePlanModal(false)}>
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-h-[80vh] overflow-y-auto m-4 w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      {/* ── 团队简历弹窗 ── */}
+      {cvMember && (
+        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/30" onClick={() => setCvMember(null)}>
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-h-[80vh] overflow-y-auto m-4 w-full max-w-md" onClick={e => e.stopPropagation()}>
             <div className="sticky top-0 bg-gradient-to-r from-teal-600 to-teal-800 px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl">
-              <h3 className="text-sm font-semibold text-white">完整护理计划</h3>
-              <button onClick={() => setCarePlanModal(false)} className="text-white/80 hover:text-white"><X className="w-4 h-4" /></button>
+              <h3 className="text-sm font-semibold text-white">团队成员简历</h3>
+              <button onClick={() => setCvMember(null)} className="text-white/80 hover:text-white"><X className="w-4 h-4" /></button>
             </div>
             <div className="p-5 space-y-4">
-              <div>
-                <p className="text-[10px] text-slate-400 font-medium mb-2">服务频率</p>
-                <p className="text-sm text-slate-700 font-medium">{patient.carePlan.serviceFrequency}</p>
-                <p className="text-xs text-slate-500 mt-0.5">每次 {patient.carePlan.visitDuration}</p>
+              {/* Header with avatar */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border-2 border-teal-100">
+                  <img src={cvMember.avatar} alt={cvMember.name} className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-800">{cvMember.name}</p>
+                  <p className="text-xs text-teal-600 font-medium">{cvMember.role} · {cvMember.registrationNo}</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">{cvMember.institution}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] text-slate-400 font-medium mb-2">照护目标</p>
-                <ul className="space-y-1">
-                  {patient.carePlan.goals.map((g, i) => (
-                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 flex-shrink-0" />{g}
-                    </li>
-                  ))}
-                </ul>
+              {/* Basic info */}
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { label: '性别', value: cvMember.gender },
+                  { label: '年龄', value: `${cvMember.age}岁` },
+                  { label: '从业年限', value: `${cvMember.yearsExperience}年` },
+                ].map((f, i) => (
+                  <div key={i} className="bg-slate-50 rounded-lg px-3 py-2 text-center">
+                    <p className="text-[9px] text-slate-400">{f.label}</p>
+                    <p className="text-xs font-bold text-slate-700 mt-0.5">{f.value}</p>
+                  </div>
+                ))}
               </div>
+              {/* Education */}
               <div>
-                <p className="text-[10px] text-slate-400 font-medium mb-2">注意事项</p>
-                <ul className="space-y-1">
-                  {patient.carePlan.precautions.map((p, i) => (
-                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />{p}
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-[10px] font-semibold text-slate-400 mb-1">教育经历</p>
+                <p className="text-xs text-slate-700 bg-slate-50 rounded-lg px-3 py-2">{cvMember.education}</p>
               </div>
+              {/* Certifications */}
               <div>
-                <p className="text-[10px] text-slate-400 font-medium mb-2">人员分配</p>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {[
-                    { label: '个案经理', value: patient.carePlan.assignedCaseManager },
-                    { label: '护士', value: patient.carePlan.assignedNurse },
-                    { label: '护理员', value: patient.carePlan.assignedCareWorker },
-                    { label: '康复治疗师', value: patient.carePlan.assignedRehabTherapist },
-                    { label: '营养师', value: patient.carePlan.assignedNutritionist },
-                  ].map((r, i) => (
-                    <div key={i} className="bg-slate-50 rounded-lg px-3 py-2">
-                      <span className="text-[10px] text-slate-400">{r.label}</span>
-                      <p className="text-slate-700 font-medium mt-0.5">{r.value || '未分配'}</p>
-                    </div>
+                <p className="text-[10px] font-semibold text-slate-400 mb-1">资质证书</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {cvMember.certifications.map((c: string, j: number) => (
+                    <span key={j} className="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-full font-medium border border-teal-100">{c}</span>
                   ))}
                 </div>
+              </div>
+              {/* Specialty */}
+              <div>
+                <p className="text-[10px] font-semibold text-slate-400 mb-1">专业方向</p>
+                <p className="text-xs text-slate-700 bg-slate-50 rounded-lg px-3 py-2">{cvMember.specialty}</p>
+              </div>
+              {/* Bio */}
+              <div>
+                <p className="text-[10px] font-semibold text-slate-400 mb-1">从业经验</p>
+                <p className="text-xs text-slate-700 bg-slate-50 rounded-lg px-3 py-2 leading-relaxed">{cvMember.bio}</p>
               </div>
             </div>
           </div>
         </div>
       )}
+      {carePlanModal && (
+      <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/30" onClick={() => setCarePlanModal(false)}>
+        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-h-[80vh] overflow-y-auto m-4 w-full max-w-lg" onClick={e => e.stopPropagation()}>
+          <div className="sticky top-0 bg-gradient-to-r from-teal-600 to-teal-800 px-5 py-4 flex items-center justify-between z-10 rounded-t-2xl">
+            <h3 className="text-sm font-semibold text-white">完整护理计划</h3>
+            <button onClick={() => setCarePlanModal(false)} className="text-white/80 hover:text-white"><X className="w-4 h-4" /></button>
+          </div>
+          <div className="p-5 space-y-4">
+            <div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">服务频率</p>
+              <p className="text-sm text-slate-700 font-medium">{patient.carePlan.serviceFrequency}</p>
+              <p className="text-xs text-slate-500 mt-0.5">每次 {patient.carePlan.visitDuration}</p>
+            </div>
+            <div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">照护目标</p>
+              <ul className="space-y-1">
+                {patient.carePlan.goals.map((g, i) => (
+                  <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 flex-shrink-0" />{g}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">注意事项</p>
+              <ul className="space-y-1">
+                {patient.carePlan.precautions.map((p, i) => (
+                  <li key={i} className="text-xs text-slate-700 flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />{p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-[10px] text-slate-400 font-medium mb-2">人员分配</p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {[
+                  { label: '个案经理', value: patient.carePlan.assignedCaseManager },
+                  { label: '护士', value: patient.carePlan.assignedNurse },
+                  { label: '护理员', value: patient.carePlan.assignedCareWorker },
+                  { label: '康复治疗师', value: patient.carePlan.assignedRehabTherapist },
+                  { label: '营养师', value: patient.carePlan.assignedNutritionist },
+                ].map((r, i) => (
+                  <div key={i} className="bg-slate-50 rounded-lg px-3 py-2">
+                    <span className="text-[10px] text-slate-400">{r.label}</span>
+                    <p className="text-slate-700 font-medium mt-0.5">{r.value || '未分配'}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 };
@@ -633,36 +690,36 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const getReport = (text: string, type: 'lab' | 'imaging') => {
     const lines = text.split('. ');
     if (type === 'lab') {
-      return '═══ LABORATORY REPORT ═══\n\n'
-        + 'Patient: ' + patient.name + '\n'
-        + 'DOB: ' + (2026 - patient.age) + ' | Gender: ' + patient.gender + '\n'
-        + 'Facility: ' + (entries[0]?.facility || 'N/A') + '\n'
-        + 'Ordering Physician: ' + (entries[0]?.physician || 'N/A') + '\n'
-        + 'Collection Date: ' + (entries[0]?.date || 'N/A') + '\n'
-        + 'Reported Date: ' + (entries[0]?.date || 'N/A') + '\n\n'
-        + '━━━ RESULTS ━━━\n\n'
-        + 'HEMATOLOGY\n' + lines.slice(0, 5).map(l => '  ' + l).join('\n') + '\n\n'
-        + 'CHEMISTRY\n' + lines.slice(5, 10).map(l => '  ' + l).join('\n') + '\n\n'
-        + '━━━ REFERENCE RANGES ━━━\n'
-        + 'WBC: 4.0-11.0 | Hb: 11.5-16.0 | Plt: 150-400\n'
-        + 'Cr: 50-110 | eGFR: >60 | K+: 3.5-5.0\n\n'
-        + '━━━ INTERPRETATION ━━━\n'
-        + 'Results verified by clinical laboratory.\n'
-        + 'Abnormal values flagged per protocol.\n\n'
-        + 'Signed: Clinical Lab · HOKLAS 015';
+    return '═══ LABORATORY REPORT ═══\n\n'
+      + 'Patient: ' + patient.name + '\n'
+      + 'DOB: ' + (2026 - patient.age) + ' | Gender: ' + patient.gender + '\n'
+      + 'Facility: ' + (entries[0]?.facility || 'N/A') + '\n'
+      + 'Ordering Physician: ' + (entries[0]?.physician || 'N/A') + '\n'
+      + 'Collection Date: ' + (entries[0]?.date || 'N/A') + '\n'
+      + 'Reported Date: ' + (entries[0]?.date || 'N/A') + '\n\n'
+      + '━━━ RESULTS ━━━\n\n'
+      + 'HEMATOLOGY\n' + lines.slice(0, 5).map(l => '  ' + l).join('\n') + '\n\n'
+      + 'CHEMISTRY\n' + lines.slice(5, 10).map(l => '  ' + l).join('\n') + '\n\n'
+      + '━━━ REFERENCE RANGES ━━━\n'
+      + 'WBC: 4.0-11.0 | Hb: 11.5-16.0 | Plt: 150-400\n'
+      + 'Cr: 50-110 | eGFR: >60 | K+: 3.5-5.0\n\n'
+      + '━━━ INTERPRETATION ━━━\n'
+      + 'Results verified by clinical laboratory.\n'
+      + 'Abnormal values flagged per protocol.\n\n'
+      + 'Signed: Clinical Lab · HOKLAS 015';
     } else {
-      return '═══ IMAGING REPORT ═══\n\n'
-        + 'Patient: ' + patient.name + '\n'
-        + 'DOB: ' + (2026 - patient.age) + ' | Gender: ' + patient.gender + '\n'
-        + 'Facility: ' + (entries[0]?.facility || 'N/A') + '\n'
-        + 'Referring: ' + (entries[0]?.physician || 'N/A') + '\n'
-        + 'Study Date: ' + (entries[0]?.date || 'N/A') + '\n'
-        + 'Modality: ' + ('CXR/CT/ECHO/MRI based on study') + '\n\n'
-        + '━━━ FINDINGS ━━━\n\n'
-        + text.split(', ').map(l => '  • ' + l).join('\n') + '\n\n'
-        + '━━━ IMPRESSION ━━━\n'
-        + 'As described. Clinical correlation recommended.\n\n'
-        + 'Signed: Radiology Dept · Board Certified';
+    return '═══ IMAGING REPORT ═══\n\n'
+      + 'Patient: ' + patient.name + '\n'
+      + 'DOB: ' + (2026 - patient.age) + ' | Gender: ' + patient.gender + '\n'
+      + 'Facility: ' + (entries[0]?.facility || 'N/A') + '\n'
+      + 'Referring: ' + (entries[0]?.physician || 'N/A') + '\n'
+      + 'Study Date: ' + (entries[0]?.date || 'N/A') + '\n'
+      + 'Modality: ' + ('CXR/CT/ECHO/MRI based on study') + '\n\n'
+      + '━━━ FINDINGS ━━━\n\n'
+      + text.split(', ').map(l => '  • ' + l).join('\n') + '\n\n'
+      + '━━━ IMPRESSION ━━━\n'
+      + 'As described. Clinical correlation recommended.\n\n'
+      + 'Signed: Radiology Dept · Board Certified';
     }
   };
 
@@ -674,167 +731,167 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   return (
   <div className="-mt-6">
     <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
-      <ST title="病史档案" icon={FileText} />
+    <ST title="病史档案" icon={FileText} />
     </div>
     {/* ─── 临床病史分类 ─── */}
     <div className="bg-white rounded-xl border border-slate-200 p-5 mb-4">
-      <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-        <Stethoscope className="w-4 h-4 text-teal-600" /> 临床病史
-      </h3>
-      <div className="grid grid-cols-2 gap-3 text-xs">
-        <div className="bg-slate-50 rounded-lg p-3">
-          <span className="text-[10px] text-slate-400 font-medium">基本信息</span>
-          <p className="text-slate-700 font-medium mt-0.5">{patient.age}岁 男性 — 身高{patient.height || 164}cm / 体重{patient.weight || 70}kg</p>
+    <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+      <Stethoscope className="w-4 h-4 text-teal-600" /> 临床病史
+    </h3>
+    <div className="grid grid-cols-2 gap-3 text-xs">
+      <div className="bg-slate-50 rounded-lg p-3">
+        <span className="text-[10px] text-slate-400 font-medium">基本信息</span>
+        <p className="text-slate-700 font-medium mt-0.5">{patient.age}岁 男性 — 身高{patient.height || 164}cm / 体重{patient.weight || 70}kg</p>
+      </div>
+      <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
+        <span className="text-[10px] text-teal-500 font-medium">主要诊断</span>
+        <p className="text-teal-800 font-medium mt-0.5">{patient.diagnosis || '高血压'}</p>
+      </div>
+      <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
+        <span className="text-[10px] text-blue-500 font-medium">功能状态 · Barthel {patient.barthel?.score || 30}/100</span>
+        <p className="text-slate-700 mt-0.5">重度依赖 — 双侧上下肢活动异常，需助行器辅助</p>
+      </div>
+      <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
+        <span className="text-[10px] text-amber-600 font-medium">皮肤/压疮 · Braden {patient.braden?.score || 16}分</span>
+        <p className="text-slate-700 mt-0.5">已有压疮，Braden 16分提示中度风险，需翻身q2h</p>
+      </div>
+      <div className="bg-red-50 rounded-lg p-3 border border-red-100">
+        <span className="text-[10px] text-red-500 font-medium">跌倒风险 · Morse {patient.fallRisk?.score || 105}</span>
+        <p className="text-slate-700 mt-0.5">极高危 — 近3月有跌倒史，步态异常，需持续防跌倒措施</p>
+      </div>
+      <div className="bg-purple-50 rounded-lg p-3 border border-purple-100">
+        <span className="text-[10px] text-purple-500 font-medium">认知/意识</span>
+        <p className="text-slate-700 mt-0.5">意识清醒，定向力完整；半自理，需部分生活协助</p>
+      </div>
+      <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-100 col-span-2">
+        <span className="text-[10px] text-emerald-600 font-medium">照护需求</span>
+        <div className="flex flex-wrap gap-1.5 mt-1">
+          <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">翻身 q2h</span>
+          <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">压疮护理</span>
+          <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">血压监测</span>
+          <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">防跌倒</span>
+          <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">助行器辅助</span>
         </div>
-        <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
-          <span className="text-[10px] text-teal-500 font-medium">主要诊断</span>
-          <p className="text-teal-800 font-medium mt-0.5">{patient.diagnosis || '高血压'}</p>
+      </div>
+      <div className="bg-slate-50 rounded-lg p-3 col-span-2 border border-dashed border-slate-200">
+        <div className="flex items-start gap-2">
+          <span className="text-[10px] text-slate-400 font-medium flex-shrink-0 mt-px">评估来源</span>
+          <p className="text-slate-500 text-[11px]">易得康评估机构 · 评估者：李妍 · 评估日期：2026.04.01</p>
         </div>
-        <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
-          <span className="text-[10px] text-blue-500 font-medium">功能状态 · Barthel {patient.barthel?.score || 30}/100</span>
-          <p className="text-slate-700 mt-0.5">重度依赖 — 双侧上下肢活动异常，需助行器辅助</p>
+        <div className="flex items-start gap-2 mt-1.5">
+          <span className="text-[10px] text-amber-500 font-medium flex-shrink-0 mt-px">⚠ 待确认</span>
+          <p className="text-amber-600 text-[11px]">Barthel ADL：手写总分=60 vs 勾选累加=30，差异待确认</p>
         </div>
-        <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
-          <span className="text-[10px] text-amber-600 font-medium">皮肤/压疮 · Braden {patient.braden?.score || 16}分</span>
-          <p className="text-slate-700 mt-0.5">已有压疮，Braden 16分提示中度风险，需翻身q2h</p>
-        </div>
-        <div className="bg-red-50 rounded-lg p-3 border border-red-100">
-          <span className="text-[10px] text-red-500 font-medium">跌倒风险 · Morse {patient.fallRisk?.score || 105}</span>
-          <p className="text-slate-700 mt-0.5">极高危 — 近3月有跌倒史，步态异常，需持续防跌倒措施</p>
-        </div>
-        <div className="bg-purple-50 rounded-lg p-3 border border-purple-100">
-          <span className="text-[10px] text-purple-500 font-medium">认知/意识</span>
-          <p className="text-slate-700 mt-0.5">意识清醒，定向力完整；半自理，需部分生活协助</p>
-        </div>
-        <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-100 col-span-2">
-          <span className="text-[10px] text-emerald-600 font-medium">照护需求</span>
-          <div className="flex flex-wrap gap-1.5 mt-1">
-            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">翻身 q2h</span>
-            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">压疮护理</span>
-            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">血压监测</span>
-            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">防跌倒</span>
-            <span className="text-[10px] bg-white border border-emerald-200 rounded px-2 py-0.5 text-emerald-700">助行器辅助</span>
+      </div>
+    </div>
+    </div>
+    {history?.aiSummary && (
+    <div className="mb-4">
+      {/* ─── Apple Health 风格 AI 卡片 ─── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        {/* Header */}
+        <div className="px-5 pt-5 pb-3 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <Brain className="w-4.5 h-4.5 text-white" />
+          </div>
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-800">智能病史分析</h3>
+            <span className="text-[9px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-md font-semibold tracking-wide">AI</span>
           </div>
         </div>
-        <div className="bg-slate-50 rounded-lg p-3 col-span-2 border border-dashed border-slate-200">
-          <div className="flex items-start gap-2">
-            <span className="text-[10px] text-slate-400 font-medium flex-shrink-0 mt-px">评估来源</span>
-            <p className="text-slate-500 text-[11px]">易得康评估机构 · 评估者：李妍 · 评估日期：2026.04.01</p>
-          </div>
-          <div className="flex items-start gap-2 mt-1.5">
-            <span className="text-[10px] text-amber-500 font-medium flex-shrink-0 mt-px">⚠ 待确认</span>
-            <p className="text-amber-600 text-[11px]">Barthel ADL：手写总分=60 vs 勾选累加=30，差异待确认</p>
+
+        {/* Overview */}
+        <div className="px-5 pb-3">
+          <p className="text-[13px] text-slate-500 leading-relaxed">{overview}</p>
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-slate-100 mx-5" />
+
+        {/* 核心关注点 */}
+        <div className="px-5 pt-3 pb-1">
+          <h4 className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">核心关注点</h4>
+          <div className="space-y-2 pb-2">
+            {concerns.map((c, i) => {
+              const pills: { color: string; bg: string; ring: string }[] = [
+                { color: '#E11D48', bg: 'bg-rose-50', ring: 'ring-rose-200' },   // 血压 — rose
+                { color: '#D97706', bg: 'bg-amber-50', ring: 'ring-amber-200' },  // 压疮 — amber
+                { color: '#DC2626', bg: 'bg-red-50', ring: 'ring-red-200' },      // 跌倒 — red
+                { color: '#7C3AED', bg: 'bg-purple-50', ring: 'ring-purple-200' },// 功能 — purple
+                { color: '#0D9488', bg: 'bg-teal-50', ring: 'ring-teal-200' },    // 照护者 — teal
+              ];
+              const p = pills[i] || pills[0];
+              return (
+                <div key={i} className={`${p.bg} rounded-xl px-4 py-3 ring-1 ring-inset ${p.ring}`}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: p.color }} />
+                    <p className="text-[12px] text-slate-700 leading-relaxed">{c}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </div>
-    {history?.aiSummary && (
-      <div className="mb-4">
-        {/* ─── Apple Health 风格 AI 卡片 ─── */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          {/* Header */}
-          <div className="px-5 pt-5 pb-3 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-              <Brain className="w-4.5 h-4.5 text-white" />
-            </div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-slate-800">智能病史分析</h3>
-              <span className="text-[9px] bg-violet-100 text-violet-600 px-1.5 py-0.5 rounded-md font-semibold tracking-wide">AI</span>
-            </div>
-          </div>
-
-          {/* Overview */}
-          <div className="px-5 pb-3">
-            <p className="text-[13px] text-slate-500 leading-relaxed">{overview}</p>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-slate-100 mx-5" />
-
-          {/* 核心关注点 */}
-          <div className="px-5 pt-3 pb-1">
-            <h4 className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">核心关注点</h4>
-            <div className="space-y-2 pb-2">
-              {concerns.map((c, i) => {
-                const pills: { color: string; bg: string; ring: string }[] = [
-                  { color: '#E11D48', bg: 'bg-rose-50', ring: 'ring-rose-200' },   // 血压 — rose
-                  { color: '#D97706', bg: 'bg-amber-50', ring: 'ring-amber-200' },  // 压疮 — amber
-                  { color: '#DC2626', bg: 'bg-red-50', ring: 'ring-red-200' },      // 跌倒 — red
-                  { color: '#7C3AED', bg: 'bg-purple-50', ring: 'ring-purple-200' },// 功能 — purple
-                  { color: '#0D9488', bg: 'bg-teal-50', ring: 'ring-teal-200' },    // 照护者 — teal
-                ];
-                const p = pills[i] || pills[0];
-                return (
-                  <div key={i} className={`${p.bg} rounded-xl px-4 py-3 ring-1 ring-inset ${p.ring}`}>
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: p.color }} />
-                      <p className="text-[12px] text-slate-700 leading-relaxed">{c}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
     )}
     <div className="space-y-3 px-6 pb-6">
-      {entries.map((entry, i) => (
-        <div key={i} className={`glass-card rounded-xl border border-slate-200 border-l-4 ${typeColor[entry.type]} overflow-hidden`}>
-          <div className="px-5 py-3 flex items-center justify-between border-b border-slate-100">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-warm-100 flex items-center justify-center">
-                {(() => { const Icon = typeIcon[entry.type] || FileText; return <Icon className="w-4 h-4 text-slate-600" />; })()}
-              </div>
-              <div>
-                <div className="flex items-center gap-2"><span className="text-xs font-bold text-slate-800">{typeLabel[entry.type]}</span><span className="text-[10px] text-slate-400">{entry.date}</span></div>
-                <p className="text-[10px] text-slate-500">{entry.facility} · {entry.department}</p>
-              </div>
+    {entries.map((entry, i) => (
+      <div key={i} className={`glass-card rounded-xl border border-slate-200 border-l-4 ${typeColor[entry.type]} overflow-hidden`}>
+        <div className="px-5 py-3 flex items-center justify-between border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-warm-100 flex items-center justify-center">
+              {(() => { const Icon = typeIcon[entry.type] || FileText; return <Icon className="w-4 h-4 text-slate-600" />; })()}
             </div>
-            <span className="text-[10px] text-slate-500">{entry.physician}</span>
+            <div>
+              <div className="flex items-center gap-2"><span className="text-xs font-bold text-slate-800">{typeLabel[entry.type]}</span><span className="text-[10px] text-slate-400">{entry.date}</span></div>
+              <p className="text-[10px] text-slate-500">{entry.facility} · {entry.department}</p>
+            </div>
           </div>
-          <div className="px-5 py-3 space-y-2.5">
-            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">主诉</span><p className="text-xs text-slate-700 mt-0.5">{entry.chiefComplaint}</p></div>
-            <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">诊断</span><p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{entry.diagnosis}</p></div>
-            {entry.labs && (
-              <div className="flex items-start gap-2 cursor-pointer hover:bg-purple-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.labs!, 'lab'))}>
-                <FlaskConical className="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">检验结果</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
-              </div>
-            )}
-            {entry.imaging && (
-              <div className="flex items-start gap-2 cursor-pointer hover:bg-indigo-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.imaging!, 'imaging'))}>
-                <Microscope className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">影像</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
-              </div>
-            )}
-            {entry.prescriptions && (<div className="flex items-start gap-2"><Pill className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-teal-600">处方</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.prescriptions}</p></div></div>)}
-            {entry.procedures && (<div className="flex items-start gap-2"><Activity className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-red-600">手术/操作</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.procedures}</p></div></div>)}
-            <div className="pt-2 border-t border-slate-50"><p className="text-[10px] text-slate-600 leading-relaxed italic">{entry.notes}</p></div>
-          </div>
+          <span className="text-[10px] text-slate-500">{entry.physician}</span>
         </div>
-      ))}
+        <div className="px-5 py-3 space-y-2.5">
+          <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">主诉</span><p className="text-xs text-slate-700 mt-0.5">{entry.chiefComplaint}</p></div>
+          <div><span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">诊断</span><p className="text-xs text-slate-700 mt-0.5 leading-relaxed">{entry.diagnosis}</p></div>
+          {entry.labs && (
+            <div className="flex items-start gap-2 cursor-pointer hover:bg-purple-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.labs!, 'lab'))}>
+              <FlaskConical className="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5" />
+              <div className="flex-1"><span className="text-[10px] font-semibold text-purple-600">检验结果</span><button className="ml-2 text-[8px] text-purple-400 font-medium hover:text-purple-600 hover:underline group-hover:text-purple-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.labs}</p></div>
+            </div>
+          )}
+          {entry.imaging && (
+            <div className="flex items-start gap-2 cursor-pointer hover:bg-indigo-50 rounded-lg p-1.5 -mx-1.5 transition-colors group" onClick={() => setReportModal(getReport(entry.imaging!, 'imaging'))}>
+              <Microscope className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
+              <div className="flex-1"><span className="text-[10px] font-semibold text-indigo-600">影像</span><button className="ml-2 text-[8px] text-indigo-400 font-medium hover:text-indigo-600 hover:underline group-hover:text-indigo-600">查看完整报告 →</button><p className="text-[10px] text-slate-600 mt-0.5">{entry.imaging}</p></div>
+            </div>
+          )}
+          {entry.prescriptions && (<div className="flex items-start gap-2"><Pill className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-teal-600">处方</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.prescriptions}</p></div></div>)}
+          {entry.procedures && (<div className="flex items-start gap-2"><Activity className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" /><div><span className="text-[10px] font-semibold text-red-600">手术/操作</span><p className="text-[10px] text-slate-600 mt-0.5">{entry.procedures}</p></div></div>)}
+          <div className="pt-2 border-t border-slate-50"><p className="text-[10px] text-slate-600 leading-relaxed italic">{entry.notes}</p></div>
+        </div>
+      </div>
+    ))}
     </div>
 
     {reportModal && (
-      <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReportModal(null)}>
-        <div className="glass-card rounded-2xl shadow-2xl w-[520px] max-h-[80vh] overflow-y-auto m-4" onClick={e => e.stopPropagation()}>
-          <div className="sticky top-0 bg-white px-5 py-4 flex items-center justify-between border-b z-10 rounded-t-2xl">
-            <div className="flex items-center gap-2">
-              {reportModal.includes('LABORATORY') ? <FlaskConical className="w-4 h-4 text-purple-500" /> : <Microscope className="w-4 h-4 text-indigo-500" />}
-              <span className="text-sm font-bold text-slate-800">{reportModal.includes('LABORATORY') ? '检验报告' : '影像报告'}</span>
-            </div>
-            <button onClick={() => setReportModal(null)} className="w-7 h-7 rounded-full bg-warm-100 flex items-center justify-center hover:bg-warm-200"><X className="w-3.5 h-3.5 text-slate-500" /></button>
+    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReportModal(null)}>
+      <div className="glass-card rounded-2xl shadow-2xl w-[520px] max-h-[80vh] overflow-y-auto m-4" onClick={e => e.stopPropagation()}>
+        <div className="sticky top-0 bg-white px-5 py-4 flex items-center justify-between border-b z-10 rounded-t-2xl">
+          <div className="flex items-center gap-2">
+            {reportModal.includes('LABORATORY') ? <FlaskConical className="w-4 h-4 text-purple-500" /> : <Microscope className="w-4 h-4 text-indigo-500" />}
+            <span className="text-sm font-bold text-slate-800">{reportModal.includes('LABORATORY') ? '检验报告' : '影像报告'}</span>
           </div>
-          <div className="p-6">
-            <pre className="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap font-mono">{reportModal}</pre>
-          </div>
-          <div className="border-t px-5 py-3 flex items-center gap-2 text-[9px] text-slate-400">
-            <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-            电子病历已验证 · 常州市卫健委
-          </div>
+          <button onClick={() => setReportModal(null)} className="w-7 h-7 rounded-full bg-warm-100 flex items-center justify-center hover:bg-warm-200"><X className="w-3.5 h-3.5 text-slate-500" /></button>
+        </div>
+        <div className="p-6">
+          <pre className="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap font-mono">{reportModal}</pre>
+        </div>
+        <div className="border-t px-5 py-3 flex items-center gap-2 text-[9px] text-slate-400">
+          <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+          电子病历已验证 · 常州市卫健委
         </div>
       </div>
+    </div>
     )}
   </div>
 );};
@@ -871,88 +928,88 @@ const LogsSection: FC<{ patient: PatientFull; plan: any }> = ({ patient, plan })
 
   const LogItem: FC<{ log: any }> = ({ log }) => (
     <div className="border-l-2 border-blue-200 pl-3 text-xs py-1">
-      <div className="flex items-center justify-between mb-0.5">
-        <span className="font-semibold text-slate-700">{log.type}</span>
-        <span className="text-[10px] text-slate-400">{log.date} · {log.time}</span>
-      </div>
-      <p className="text-slate-600">{log.detail}</p>
-      <div className="flex items-center gap-2 mt-0.5">
-        <span className="text-[10px] text-slate-400">— {log.author}</span>
-        {log.vitals && <span className="text-[10px] text-slate-400">| {log.vitals}</span>}
-        <span className={`text-[9px] font-semibold px-1 py-0 rounded ${log.status === 'completed' ? 'text-emerald-600' : 'text-red-600'}`}>{log.status}</span>
-      </div>
+    <div className="flex items-center justify-between mb-0.5">
+      <span className="font-semibold text-slate-700">{log.type}</span>
+      <span className="text-[10px] text-slate-400">{log.date} · {log.time}</span>
+    </div>
+    <p className="text-slate-600">{log.detail}</p>
+    <div className="flex items-center gap-2 mt-0.5">
+      <span className="text-[10px] text-slate-400">— {log.author}</span>
+      {log.vitals && <span className="text-[10px] text-slate-400">| {log.vitals}</span>}
+      <span className={`text-[9px] font-semibold px-1 py-0 rounded ${log.status === 'completed' ? 'text-emerald-600' : 'text-red-600'}`}>{log.status}</span>
+    </div>
     </div>
   );
 
   return (
     <div className="space-y-4">
-      <ST title="全部日志与记录" icon={ClipboardList} />
+    <ST title="全部日志与记录" icon={ClipboardList} />
 
-      {/* 1. Physician Follow-ups */}
-      <div className="glass-card rounded-xl border border-slate-200 p-4">
-        <h3 className="text-xs font-bold text-indigo-700 mb-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-indigo-500" /> Physician Follow-ups ({doctorLogs.length})
-        </h3>
-        <div className="space-y-2">
-          {doctorLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
-          {doctorLogs.length === 0 && <p className="text-xs text-slate-400">暂无医生随访记录。</p>}
-        </div>
+    {/* 1. Physician Follow-ups */}
+    <div className="glass-card rounded-xl border border-slate-200 p-4">
+      <h3 className="text-xs font-bold text-indigo-700 mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-indigo-500" /> Physician Follow-ups ({doctorLogs.length})
+      </h3>
+      <div className="space-y-2">
+        {doctorLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
+        {doctorLogs.length === 0 && <p className="text-xs text-slate-400">暂无医生随访记录。</p>}
       </div>
+    </div>
 
-      {/* 2. 护理记录 */}
-      <div className="glass-card rounded-xl border border-slate-200 p-4">
-        <h3 className="text-xs font-bold text-emerald-700 mb-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" /> 护理记录 ({nurseLogs.length})
-        </h3>
-        <div className="space-y-2">
-          {nurseLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
-          {otherLogs.map((log: any, i: number) => <LogItem key={`o${i}`} log={log} />)}
-          {nurseLogs.length === 0 && otherLogs.length === 0 && <p className="text-xs text-slate-400">暂无护理或照护记录。</p>}
-        </div>
+    {/* 2. 护理记录 */}
+    <div className="glass-card rounded-xl border border-slate-200 p-4">
+      <h3 className="text-xs font-bold text-emerald-700 mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-emerald-500" /> 护理记录 ({nurseLogs.length})
+      </h3>
+      <div className="space-y-2">
+        {nurseLogs.map((log: any, i: number) => <LogItem key={i} log={log} />)}
+        {otherLogs.map((log: any, i: number) => <LogItem key={`o${i}`} log={log} />)}
+        {nurseLogs.length === 0 && otherLogs.length === 0 && <p className="text-xs text-slate-400">暂无护理或照护记录。</p>}
       </div>
+    </div>
 
-      {/* 3. Medication Records */}
-      <div className="glass-card rounded-xl border border-slate-200 p-4">
-        <h3 className="text-xs font-bold text-purple-700 mb-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-purple-500" /> Medication Records ({patient.medications.length} active)
-        </h3>
-        <div className="space-y-2">
-          {patient.medications.map((med, i) => (
-            <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
-              <div className="flex-1">
-                <span className="font-semibold text-slate-700">{med.drug}</span>
-                <span className="text-slate-400 ml-2">{med.dose} · {med.route} · {med.frequency}</span>
-                <p className="text-[10px] text-slate-400 mt-0.5">Started: {med.startDate} · {med.purpose}</p>
-              </div>
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${med.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-warm-100 text-slate-500'}`}>{med.status}</span>
+    {/* 3. Medication Records */}
+    <div className="glass-card rounded-xl border border-slate-200 p-4">
+      <h3 className="text-xs font-bold text-purple-700 mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-purple-500" /> Medication Records ({patient.medications.length} active)
+      </h3>
+      <div className="space-y-2">
+        {patient.medications.map((med, i) => (
+          <div key={i} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
+            <div className="flex-1">
+              <span className="font-semibold text-slate-700">{med.drug}</span>
+              <span className="text-slate-400 ml-2">{med.dose} · {med.route} · {med.frequency}</span>
+              <p className="text-[10px] text-slate-400 mt-0.5">Started: {med.startDate} · {med.purpose}</p>
             </div>
-          ))}
-        </div>
+            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${med.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-warm-100 text-slate-500'}`}>{med.status}</span>
+          </div>
+        ))}
       </div>
+    </div>
 
-      {/* 4. Family Communication Records */}
-      <div className="glass-card rounded-xl border border-slate-200 p-4">
-        <h3 className="text-xs font-bold text-amber-700 mb-3 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-amber-500" /> Family Communications ({familyComms.length})
-        </h3>
-        <div className="space-y-2">
-          {familyComms.map((comm, i) => (
-            <div key={i} className="border-l-2 border-amber-200 pl-3 text-xs py-1">
-              <div className="flex items-center justify-between mb-0.5">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-700">{comm.contact}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${comm.method === 'Phone' ? 'bg-blue-100 text-teal-700' : comm.method === 'Message' ? 'bg-emerald-100 text-emerald-700' : comm.method === 'Video Call' ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700'}`}>{comm.method}</span>
-                  <span className={`text-[9px] ${comm.direction === 'incoming' ? 'text-blue-500' : 'text-emerald-500'}`}>{comm.direction === 'incoming' ? '↓ In' : '↑ Out'}</span>
-                </div>
-                <span className="text-[10px] text-slate-400">{comm.date} · {comm.time}</span>
+    {/* 4. Family Communication Records */}
+    <div className="glass-card rounded-xl border border-slate-200 p-4">
+      <h3 className="text-xs font-bold text-amber-700 mb-3 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-amber-500" /> Family Communications ({familyComms.length})
+      </h3>
+      <div className="space-y-2">
+        {familyComms.map((comm, i) => (
+          <div key={i} className="border-l-2 border-amber-200 pl-3 text-xs py-1">
+            <div className="flex items-center justify-between mb-0.5">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-slate-700">{comm.contact}</span>
+                <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${comm.method === 'Phone' ? 'bg-blue-100 text-teal-700' : comm.method === 'Message' ? 'bg-emerald-100 text-emerald-700' : comm.method === 'Video Call' ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700'}`}>{comm.method}</span>
+                <span className={`text-[9px] ${comm.direction === 'incoming' ? 'text-blue-500' : 'text-emerald-500'}`}>{comm.direction === 'incoming' ? '↓ In' : '↑ Out'}</span>
               </div>
-              <p className="text-slate-600">{comm.summary}</p>
-              <p className="text-[10px] text-amber-600 mt-0.5"><strong>操作:</strong> {comm.actionItems}</p>
+              <span className="text-[10px] text-slate-400">{comm.date} · {comm.time}</span>
             </div>
-          ))}
-          {familyComms.length === 0 && <p className="text-xs text-slate-400">暂无家属沟通记录。</p>}
-        </div>
+            <p className="text-slate-600">{comm.summary}</p>
+            <p className="text-[10px] text-amber-600 mt-0.5"><strong>操作:</strong> {comm.actionItems}</p>
+          </div>
+        ))}
+        {familyComms.length === 0 && <p className="text-xs text-slate-400">暂无家属沟通记录。</p>}
       </div>
+    </div>
     </div>
   );
 };
@@ -964,12 +1021,12 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const startBpMeasure = () => {
     setMeasuring(true);
     setTimeout(() => {
-      const baseline = patient.id === 1 ? [168,95,96] : patient.id === 5 ? [108,68,102] : patient.id === 9 ? [140,90,118] : [130,82,76];
-      const sys = baseline[0] + Math.floor(Math.random()*8)-4;
-      const dia = baseline[1] + Math.floor(Math.random()*6)-3;
-      const hr = baseline[2] + Math.floor(Math.random()*6)-3;
-      setBpReading({sys, dia, hr});
-      setMeasuring(false);
+    const baseline = patient.id === 1 ? [168,95,96] : patient.id === 5 ? [108,68,102] : patient.id === 9 ? [140,90,118] : [130,82,76];
+    const sys = baseline[0] + Math.floor(Math.random()*8)-4;
+    const dia = baseline[1] + Math.floor(Math.random()*6)-3;
+    const hr = baseline[2] + Math.floor(Math.random()*6)-3;
+    setBpReading({sys, dia, hr});
+    setMeasuring(false);
     }, 2500);
   };
 
@@ -977,64 +1034,64 @@ const IoTDevicesSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   <div className="space-y-4">
     <ST title="物联网设备" icon={Smartphone}/>
     {patient.iotDevices.map((dev,i) => {
-      const isBP = dev.type === 'Blood Pressure Monitor';
-      return (
-      <div key={i} className="glass-card rounded-xl border border-slate-200 p-4">
-        <div className="flex items-center justify-between mb-3 gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            {deviceImageUrl(dev.model) ? (
-              <img
-                src={deviceImageUrl(dev.model)}
-                alt={dev.model}
-                className="w-14 h-14 rounded-lg object-contain bg-white border border-slate-100 flex-shrink-0"
-              />
-            ) : null}
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-slate-800">{dev.type}</p>
-              <p className="text-[10px] text-slate-400">{dev.model} · S/N:{dev.serial}</p>
-            </div>
+    const isBP = dev.type === 'Blood Pressure Monitor';
+    return (
+    <div key={i} className="glass-card rounded-xl border border-slate-200 p-4">
+      <div className="flex items-center justify-between mb-3 gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          {deviceImageUrl(dev.model) ? (
+            <img
+              src={deviceImageUrl(dev.model)}
+              alt={dev.model}
+              className="w-14 h-14 rounded-lg object-contain bg-white border border-slate-100 flex-shrink-0"
+            />
+          ) : null}
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-slate-800">{dev.type}</p>
+            <p className="text-[10px] text-slate-400">{dev.model} · S/N:{dev.serial}</p>
           </div>
-          <span className={`flex items-center gap-1.5 text-[10px] font-semibold px-2 py-1 rounded-full ${dev.status==='Connected'?'bg-emerald-50 text-emerald-700':dev.status==='Syncing'?'bg-teal-50 text-teal-700':'bg-red-50 text-red-700'}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${measuring ? 'bg-amber-500 animate-pulse' : dev.status==='Disconnected'?'bg-red-500':'bg-emerald-500'}`}/>
-            {measuring ? 'Measuring...' : dev.status}
-          </span>
         </div>
-        <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">电量</span><p className="font-bold text-slate-700">{dev.battery}%</p></div>
-          <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">上次同步</span><p className="font-bold text-slate-700">{isBP ? '30 sec ago' : dev.lastSync}</p></div>
-        </div>
-        {isBP && (
-          <div className="bg-gradient-to-r from-red-50 to-rose-50 rounded-lg border border-red-100 p-3 mb-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-semibold text-red-600 uppercase">实时血压读数</span>
-              <button onClick={startBpMeasure} disabled={measuring} className="text-[9px] font-semibold bg-red-500 hover:bg-red-600 disabled:bg-slate-300 text-white px-3 py-1 rounded-full transition-colors">
-                {measuring ? 'Measuring...' : bpReading ? 'Re-measure' : 'Take Reading'}
-              </button>
-            </div>
-            {measuring ? (
-              <div className="flex items-center gap-2 py-3">
-                <span className="text-sm text-red-400 animate-pulse">袖带充气中...</span>
-                <svg className="animate-spin h-4 w-4 text-red-400" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-              </div>
-            ) : bpReading ? (
-              <div className="flex items-center gap-4">
-                <div className="text-center"><span className="text-[10px] text-red-400 block">收缩压</span><span className="text-xl font-extrabold text-red-700">{bpReading.sys}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
-                <span className="text-red-300 text-lg">/</span>
-                <div className="text-center"><span className="text-[10px] text-red-400 block">舒张压</span><span className="text-xl font-extrabold text-red-700">{bpReading.dia}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
-                <div className="w-px h-8 bg-red-200" />
-                <div className="text-center"><span className="text-[10px] text-slate-400 block">脉搏</span><span className="text-xl font-extrabold text-slate-700">{bpReading.hr}</span><span className="text-[10px] text-slate-400 ml-0.5">bpm</span></div>
-                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${bpReading.sys>=140?'bg-red-100 text-red-700':bpReading.sys>=130?'bg-amber-100 text-amber-700':'bg-emerald-100 text-emerald-700'}`}>
-                  {bpReading.sys>=140?'Stage 2 HTN':bpReading.sys>=130?'Stage 1 HTN':'Normal'}
-                </span>
-              </div>
-            ) : (
-              <p className="text-[10px] text-slate-400 py-2">Press "Take Reading" to measure via Bluetooth</p>
-            )}
-          </div>
-        )}
-        <p className="text-[10px] font-semibold text-slate-600 mb-1">参数:</p>
-        <div className="flex flex-wrap gap-1">{dev.parameters.map((p,j)=>(<span key={j} className="text-[9px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full">{p}</span>))}</div>
+        <span className={`flex items-center gap-1.5 text-[10px] font-semibold px-2 py-1 rounded-full ${dev.status==='Connected'?'bg-emerald-50 text-emerald-700':dev.status==='Syncing'?'bg-teal-50 text-teal-700':'bg-red-50 text-red-700'}`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${measuring ? 'bg-amber-500 animate-pulse' : dev.status==='Disconnected'?'bg-red-500':'bg-emerald-500'}`}/>
+          {measuring ? 'Measuring...' : dev.status}
+        </span>
       </div>
+      <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+        <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">电量</span><p className="font-bold text-slate-700">{dev.battery}%</p></div>
+        <div className="bg-warm-50 rounded-lg p-2"><span className="text-slate-400">上次同步</span><p className="font-bold text-slate-700">{isBP ? '30 sec ago' : dev.lastSync}</p></div>
+      </div>
+      {isBP && (
+        <div className="bg-gradient-to-r from-red-50 to-rose-50 rounded-lg border border-red-100 p-3 mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-semibold text-red-600 uppercase">实时血压读数</span>
+            <button onClick={startBpMeasure} disabled={measuring} className="text-[9px] font-semibold bg-red-500 hover:bg-red-600 disabled:bg-slate-300 text-white px-3 py-1 rounded-full transition-colors">
+              {measuring ? 'Measuring...' : bpReading ? 'Re-measure' : 'Take Reading'}
+            </button>
+          </div>
+          {measuring ? (
+            <div className="flex items-center gap-2 py-3">
+              <span className="text-sm text-red-400 animate-pulse">袖带充气中...</span>
+              <svg className="animate-spin h-4 w-4 text-red-400" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            </div>
+          ) : bpReading ? (
+            <div className="flex items-center gap-4">
+              <div className="text-center"><span className="text-[10px] text-red-400 block">收缩压</span><span className="text-xl font-extrabold text-red-700">{bpReading.sys}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
+              <span className="text-red-300 text-lg">/</span>
+              <div className="text-center"><span className="text-[10px] text-red-400 block">舒张压</span><span className="text-xl font-extrabold text-red-700">{bpReading.dia}</span><span className="text-[10px] text-red-400 ml-0.5">mmHg</span></div>
+              <div className="w-px h-8 bg-red-200" />
+              <div className="text-center"><span className="text-[10px] text-slate-400 block">脉搏</span><span className="text-xl font-extrabold text-slate-700">{bpReading.hr}</span><span className="text-[10px] text-slate-400 ml-0.5">bpm</span></div>
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${bpReading.sys>=140?'bg-red-100 text-red-700':bpReading.sys>=130?'bg-amber-100 text-amber-700':'bg-emerald-100 text-emerald-700'}`}>
+                {bpReading.sys>=140?'Stage 2 HTN':bpReading.sys>=130?'Stage 1 HTN':'Normal'}
+              </span>
+            </div>
+          ) : (
+            <p className="text-[10px] text-slate-400 py-2">Press "Take Reading" to measure via Bluetooth</p>
+          )}
+        </div>
+      )}
+      <p className="text-[10px] font-semibold text-slate-600 mb-1">参数:</p>
+      <div className="flex flex-wrap gap-1">{dev.parameters.map((p,j)=>(<span key={j} className="text-[9px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full">{p}</span>))}</div>
+    </div>
     )})}
   </div>
 );};
@@ -1052,47 +1109,47 @@ const BillingSection: FC<{ patientId: number }> = ({ patientId }) => {
 
   return (
     <div className="space-y-4">
-      <ST title="账单" icon={PhoneCall}/>
-      {meta && (
-        <div className="glass-card rounded-xl border border-slate-200 p-4 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold text-teal-600">{meta.id}</p>
-            <p className="text-[10px] text-slate-400 mt-0.5">当前居家照护账单</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-extrabold text-slate-800">HK$ {meta.total.toLocaleString()}</p>
-            <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${billingStatusClass(meta.status)}`}>{meta.status}</span>
-          </div>
+    <ST title="账单" icon={PhoneCall}/>
+    {meta && (
+      <div className="glass-card rounded-xl border border-slate-200 p-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold text-teal-600">{meta.id}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5">当前居家照护账单</p>
         </div>
-      )}
-      <div className="glass-card rounded-xl border border-slate-200 overflow-hidden">
-        {rows.length === 0 ? (
-          <p className="px-4 py-6 text-xs text-slate-400 text-center">此病人暂无账单记录。</p>
-        ) : (
-          <table className="w-full text-xs">
-            <thead className="bg-warm-50">
-              <tr>
-                <th className="text-left px-4 py-2 font-semibold text-slate-600">日期</th>
-                <th className="text-left px-4 py-2 font-semibold text-slate-600">服务</th>
-                <th className="text-right px-4 py-2 font-semibold text-slate-600">金额</th>
-                <th className="text-center px-4 py-2 font-semibold text-slate-600">状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r: PatientBillingRow, i: number) => (
-                <tr key={i} className="border-t border-slate-50">
-                  <td className="px-4 py-2 text-slate-600">{r.date}</td>
-                  <td className="px-4 py-2 font-medium text-slate-700">{r.service}</td>
-                  <td className="px-4 py-2 text-right font-semibold text-slate-800">{r.amount}</td>
-                  <td className="px-4 py-2 text-center">
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${billingStatusClass(r.status)}`}>{r.status}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <div className="text-right">
+          <p className="text-sm font-extrabold text-slate-800">HK$ {meta.total.toLocaleString()}</p>
+          <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${billingStatusClass(meta.status)}`}>{meta.status}</span>
+        </div>
       </div>
+    )}
+    <div className="glass-card rounded-xl border border-slate-200 overflow-hidden">
+      {rows.length === 0 ? (
+        <p className="px-4 py-6 text-xs text-slate-400 text-center">此病人暂无账单记录。</p>
+      ) : (
+        <table className="w-full text-xs">
+          <thead className="bg-warm-50">
+            <tr>
+              <th className="text-left px-4 py-2 font-semibold text-slate-600">日期</th>
+              <th className="text-left px-4 py-2 font-semibold text-slate-600">服务</th>
+              <th className="text-right px-4 py-2 font-semibold text-slate-600">金额</th>
+              <th className="text-center px-4 py-2 font-semibold text-slate-600">状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r: PatientBillingRow, i: number) => (
+              <tr key={i} className="border-t border-slate-50">
+                <td className="px-4 py-2 text-slate-600">{r.date}</td>
+                <td className="px-4 py-2 font-medium text-slate-700">{r.service}</td>
+                <td className="px-4 py-2 text-right font-semibold text-slate-800">{r.amount}</td>
+                <td className="px-4 py-2 text-center">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${billingStatusClass(r.status)}`}>{r.status}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
     </div>
   );
 };

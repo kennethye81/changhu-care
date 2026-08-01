@@ -110,10 +110,10 @@ export const CHANGHU_PATIENTS: PatientFull[] = [
       ],
       assignedDoctor: '—',
       assignedNurse: '姜珊',
-      assignedCaseManager: '个案经理',
+      assignedCaseManager: '林晓东',
       assignedCareWorker: '汤菊玲',
-      assignedRehabTherapist: '康复治疗师',
-      assignedNutritionist: '营养师',
+      assignedRehabTherapist: '周明',
+      assignedNutritionist: '陈雅文',
     },
 
     nursingRecords: [
