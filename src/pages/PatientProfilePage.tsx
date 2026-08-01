@@ -526,8 +526,9 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
         <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
           <div className="px-5 pt-5 pb-3">
             <h3 className="text-[13px] font-bold text-slate-800 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-teal-600" />
-              当日完成情况
+            <CheckCircle2 className="w-4 h-4 text-teal-600" />
+            当日完成情况
+            <span className="text-[10px] font-normal text-slate-400 ml-1">8月16日（周日）</span>
             </h3>
           </div>
           <div className="border-b border-slate-100 grid grid-cols-[1fr_1.2fr_1fr_1fr_80px] gap-2 px-5 pb-2">
@@ -543,12 +544,12 @@ const CareInfoSection: FC<{ patient: PatientFull; teamMembers: string[]; todaySc
               const times = taskTimes[taskKey] || {};
               const sd = statusDot(act.status);
               return (
-                <div key={i} className="grid grid-cols-[1fr_1.2fr_1fr_1fr_80px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-slate-50/50">
+                <div key={i} className={`grid grid-cols-[1fr_1.2fr_1fr_1fr_80px] gap-2 px-5 py-2.5 text-xs items-start border-b border-slate-50 hover:bg-slate-50/50 ${act.status === 'missed' ? 'bg-red-50/50' : ''}`}>
                   <span className="text-slate-700 font-medium text-[11px] leading-relaxed">{act.activity}</span>
                   <span className="text-[11px] text-slate-500 leading-relaxed">{act.detail}</span>
                   <span className="text-[10px] text-slate-500 font-mono">{act.scheduled || '—'}</span>
                   <span className="text-[10px] text-slate-500 font-mono">
-                    {times.clockIn ? `${times.clockIn}${times.clockOut ? ` – ${times.clockOut}` : ''}` : '—'}
+                    {times.clockIn ? `${times.clockIn}${times.clockOut ? ` – ${times.clockOut}` : ''}` : act.clockIn ? `${act.clockIn}${act.clockOut ? ` – ${act.clockOut}` : ''}` : '—'}
                   </span>
                   <div className="flex items-center gap-1.5 justify-center">
                     <span className={`w-2 h-2 rounded-full flex-shrink-0 ${sd.color} ${sd.pulse ? 'animate-pulse' : ''}`} />

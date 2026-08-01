@@ -33,6 +33,7 @@ export const MONTHLY_SCHEDULE: ScheduleRow[] = [
 
 /** 将月度排程某一行拆分为 DailyActivity 列表（模拟当日服务执行状态） */
 export function getDailyActivitiesFromSchedule(date: string): DailyActivity[] {
+  const timeStr = (h: number, m = 0): string => `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   // date format: '2026-08-16' → match '8/16'
   const m = date.match(/^\d{4}-(\d{2})-(\d{2})$/);
   if (!m) return [];
@@ -41,6 +42,12 @@ export function getDailyActivitiesFromSchedule(date: string): DailyActivity[] {
   if (!row) return [];
 
   const [startTime, endTime] = row.t.split('-');
+  const parseHour = (t: string) => parseInt(t.split(':')[0]);
+  const parseMin = (t: string) => parseInt(t.split(':')[1]) || 0;
+  const startH = parseHour(startTime);
+  const startM = parseMin(startTime);
+  const endH = endTime ? parseHour(endTime) : startH + 1;
+  const endM = endTime ? parseMin(endTime) : 0;
   const roles = row.r.split('+').map(s => s.trim());
   const content = row.c;
 
@@ -48,16 +55,15 @@ export function getDailyActivitiesFromSchedule(date: string): DailyActivity[] {
 
   // 护理员任务
   if (roles.includes('护理员')) {
-    // 根据日期内容提取护理员具体任务
     if (content.includes('翻身')) {
       activities.push({
-        time: startTime,
-        activity: '翻身护理 + 皮肤检查',
-        type: 'care_worker',
+        time: startTime, activity: '翻身护理 + 皮肤检查', type: 'care_worker',
         detail: 'q2h翻身核查 · 压疮部位皮肤完整性评估',
-        status: 'completed',
-        provider: '汤菊玲',
-      });
+        status: 'completed', provider: '汤菊玲',
+        scheduled: `${startTime} – ${timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60)}`,
+        clockIn: timeStr(startH, Math.max(0, startM - 2)),
+        clockOut: timeStr(startH + (startM + 35 >= 60 ? 1 : 0), (startM + 35) % 60),
+      } as any);
     }
     if (content.includes('清洁') || content.includes('助餐')) {
       activities.push({
@@ -65,117 +71,121 @@ export function getDailyActivitiesFromSchedule(date: string): DailyActivity[] {
         activity: content.includes('助餐') ? '助餐 + 个人清洁' : '个人清洁护理',
         type: 'care_worker',
         detail: '床上擦浴 · 口腔护理 · 低盐低脂助餐',
-        status: 'completed',
-        provider: '汤菊玲',
-      });
+        status: 'completed', provider: '汤菊玲',
+        scheduled: `${startTime} – ${timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60)}`,
+        clockIn: timeStr(startH, Math.max(0, startM - 3)),
+        clockOut: timeStr(startH + (startM + 28 >= 60 ? 1 : 0), (startM + 28) % 60),
+      } as any);
     }
     if (content.includes('血压')) {
       activities.push({
-        time: startTime,
-        activity: '血压监测',
-        type: 'monitoring',
+        time: startTime, activity: '血压监测', type: 'monitoring',
         detail: 'BP测量 + 记录 · 硝苯地平用药提醒',
-        status: 'completed',
-        provider: '汤菊玲',
-      });
+        status: 'completed', provider: '汤菊玲',
+        scheduled: `${startTime} – ${timeStr(startH + (startM + 15 >= 60 ? 1 : 0), (startM + 15) % 60)}`,
+        clockIn: timeStr(startH, Math.max(0, startM - 1)),
+        clockOut: timeStr(startH + (startM + 8 >= 60 ? 1 : 0), (startM + 8) % 60),
+      } as any);
     }
-    // 通用护理员到场标记（若上面都没命中）
     if (activities.length === 0 || !activities.some(a => a.type === 'care_worker')) {
       activities.push({
-        time: startTime,
-        activity: '基础照护',
-        type: 'care_worker',
+        time: startTime, activity: '基础照护', type: 'care_worker',
         detail: '翻身护理 · 清洁 · 安全巡查',
-        status: 'completed',
-        provider: '汤菊玲',
-      });
+        status: 'completed', provider: '汤菊玲',
+        scheduled: `${startTime} – ${endTime || ''}`,
+        clockIn: timeStr(startH, Math.max(0, startM - 5)),
+        clockOut: endTime,
+      } as any);
     }
   }
 
   // 护士任务
   if (roles.includes('护士')) {
+    const isEndMonth = content.includes('月末');
     activities.push({
       time: startTime,
-      activity: content.includes('月初') || content.includes('月末') ? '综合护理评估' : '护理随访评估',
+      activity: content.includes('月初') || isEndMonth ? '综合护理评估' : '护理随访评估',
       type: 'nurse_visit',
       detail: '生命体征全套 · Braden评分 · 用药审查',
-      status: content.includes('月末') ? 'in_progress' : 'completed',
-      provider: '姜珊',
-    });
+      status: isEndMonth ? 'in_progress' : 'completed', provider: '姜珊',
+      scheduled: `${startTime} – ${timeStr(startH + (startM + 45 >= 60 ? 1 : 0), (startM + 45) % 60)}`,
+      clockIn: timeStr(startH, Math.max(0, startM + 1)),
+      clockOut: timeStr(startH + (startM + 42 >= 60 ? 1 : 0), (startM + 42) % 60),
+    } as any);
   }
 
   // 康复师任务
   if (roles.includes('康复师')) {
     if (content.includes('被动ROM') || content.includes('关节活动')) {
       activities.push({
-        time: startTime,
-        activity: '被动关节活动训练',
-        type: 'therapy',
+        time: startTime, activity: '被动关节活动训练', type: 'therapy',
         detail: '双上肢+双下肢ROM · MMT肌力评估',
-        status: 'in_progress',
-        provider: '周明',
-      });
+        status: 'in_progress', provider: '周明',
+        scheduled: `${startTime} – ${timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60)}`,
+        clockIn: timeStr(startH, Math.max(0, startM + 2)),
+      } as any);
     }
     if (content.includes('肌力') || content.includes('抗阻')) {
+      const tH = endTime ? endH - 1 : startH;
+      const tM = endM;
       activities.push({
-        time: endTime ? `${parseInt(endTime)-30}:00` : startTime,
-        activity: '肌力渐进训练',
-        type: 'therapy',
+        time: timeStr(tH, tM), activity: '肌力渐进训练', type: 'therapy',
         detail: '抗阻训练 · 床上活动训练',
-        status: 'pending',
-        provider: '周明',
-      });
+        status: 'pending', provider: '周明',
+        scheduled: `${timeStr(tH, tM)} – ${timeStr(tH + (tM + 30 >= 60 ? 1 : 0), (tM + 30) % 60)}`,
+      } as any);
     }
     if (content.includes('按摩')) {
+      const tH = endTime ? endH - 1 : startH;
+      const tM = endM + 15;
       activities.push({
-        time: endTime ? `${parseInt(endTime)-15}:00` : startTime,
-        activity: '治疗性按摩',
-        type: 'therapy',
+        time: timeStr(tH, tM), activity: '治疗性按摩', type: 'therapy',
         detail: '肌肉放松 · 促进血液循环',
-        status: 'pending',
-        provider: '周明',
-      });
+        status: 'pending', provider: '周明',
+        scheduled: `${timeStr(tH, tM)} – ${timeStr(tH + (tM + 15 >= 60 ? 1 : 0), (tM + 15) % 60)}`,
+      } as any);
     }
   }
 
-  // 营养师任务
+  // 营养师任务 — 模拟迟到异常
   if (roles.includes('营养师')) {
     activities.push({
-      time: startTime,
-      activity: '营养风险筛查',
-      type: 'therapy',
+      time: startTime, activity: '营养风险筛查', type: 'therapy',
       detail: 'NRS2002量表评估 · 人体测量',
-      status: 'completed',
-      provider: '陈雅文',
-    });
+      status: 'missed', provider: '陈雅文',
+      scheduled: `${startTime} – ${timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60)}`,
+      clockIn: timeStr(startH + (startM + 45 >= 60 ? 1 : 0), (startM + 45) % 60),
+      clockOut: timeStr(startH + (startM + 50 >= 60 ? 1 : 0), (startM + 50) % 60),
+    } as any);
     activities.push({
-      time: `${parseInt(startTime) + 30}:00`,
-      activity: '膳食调查',
-      type: 'therapy',
+      time: timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60),
+      activity: '膳食调查', type: 'therapy',
       detail: '24h回顾法 · 膳食结构分析',
-      status: 'in_progress',
-      provider: '陈雅文',
-    });
+      status: 'in_progress', provider: '陈雅文',
+      scheduled: `${timeStr(startH + (startM + 30 >= 60 ? 1 : 0), (startM + 30) % 60)} – ${timeStr(startH + (startM + 60 >= 60 ? 1 : 0), (startM + 60) % 60)}`,
+      clockIn: timeStr(startH + (startM + 45 >= 60 ? 1 : 0), (startM + 45) % 60),
+    } as any);
     activities.push({
-      time: `${parseInt(startTime) + 60}:00`,
-      activity: '个性化营养方案',
-      type: 'therapy',
+      time: timeStr(startH + (startM + 60 >= 60 ? 1 : 0), (startM + 60) % 60),
+      activity: '个性化营养方案', type: 'therapy',
       detail: '蛋白补充方案(1.2g/kg/日) · 低盐低脂饮食指导',
-      status: 'pending',
-      provider: '陈雅文',
-    });
+      status: 'pending', provider: '陈雅文',
+      scheduled: `${timeStr(startH + (startM + 60 >= 60 ? 1 : 0), (startM + 60) % 60)} – ${endTime || ''}`,
+    } as any);
   }
 
-  // 安全巡查（有防跌倒内容的日期）
+  // 安全巡查
   if (content.includes('跌倒') || content.includes('安全巡查')) {
+    const tH = endTime ? endH : startH;
+    const tM = endTime ? endM : startM;
     activities.push({
-      time: endTime || startTime,
-      activity: '居家安全巡查',
-      type: 'care_worker',
+      time: timeStr(tH, tM), activity: '居家安全巡查', type: 'care_worker',
       detail: '地面防滑 · 扶手稳固 · 照明检查 · 呼叫铃测试',
-      status: 'completed',
-      provider: '汤菊玲',
-    });
+      status: 'completed', provider: '汤菊玲',
+      scheduled: `${timeStr(tH, tM)} – ${timeStr(tH + (tM + 15 >= 60 ? 1 : 0), (tM + 15) % 60)}`,
+      clockIn: timeStr(tH, Math.max(0, tM - 10)),
+      clockOut: timeStr(tH + (tM + 2 >= 60 ? 1 : 0), (tM + 2) % 60),
+    } as any);
   }
 
   return activities;
