@@ -177,7 +177,7 @@ function generateIntakeOutputSummary(patient: PatientFull, p7Alert = false): str
 }
 
 function generateMentalStatusSummary(patient: PatientFull, p7Alert = false): string {
-  if (patient.id === 7 && p7Alert) return 'AMTS dropped 10→7 during SpO₂ desaturation — likely hypoxic delirium. Recovering to 9/10 on O₂ 2L/min. Mood anxious. Pain 3/10. Monitor q1h. Wife (Mrs. Chan) at bedside — trained on confusion assessment.';
+  if (patient.id === 7 && p7Alert) return 'AMTS dropped 10→7 during SpO₂ desaturation — likely hypoxic delirium. Recovering to 9/10 on O₂ 2L/min. Mood anxious. Pain 3/10. Monitor q1h. 配偶（王小凤）在床旁 — trained on confusion assessment.';
   if (patient.id === 7) return 'AMTS 10/10. Alert and oriented ×3. Mood calm. Wife present and trained on COPD action plan. No cognitive decline. Consistent with baseline.';
   const d = patient.diagnosis;
   if (d.includes('Post-Stroke') && patient.id === 4) return 'Alert and oriented ×3. Speech improving — 90% intelligibility with mild residual expressive aphasia. Mood positive and motivated for rehabilitation. NIHSS stable at 3. No depression or cognitive decline. Continue SLP support.';

@@ -23,7 +23,7 @@ export function buildPatientAiBrief(
         'IV Ceftriaxone 2g if not given — per C&S (H. influenzae sensitive)',
         'Blood cultures ×2 + sputum C&S',
         `Monitor AVPU/AMTS — ${news.monitoringLabel}`,
-        'Dr. Lee Mei Ling tele-review within 30 min',
+        '护士经理姜珊30分钟内远程复评',
       ],
     };
   }

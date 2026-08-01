@@ -81,7 +81,7 @@ const PendingRegistrationAssessmentForm: FC<{
                       d.morseScore = patient.age > 70 ? '45' : '25';
                       d.morsePrev = patient.age > 70 ? '45 (2026/06/20)' : '25 (2026/06/20)';
                       d.hsStairs = '☑'; d.hsRugs = '☑'; d.hsLighting = '☐'; d.hsOther = 'Remove loose rugs, install grab bars';
-                      d.hospOutside = 'No recent hospitalization outside Hong Kong';
+                      d.hospOutside = '近一年无江苏省外住院史';
                       d.mdro = 'Negative / Not indicated';
                       d.isolation = 'Standard Precautions';
                       d.fever = 'No';
@@ -93,7 +93,7 @@ const PendingRegistrationAssessmentForm: FC<{
                       d.alcohol = 'Social, occasional';
                       d.drug = 'None';
                       d.notes = 'Patient and family demonstrate understanding of home care plan. Home environment assessed as suitable with minor modifications. RPM devices recommended for continuous monitoring.';
-                      d.address = 'Flat 3A, 28 Queen\'s Road Central, Hong Kong';
+                      d.address = '江苏省常州市金坛区东城街道';
                       d.family = 'Lives with husband (Mr. Wong Ka Ming, 68, retired) and one adult daughter (Wong Hei Man, 32, accountant)';
                       d.religion = 'None';
                       d.housing = 'Private residential flat';

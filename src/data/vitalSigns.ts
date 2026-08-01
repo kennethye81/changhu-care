@@ -65,7 +65,7 @@ export function resolveThresholds(th: VitalsThresholds): ResolvedVitalsThreshold
 // ═══ Clinical Thresholds Per Patient (国际指南依据) ═══
 
 export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; guidelines: string }> = {
-  // P1: Cheung Wai Man — HF NYHA III + CKD3 + T2DM + AF (78M, 养和)
+  // P1: 冯存富 — HF NYHA III + CKD3 + T2DM + AF (78M, 常州)
   // ESC 2021 HF guidelines: HR target <70 in AF; BP target <130/80; SpO₂ ≥95%
   1: {
     thresholds: {
@@ -77,7 +77,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'ESC 2021 Heart Failure · KDIGO 2024 CKD3 · ESC 2020 AF',
   },
-  // P2: Wong Chi Ming — COPD GOLD 3 + HTN + Dyslipid (72M, 玛丽)
+  // P2: 待录入 — COPD GOLD 3 + HTN + Dyslipid (72M, 常州)
   // GOLD 2024: COPD G3 FEV1 30-50%, baseline SpO₂ 88-92%
   2: {
     thresholds: {
@@ -89,7 +89,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'GOLD 2024 COPD Stage 3 · ESC 2021 HTN · ESC 2019 Dyslipidaemia',
   },
-  // P3: Lam Ka Chun — CAP (resolving) + Penicillin anaphylaxis (45M, 港怡)
+  // P3: 待录入 — CAP (resolving) + Penicillin anaphylaxis (45M, 常州)
   // IDSA 2019 CAP: CURB-65 1, outpatient management criteria
   3: {
     thresholds: {
@@ -101,7 +101,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'IDSA/ATS 2019 CAP · Penicillin Anaphylaxis (contraindication)',
   },
-  // P4: Lau Suk Yee — UTI + CKD3 + T2DM + HTN + Delirium (76F, 养和)
+  // P4: 待录入 — UTI + CKD3 + T2DM + HTN + Delirium (76F, 常州)
   // IDSA 2024 UTI: complicated UTI in elderly female
   4: {
     thresholds: {
@@ -113,7 +113,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'IDSA 2024 UTI · KDIGO 2024 CKD3 · ESC 2021 HTN · ADA 2024 T2DM',
   },
-  // P5: Ho Tai Wai — Cellulitis Eron III + T2DM + HTN (68M, 玛丽)
+  // P5: 待录入 — Cellulitis Eron III + T2DM + HTN (68M, 常州)
   // IDSA 2014 SSTI: Eron Class III (systemic signs)
   5: {
     thresholds: {
@@ -125,7 +125,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'IDSA 2014 SSTI · ESC 2021 HTN · ADA 2024 T2DM',
   },
-  // P6: Ng Siu Wan — DVT LL + HTN + Dyslipid + Warfarin (58F, 港怡)
+  // P6: 待录入 — DVT LL + HTN + Dyslipid + Warfarin (58F, 常州)
   // ACCP CHEST 2021: DVT anticoagulation, INR target 2.0-3.0
   6: {
     thresholds: {
@@ -137,7 +137,7 @@ export const PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThresholds; 
     },
     guidelines: 'ACCP CHEST 2021 DVT · ESC 2021 HTN · ACC/AHA Warfarin Management',
   },
-  // P7: Chan Tai Ming — COPD GOLD 2 + CAP (resolving) + HTN (82M, PWH)
+  // P7: 待录入 — COPD GOLD 2 + CAP (resolving) + HTN (82M, PWH)
   // GOLD 2024 COPD G2 FEV1 55%, IDSA CAP resolving
   7: {
     thresholds: {

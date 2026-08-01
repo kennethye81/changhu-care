@@ -269,6 +269,6 @@ export function buildFamilySleepSnapshot(vitals: Vitals, p7Alert: boolean): Fami
 
 export function buildFamilyMentalInsight(p7Alert: boolean): string {
   return p7Alert
-    ? 'AMTS dropped from 10→7 during SpO₂ desaturation — likely hypoxic delirium. Recovering to 9/10 on O₂ 2L/min. Monitor q1h. Wife (Mrs. Chan) at bedside — trained on confusion assessment.'
-    : 'AMTS 10/10. Alert and oriented ×3. Mood calm. Wife present and trained on COPD action plan. No cognitive decline. Consistent with baseline.';
+    ? 'SpO₂下降期间AMTS从10→7 — 疑为低氧性谵妄。吸氧2L/min后恢复至9/10。每小时监测一次。配偶王小凤在床旁 — 已培训意识模糊评估。'
+    : 'AMTS 10/10。清醒，定向力×3。情绪平稳。配偶在场，已培训COPD行动计划。 No cognitive decline. Consistent with baseline.';
 }

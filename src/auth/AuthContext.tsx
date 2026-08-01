@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthState>(null!);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User>({ id: 'A001', name: 'System Admin', role: 'admin', avatar: 'SA', institutionId: 'HK-INST-001', account: 'admin' });
+  const [user, setUser] = useState<User>({ id: 'A001', name: 'System Admin', role: 'admin', avatar: 'SA', institutionId: 'CN-INST-001', account: 'admin' });
 
   const login = useCallback((account: string, password: string, institutionId: string) => {
     if (!institutionId.trim()) return { success: false, error: 'Institution ID is required' };

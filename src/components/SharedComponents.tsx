@@ -1,4 +1,4 @@
-// === iHomeCare Shared Components ===
+// === YDiCare 易护 Shared Components ===
 
 import { type FC } from 'react';
 import { AlertTriangle } from 'lucide-react';

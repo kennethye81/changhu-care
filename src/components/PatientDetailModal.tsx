@@ -677,7 +677,7 @@ const 设备Tab: FC<{ patient: Patient }> = () => (
           <p className="text-slate-400">照护团队</p>
         </div>
       </div>
-      <p className="text-[9px] text-slate-500 text-center mt-3">All data stored in Hong Kong · HIPAA compliant · 256-bit AES encryption</p>
+      <p className="text-[9px] text-slate-500 text-center mt-3">All data stored in 常州 · HIPAA compliant · 256-bit AES encryption</p>
     </div>
   </div>
 );

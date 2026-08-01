@@ -92,7 +92,7 @@ export function formatHubP7InboxPreview(): { subject: string; preview: string } 
   const v = P7_NEWS_ESCALATION_VITALS;
   const news = calculateNews(v, 'COPD');
   return {
-    subject: `${formatNewsHeadline(news)} — Chan Tai Ming SpO₂ drop`,
+    subject: `${formatNewsHeadline(news)} — 冯存富 SpO₂ drop`,
     preview: `${formatNewsHeadline(news)} — SpO₂ ${v.spo2}%, Temp ${v.temp}°C, HR ${v.hr}, RR ${v.rr}. ${news.escalation} Dr. Lee tele-review within 30 min.`,
   };
 }
@@ -186,9 +186,9 @@ export function buildOverallNewsAssessment(vitals: Vitals, diagnosis: string): s
 
 export function buildP7ClinicalRecommendations(news: NewsAssessment): string[] {
   return [
-    '1. Nurse Call — Immediate bedside assessment by Jenny Tam (RN)',
+    '1. Nurse Call — Immediate bedside assessment by 汤菊玲（照护师）',
     '2. POCT CRP/PCT — Rule out bacterial infection vs viral',
-    '3. Doctor Review — Dr. Lee Mei Ling within 30 minutes',
+    '3. Doctor Review — 姜珊（护士经理） within 30 minutes',
     '4. Blood Cultures ×2 + Sputum C&S — Send to PWH lab',
     '5. O₂ 2L/min via concentrator — Titrate to SpO₂ ≥92%',
     `6. ${news.monitoringLabel} — document all scored parameters`,
@@ -215,7 +215,7 @@ export function buildP7HubBannerContent(vitals: Vitals, diagnosis = 'COPD'): P7H
   const news = calculateNews(vitals, diagnosis);
   return {
     title: `${formatNewsHeadline(news)} Escalation`,
-    subtitle: `Chan Tai Ming · Score ${news.score}`,
+    subtitle: `冯存富 · Score ${news.score}`,
     headline: `${formatNewsHeadline(news)} — ${news.escalation}`,
     detail: `Scale ${vitals.spo2Scale} SpO₂ ${vitals.spo2}%${vitals.onSupplementalO2 ? ' + O₂ on' : ''} · RR ${vitals.rr} · Temp ${vitals.temp}°C · HR ${vitals.hr} · ${news.monitoringLabel}`,
     vitals: [
@@ -241,14 +241,14 @@ export function buildP7EliteVoiceBundle(alertActive: boolean): EliteVoiceBundle 
   if (alertActive) {
     return {
       phrases: [
-        'Patient Chan Tai Ming, 82-year-old male, COPD GOLD 2 plus CAP. ',
+        'Patient 冯存富, 82-year-old male, COPD GOLD 2 plus CAP. ',
         `${headline}. ${vitalsPhrase}`,
         'AMTS 7 out of 10 — intermittent confusion. Sputum green, increased volume. ',
         'POCT CRP 68, PCT 0.8 — confirms bacterial infection. ',
         'O₂ 2 litres per minute initiated via concentrator. ',
         'IV Ceftriaxone 2g started. Blood cultures sent. ',
-        'Mrs. Chan at bedside, calm and monitoring. ',
-        `Urgent escalation per Dr. Lee Mei Ling. ${news.monitoringLabel}. End of report.`,
+        '王小凤 at bedside, calm and monitoring. ',
+        `Urgent escalation per 姜珊（护士经理）. ${news.monitoringLabel}. End of report.`,
       ],
       fields: {
         condition: `${headline}. SpO₂ ${v.spo2}%${v.onSupplementalO2 ? ' on O₂' : ' RA'}, Temp ${v.temp}°C, RR ${v.rr}, HR ${v.hr}, BP ${v.bpSystolic}/${v.bpDiastolic}. Green sputum, increased volume. Crackles RLL. AMTS 7/10.`,
@@ -257,18 +257,18 @@ export function buildP7EliteVoiceBundle(alertActive: boolean): EliteVoiceBundle 
         mental: `AMTS 7/10 — intermittent confusion likely hypoxic delirium. Mood anxious. Wife at bedside, trained on confusion assessment. ${news.monitoringLabel}.`,
         io: 'Intake reduced ~900mL. Output ~600mL. Encourage hydration. Net balance concerning in febrile state.',
         diet: 'Reduced appetite. Light congee offered. Encourage small frequent meals when afebrile.',
-        incidents: `${headline} triggered. Infection Watch protocol activated. No falls. POCT kit deployed. Escalation to Dr. Lee Mei Ling. ${news.monitoringLabel}.`,
+        incidents: `${headline} triggered. Infection Watch protocol activated. No falls. POCT kit deployed. Escalation to 姜珊（护士经理）. ${news.monitoringLabel}.`,
       },
     };
   }
 
   return {
     phrases: [
-      'Patient Chan Tai Ming, 82-year-old male, COPD GOLD 2 plus CAP — HaH Day 1. ',
+      'Patient 冯存富, 82-year-old male, COPD GOLD 2 plus CAP — HaH Day 1. ',
       `${headline}. Vitals: ${vitalsPhrase}`,
       'AMTS 10 out of 10. Initial respiratory assessment completed. ',
       'Baseline meds confirmed: Tiotropium + Amlodipine. O₂ concentrator tested on standby. ',
-      'Mrs. Chan trained on SpO₂ and escalation protocol. ',
+      '王小凤 trained on SpO₂ and escalation protocol. ',
       'Grab bars installation verified. ',
       `HaH Day 1 intake complete. ${news.monitoringLabel}. `,
       'No acute events. Continue current plan. End of report.',

@@ -209,15 +209,15 @@ export const NEW_CLINICAL_EVENTS: Record<number, { time: number; duration: numbe
 };
 
 export const NEW_VITALS_CONTEXT: Record<number, { name: string; conditions: string }> = {
-  8:  { name: 'Chow Kwok Fai', conditions: 'NSTEMI post-PCI, T2DM, HTN' },
-  9:  { name: 'Lam Siu Wan', conditions: 'COPD GOLD 3, chronic hypoxaemia, osteoporosis' },
-  10: { name: 'Cheung Siu Ming', conditions: 'Post-stroke L MCA, hemiparesis, HTN' },
-  11: { name: 'Wong Lai Chun', conditions: 'Post-lumpectomy breast cancer, adjuvant chemo pending' },
-  12: { name: 'Fok Wai Keung', conditions: 'HF NYHA III EF 32%, AF, CKD3' },
-  13: { name: 'Lau Wai Yin', conditions: 'T2DM post-DKA, nephropathy, NPDR' },
-  14: { name: 'Tsang Kwok Hung', conditions: 'CKD Stage 4, anaemia, 2°HPT' },
-  15: { name: 'Mak Ka Ming', conditions: 'Resistant HTN, OSA on CPAP, LVH' },
-  16: { name: 'Fung Kam Tong', conditions: 'Post-ORIF hip fracture, osteoporosis, frailty' },
-  17: { name: 'Chan Yuk Lin', conditions: 'CAP resolving, COPD GOLD 2' },
-  18: { name: 'Zhang Jianguo', conditions: 'Post-VATS RUL lobectomy, HTN, hyperlipidemia' },
+  8:  { name: '待录入', conditions: 'NSTEMI post-PCI, T2DM, HTN' },
+  9:  { name: '待录入', conditions: 'COPD GOLD 3, chronic hypoxaemia, osteoporosis' },
+  10: { name: '待录入', conditions: 'Post-stroke L MCA, hemiparesis, HTN' },
+  11: { name: '待录入', conditions: 'Post-lumpectomy breast cancer, adjuvant chemo pending' },
+  12: { name: '待录入', conditions: 'HF NYHA III EF 32%, AF, CKD3' },
+  13: { name: '待录入', conditions: 'T2DM post-DKA, nephropathy, NPDR' },
+  14: { name: '待录入', conditions: 'CKD Stage 4, anaemia, 2°HPT' },
+  15: { name: '待录入', conditions: 'Resistant HTN, OSA on CPAP, LVH' },
+  16: { name: '待录入', conditions: 'Post-ORIF hip fracture, osteoporosis, frailty' },
+  17: { name: '待录入', conditions: 'CAP resolving, COPD GOLD 2' },
+  18: { name: '待录入', conditions: 'Post-VATS RUL lobectomy, HTN, hyperlipidemia' },
 };

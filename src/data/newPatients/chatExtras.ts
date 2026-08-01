@@ -47,18 +47,18 @@ export function generateNewPatientChats(patientId: number): ChatMessage[] {
   ];
 
   if (patientId === 10) return [
-    msg('system', 'System', 'Care team assigned for Cheung Siu Ming: Dr. Cheung Kwok Wai (Internal Medicine), Connie Cheung (RN), Anna Leung (Case Manager)', '07/06 09:00'),
-    msg('caseManager', 'Anna Leung (Case Manager)', 'Welcome to iHomeCare post-stroke programme. Key goals: NIHSS monitoring, PT/OT/ST 3×/wk, IDDSI Level 5 diet, fall prevention.', '07/06 09:15'),
+    msg('system', 'System', 'Care team assigned for 待录入: 姜珊 (Internal Medicine), 汤菊玲（照护师）, 待分配（个案经理）', '07/06 09:00'),
+    msg('caseManager', '待分配（个案经理）', 'Welcome to iHomeCare post-stroke programme. Key goals: NIHSS monitoring, PT/OT/ST 3×/wk, IDDSI Level 5 diet, fall prevention.', '07/06 09:15'),
     msg('family', p.familyName, 'Thank you Anna. My husband had L MCA stroke. Right side weak. We have grab bars installed and walker ready.', '07/06 09:20'),
-    msg('nurse', 'Connie Cheung (RN)', 'Initial visit today: NIHSS assessment, home safety check, IDDSI diet review, and caregiver training on stroke warning signs. Please have discharge summary available.', '07/06 09:30'),
-    msg('nurse', 'Connie Cheung (RN)', 'Day 1 complete: NIHSS 5. R hemiparesis RUE 3/5, RLE 4/5. IDDSI 5 tolerated — no aspiration. Morse 55 HIGH. Fall alarm activated. Wife competent with bed↔chair transfers.', '07/06 11:00'),
-    msg('doctor', 'Dr. Cheung Kwok Wai', 'Day 1 plan confirmed. BP target <140/90 — do not lower too aggressively in acute phase. Continue DAPT. PT/OT/ST starting tomorrow. Repeat CT showed no haemorrhagic conversion.', '07/06 15:00'),
+    msg('nurse', '汤菊玲（照护师）', 'Initial visit today: NIHSS assessment, home safety check, IDDSI diet review, and caregiver training on stroke warning signs. Please have discharge summary available.', '07/06 09:30'),
+    msg('nurse', '汤菊玲（照护师）', 'Day 1 complete: NIHSS 5. R hemiparesis RUE 3/5, RLE 4/5. IDDSI 5 tolerated — no aspiration. Morse 55 HIGH. Fall alarm activated. Wife competent with bed↔chair transfers.', '07/06 11:00'),
+    msg('doctor', '姜珊', 'Day 1 plan confirmed. BP target <140/90 — do not lower too aggressively in acute phase. Continue DAPT. PT/OT/ST starting tomorrow. Repeat CT showed no haemorrhagic conversion.', '07/06 15:00'),
     msg('family', p.familyName, 'Michael Kwok came for PT today. Husband walked 15m with walker! Right arm moving better. Very encouraged.', '07/07 16:00'),
-    msg('nurse', 'Connie Cheung (RN)', 'Day 2: NIHSS improved to 4. Speech 85% intelligible. No falls. Wife managing IDDSI meals well. Continue current therapy frequency.', '07/07 16:30'),
+    msg('nurse', '汤菊玲（照护师）', 'Day 2: NIHSS improved to 4. Speech 85% intelligible. No falls. Wife managing IDDSI meals well. Continue current therapy frequency.', '07/07 16:30'),
     msg('ai', '🤖 iHomeCare AI', formatNewsChatLine(10, patientDiagnosis(10), 'Stroke Day 2: NIHSS 4 (↓ from 5). BP 140/84. No new neurological deficits. Fall risk HIGH — zero falls recorded'), '07/07 20:00'),
-    msg('doctor', 'Dr. Cheung Kwok Wai', 'NIHSS improving — excellent early recovery. Swallow reassessment Day 5 for possible IDDSI upgrade. Continue aggressive rehab while window is open.', '07/07 15:00'),
+    msg('doctor', '姜珊', 'NIHSS improving — excellent early recovery. Swallow reassessment Day 5 for possible IDDSI upgrade. Continue aggressive rehab while window is open.', '07/07 15:00'),
     msg('family', p.familyName, 'Speech therapist says he is finding words faster. Can we try soft solids soon?', '07/08 14:00'),
-    msg('caseManager', 'Anna Leung (Case Manager)', 'ST will assess swallow safety Day 5. Do not advance diet without formal assessment — aspiration risk is real. You are doing wonderful caregiving!', '07/08 14:15'),
+    msg('caseManager', '待分配（个案经理）', 'ST will assess swallow safety Day 5. Do not advance diet without formal assessment — aspiration risk is real. You are doing wonderful caregiving!', '07/08 14:15'),
   ];
 
   if (patientId === 11) return [
@@ -92,29 +92,29 @@ export function generateNewPatientChats(patientId: number): ChatMessage[] {
   ];
 
   if (patientId === 13) return [
-    msg('system', 'System', 'Care team assigned for Lau Wai Yin: Dr. Cheung Kwok Wai (Endocrinology), Nurse Vivian Lau, Case Manager Anna Leung', '07/05 09:00'),
-    msg('caseManager', 'Anna Leung (Case Manager)', 'Welcome! T2DM basal-bolus home care activated. Key goals: SMBG qid, insulin technique, foot checks, DM educator sessions.', '07/05 09:15'),
+    msg('system', 'System', 'Care team assigned for Lau Wai Yin: 姜珊 (Endocrinology), Nurse Vivian Lau, Case Manager Anna Leung', '07/05 09:00'),
+    msg('caseManager', '待分配（个案经理）', 'Welcome! T2DM basal-bolus home care activated. Key goals: SMBG qid, insulin technique, foot checks, DM educator sessions.', '07/05 09:15'),
     msg('family', p.familyName, 'Thank you Anna. Sister discharged from Kwong Wah. Insulin pens and glucagon kit ready. I will supervise all injections.', '07/05 09:20'),
     msg('nurse', 'Vivian Lau (RN)', 'First visit: insulin technique verification, SMBG log setup, foot inspection, hypoglycaemia education. DM educator session scheduled tomorrow.', '07/05 09:30'),
     msg('nurse', 'Vivian Lau (RN)', 'Day 1 complete: Glargine 22u + lispro with meals. SMBG 7.2 fasting. Injection sites rotating. Foot monofilament 8/10. Brother trained on glucagon.', '07/05 11:00'),
-    msg('doctor', 'Dr. Cheung Kwok Wai', 'Day 1 plan: Continue basal-bolus. Empagliflozin for renoprotection (UACR 320). Target HbA1c <7%. Podiatry monthly. Sick day rules card on fridge.', '07/05 15:00'),
+    msg('doctor', '姜珊', 'Day 1 plan: Continue basal-bolus. Empagliflozin for renoprotection (UACR 320). Target HbA1c <7%. Podiatry monthly. Sick day rules card on fridge.', '07/05 15:00'),
     msg('family', p.familyName, 'DM educator session went well — carb counting makes sense now. SMBG range 5.8-10.2 today. No lows.', '07/06 14:00'),
     msg('ai', '🤖 iHomeCare AI', 'DM Day 2: SMBG avg 7.8 mmol/L. No hypoglycaemia (<4.0). Ketones negative. Insulin adherence 100%. Foot check normal.', '07/06 20:00'),
     msg('nurse', 'Vivian Lau (RN)', 'Day 2: Insulin technique perfect. Brother demonstrates correct rotation. Ketone strips reviewed. Sick day rules card posted.', '07/06 11:00'),
     msg('family', p.familyName, 'Quick question — she wants dim sum this weekend. How do we count carbs for har gow?', '07/07 10:00'),
-    msg('doctor', 'Dr. Cheung Kwok Wai', 'Har gow ~6g carbs each — bolus accordingly. Better to choose steamed over fried. SMBG 2h post-meal to learn her response. Enjoy in moderation!', '07/07 10:15'),
-    msg('caseManager', 'Anna Leung (Case Manager)', 'Week 1: SMBG qid compliance 98%, insulin technique verified, DM educator session complete, podiatry booked. Nephrology F/U in 4 weeks.', '07/09 16:00'),
+    msg('doctor', '姜珊', 'Har gow ~6g carbs each — bolus accordingly. Better to choose steamed over fried. SMBG 2h post-meal to learn her response. Enjoy in moderation!', '07/07 10:15'),
+    msg('caseManager', '待分配（个案经理）', 'Week 1: SMBG qid compliance 98%, insulin technique verified, DM educator session complete, podiatry booked. Nephrology F/U in 4 weeks.', '07/09 16:00'),
   ];
 
   if (patientId === 14) return [
     msg('system', 'System', 'Care team assigned for Tsang Kwok Hung: Dr. Chan Chi Keung (Nephrology), Nurse Connie Cheung, Case Manager Peter Ho', '07/07 09:00'),
     msg('caseManager', 'Peter Ho (Case Manager)', 'Welcome Tsang sir! CKD Stage 4 home care plan activated. Key goals: BP <130/80, renal diet, fluid balance, weekly ESA injection.', '07/07 09:15'),
     msg('family', p.familyName, 'Thank you Peter. My husband eGFR 22 at discharge. I am ready to learn ESA injection. Renal diet handout received.', '07/07 09:20'),
-    msg('nurse', 'Connie Cheung (RN)', 'First visit: BP baseline, ESA injection training, renal diet review, fluid balance chart setup. AVF planning education included.', '07/07 09:30'),
-    msg('nurse', 'Connie Cheung (RN)', 'Day 1: BP 144/90. eGFR 22. Hb 9.8 pre-ESA. ESA injection training completed — wife practised on pillow. PO₄ binders reviewed. Avoid NSAIDs reinforced.', '07/07 11:00'),
+    msg('nurse', '汤菊玲（照护师）', 'First visit: BP baseline, ESA injection training, renal diet review, fluid balance chart setup. AVF planning education included.', '07/07 09:30'),
+    msg('nurse', '汤菊玲（照护师）', 'Day 1: BP 144/90. eGFR 22. Hb 9.8 pre-ESA. ESA injection training completed — wife practised on pillow. PO₄ binders reviewed. Avoid NSAIDs reinforced.', '07/07 11:00'),
     msg('doctor', 'Dr. Chan Chi Keung', 'Day 1 plan: Darbepoetin 40mcg weekly. Target Hb 10-12. Strict renal diet K⁺ <2g, PO₄ control. AVF referral submitted — planning in 4 weeks.', '07/07 15:00'),
     msg('family', p.familyName, 'First ESA injection done this morning — left thigh, no reaction. Hb 10.2 on lab result. Husband less fatigued already.', '07/08 14:00'),
-    msg('nurse', 'Connie Cheung (RN)', 'Day 2: ESA administered correctly. K⁺ 4.8 stable. No oedema. Pruritus mild — emollients advised. Wife confident for weekly injections.', '07/08 11:00'),
+    msg('nurse', '汤菊玲（照护师）', 'Day 2: ESA administered correctly. K⁺ 4.8 stable. No oedema. Pruritus mild — emollients advised. Wife confident for weekly injections.', '07/08 11:00'),
     msg('ai', '🤖 iHomeCare AI', 'CKD4 Day 2: BP 142/88. Hb 10.2 (↑ from 9.8). K⁺ 4.8. Weight stable. ESA response positive. eGFR monitoring active.', '07/08 20:00'),
     msg('family', p.familyName, 'Can he have a small banana? He misses fruit.', '07/09 10:00'),
     msg('doctor', 'Dr. Chan Chi Keung', 'Banana is high K⁺ — avoid in CKD4. Try apple (small, peeled) or berries in moderation. Dietitian can suggest safe fruit list. K⁺ target 4.0-5.0.', '07/09 10:15'),

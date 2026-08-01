@@ -1,4 +1,4 @@
-// === iHomeCare App — Slim Routing Layer ===
+// === YDiCare 易护 App — Slim Routing Layer ===
 // Desktop CC, Family App, Elites App extracted to separate files.
 
 import { type FC, useRef } from 'react';

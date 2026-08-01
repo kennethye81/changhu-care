@@ -15,7 +15,7 @@ function senderDisplayName(senderName: string): string {
     .replace(' (RN)', '')
     .replace(' (Respiratory)', '')
     .replace(' (Case Manager)', '')
-    .replace('Mrs. Chan (Chan Siu Ling)', 'Mrs. Chan (Siu Ling)');
+    .replace('王小凤', '王小凤');
 }
 
 function avatarMeta(from: ChatMessage['from'], senderName: string): Pick<FamilyChatMessage, 'avatar' | 'color' | 'img'> {
@@ -23,8 +23,8 @@ function avatarMeta(from: ChatMessage['from'], senderName: string): Pick<FamilyC
   if (from === 'system') return { avatar: 'SYS', color: 'bg-slate-500' };
   if (from === 'family') return { avatar: 'FC', color: 'bg-[#06B0EF]' };
   if (senderName.includes('Jenny Tam')) return { avatar: 'JT', color: 'bg-[#06B0EF]', img: '/avatars/jenny-tam.png' };
-  if (senderName.includes('Dr. Lee')) return { avatar: 'LM', color: 'bg-[#0B3550]', img: '/avatars/dr-lee-mei-ling.png' };
-  if (senderName.includes('Grace Tang')) return { avatar: 'GT', color: 'bg-[#0095D3]', img: '/avatars/grace-tang.png' };
+  if (senderName.includes('姜珊')) return { avatar: 'LM', color: 'bg-[#0B3550]', img: '/avatars/nurse-manager.png' };
+  if (senderName.includes('汤菊玲')) return { avatar: 'TJ', color: 'bg-[#0095D3]', img: '/avatars/care-worker.png' };
   return { avatar: from.slice(0, 2).toUpperCase(), color: 'bg-[#06B0EF]' };
 }
 

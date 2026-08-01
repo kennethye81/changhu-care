@@ -55,7 +55,7 @@ function syntheticVisit(patientId: number, role: DemoMapVisitRole): DailyActivit
       type: 'nurse_visit',
       detail: 'Maintenance home nursing visit per assigned care team.',
       status: 'pending',
-      provider: cp?.assignedNurse ?? 'Sarah Leung (RN)',
+      provider: cp?.assignedNurse ?? '姜珊（护士经理）',
     };
   }
 

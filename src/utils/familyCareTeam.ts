@@ -9,20 +9,20 @@ export interface FamilyCareTeamMember {
 }
 
 const STAFF_DEMO_PHONES: Record<string, string> = {
-  'Grace Tang': '+852 9123 4567',
-  'Jenny Tam': '+852 9234 5678',
-  'Dr. Lee Mei Ling': '+852 9345 6789',
-  'David Chan': '+852 9456 7890',
-  'Sarah Leung': '+852 9567 8901',
-  'Peter Ho': '+852 9678 9012',
-  'Dr. Chan Chi Keung': '+852 9789 0123',
-  'Dr. Cheung Kwok Wai': '+852 9890 1234',
-  'Raymond Wong': '+852 9901 2345',
-  'Maggie Lam': '+852 9012 3456',
+  '汤菊玲（照护师）': '0519-8888-1003',
+  '李妍（评估员）': '0519-8888-1002',
+  '姜珊（护士经理）': '0519-8888-1001',
+  '待分配（康复师）': '0519-8888-1004',
+  '姜珊（护士经理）': '0519-8888-1001',
+  '待分配（营养师）': '0519-8888-1005',
+  '李妍（评估员）': '0519-8888-1002',
+  '汤菊玲（照护师）': '0519-8888-1003',
+  '待分配（个案经理）': '0519-8888-1006',
+  '系统管理员': '0519-8888-1000',
 };
 
 export function getStaffDemoPhone(name: string): string {
-  return STAFF_DEMO_PHONES[name] ?? '+852 2595 6111';
+  return STAFF_DEMO_PHONES[name] ?? '0519-8888-1000';
 }
 
 function stripRole(name: string): string {

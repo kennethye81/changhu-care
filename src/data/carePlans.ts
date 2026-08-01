@@ -66,7 +66,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[1] = {
-    patientName: 'Cheung Wai Man', startDate: dates[0], endDate: dates[13],
+    patientName: '冯存富', startDate: dates[0], endDate: dates[13],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '08:30', type: 'RN Visit', detail: 'Weight 68.0kg stable. BP 118/72. HR 82 AF. SpO₂ 95%. Pedal oedema trace. I/O: net -270mL. AM meds confirmed. Wife demonstrating correct weight log technique.', author: 'Sarah Leung', role: 'RN', vitals: 'BP 118/72 | HR 82 | SpO₂ 95% | Wt 68.0kg', status: 'completed' },
@@ -104,7 +104,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[2] = {
-    patientName: 'Wong Chi Ming', startDate: dates[0], endDate: dates[9],
+    patientName: '待录入', startDate: dates[0], endDate: dates[9],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '10:00', type: 'RN Visit', detail: 'SpO₂ 93% at rest, RR 18. Wheeze improved. Inhaler technique correct. Prednisolone 20mg Day 3. O₂ equipment functioning. Daughter present.', author: 'Jenny Tam', role: 'RN', vitals: 'SpO₂ 93% | RR 18 | HR 86 | BP 132/80', status: 'completed' },
@@ -130,7 +130,7 @@ function makeDates(start: string, days: number): string[] {
       { time: '10:00', activity: 'Hydration', type: 'self_care', detail: 'Drink 500mL water. Minimum 2L total today.', status: i < 3 ? 'completed' : 'pending' },
       { time: '12:00', activity: 'Lunch + Rest', type: 'self_care', detail: 'Light meal. Rest 1h after eating. No strenuous activity.', status: i < 3 ? 'completed' : 'pending' },
       { time: '14:00', activity: 'Afternoon Vitals', type: 'monitoring', detail: 'Temp, SpO₂ check. Paracetamol 1g prn if pain/fever.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '15:00', activity: 'Teleconsult (Day 3)', type: 'doctor_consult', detail: 'Dr. Cheung Kwok Wai — review progress, antibiotic completion plan, return to work clearance.', status: day === 3 ? 'completed' : 'pending', provider: 'Dr. Cheung Kwok Wai' },
+      { time: '15:00', activity: 'Teleconsult (Day 3)', type: 'doctor_consult', detail: '姜珊（护士经理） — review progress, antibiotic completion plan, return to work clearance.', status: day === 3 ? 'completed' : 'pending', provider: '姜珊（护士经理）' },
       { time: '16:00', activity: 'Gentle Activity', type: 'self_care', detail: 'Short walk indoors. Deep breathing exercises. No exertion.', status: i < 3 ? 'completed' : 'pending' },
       { time: '18:00', activity: 'Dinner', type: 'self_care', detail: 'Nutritious meal. Continue hydration.', status: i < 3 ? 'completed' : 'pending' },
       { time: '20:00', activity: 'Evening Vitals', type: 'monitoring', detail: 'Temp, SpO₂. Record. Report any fever >38.0°C.', status: i < 3 ? 'completed' : 'pending' },
@@ -138,12 +138,12 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[3] = {
-    patientName: 'Lam Ka Chun', startDate: dates[0], endDate: dates[6],
+    patientName: '待录入', startDate: dates[0], endDate: dates[6],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '09:00', type: 'RN Visit', detail: 'Day 2 visit. Temp 36.8. SpO₂ 97%. RLL crackles resolving. Cough dry, occasional. Levofloxacin Day 5 taken. No GI upset. Appetite returned. Patient feels "80% better".', author: 'Connie Cheung', role: 'RN', vitals: 'Temp 36.8 | SpO₂ 97% | RR 16 | HR 72', status: 'completed' },
       { date: '2026-06-19', time: '10:30', type: 'RN Visit', detail: 'Initial HaH visit. Temp 37.0. SpO₂ 96%. RLL crackles improving. Levofloxacin Day 4. PENICILLIN ALLERGY confirmed. Spouse trained on temp monitoring. Return precautions reviewed.', author: 'Connie Cheung', role: 'RN', vitals: 'Temp 37.0 | SpO₂ 96% | RR 18 | HR 76', status: 'completed' },
-      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 3 virtual review. Afebrile × 72h. SpO₂ 97% RA. CRP 28 (↓ from 156). Complete 2 more days Levofloxacin. Return to work (remote) Day 7. RTC CXR Week 4.', author: 'Dr. Cheung Kwok Wai', role: 'ID Physician', vitals: 'Temp 36.8 | SpO₂ 97%', status: 'completed' },
+      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 3 virtual review. Afebrile × 72h. SpO₂ 97% RA. CRP 28 (↓ from 156). Complete 2 more days Levofloxacin. Return to work (remote) Day 7. RTC CXR Week 4.', author: '姜珊（护士经理）', role: 'ID Physician', vitals: 'Temp 36.8 | SpO₂ 97%', status: 'completed' },
     ],
   };
 }
@@ -172,7 +172,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[4] = {
-    patientName: 'Lau Suk Yee', startDate: dates[0], endDate: dates[6],
+    patientName: '待录入', startDate: dates[0], endDate: dates[6],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '09:30', type: 'RN Visit', detail: 'Day 2 visit. Temp 36.7. BP 138/84. AMTS 9/10. Urinary symptoms improving. Ciprofloxacin Day 4. No diarrhoea. Son present — UTI prevention reviewed.', author: 'Vivian Lau', role: 'RN', vitals: 'Temp 36.7 | BP 138/84 | HR 88 | AMTS 9/10', status: 'completed' },
@@ -210,7 +210,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[5] = {
-    patientName: 'Ho Tai Wai', startDate: dates[0], endDate: dates[8],
+    patientName: '待录入', startDate: dates[0], endDate: dates[8],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '08:00', type: 'RN Wound Care', detail: 'Wound Day 2. Temp 36.6. Erythema 12cm (↓ from 15cm). No fluctuance. Pain 1/10. Saline irrigation + silicone dressing. New border marked. Photo taken. Diabetic foot: no new wounds.', author: 'Angela Ng', role: 'RN', vitals: 'Temp 36.6 | Erythema 12cm | Pain 1/10', status: 'completed' },
@@ -239,7 +239,7 @@ function makeDates(start: string, days: number): string[] {
       { time: '10:30', activity: 'PT Mobility (weekly)', type: 'therapy', detail: 'Gentle ambulation, ankle pumps, calf stretches. Early mobilisation with compression stockings.', status: day % 7 === 2 ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: 'Michael Kwok (PT)' },
       { time: '12:00', activity: 'Lunch', type: 'self_care', detail: 'Consistent vitamin K intake: maintain usual greens portion. No sudden diet changes.', status: i < 3 ? 'completed' : 'pending' },
       { time: '14:00', activity: 'Afternoon Check', type: 'monitoring', detail: 'Leg pain score. Check for any new bruising or bleeding.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '15:00', activity: 'Teleconsult (q48h)', type: 'doctor_consult', detail: 'Dr. Cheung Kwok Wai — review INR trend, bleeding risk, leg swelling, Warfarin dose adjustment if needed.', status: isConsultDay ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: 'Dr. Cheung Kwok Wai' },
+      { time: '15:00', activity: 'Teleconsult (q48h)', type: 'doctor_consult', detail: '姜珊（护士经理） — review INR trend, bleeding risk, leg swelling, Warfarin dose adjustment if needed.', status: isConsultDay ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: '姜珊（护士经理）' },
       { time: '16:00', activity: 'Warfarin Education', type: 'self_care', detail: 'Review 5 key safety points: 1. consistent vitamin K 2. avoid NSAIDs 3. bleeding signs 4. INR schedule 5. alcohol limit. Daughter participates.', status: i < 3 ? 'completed' : 'pending' },
       { time: '18:00', activity: 'WARFARIN DOSE', type: 'medication', detail: 'Warfarin 5mg (same time daily). Use pill box with alarm. DO NOT skip or double dose.', status: i < 3 ? 'completed' : 'pending' },
       { time: '18:30', activity: 'Dinner', type: 'self_care', detail: 'Consistent vitamin K intake. No alcohol.', status: i < 3 ? 'completed' : 'pending' },
@@ -249,12 +249,12 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[6] = {
-    patientName: 'Ng Siu Wan', startDate: dates[0], endDate: dates[9],
+    patientName: '待录入', startDate: dates[0], endDate: dates[9],
     schedule: s,
     logs: [
       { date: '2026-06-20', time: '08:00', type: 'INR + RN Visit', detail: 'INR 2.1 (therapeutic). BP 132/80. No bleeding — gums, skin, urine clear. Calf 38cm (↓ from 39cm). Pain 1/10. Compression stockings 18h yesterday. Warfarin education: 5 key points reviewed. Patient demonstrated correct self-administration.', author: 'Sarah Leung', role: 'RN', vitals: 'INR 2.1 | BP 132/80 | HR 74 | Calf 38cm', status: 'completed' },
       { date: '2026-06-19', time: '09:00', type: 'INR + RN Visit', detail: 'Initial HaH visit. INR 2.3 — slightly high, Warfarin held per protocol. Calf 39cm (↓ from 41cm). Pain 2/10. Compression stockings fitted. Med reconciliation. Anticoagulation alert card provided. Pill box with alarm set up.', author: 'Sarah Leung', role: 'RN', vitals: 'INR 2.3 | BP 136/84 | HR 78 | Calf 39cm', status: 'completed' },
-      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 2 review. INR 2.1 — therapeutic. No bleeding. Leg swelling improving. Continue Warfarin 5mg qd. If INR stable × 3 days, reduce monitoring to q2d. Warfarin education progressing well.', author: 'Dr. Cheung Kwok Wai', role: 'Internal Medicine', vitals: 'INR 2.1', status: 'completed' },
+      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 2 review. INR 2.1 — therapeutic. No bleeding. Leg swelling improving. Continue Warfarin 5mg qd. If INR stable × 3 days, reduce monitoring to q2d. Warfarin education progressing well.', author: '姜珊（护士经理）', role: 'Internal Medicine', vitals: 'INR 2.1', status: 'completed' },
     ],
   };
 }
