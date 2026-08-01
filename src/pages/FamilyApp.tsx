@@ -73,7 +73,7 @@ const AiInsight: FC<{ children: ReactNode }> = ({ children }) => (
   <div className="mt-2 pt-2 border-t border-[#80CBC4] bg-gradient-to-r from-[#E0F2F1] to-[#B2DFDB] rounded-lg px-2.5 py-2 flex items-start gap-1.5">
     <Brain className="w-3 h-3 text-[#2E7D6F] flex-shrink-0 mt-0.5" />
     <div>
-      <p className="text-[8px] font-bold text-[#1B5E4F] mb-0.5">AI Insight</p>
+      <p className="text-[8px] font-bold text-[#1B5E4F] mb-0.5">AI洞察</p>
       <p className="text-[9px] text-slate-600 leading-relaxed font-medium">{children}</p>
     </div>
   </div>
@@ -133,7 +133,7 @@ const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; care
                   {/* Spotlight */}
                   <div className="flex items-center gap-2 bg-black/15 backdrop-blur-xl rounded-2xl px-3 py-1.5 mb-6 border border-white/10">
                     <Search className="w-3.5 h-3.5 text-white/60" />
-                    <span className="text-[12px] text-white/50">Search</span>
+                    <span className="text-[12px] text-white/50">搜索</span>
                   </div>
 
                   {/* App Icons Grid — iOS 26 Dark Mode style */}
@@ -629,7 +629,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
         ))}
       </div>
       <div className="px-4 py-2 bg-[#E0F2F1] border-t border-[#80CBC4] flex items-center justify-end gap-1">
-        <span className="text-[9px] text-[#1B5E4F] font-medium">View full plan</span>
+        <span className="text-[9px] text-[#1B5E4F] font-medium">查看完整计划</span>
         <ChevronRight className="w-3.5 h-3.5 text-[#2E7D6F]" />
       </div>
     </div>
@@ -675,7 +675,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5" />
             <div>
-              <h3 className="text-sm font-bold">Real-Time Vitals</h3>
+              <h3 className="text-sm font-bold">实时体征</h3>
               <p className="text-[10px] text-[#80CBC4]">{patient?.name ?? '患者'} · Live device sync</p>
             </div>
           </div>
@@ -753,7 +753,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
             <div className="space-y-3">
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-slate-400">Oral Intake</span>
+                  <span className="text-[10px] text-slate-400">口服摄入</span>
                   <span className="text-[11px] font-bold text-[#2E7D6F]">{ioSnapshot.oralIntake}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-1.5">
@@ -763,7 +763,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-slate-400">Urine Output</span>
+                  <span className="text-[10px] text-slate-400">排尿量</span>
                   <span className={`text-[11px] font-bold ${ioSnapshot.fluidWarn ? 'text-red-600' : 'text-cyan-600'}`}>{ioSnapshot.urineOutput}</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-1.5">
@@ -772,7 +772,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
                 <p className="text-[8px] text-slate-400 mt-0.5">{ioSnapshot.urineNote}</p>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-                <span className="text-[10px] font-semibold text-slate-600">Fluid Balance</span>
+                <span className="text-[10px] font-semibold text-slate-600">体液平衡</span>
                 <span className={`text-[11px] font-extrabold ${ioSnapshot.fluidWarn ? 'text-red-600' : 'text-[#2E7D6F]'}`}>{ioSnapshot.fluidBalance}</span>
               </div>
             </div>
@@ -872,7 +872,7 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         />
         <div className="px-4 py-3 bg-[#E0F2F1] border-b border-[#80CBC4]">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] font-semibold text-[#1B5E4F]">Daily Progress</span>
+            <span className="text-[10px] font-semibold text-[#1B5E4F]">每日进度</span>
             <span className="text-[10px] font-bold text-[#2E7D6F]">{completed}/{acts.length} · {progressPct}%</span>
           </div>
           <div className="w-full bg-white rounded-full h-2 overflow-hidden border border-[#80CBC4]">
@@ -1013,7 +1013,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
       {/* Clinical Factors */}
       <div className="border-t border-slate-100 px-4 py-3">
-        <p className="text-[10px] font-semibold text-slate-600 mb-2">Contributing Factors</p>
+        <p className="text-[10px] font-semibold text-slate-600 mb-2">促成因素</p>
         <div className="space-y-1.5">
           {contributingFactors.map((f, i) => (
             <div key={i} className="flex items-start gap-2">
@@ -1031,7 +1031,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       <div className="border-t border-slate-100 px-4 py-3 bg-amber-50/50">
         <div className="flex items-center gap-2 mb-2">
           <Zap className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-          <p className="text-[10px] font-bold text-amber-800">AI-Recommended Interventions</p>
+          <p className="text-[10px] font-bold text-amber-800">AI推荐干预</p>
           <span className="text-[8px] text-amber-500 ml-auto">24h window</span>
         </div>
         <div className="space-y-2">
@@ -1134,7 +1134,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <div className="flex items-center gap-2">
                 <p className={`text-xs font-semibold ${med.adherent ? 'text-slate-800' : 'text-red-700'}`}>{med.name}</p>
                 {!med.adherent && (
-                  <span className="text-[8px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded">MISSED</span>
+                  <span className="text-[8px] font-bold text-red-600 bg-red-100 px-1.5 py-0.5 rounded">已错过</span>
                 )}
               </div>
               <p className="text-[9px] text-slate-500">{med.dose} · {med.purpose}</p>
@@ -1154,7 +1154,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       <div className="flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-xs font-semibold text-amber-800">AI Alert: Refill + Adherence</p>
+          <p className="text-xs font-semibold text-amber-800">AI提醒：补充+依从</p>
           <p className="text-[10px] text-amber-700 mt-0.5">{summary.refillSummary}</p>
           <button className="mt-2 text-[10px] font-semibold text-white bg-amber-600 hover:bg-amber-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-1">
             <Send className="w-3 h-3" /> Request Refill
@@ -1178,7 +1178,7 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="bg-red-50 rounded-xl p-3 border border-red-100">
           <div className="flex items-center gap-1.5 mb-1">
             <Moon className="w-3 h-3 text-indigo-500" />
-            <span className="text-[10px] font-semibold text-slate-700">As Needed (PRN)</span>
+            <span className="text-[10px] font-semibold text-slate-700">按需(PRN)</span>
             <AlertTriangle className="w-3 h-3 text-amber-400 ml-auto" />
           </div>
           <p className="text-[9px] text-amber-600 font-medium">Salbutamol 100mcg — 2× today · Monitor usage &gt;4×/day</p>
@@ -1248,7 +1248,7 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           {isBP && (
             <div className="bg-gradient-to-r from-red-50 to-rose-50 rounded-xl p-3 mb-2">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-semibold text-red-600 uppercase">Latest BP (NEWS)</span>
+                <span className="text-[10px] font-semibold text-red-600 uppercase">最新血压</span>
                 <span className="text-[9px] text-slate-400">{dev.lastSync}</span>
               </div>
               <div className="flex items-center gap-3">
@@ -1262,14 +1262,14 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           )}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Battery</span>
+              <span className="text-slate-400">电量</span>
               <span className="font-semibold text-[#2E7D6F]">{dev.battery}%</span>
             </div>
             <div className="w-full bg-slate-100 rounded-full h-1.5">
               <div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-1.5 rounded-full" style={{ width: `${dev.battery}%` }} />
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400">Last Sync</span>
+              <span className="text-slate-400">上次同步</span>
               <span className="text-slate-600">{dev.lastSync}</span>
             </div>
           </div>
@@ -1292,21 +1292,21 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
     <div className="bg-slate-900 rounded-2xl p-4 text-white">
       <div className="flex items-center gap-2 mb-3">
         <Shield className="w-4 h-4 text-[#2E7D6F]" />
-        <p className="text-xs font-semibold">Data Flow Status</p>
+        <p className="text-xs font-semibold">数据流状态</p>
       </div>
       <div className="flex items-center justify-between text-[10px]">
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-[#2E7D6F] flex items-center justify-center mx-auto mb-1">
             <Watch className="w-4 h-4 text-white" />
           </div>
-          <p className="text-slate-300">Devices</p>
+          <p className="text-slate-300">设备</p>
         </div>
         <ArrowRight className="w-3 h-3 text-[#2E7D6F]" />
         <div className="text-center">
           <div className="w-8 h-8 rounded-full bg-[#1B5E4F] flex items-center justify-center mx-auto mb-1">
             <Wifi className="w-4 h-4 text-white" />
           </div>
-          <p className="text-slate-300">Encrypted</p>
+          <p className="text-slate-300">加密</p>
         </div>
         <ArrowRight className="w-3 h-3 text-[#2E7D6F]" />
         <div className="text-center">

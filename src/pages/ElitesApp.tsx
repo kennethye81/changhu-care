@@ -314,7 +314,7 @@ const ElitesDashboardTab: FC = () => {
       <div className="bg-gradient-to-r from-[#1B5E4F] to-[#0D3B32] px-4 py-3 flex items-center gap-2">
         <Brain className="w-4 h-4 text-white" />
         <span className="text-xs font-bold text-white">AI质量评估</span>
-        <span className="text-[9px] text-[#80CBC4] ml-auto">Real-time</span>
+        <span className="text-[9px] text-[#80CBC4] ml-auto">实时</span>
       </div>
       <div className="p-4 space-y-3">
         {/* Metric bars */}
@@ -336,7 +336,7 @@ const ElitesDashboardTab: FC = () => {
         {/* Client Satisfaction Stars */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] font-medium text-slate-600">Client Satisfaction</span>
+            <span className="text-[10px] font-medium text-slate-600">客户满意度</span>
             <span className="text-[10px] font-bold text-amber-600">{aiQuality.clientSatisfaction}/5</span>
           </div>
           <div className="flex items-center gap-0.5">
@@ -902,7 +902,7 @@ const ElitesPatientsTab: FC = () => {
             )}
             {ai && (
               <div className="border-t border-slate-100 bg-gradient-to-r from-[#E0F2F1] to-[#B2DFDB] px-4 py-3">
-                <div className="flex items-start gap-2 mb-2"><Brain className="w-3.5 h-3.5 text-[#2E7D6F] flex-shrink-0 mt-0.5" /><div><p className="text-[9px] font-bold text-[#1B5E4F] mb-0.5">AI Assessment</p><p className="text-[9px] text-slate-600 leading-relaxed">{ai.summary}</p></div></div>
+                <div className="flex items-start gap-2 mb-2"><Brain className="w-3.5 h-3.5 text-[#2E7D6F] flex-shrink-0 mt-0.5" /><div><p className="text-[9px] font-bold text-[#1B5E4F] mb-0.5">AI评估</p><p className="text-[9px] text-slate-600 leading-relaxed">{ai.summary}</p></div></div>
               </div>
             )}
           </div>
@@ -939,7 +939,7 @@ const ElitesPatientsTab: FC = () => {
 
       {/* Progress bar */}
       <div className="bg-white rounded-xl p-3 border border-slate-100 shadow-sm">
-        <div className="flex items-center justify-between mb-1.5"><span className="text-[10px] font-semibold text-slate-500">Task Progress</span><span className="text-[10px] font-bold text-[#2E7D6F]">{doneCount}/{tasks.length}</span></div>
+        <div className="flex items-center justify-between mb-1.5"><span className="text-[10px] font-semibold text-slate-500">任务进度</span><span className="text-[10px] font-bold text-[#2E7D6F]">{doneCount}/{tasks.length}</span></div>
         <div className="w-full bg-slate-100 rounded-full h-2"><div className="bg-gradient-to-r from-[#4DB6AC] to-[#2E7D6F] h-2 rounded-full transition-all" style={{ width: `${tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0}%` }} /></div>
       </div>
     </div>
@@ -1096,7 +1096,7 @@ const ElitesPatientsTab: FC = () => {
 
             {/* Divider */}
             <div className="border-t border-slate-100 pt-4 space-y-3">
-              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Structured Fields</span>
+              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">结构化字段</span>
               {[
                 { key: 'condition', label: 'Physical Condition', icon: Heart },
                 { key: 'meds', label: 'Medication Status', icon: Pill },
@@ -1157,7 +1157,7 @@ const ElitesPatientsTab: FC = () => {
     {patientAI[p.id] && (
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="bg-gradient-to-r from-[#1B5E4F] to-[#0D3B32] px-4 py-3 flex items-center gap-2">
-          <Brain className="w-4 h-4 text-white" /><span className="text-xs font-bold text-white">AI Assessment</span>
+          <Brain className="w-4 h-4 text-white" /><span className="text-xs font-bold text-white">AI评估</span>
         </div>
         <div className="p-4 space-y-2">
           <p className="text-[10px] text-slate-600 leading-relaxed">{patientAI[p.id].summary}</p>
@@ -1290,7 +1290,7 @@ const ElitesChatTab: FC = () => {
         <div className="bg-gradient-to-r from-red-50 to-red-100 px-4 py-2 border-b border-red-100 flex items-start gap-2 flex-shrink-0">
           <AlertTriangle className="w-3.5 h-3.5 text-red-500 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[9px] font-bold text-red-700">Active AI Alert</p>
+            <p className="text-[9px] font-bold text-red-700">活跃AI警报</p>
             <p className="text-[8px] text-red-600 leading-relaxed">{chat.aiAlert}</p>
           </div>
         </div>
