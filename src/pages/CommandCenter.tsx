@@ -159,7 +159,7 @@ const PatientCard: FC<{ patient: PatientSummary; onSelect?: () => void }> = ({ p
       <div className="flex items-center gap-2.5 mb-3">
         <PatientAvatar patientId={p.id} size={40} />
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold text-slate-900 truncate">{p.name}</p>
+          <p className="text-xs font-bold text-slate-900 truncate">{p.name} <span className="text-[10px] font-normal text-slate-400 ml-1">#{p.id}</span></p>
           <p className="text-[10px] font-semibold text-slate-500">{p.gender === 'M' ? '♂' : '♀'} {p.age} yrs</p>
         </div>
         {!isAlert && <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="稳定" />}
