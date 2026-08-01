@@ -773,7 +773,7 @@ function generateStaffCalendar(carePlans: Record<number, TwoWeekCarePlan | undef
     const pid = Number(pidStr);
     if (!plan || !pid) continue;
     for (const date of dates) {
-      const acts = plan.schedule[date] || [];
+      const acts = plan.schedule?.[date] || [];
       for (const act of acts) {
         if (act.type === 'nurse_visit' && pidToNurse[pid]) {
           staffSchedule[pidToNurse[pid]][date].push({ patient: plan.patientName, type: act.type, time: act.time });
