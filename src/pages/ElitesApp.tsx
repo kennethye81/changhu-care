@@ -828,11 +828,11 @@ const ElitesPatientsTab: FC = () => {
       <div className="flex-shrink-0 px-4 pt-4 pb-2 bg-slate-50 z-10 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2"><Users className="w-4 h-4 text-[#006F80]" /> 我的患者</h3>
-          <span className="text-[10px] text-slate-400">{myPatients.length} assigned</span>
+          <span className="text-[10px] text-slate-400">{myPatients.length} 位在管</span>
         </div>
         <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-slate-200">
           <Search className="w-3.5 h-3.5 text-slate-400" />
-          <input type="text" placeholder="Search patients..." className="flex-1 text-xs text-slate-700 placeholder-slate-400 bg-transparent outline-none" />
+          <input type="text" placeholder="搜索客户..." className="flex-1 text-xs text-slate-700 placeholder-slate-400 bg-transparent outline-none" />
         </div>
       </div>
       <div className="flex-1 overflow-y-auto min-h-0 px-4 pb-4 space-y-3">
