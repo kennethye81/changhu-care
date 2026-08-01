@@ -84,7 +84,7 @@ const AiInsight: FC<{ children: ReactNode }> = ({ children }) => (
 const MobileFamilyApp: FC<{ tab: MobileTab; setTab: (t: MobileTab) => void; careSub: CareSubTab; setCareSub: (s: CareSubTab) => void }> = ({ tab, setTab, careSub, setCareSub }) => {
   const [showApp, setShowApp] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const [familyPatientId, setFamilyPatientId] = useState<number>(18);
+  const [familyPatientId, setFamilyPatientId] = useState<number>(2);
 
   useEffect(() => {
     if (showSplash) {
@@ -473,8 +473,8 @@ const CARE_PLAN_TYPE_LABEL: Record<string, string> = {
 };
 
 const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; familyPatientId: number; setFamilyPatientId: (id: number) => void }> = ({ onAlertClick, onCarePlanClick, familyPatientId, setFamilyPatientId }) => {
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const summary = usePatientStore(s => s.patientsSummary.find(p => p.id === familyPatientId));
@@ -500,7 +500,7 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
 
   return (
   <div className="p-4 space-y-4 w-full">
-    {news.tier === 'high' && isPatient1 && (
+    {news.tier === 'high' && isAlertPatient && (
       <div className="bg-red-50 border border-red-200 rounded-2xl p-3 flex items-start gap-2">
         <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
         <div>
@@ -655,8 +655,8 @@ const HomeTab: FC<{ onAlertClick?: () => void; onCarePlanClick?: () => void; fam
 };
 
 const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const summary = usePatientStore(s => s.patientsSummary.find(p => p.id === familyPatientId));
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
@@ -913,8 +913,8 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId]);
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const summary = patientsSummary.find(p => p.id === familyPatientId);
@@ -960,7 +960,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   );
 
   const handleActivateProtocol = () => {
-    if (protocolActive || !isPatient1) return;
+    if (protocolActive || !isAlertPatient) return;
     const time = getDemoTimeString();
     setCarePlanTaskStatus(COPD_PROTOCOL_TASK_KEY, 'completed');
     appendMessage(familyPatientId, {
@@ -1061,7 +1061,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <div>
             <p className="text-[10px] font-bold text-[#0B3550]">预期结果（30–90天）</p>
             <p className="text-[9px] text-slate-600 mt-0.5">{alertActive ? `若全部4项干预完成：SpO₂≥92%，体温≤37.5°C，${escalation}` : `若全部4项干预完成：跌倒0次，血压<150/90，压疮改善。${monitoringLabel}。`}</p>
-            {isPatient1 && (
+            {isAlertPatient && (
             <button
               type="button"
               onClick={handleActivateProtocol}
@@ -1104,8 +1104,8 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const meds = useMemo(() => getFamilyMedications(patient, alertActive), [patient, alertActive]);
   const summary = useMemo(() => getFamilyMedSummary(patient, alertActive), [patient, alertActive]);
@@ -1208,8 +1208,8 @@ const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const vitals = usePatientStore(s => s.vitals[familyPatientId] ?? DEFAULT_VITALS[familyPatientId]);
   const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
   const devices = patient?.iotDevices ?? [];
@@ -1325,8 +1325,8 @@ const DevicesTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const [inputText, setInputText] = useState('');
   const msgEndRef = useRef<HTMLDivElement>(null);
-  const isPatient1 = familyPatientId === 7;
-  const alertActive = usePatientStore(s => isPatient1 ? s.alertActive : false);
+  const isAlertPatient = familyPatientId === 2;
+  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
   const hubMessages = useCollaborationStore(s => s.messagesByPatient[familyPatientId]) ?? EMPTY_CHAT_MESSAGES;
   const appendMessage = useCollaborationStore(s => s.appendMessage);
   const messages = hubMessages;
@@ -1419,7 +1419,7 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
           <Send className="w-4 h-4 text-white" />
         </button>
       </div>
-      {isPatient1 && <AlertToggle />}
+      {isAlertPatient && <AlertToggle />}
     </div>
   );
 };

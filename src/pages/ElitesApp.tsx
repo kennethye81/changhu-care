@@ -389,7 +389,7 @@ const ElitesDashboardTab: FC = () => {
 
 /* --------------- CANDIDATE TAB --------------- */
 
-const CANDIDATE_IDS = [114];
+const CANDIDATE_IDS = [2];
 
 const ELITE_GOLD_HEADER = 'bg-gradient-to-r from-[#006F80] to-[#0B3550]';
 
@@ -630,7 +630,7 @@ const ElitesPatientsTab: FC = () => {
   const visibleIds = user ? getVisiblePatientIds(user.role, user.account) : null;
   const patientsSummary = usePatientStore(s => s.patientsSummary);
   const alertActive = usePatientStore(s => s.alertActive);
-  const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 18 ? -1 : b.id === 18 ? 1 : a.id - b.id));
+  const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 2 ? -1 : b.id === 2 ? 1 : a.id - b.id));
   const TODAY = DEMO_CARE_PLAN_DATE;
   const [selectedPid, setSelectedPid] = useState<number | null>(null);
   const carePlans = usePatientStore(s => s.carePlans);
@@ -1181,7 +1181,7 @@ const ElitesChatTab: FC = () => {
   const alertActive = usePatientStore(s => s.alertActive);
   const messagesByPatient = useCollaborationStore(s => s.messagesByPatient);
   const appendMessage = useCollaborationStore(s => s.appendMessage);
-  const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 18 ? -1 : b.id === 18 ? 1 : a.id - b.id));
+  const myPatients = (visibleIds ? patientsSummary.filter(p => visibleIds.includes(p.id)) : patientsSummary).sort((a, b) => (a.id === 2 ? -1 : b.id === 2 ? 1 : a.id - b.id));
   const [selectedChatPid, setSelectedChatPid] = useState<number | null>(null);
   const [inputText, setInputText] = useState('');
   const msgEndRef = useRef<HTMLDivElement>(null);
