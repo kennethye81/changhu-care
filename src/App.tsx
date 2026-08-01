@@ -127,7 +127,7 @@ const HomeScreen: FC = () => {
         <IHomeCareLogoMark size="lg" />
         <div>
           <h1 ref={titleRef} className="text-2xl sm:text-3xl font-extrabold text-[#7A5C32] font-display tracking-tight whitespace-nowrap">YDiCare 易护</h1>
-          <TitleWidthMatchedText titleRef={titleRef}>管理平台</TitleWidthMatchedText>
+          <TitleWidthMatchedText titleRef={titleRef}>综合管理平台</TitleWidthMatchedText>
         </div>
       </div>
 
