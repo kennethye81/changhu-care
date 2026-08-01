@@ -7,14 +7,14 @@ export function getVisibleModules(role: Role): string[] {
 }
 export function getVisiblePatientIds(role: Role, account: string): number[] {
   switch (role) {
-    case 'admin': return [1, 10001];
-    case 'nurse': return [1, 10001];
-    case 'assessor': return [1, 10001];
-    case 'care_worker': return [1, 10001];
-    case 'family': return [1, 10001];
-    case 'rehab_therapist': return [1, 10001];
-    case 'dietitian': return [1, 10001];
-    case 'case_manager': return [1, 10001];
-    default: return [1, 10001];
+    case 'admin': return [1, 2];
+    case 'nurse': return [1, 2];
+    case 'assessor': return [1, 2];
+    case 'care_worker': return [1, 2];
+    case 'family': return [1, 2];
+    case 'rehab_therapist': return [1, 2];
+    case 'dietitian': return [1, 2];
+    case 'case_manager': return [1, 2];
+    default: return [1, 2];
   }
 }

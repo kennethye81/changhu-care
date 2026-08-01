@@ -316,7 +316,7 @@ export const FAMILY_COMMS: Record<number, FamilyComm[]> = {
     { date: '2026-06-20', time: '08:30', contact: 'Emily Chan (Daughter)', method: 'Phone', summary: 'Infection Watch triggered: SpO₂ 91%, Temp 37.8, green sputum. Maggie Lam + Dr. Lee notified.', actionItems: 'Standby for update. Will call if POCT needed.', direction: 'outgoing' },
     { date: '2026-06-19', time: '09:00', contact: 'Mrs. Chan (Wife)', method: 'In-Person', summary: 'Initial HaH education: SpO₂/BP/Temp monitoring, escalation call, O₂ safety, Spiriva technique. Demonstrated correctly.', actionItems: 'Practice SpO₂ at 14:00 + 20:00. Call if <92%. Grab bars Day 2.', direction: 'outgoing' },
   ],
-  10001: [
+  2: [
     { date: '2026-03-27', time: '11:00', contact: '李小鹏（儿子）', method: '上门面谈', summary: '长护险初次评估访视。与家属确认照护需求：右侧偏瘫全部需他人照护、二便失禁管理、右下肢血栓每日观察、q2h翻身。家属表示愿意配合护理计划，已签署知情同意。', actionItems: '个案经理制定月度服务方案。护理员次日开始首次访视。', direction: '去电' },
     { date: '2026-03-30', time: '15:00', contact: '李小鹏（儿子）', method: '电话', summary: '首次护理访视后反馈：护理员王秀英已完成床单位整理、面部清洁、口腔护理。家属表示满意。提醒右下肢血栓观察要点：每日检查肿胀/皮温/颜色变化。', actionItems: '家属每日记录血压和血栓观察。如有异常立即联系护士刘敏。', direction: '去电' },
     { date: '2026-04-05', time: '10:00', contact: '李小鹏（儿子）', method: '上门面谈', summary: '护士刘敏月度评估访视。Braden维持14分，无压疮。血压145/88。被动ROM训练指导（康复师陈军方案）。家属翻身和ROM操作技术达标。右下肢血栓无明显变化。', actionItems: '继续现有方案。营养师赵静下周上门评估营养状况。心内科随访血压管理。', direction: '去电' },
@@ -348,7 +348,7 @@ export const PATIENT_FAMILY: Record<number, FamilyContact[]> = {
     { name: 'Ng Ka Yan', relationship: 'Daughter', phone: '+852 9789 0123', email: 'ka.yan@email.com', isPrimary: true, livingWith: false, notes: 'Lives in same building (different floor). Visits daily. Manages Warfarin administration, INR POCT monitoring, compression stockings, and medical appointments. Trained on bleeding precautions and emergency protocol.' },
   ],
   7: CHAN_TAI_MING_FAMILY_CONTACTS,
-  10001: [
+  2: [
     { name: '李小鹏', relationship: '子女', phone: '13486293959', email: '', isPrimary: true, livingWith: true, notes: '同住。主要照护者。负责用药管理、血压监测、翻身协助、血栓腿部观察。已培训偏瘫护理和二便管理。' },
   ],
 };

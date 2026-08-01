@@ -28,7 +28,7 @@ export const NEW_MEDICAL_HISTORY: Record<number, MedicalEntry[]> = {
       followUp: '每周换药，社区护士监督', 
     },
   ],
-  10001: [
+  2: [
     {
       date: '2023-12-18', type: 'admission',
       facility: '台州恩泽医疗中心恩泽医院', department: '神经外科',

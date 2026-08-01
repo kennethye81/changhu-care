@@ -123,7 +123,7 @@ export const NEW_PATIENT_THRESHOLDS: Record<number, { thresholds: VitalsThreshol
     guidelines: 'NEWS2 (NICE 2017) Scale 1 · ERAS Thoracic 2019 · NCCN NSCLC 2025',
   },
   // 长护险 李玉富 (10001) — 脑出血术后偏瘫+DVT+HTN
-  10001: {
+  2: {
     thresholds: {
       hr: { green: [60, 100], amber: [100, 120] },
       bpSystolic: { green: [110, 150], amber: [150, 170] },
@@ -147,7 +147,7 @@ export const NEW_PATIENT_START_DATES: Record<number, string> = {
   16: '2026-07-08',
   17: '2026-07-02',
   18: '2026-08-14',
-  10001: '2026-03-27',
+  2: '2026-03-27',
 };
 
 export const NEW_VITALS_BASELINES: Record<number, { hr: number; bpS: number; bpD: number; spo2: number; temp: number; rr: number }> = {
@@ -163,7 +163,7 @@ export const NEW_VITALS_BASELINES: Record<number, { hr: number; bpS: number; bpD
   17: { hr: 82, bpS: 134, bpD: 80, spo2: 94, temp: 36.8, rr: 20 },
   18: { hr: 72, bpS: 122, bpD: 78, spo2: 97, temp: 36.7, rr: 15 },
   // 长护险 李玉富 (10001) — 脑出血术后偏瘫+DVT+HTN
-  10001: { hr: 72, bpS: 145, bpD: 88, spo2: 97, temp: 36.5, rr: 18 },
+  2: { hr: 72, bpS: 145, bpD: 88, spo2: 97, temp: 36.5, rr: 18 },
 };
 
 export const NEW_CLINICAL_EVENTS: Record<number, { time: number; duration: number; effects: Partial<Record<'hr' | 'bpS' | 'bpD' | 'spo2' | 'temp' | 'rr', number>> }[]> = {
