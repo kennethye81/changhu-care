@@ -111,7 +111,7 @@ MEDICAL_HISTORY[2] = {
       labs: 'CRP 86, WBC 13.2. ABG: pH 7.33, PaCO₂ 55, PaO₂ 58 (RA). Sputum culture: H. influenzae.',
       imaging: 'CXR: RLL consolidation, hyperinflation.',
       prescriptions: 'Ceftriaxone 1g IV qd × 5 days, Prednisolone 40mg × 7 days (taper), Doxycycline 100mg BID × 7 days',
-      notes: 'Second exacerbation in 12 months. Admitted via ER. Required IV antibiotics + O₂. Discharged Day 7. Referred to Queen Mary Hospital respiratory clinic for ongoing care (patient relocation to Kowloon).',
+      notes: 'Second exacerbation in 12 months. Admitted via ER. Required IV antibiotics + O₂. Discharged Day 7. Referred to Queen Mary Hospital respiratory clinic for ongoing care (患者转至金坛区).',
     },
     {
       date: '2025-09-18', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Respiratory Clinic',
@@ -143,7 +143,7 @@ MEDICAL_HISTORY[3] = {
   entries: [
     {
       date: '2026-06-18', type: 'discharge', facility: 'Gleneagles Hospital', department: 'Infectious Disease / Internal Medicine',
-      physician: 'Dr. Cheung Kwok Wai', chiefComplaint: 'CAP — stabilised for HaH discharge',
+      physician: '王医生（内科）', chiefComplaint: 'CAP — stabilised for HaH discharge',
       diagnosis: 'Community-Acquired Pneumonia (RLL) — Streptococcus pneumoniae (penicillin-resistant); CURB-65: 1; Penicillin allergy (anaphylaxis)',
       labs: 'WBC 10.5 (↓ from 16.8), CRP 48 (↓ from 156). Blood cultures: no growth. Sputum: S. pneumoniae (penicillin-resistant).',
       imaging: 'CXR: dense RLL consolidation — resolving. No pleural effusion.',
@@ -152,7 +152,7 @@ MEDICAL_HISTORY[3] = {
     },
     {
       date: '2026-06-14', type: 'admission', facility: 'Gleneagles Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Cheung Kwok Wai', chiefComplaint: 'Productive cough, fever (Tmax 39.2°C), rigors, pleuritic chest pain × 5 days',
+      physician: '王医生（内科）', chiefComplaint: 'Productive cough, fever (Tmax 39.2°C), rigors, pleuritic chest pain × 5 days',
       diagnosis: 'Community-Acquired Pneumonia (RLL), moderate severity; CURB-65: 1; Penicillin allergy (anaphylaxis)',
       labs: 'WBC 16.8, CRP 156, PCT 4.2. Sputum: Gram-positive diplococci. Blood cultures: pending. Renal/LFT normal.',
       imaging: 'CXR: dense RLL consolidation. No pleural effusion.',
@@ -161,7 +161,7 @@ MEDICAL_HISTORY[3] = {
     },
     {
       date: '2018-07-22', type: 'er', facility: '常州市金坛区人民医院', department: 'Emergency',
-      physician: 'Dr. Chan Tai Ming', chiefComplaint: 'Anaphylaxis — airway swelling, urticaria, hypotension after Amoxicillin',
+      physician: '姜珊（护士经理）', chiefComplaint: 'Anaphylaxis — airway swelling, urticaria, hypotension after Amoxicillin',
       diagnosis: 'Anaphylactic Reaction to Amoxicillin (Penicillin) — confirmed IgE-mediated',
       labs: 'Tryptase: 24.5 (elevated — confirms anaphylaxis).',
       imaging: 'N/A',
@@ -170,7 +170,7 @@ MEDICAL_HISTORY[3] = {
     },
     {
       date: '2018-07-15', type: 'outpatient', facility: 'Gleneagles Hospital', department: 'Dental',
-      physician: 'Dr. Wong Siu Ming', chiefComplaint: 'Dental abscess — right lower molar, pain × 3 days',
+      physician: '汤菊玲（照护师）', chiefComplaint: 'Dental abscess — right lower molar, pain × 3 days',
       diagnosis: 'Periapical Abscess — tooth 46',
       labs: 'N/A',
       imaging: 'Dental XR: periapical radiolucency tooth 46.',
@@ -179,7 +179,7 @@ MEDICAL_HISTORY[3] = {
     },
     {
       date: '2023-06-10', type: 'outpatient', facility: 'Gleneagles Hospital', department: 'Health Screening',
-      physician: 'Dr. Emily Wong', chiefComplaint: 'Annual health check — no complaints',
+      physician: '李妍（评估员）', chiefComplaint: 'Annual health check — no complaints',
       diagnosis: 'Healthy; No chronic conditions; BMI 24; Non-smoker; Moderate alcohol; Active lifestyle',
       labs: 'CBC normal, FPG 5.1, HbA1c 5.2%, Lipids: TC 4.8, LDL 2.6, HDL 1.4, TG 1.1. LFT normal. Cr 78.',
       imaging: 'CXR: clear lung fields, normal heart size. ECG: NSR, normal.',
@@ -216,7 +216,7 @@ MEDICAL_HISTORY[4] = {
     },
     {
       date: '2026-03-10', type: 'outpatient', facility: 'Tuen Mun Hospital', department: 'Nephrology',
-      physician: 'Dr. Wong Kwok Ming', chiefComplaint: 'CKD follow-up — stable',
+      physician: '社区医生', chiefComplaint: 'CKD follow-up — stable',
       diagnosis: 'CKD Stage 3 (eGFR 48); HTN; Anaemia of CKD (mild); T2DM',
       labs: 'Cr 146, eGFR 48, K⁺ 4.8, Hb 10.8, Ferritin 45, TSAT 18%. Urine PCR 0.8. HbA1c 7.2%.',
       imaging: 'Renal US: bilateral medical renal disease, no hydronephrosis, cortical thinning.',
@@ -299,7 +299,7 @@ MEDICAL_HISTORY[6] = {
   entries: [
     {
       date: '2026-06-18', type: 'discharge', facility: 'Gleneagles Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Cheung Kwok Wai', chiefComplaint: 'DVT — stabilised for HaH discharge',
+      physician: '王医生（内科）', chiefComplaint: 'DVT — stabilised for HaH discharge',
       diagnosis: 'Acute Proximal DVT — left femoral + popliteal vein; No PE; HTN; Hyperlipidaemia',
       labs: 'INR 2.1 (therapeutic, target 2.0-3.0). D-dimer: 3,200 (elevated). Cr 78, Hb 13.2. Thrombophilia screen: pending (outpatient).',
       imaging: 'Doppler US: acute non-occlusive thrombus left femoral vein extending to proximal popliteal vein. CTPA: no PE. No iliac vein involvement.',
@@ -309,7 +309,7 @@ MEDICAL_HISTORY[6] = {
     },
     {
       date: '2026-06-14', type: 'admission', facility: 'Gleneagles Hospital', department: 'Internal Medicine',
-      physician: 'Dr. Cheung Kwok Wai', chiefComplaint: 'Progressive left leg swelling, calf pain, mild erythema × 3 days',
+      physician: '王医生（内科）', chiefComplaint: 'Progressive left leg swelling, calf pain, mild erythema × 3 days',
       diagnosis: 'Acute Proximal DVT — left femoral + popliteal vein; Wells Score 3 (moderate probability); No PE',
       labs: 'D-dimer: 3,200 (elevated). CBC: normal. Coagulation: PT 12.8, aPTT 28. CT pulmonary angiogram: no PE.',
       imaging: 'Doppler US: acute non-occlusive thrombus in left femoral vein extending to proximal popliteal vein. No iliac vein involvement. CTPA: no PE.',
@@ -318,7 +318,7 @@ MEDICAL_HISTORY[6] = {
     },
     {
       date: '2025-08-15', type: 'outpatient', facility: 'Gleneagles Hospital', department: 'Health Screening',
-      physician: 'Dr. Emily Wong', chiefComplaint: 'Annual health check — no complaints',
+      physician: '李妍（评估员）', chiefComplaint: 'Annual health check — no complaints',
       diagnosis: 'HTN (Stage 1, 140/86); Hyperlipidaemia (LDL 3.6); Post-menopausal; BMI 25.2',
       labs: 'CBC normal, FPG 5.4, HbA1c 5.3%. Lipids: TC 5.6, LDL 3.6, HDL 1.3, TG 1.8. Cr 72, eGFR 82.',
       imaging: 'CXR: clear. ECG: NSR, normal. Mammogram: normal. Bone density: mild osteopenia L-spine T-score -1.4.',
@@ -327,7 +327,7 @@ MEDICAL_HISTORY[6] = {
     },
     {
       date: '2022-03-20', type: 'outpatient', facility: 'Gleneagles Hospital', department: 'Health Screening',
-      physician: 'Dr. Emily Wong', chiefComplaint: 'Annual health check — no complaints',
+      physician: '李妍（评估员）', chiefComplaint: 'Annual health check — no complaints',
       diagnosis: 'Healthy; Perimenopausal; No chronic conditions; BMI 24.8',
       labs: 'All within normal limits. FPG 5.1, Lipids: TC 4.8, LDL 2.8. Cr 68.',
       imaging: 'CXR: clear. ECG: normal. Mammogram: normal.',
@@ -345,7 +345,7 @@ export const PATIENT_7_HISTORY = {
   events: [
     {
       date: '2026-06-14', type: 'admission', facility: 'Prince of Wales Hospital', department: 'Respiratory Medicine',
-      physician: 'Dr. Wong Kwok Ming', chiefComplaint: 'Fever × 3 days, productive cough, increasing dyspnoea',
+      physician: '社区医生', chiefComplaint: 'Fever × 3 days, productive cough, increasing dyspnoea',
       diagnosis: 'Community-Acquired Pneumonia (CURB-65: 2 — age + confusion on admission). COPD GOLD Stage 2 exacerbation.',
       labs: 'WBC 15.2, Neutrophils 84%, CRP 156, PCT 3.2. ABG: pH 7.36, PaO₂ 8.2, PaCO₂ 6.8. Sputum culture pending.',
       imaging: 'CXR: right lower lobe consolidation + bibasilar atelectasis. No pleural effusion.',
@@ -354,7 +354,7 @@ export const PATIENT_7_HISTORY = {
     },
     {
       date: '2025-08-10', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Respiratory Clinic',
-      physician: 'Dr. Wong Kwok Ming', chiefComplaint: 'Routine COPD follow-up — increased dyspnoea',
+      physician: '社区医生', chiefComplaint: 'Routine COPD follow-up — increased dyspnoea',
       diagnosis: 'COPD GOLD Stage 2 progress review. mMRC 2→3 (deterioration). Exacerbation-free × 12 months prior.',
       labs: 'Spirometry: FEV₁ 55% predicted (stable from 2024 — 57%). FEV₁/FVC 0.62. Post-bronchodilator: FEV₁ 58% (+3%). CAT score: 18 (↑ from 14).',
       imaging: 'CXR: hyperinflation, flattened diaphragms — consistent with COPD. No acute infiltrate.',
@@ -363,7 +363,7 @@ export const PATIENT_7_HISTORY = {
     },
     {
       date: '2024-03-05', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Respiratory Clinic',
-      physician: 'Dr. Wong Kwok Ming', chiefComplaint: 'Annual COPD review — no complaints',
+      physician: '社区医生', chiefComplaint: 'Annual COPD review — no complaints',
       diagnosis: 'COPD GOLD Stage 2 (FEV₁ 55%). Well-controlled. No exacerbations in past 12 months.',
       labs: 'Spirometry: FEV₁ 57% predicted, FEV₁/FVC 0.64. CAT score: 14. mMRC: 2.',
       imaging: 'CXR: hyperinflation, no interval change. No acute findings.',
@@ -372,7 +372,7 @@ export const PATIENT_7_HISTORY = {
     },
     {
       date: '2022-06-18', type: 'outpatient', facility: 'Prince of Wales Hospital', department: 'Respiratory Clinic',
-      physician: 'Dr. Wong Kwok Ming', chiefComplaint: 'New patient — dyspnoea on exertion, chronic cough',
+      physician: '社区医生', chiefComplaint: 'New patient — dyspnoea on exertion, chronic cough',
       diagnosis: 'COPD diagnosed — GOLD Stage 2. FEV₁ 58% predicted. mMRC 2.',
       labs: 'Spirometry: FEV₁ 58% predicted, FEV₁/FVC 0.64. Post-bronchodilator: FEV₁ 62% (+4%) — positive reversibility. CAT score: 12.',
       imaging: 'CXR: hyperinflated lung fields, flattened diaphragms. No focal lesion. ECG: normal.',

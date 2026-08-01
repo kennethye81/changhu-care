@@ -389,7 +389,7 @@ const ElitesDashboardTab: FC = () => {
 
 /* --------------- CANDIDATE TAB --------------- */
 
-const CANDIDATE_IDS = [114, 111, 112];
+const CANDIDATE_IDS = [114];
 
 const ELITE_GOLD_HEADER = 'bg-gradient-to-r from-[#006F80] to-[#0B3550]';
 

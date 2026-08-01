@@ -184,13 +184,13 @@ export function getVitalColor(
 // ═══ Patient admission dates (for X-axis labeling) ═══
 
 const PATIENT_START_DATES: Record<number, string> = {
-  1: '2026-06-18',  // Cheung Wai Man — HF admission
-  2: '2026-06-18',  // Wong Chi Ming — COPD assessment
-  3: '2026-06-19',  // Lam Ka Chun — CAP admission
-  4: '2026-06-19',  // Lau Suk Yee — UTI admission
-  5: '2026-06-20',  // Ho Tai Wai — Cellulitis
-  6: '2026-06-20',  // Ng Siu Wan — DVT
-  7: '2026-06-18',  // Chan Tai Ming — COPD+CAP HaH Day 1
+  1: '2026-06-18',  // 患者1 冯存富 — 高血压/压疮基线
+  2: '2026-06-18',  // 待录入
+  3: '2026-06-19',  // 待录入
+  4: '2026-06-19',  // 待录入
+  5: '2026-06-20',  // 待录入
+  6: '2026-06-20',  // 待录入
+  7: '2026-06-18',  // 待录入
   ...NEW_PATIENT_START_DATES,
 };
 
@@ -422,7 +422,7 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     4: { name: '待录入', conditions: 'UTI, CKD3, T2DM, HTN, Delirium' },
     5: { name: '待录入', conditions: 'Cellulitis Eron III, T2DM, HTN' },
     6: { name: '待录入', conditions: 'DVT LL, HTN, Dyslipidaemia, Warfarin' },
-    7: { name: 'Chan Tai Ming', conditions: 'COPD GOLD 2, CAP (resolving), HTN' },
+    7: { name: '患者1 冯存富', conditions: '高血压3级, 压疮II期, 极高跌倒风险' },
     ...NEW_VITALS_CONTEXT,
   };
   const ctx = context[patientId] || { name: 'Unknown', conditions: '' };
