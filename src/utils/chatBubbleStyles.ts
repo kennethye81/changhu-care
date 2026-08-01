@@ -45,13 +45,13 @@ export function getChatBubbleClasses(
   const base = `rounded-2xl px-3 py-2 ${textClass} leading-relaxed`;
 
   if (isLog) {
-    return `${base} bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0] border-2 border-[#E8D5B8] text-slate-700 rounded-tl-sm w-full`;
+    return `${base} bg-gradient-to-r from-[#FFFFFF] to-[#EBF5F9] border-2 border-[#E1FCFF] text-slate-700 rounded-tl-sm w-full`;
   }
 
   if (from === 'ai') {
     return p7Alert
       ? `${base} bg-red-50 border border-red-200 text-red-800 ${corner}`
-      : `${base} bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0] border border-[#E8D5B8] text-slate-700 ${corner}`;
+      : `${base} bg-gradient-to-r from-[#FFFFFF] to-[#EBF5F9] border border-[#E1FCFF] text-slate-700 ${corner}`;
   }
 
   if (from === 'system') {
@@ -63,7 +63,7 @@ export function getChatBubbleClasses(
   }
 
   if (from === 'nurse' || from === 'caseManager') {
-    return `${base} bg-gradient-to-r from-[#FDF5E8] to-[#F5E6D0] border border-[#E8D5B8] text-slate-800 ${corner}`;
+    return `${base} bg-gradient-to-r from-[#FFFFFF] to-[#EBF5F9] border border-[#E1FCFF] text-slate-800 ${corner}`;
   }
 
   if (from === 'family') {
@@ -75,8 +75,8 @@ export function getChatBubbleClasses(
 
 export function getChatSenderLabelClass(from: ChatMessage['from'], p7Alert?: boolean): string {
   if (from === 'doctor') return 'text-blue-600';
-  if (from === 'nurse' || from === 'caseManager') return 'text-[#9C7A4E]';
+  if (from === 'nurse' || from === 'caseManager') return 'text-[#03304B]';
   if (from === 'family') return 'text-slate-600';
-  if (from === 'ai') return p7Alert ? 'text-red-500' : 'text-[#C49A6C]';
+  if (from === 'ai') return p7Alert ? 'text-red-500' : 'text-[#0B3550]';
   return 'text-slate-500';
 }

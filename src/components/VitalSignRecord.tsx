@@ -20,7 +20,7 @@ import {
 import { calculateNews, P7_NEWS_ESCALATION_VITALS } from '../utils/newsScore';
 import { HubBloodPressureChart } from './BloodPressureCharts';
 
-const LINE_NORMAL = '#0d9488';
+const LINE_NORMAL = '#006F80';
 const LINE_ABNORMAL = '#ef4444';
 const LINE_AMBER = '#f59e0b';
 

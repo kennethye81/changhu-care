@@ -48,22 +48,22 @@ const STAT_COLORS: Record<string, { bg: string; badge: string; text: string; bor
 };
 
 /** KPI cards — warm Family palette; semantic accents stay muted to match hub-shell */
-const STAT_CARD_HOVER = 'hover:border-[#D4A87C]/55 hover:shadow-[0_4px_12px_rgba(122,92,50,0.08)]';
+const STAT_CARD_HOVER = 'hover:border-[#4DCEFF]/55 hover:shadow-[0_4px_12px_rgba(122,92,50,0.08)]';
 
 const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: string; iconColor: string; label: string; value: string; sub: string; hover: string }> = {
   gold: {
     card: 'glass-card',
-    border: 'border-l-[#C49A6C] border border-[#E8D5B8]/80',
-    icon: 'bg-[#FDF5E8] border border-[#E8D5B8]',
-    iconColor: 'text-[#9C7A4E]',
+    border: 'border-l-[#0B3550] border border-[#E1FCFF]/80',
+    icon: 'bg-[#FFFFFF] border border-[#E1FCFF]',
+    iconColor: 'text-[#03304B]',
     label: 'text-slate-600',
-    value: 'text-[#7A5C32]',
+    value: 'text-[#0B3550]',
     sub: 'text-slate-500',
     hover: STAT_CARD_HOVER,
   },
   red: {
     card: 'glass-card',
-    border: 'border-l-[#C47070] border border-[#E8D5B8]/80',
+    border: 'border-l-[#C47070] border border-[#E1FCFF]/80',
     icon: 'bg-[#FCF6F5] border border-[#EDD8D5]',
     iconColor: 'text-[#B85C5C]',
     label: 'text-slate-600',
@@ -73,9 +73,9 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
   },
   amber: {
     card: 'glass-card',
-    border: 'border-l-[#B8860B] border border-[#E8D5B8]/80',
-    icon: 'bg-[#FDF5E8] border border-[#E8C97A]/60',
-    iconColor: 'text-[#B8860B]',
+    border: 'border-l-[#FEB903] border border-[#E1FCFF]/80',
+    icon: 'bg-[#FFFFFF] border border-[#FEB903]/60',
+    iconColor: 'text-[#FEB903]',
     label: 'text-slate-600',
     value: 'text-[#9E6E10]',
     sub: 'text-slate-500',
@@ -83,7 +83,7 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
   },
   green: {
     card: 'glass-card',
-    border: 'border-l-[#7A9A72] border border-[#E8D5B8]/80',
+    border: 'border-l-[#7A9A72] border border-[#E1FCFF]/80',
     icon: 'bg-[#F4F7F3] border border-[#D5E0D2]',
     iconColor: 'text-[#6B8A62]',
     label: 'text-slate-600',
@@ -93,17 +93,17 @@ const STAT_CARD_THEMES: Record<string, { card: string; border: string; icon: str
   },
   teal: {
     card: 'glass-card',
-    border: 'border-l-[#9C7A4E] border border-[#E8D5B8]/80',
-    icon: 'bg-[#F5E6D0] border border-[#E8D5B8]',
-    iconColor: 'text-[#9C7A4E]',
+    border: 'border-l-[#03304B] border border-[#E1FCFF]/80',
+    icon: 'bg-[#EBF5F9] border border-[#E1FCFF]',
+    iconColor: 'text-[#03304B]',
     label: 'text-slate-600',
-    value: 'text-[#7A5C32]',
+    value: 'text-[#0B3550]',
     sub: 'text-slate-500',
     hover: STAT_CARD_HOVER,
   },
   purple: {
     card: 'glass-card',
-    border: 'border-l-[#A3998E] border border-[#E8D5B8]/80',
+    border: 'border-l-[#A3998E] border border-[#E1FCFF]/80',
     icon: 'bg-[#F8F6F4] border border-[#E8E4DF]',
     iconColor: 'text-[#7A7168]',
     label: 'text-slate-600',
@@ -294,7 +294,7 @@ const DesktopCommandCenter: FC = () => {
     ) : (
     <> 
     <div className="relative pt-12">
-      <div className="absolute top-4 left-4 z-[1000] flex items-center gap-1 bg-gold-100 rounded-xl p-1 border border-[#d2c4be]">
+      <div className="absolute top-4 left-4 z-[1000] flex items-center gap-1 bg-gold-100 rounded-xl p-1 border border-[#99E7FF]">
         <button onClick={() => setView('patient')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Patient View</button>
         <button onClick={() => setView('map')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${!isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Map View</button>
       </div>

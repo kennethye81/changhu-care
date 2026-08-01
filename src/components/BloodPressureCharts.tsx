@@ -9,7 +9,7 @@ import {
   type VitalsPoint, type VitalRangeKind,
 } from '../data/vitalSigns';
 
-const LINE_SYS_NORMAL = '#0d9488';
+const LINE_SYS_NORMAL = '#006F80';
 const LINE_SYS_ABNORMAL = '#ef4444';
 const LINE_SYS_AMBER = '#f59e0b';
 const LINE_DIA_NORMAL = '#6366f1';

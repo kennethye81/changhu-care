@@ -1,32 +1,32 @@
 /** Shared Family / Hub gold palette — matches FamilyApp inline tokens */
 export const FAMILY = {
-  primary: '#C49A6C',
-  primaryHover: '#B8860B',
-  secondary: '#9C7A4E',
-  deep: '#7A5C32',
-  light: '#D4A87C',
-  accent: '#E8C97A',
-  cream: '#FDF5E8',
-  creamMid: '#F5E6D0',
-  border: '#E8D5B8',
+  primary: '#06B0EF',
+  primaryHover: '#FEB903',
+  secondary: '#0095D3',
+  deep: '#0B3550',
+  light: '#99E7FF',
+  accent: '#FEB903',
+  cream: '#FFFFFF',
+  creamMid: '#EBF5F9',
+  border: '#E1FCFF',
 } as const;
 
 export const FAMILY_GRADIENT = {
-  hero: 'from-[#C49A6C] to-[#9C7A4E]',
-  section: 'from-[#9C7A4E] to-[#7A5C32]',
-  progress: 'from-[#D4A87C] to-[#C49A6C]',
+  hero: 'from-[#06B0EF] to-[#0095D3]',
+  section: 'from-[#0095D3] to-[#0B3550]',
+  progress: 'from-[#99E7FF] to-[#06B0EF]',
 } as const;
 
 /** Tailwind class bundles shared by Family + Elite mobile apps */
 export const FAMILY_CLASS = {
-  textPrimary: 'text-[#C49A6C]',
-  textSecondary: 'text-[#9C7A4E]',
-  textDeep: 'text-[#7A5C32]',
-  bgPrimary: 'bg-[#C49A6C]',
-  bgPrimaryHover: 'hover:bg-[#B8860B]',
-  bgCream: 'bg-[#FDF5E8]',
-  bgCreamMid: 'bg-[#F5E6D0]',
-  borderGold: 'border-[#E8D5B8]',
+  textPrimary: 'text-[#06B0EF]',
+  textSecondary: 'text-[#0095D3]',
+  textDeep: 'text-[#0B3550]',
+  bgPrimary: 'bg-[#06B0EF]',
+  bgPrimaryHover: 'hover:bg-[#FEB903]',
+  bgCream: 'bg-[#FFFFFF]',
+  bgCreamMid: 'bg-[#EBF5F9]',
+  borderGold: 'border-[#E1FCFF]',
   heroGradient: `bg-gradient-to-r ${FAMILY_GRADIENT.hero}`,
   sectionGradient: `bg-gradient-to-r ${FAMILY_GRADIENT.section}`,
   progressGradient: `bg-gradient-to-r ${FAMILY_GRADIENT.progress}`,

@@ -2,7 +2,7 @@ import { type FC, useMemo, useState } from 'react';
 import { PATIENTS_FULL } from '../data/patients';
 
 const AVATAR_COLORS = [
-  '#0d9488', '#2563eb', '#7c3aed', '#db2777', '#ea580c',
+  '#006F80', '#2563eb', '#7c3aed', '#db2777', '#ea580c',
   '#ca8a04', '#059669', '#0891b2', '#4f46e5', '#be123c',
   '#0f766e', '#1d4ed8', '#6d28d9', '#c026d3', '#d97706',
   '#15803d', '#0369a1', '#4338ca',

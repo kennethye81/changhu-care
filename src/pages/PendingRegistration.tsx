@@ -388,7 +388,7 @@ const PendingRegistration: FC = () => {
                 </div>
                 <DragOverlay dropAnimation={null}>
                   {activeDragObj ? (
-                    <div className="glass-card rounded-xl border border-[#C49A6C] p-2.5 bg-white shadow-2xl opacity-95 scale-105 z-[9999]">
+                    <div className="glass-card rounded-xl border border-[#0B3550] p-2.5 bg-white shadow-2xl opacity-95 scale-105 z-[9999]">
                       <div className="flex items-center gap-2">
                         <img src={activeDragObj.avatar} alt={activeDragObj.name} className="w-9 h-9 rounded-full object-cover border-2 border-slate-100 flex-shrink-0" />
                         <div className="min-w-0 flex-1">
@@ -457,7 +457,7 @@ const PendingRegistration: FC = () => {
     });
 
     return (
-      <div ref={setNodeRef} className={`w-[45%] flex flex-col min-h-0 transition-colors ${isOver ? 'bg-[#FDF5E8]' : 'bg-slate-50'}`}>
+      <div ref={setNodeRef} className={`w-[45%] flex flex-col min-h-0 transition-colors ${isOver ? 'bg-[#FFFFFF]' : 'bg-slate-50'}`}>
         {/* Sticky Header */}
         <div className="flex-shrink-0 px-3 pt-3 pb-2 border-b border-slate-200 flex items-center justify-between">
           <p className="text-[10px] font-bold text-slate-600">Selected Elites ({assignedElites.size})</p>
@@ -472,7 +472,7 @@ const PendingRegistration: FC = () => {
               const pt = best.find(id => id.startsWith('R')); if (pt) newSet.add(pt);
               const cw = best.find(id => id.startsWith('CW')); if (cw) newSet.add(cw);
               setAssignedElites(newSet);
-            }} className={`text-[10px] font-semibold px-2 py-0.5 rounded transition-colors ${Object.keys(matchScores).length > 0 ? 'bg-[#C49A6C] text-white hover:bg-[#B8860B]' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>自动分配</button>
+            }} className={`text-[10px] font-semibold px-2 py-0.5 rounded transition-colors ${Object.keys(matchScores).length > 0 ? 'bg-[#0B3550] text-white hover:bg-[#FEB903]' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>自动分配</button>
           </div>
         </div>
         {/* Scrollable List */}
@@ -481,7 +481,7 @@ const PendingRegistration: FC = () => {
             <div key={el.id} className="flex items-center gap-2 bg-white rounded-lg border border-slate-100 p-2 group">
               <img src={el.avatar} alt={el.name} className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
               <div className="flex-1 min-w-0"><p className="text-[9px] font-bold text-slate-700 truncate">{el.name}</p><span className="text-[7px] text-slate-400">{el.role}</span></div>
-              <span className="text-[8px] font-bold text-[#C49A6C] flex-shrink-0">{matchScores[el.id] || '-'}%</span>
+              <span className="text-[8px] font-bold text-[#0B3550] flex-shrink-0">{matchScores[el.id] || '-'}%</span>
               <button onClick={() => setAssignedElites(prev => { const s = new Set(prev); s.delete(el.id); return s; })} className="w-5 h-5 rounded-full bg-red-50 hover:bg-red-100 flex items-center justify-center flex-shrink-0 transition-colors">
                 <X className="w-3 h-3 text-red-400 hover:text-red-500" />
               </button>

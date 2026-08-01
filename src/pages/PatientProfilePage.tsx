@@ -341,7 +341,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
   const sectionLink = 'text-[10px] font-medium text-teal-600 hover:text-teal-800 hover:underline font-body';
   const tableHead = 'text-[10px] font-semibold text-slate-500 uppercase tracking-wide font-display';
   const modalOverlay = 'fixed inset-0 z-[500] flex items-center justify-center bg-teal-900/40';
-  const modalShell = 'bg-white rounded-lg border border-[#d2c4be] max-h-[85vh] overflow-y-auto m-4';
+  const modalShell = 'bg-white rounded-lg border border-[#99E7FF] max-h-[85vh] overflow-y-auto m-4';
   const modalHeader = 'sticky top-0 bg-gradient-to-r from-teal-800 to-teal-900 px-5 py-4 flex items-center justify-between z-10 rounded-t-lg border-b border-teal-700/30';
   const modalTitle = 'text-sm font-semibold text-white font-display';
   const modalLabel = 'label-md text-slate-500';
@@ -488,7 +488,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
               const isLate = lateMinutes >= 5;
               const hasActual = !!times.clockIn;
 
-              const statusColor = displayStatus === 'completed' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : displayStatus === 'in_progress' ? 'bg-gold-100 text-gold-800 border-[#d2c4be]' : displayStatus === 'missed' ? 'bg-red-50 text-red-800 border-red-200' : 'bg-amber-50 text-amber-800 border-amber-200';
+              const statusColor = displayStatus === 'completed' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : displayStatus === 'in_progress' ? 'bg-gold-100 text-gold-800 border-[#99E7FF]' : displayStatus === 'missed' ? 'bg-red-50 text-red-800 border-red-200' : 'bg-amber-50 text-amber-800 border-amber-200';
               const statusDot = displayStatus === 'completed' ? 'bg-emerald-600' : displayStatus === 'in_progress' ? 'bg-teal-600 animate-pulse' : displayStatus === 'missed' ? 'bg-red-600' : 'bg-amber-500';
               const statusLabel = displayStatus === 'completed' ? 'Done' : displayStatus === 'in_progress' ? 'Active' : displayStatus === 'missed' ? 'Missed' : 'Due';
 
@@ -521,7 +521,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
         </div>
 
         {/* AI Service Evaluation */}
-        <div className="flex-shrink-0 border-t border-[#d2c4be] bg-warm-100 px-5 py-3">
+        <div className="flex-shrink-0 border-t border-[#99E7FF] bg-warm-100 px-5 py-3">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 bg-teal-800 rounded flex items-center justify-center flex-shrink-0">
               <Brain className="w-4 h-4 text-white" />
@@ -716,7 +716,7 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
                 <div><h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">注意事项</h3><div className="space-y-1 text-sm text-slate-700">{patient.carePlan.precautions.map((p,i)=>(<div key={i}>• {p}</div>))}</div></div>
               </div>
             </div>
-            <div className="border-t border-[#d2c4be] px-5 py-3 flex items-center gap-2 text-xs text-slate-500 font-body"><CheckCircle2 className="w-3 h-3 text-emerald-600" />Signed: Case Manager · Assessment reviewed by Nursing Director</div>
+            <div className="border-t border-[#99E7FF] px-5 py-3 flex items-center gap-2 text-xs text-slate-500 font-body"><CheckCircle2 className="w-3 h-3 text-emerald-600" />Signed: Case Manager · Assessment reviewed by Nursing Director</div>
           </div>
         </div>
       )}
@@ -731,8 +731,8 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
             </div>
             <div className="p-5 space-y-3 font-body">
               {plan && Object.entries(plan.schedule).sort().map(([date, acts]) => (
-                <div key={date} className="bg-warm-50 rounded-lg border border-[#d2c4be] overflow-hidden">
-                  <div className="bg-warm-100 px-4 py-2 flex items-center justify-between border-b border-[#d2c4be]"><span className="text-xs font-semibold text-slate-700 font-display">{new Date(date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</span><span className="text-[10px] text-slate-500">{acts.length} activities</span></div>
+                <div key={date} className="bg-warm-50 rounded-lg border border-[#99E7FF] overflow-hidden">
+                  <div className="bg-warm-100 px-4 py-2 flex items-center justify-between border-b border-[#99E7FF]"><span className="text-xs font-semibold text-slate-700 font-display">{new Date(date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}</span><span className="text-[10px] text-slate-500">{acts.length} activities</span></div>
                   <div className="divide-y divide-[#ede7e5]">
                     {acts.map((act: any, j: number) => (
                       <div key={j} className="px-4 py-2 flex items-center gap-3 text-sm">
@@ -758,8 +758,8 @@ const ServicesSection: FC<{ patient: PatientFull; todaySchedule: any[]; today: s
               <button onClick={() => setMedicationModal(false)} className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition-colors"><X className="w-3.5 h-3.5 text-white" /></button>
             </div>
             <div className="p-5 font-body">
-              <div className="rounded-lg border border-[#d2c4be] overflow-hidden bg-white">
-                <div className={`grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2 bg-warm-100 ${tableHead} border-b border-[#d2c4be]`}>
+              <div className="rounded-lg border border-[#99E7FF] overflow-hidden bg-white">
+                <div className={`grid grid-cols-[1fr_100px_100px_1fr_80px] gap-3 px-4 py-2 bg-warm-100 ${tableHead} border-b border-[#99E7FF]`}>
                   <span>药品</span><span>剂量</span><span>频率</span><span>用途</span><span className="text-right">状态</span>
                 </div>
                 {patient.medications.map((med,i) => (

@@ -45,7 +45,7 @@ export const EmptyState: FC<{
 }> = ({ icon: Icon, title, description, action }) => (
   <div className="flex flex-col items-center justify-center py-16 px-4">
     {Icon && (
-      <div className="w-16 h-16 bg-gold-100 rounded-lg flex items-center justify-center mb-4 border border-[#d2c4be]">
+      <div className="w-16 h-16 bg-gold-100 rounded-lg flex items-center justify-center mb-4 border border-[#99E7FF]">
         <Icon className="w-8 h-8 text-gold-700" />
       </div>
     )}
@@ -91,7 +91,7 @@ export const SectionHeader: FC<{
   <div className="flex items-center justify-between mb-5">
     <div className="flex items-center gap-3">
       {Icon && (
-        <div className="w-10 h-10 bg-gold-100 rounded flex items-center justify-center border border-[#d2c4be]">
+        <div className="w-10 h-10 bg-gold-100 rounded flex items-center justify-center border border-[#99E7FF]">
           <Icon className="w-5 h-5 text-gold-700" />
         </div>
       )}

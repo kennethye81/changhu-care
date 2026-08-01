@@ -47,13 +47,13 @@ const AVATARS: Record<string, string> = {
 
 const AVATAR_COLORS: Record<string, string> = {
   'chan.chi.keung': 'from-[#6f5b44] to-[#3a2e28]',
-  'peter.ho': 'from-[#C49A6C] to-[#9C7A4E]',
+  'peter.ho': 'from-[#0B3550] to-[#03304B]',
   'sarah.leung': 'from-emerald-600 to-emerald-800',
   admin: 'from-[#3a2e28] to-[#241914]',
   finance: 'from-slate-500 to-slate-700',
-  'grace.tang': 'from-[#D4A87C] to-[#B8860B]',
-  'tony.lam': 'from-[#A5785A] to-[#7A5C32]',
-  'anna.leung': 'from-[#E8D5B8] to-[#C49A6C]',
+  'grace.tang': 'from-[#4DCEFF] to-[#FEB903]',
+  'tony.lam': 'from-[#A5785A] to-[#0B3550]',
+  'anna.leung': 'from-[#E1FCFF] to-[#0B3550]',
 };
 
 const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
@@ -122,7 +122,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 hover:bg-slate-200 border border-slate-200/80" title="菜单">
               <Menu className="w-4 h-4 text-slate-600" />
             </button>
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm bg-gradient-to-br from-[#C49A6C] to-[#9C7A4E] cursor-pointer" onClick={() => navigate('/command-center')}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm bg-gradient-to-br from-[#0B3550] to-[#03304B] cursor-pointer" onClick={() => navigate('/command-center')}>
               <IHomeCareHubLogoIcon size={18} />
             </div>
             <div className="hidden sm:block">
@@ -150,7 +150,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                 <div className="absolute top-full mt-1 left-0 w-56 bg-white rounded-xl border border-slate-200 shadow-xl z-50 overflow-hidden">
                   <div className="max-h-48 overflow-y-auto">
                     {quickSearchPatients.filter(p => p.toLowerCase().includes(patientSearch.toLowerCase())).map(name => (
-                      <button key={name} className="w-full text-left px-3 py-2 text-xs text-slate-700 hover:bg-[#FDF5E8] transition-colors border-b border-slate-50 last:border-0">{name}</button>
+                      <button key={name} className="w-full text-left px-3 py-2 text-xs text-slate-700 hover:bg-[#FFFFFF] transition-colors border-b border-slate-50 last:border-0">{name}</button>
                     ))}
                     {quickSearchPatients.filter(p => p.toLowerCase().includes(patientSearch.toLowerCase())).length === 0 && (
                       <p className="px-3 py-2 text-xs text-slate-400">未找到病人</p>
@@ -162,7 +162,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
             {/* Alert Bell */}
             <button className="relative w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors" title={`${alertCount} patient alerts`}>
-              <Bell className={`w-4 h-4 ${alertCount > 0 ? 'text-[#C49A6C] alert-blink' : 'text-slate-400'}`} />
+              <Bell className={`w-4 h-4 ${alertCount > 0 ? 'text-[#0B3550] alert-blink' : 'text-slate-400'}`} />
               {alertCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[8px] font-extrabold rounded-full flex items-center justify-center shadow-sm animate-pulse">{alertCount}</span>
               )}
@@ -170,9 +170,9 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
             {/* Unread Messages */}
             <button className="relative w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors" onClick={() => navigate('/messages')} title={`${unreadMessages} unread messages`}>
-              <MessageCircle className={`w-4 h-4 ${unreadMessages > 0 ? 'text-[#9C7A4E] alert-blink' : 'text-slate-400'}`} />
+              <MessageCircle className={`w-4 h-4 ${unreadMessages > 0 ? 'text-[#03304B] alert-blink' : 'text-slate-400'}`} />
               {unreadMessages > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C49A6C] text-white text-[8px] font-extrabold rounded-full flex items-center justify-center shadow-sm animate-pulse">{unreadMessages}</span>
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#0B3550] text-white text-[8px] font-extrabold rounded-full flex items-center justify-center shadow-sm animate-pulse">{unreadMessages}</span>
               )}
             </button>
 
@@ -218,7 +218,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                     <button
                       key={r.id}
                       onClick={() => { setShowRoleSwitcher(false); handleRoleSwitch(r.id); }}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors ${user.account === r.id ? 'bg-[#FDF5E8] text-[#7A5C32] font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs transition-colors ${user.account === r.id ? 'bg-[#FFFFFF] text-[#0B3550] font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
                     >
                       <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${AVATAR_COLORS[r.id]} flex items-center justify-center text-white text-[8px] font-bold`}>{AVATARS[r.id]}</div>
                       <div className="text-left">
@@ -246,7 +246,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
       {/* === Body: Sidebar + Content === */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Desktop sidebar — deep gold, distinct from white header */}
-        <aside className={`hidden lg:flex ${sidebarW} bg-gradient-to-b from-[#1B5E4F] to-[#0D3B32] border-r border-[#0a2a22] flex-shrink-0 flex-col transition-all duration-200 h-full shadow-sm`}>
+        <aside className={`hidden lg:flex ${sidebarW} bg-gradient-to-b from-[#0B3550] to-[#00263F] border-r border-[#0a2a22] flex-shrink-0 flex-col transition-all duration-200 h-full shadow-sm`}>
           <div className="p-2 pt-3 space-y-0.5 flex-1 overflow-y-auto">
             {filteredNav.map(nav => {
               const Icon = nav.icon;
@@ -258,11 +258,11 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                   title={collapsed ? nav.label : undefined}
                   className={`flex items-center w-full px-2.5 py-2 rounded-lg text-[11px] font-medium transition-all ${
                     isActive
-                      ? 'bg-[#FDF5E8] text-[#7A5C32] font-semibold shadow-sm'
+                      ? 'bg-[#FFFFFF] text-[#0B3550] font-semibold shadow-sm'
                       : 'text-white/75 hover:bg-white/10 hover:text-white'
                   } ${collapsed ? 'justify-center' : 'justify-start gap-2.5'}`}
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#C49A6C]' : ''}`} />
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#0B3550]' : ''}`} />
                   {!collapsed && <span className="truncate">{nav.label}</span>}
                   {nav.badge && !collapsed && (
                     <span className="ml-auto w-5 h-5 bg-red-500 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center flex-shrink-0">{nav.badge}</span>
@@ -285,7 +285,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
         {sidebarOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
-            <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#1B5E4F] to-[#0D3B32] shadow-2xl flex flex-col animate-slide-in">
+            <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#0B3550] to-[#00263F] shadow-2xl flex flex-col animate-slide-in">
               <div className="p-3 border-b border-white/10 flex items-center justify-between">
                 <span className="text-sm font-bold text-white font-display">YDiCare 易护</span>
                 <button onClick={() => setSidebarOpen(false)} className="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-white text-xs">✕</button>
@@ -300,10 +300,10 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
                       onClick={() => { navigate(nav.route); setSidebarOpen(false); }}
                       className={`flex items-center w-full px-3 py-2.5 rounded-lg text-[11px] font-medium transition-all gap-2.5 ${
                         isActive
-                          ? 'bg-[#FDF5E8] text-[#7A5C32] font-semibold shadow-sm'
+                          ? 'bg-[#FFFFFF] text-[#0B3550] font-semibold shadow-sm'
                           : 'text-white/75 hover:bg-white/10 hover:text-white'
                       }`}>
-                      <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#C49A6C]' : ''}`} />
+                      <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#0B3550]' : ''}`} />
                       <span className="truncate">{nav.label}</span>
                     </button>
                   );

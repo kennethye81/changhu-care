@@ -32,8 +32,8 @@ function pickIcon(type: string, status: FollowupLogEntry['status']): FC<{ classN
 
 function pickColor(status: FollowupLogEntry['status'], type: string): string {
   if (status === 'escalated' || type.includes('RED') || type.includes('Alert')) return 'text-red-600';
-  if (type.includes('Tele') || type.includes('MD')) return 'text-[#9C7A4E]';
-  return 'text-[#C49A6C]';
+  if (type.includes('Tele') || type.includes('MD')) return 'text-[#0095D3]';
+  return 'text-[#06B0EF]';
 }
 
 export function mapCarePlanLogsToFamilyNotes(logs: FollowupLogEntry[], limit = 6): FamilyProgressNote[] {
@@ -50,9 +50,9 @@ export function mapCarePlanLogsToFamilyNotes(logs: FollowupLogEntry[], limit = 6
 }
 
 const DAY1_FALLBACK_NOTES = (vitals?: Vitals): FamilyProgressNote[] => [
-  { title: 'RN — Initial HaH Assessment', detail: 'Primary nurse — baseline vitals recorded, caregiver trained on SpO₂/BP monitoring and escalation protocol. AMTS 10/10.', time: 'Thu 9:30 AM', icon: ClipboardList, color: 'text-[#9C7A4E]' },
-  { title: 'Attending Physician Tele-consult', detail: 'Day 1 plan confirmed. Continue clinical protocol per care plan. Medication reconciliation completed.', time: 'Thu 9:38 AM', icon: Stethoscope, color: 'text-[#9C7A4E]' },
-  { title: 'AM Medication', detail: 'Tiotropium 18mcg + Amlodipine 5mg — confirmed taken at 8:00 AM. Salbutamol PRN not needed this morning.', time: 'Thu 8:00 AM', icon: CheckCircle2, color: 'text-[#C49A6C]' },
+  { title: 'RN — Initial HaH Assessment', detail: 'Primary nurse — baseline vitals recorded, caregiver trained on SpO₂/BP monitoring and escalation protocol. AMTS 10/10.', time: 'Thu 9:30 AM', icon: ClipboardList, color: 'text-[#0095D3]' },
+  { title: 'Attending Physician Tele-consult', detail: 'Day 1 plan confirmed. Continue clinical protocol per care plan. Medication reconciliation completed.', time: 'Thu 9:38 AM', icon: Stethoscope, color: 'text-[#0095D3]' },
+  { title: 'AM Medication', detail: 'Tiotropium 18mcg + Amlodipine 5mg — confirmed taken at 8:00 AM. Salbutamol PRN not needed this morning.', time: 'Thu 8:00 AM', icon: CheckCircle2, color: 'text-[#06B0EF]' },
   {
     title: 'Vitals + SpO₂ Check',
     detail: vitals
@@ -60,7 +60,7 @@ const DAY1_FALLBACK_NOTES = (vitals?: Vitals): FamilyProgressNote[] => [
       : 'BP 138/84, HR 84 sinus, SpO₂ 93% on room air, Temp 37.0°C. Breath sounds: coarse rhonchi RLL, mild wheeze. Comfortable at rest.',
     time: 'Thu 9:30 AM',
     icon: Heart,
-    color: 'text-[#C49A6C]',
+    color: 'text-[#06B0EF]',
   },
 ];
 

@@ -42,13 +42,13 @@ const LayoutRoute: FC<{ children: React.ReactNode }> = ({ children }) => (
 const IHomeCareLogoIcon: FC<{ size?: number }> = ({ size = 40 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-    <circle cx="12" cy="12" r="2" fill="#E8C97A" stroke="none" />
+    <circle cx="12" cy="12" r="2" fill="#FEB903" stroke="none" />
   </svg>
 );
 
 const IHomeCareLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => (
   <div
-    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] flex-shrink-0 ${
+    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#0B3550] to-[#03304B] flex-shrink-0 ${
       size === 'lg' ? 'w-20 h-20' : 'w-16 h-16'
     }`}
   >
@@ -58,7 +58,7 @@ const IHomeCareLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => (
 
 const IHomeCareEliteLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => (
   <div
-    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] flex-shrink-0 ${
+    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#0B3550] to-[#03304B] flex-shrink-0 ${
       size === 'lg' ? 'w-20 h-20' : 'w-16 h-16'
     }`}
   >
@@ -68,7 +68,7 @@ const IHomeCareEliteLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => 
 
 const IHomeCareFamilyLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => (
   <div
-    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] flex-shrink-0 ${
+    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#0B3550] to-[#03304B] flex-shrink-0 ${
       size === 'lg' ? 'w-20 h-20' : 'w-16 h-16'
     }`}
   >
@@ -78,7 +78,7 @@ const IHomeCareFamilyLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) =>
 
 const IHomeCareHubLogoMark: FC<{ size?: 'lg' | 'md' }> = ({ size = 'lg' }) => (
   <div
-    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#C49A6C] to-[#9C7A4E] flex-shrink-0 ${
+    className={`rounded-3xl flex items-center justify-center shadow-lg backdrop-blur-xl bg-white/20 border border-white/30 bg-gradient-to-b from-[#0B3550] to-[#03304B] flex-shrink-0 ${
       size === 'lg' ? 'w-20 h-20' : 'w-16 h-16'
     }`}
   >
@@ -94,7 +94,7 @@ const PortalCard: FC<{
 }> = ({ title, buttonClass, onClick, logo = 'platform' }) => (
   <button
     onClick={onClick}
-    className="group flex flex-col items-center text-center rounded-2xl border border-[#E8D5B8]/80 bg-white p-6 h-full min-h-[220px] transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_16px_rgba(122,92,50,0.06)] hover:shadow-[0_8px_24px_rgba(122,92,50,0.1)]"
+    className="group flex flex-col items-center text-center rounded-2xl border border-[#E1FCFF]/80 bg-white p-6 h-full min-h-[220px] transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_16px_rgba(122,92,50,0.06)] hover:shadow-[0_8px_24px_rgba(122,92,50,0.1)]"
   >
     <div className="mb-4 flex-shrink-0">
       {logo === 'elite' ? (
@@ -107,7 +107,7 @@ const PortalCard: FC<{
         <IHomeCareLogoMark size="md" />
       )}
     </div>
-    <h2 className="text-base font-bold text-[#7A5C32] font-display">{title}</h2>
+    <h2 className="text-base font-bold text-[#0B3550] font-display">{title}</h2>
     <span className={`mt-auto w-full py-2.5 rounded-xl text-xs font-semibold text-white transition-colors flex-shrink-0 ${buttonClass}`}>
       Enter
     </span>
@@ -118,7 +118,7 @@ const HomeScreen: FC = () => {
   const navigate = useNavigate();
   const titleRef = useRef<HTMLHeadingElement>(null);
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-[#FDF5E8] via-[#FAF7F2] to-[#F3EBE0] flex flex-col items-center justify-center p-6 sm:p-10 font-body">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#FFFFFF] via-[#FAF7F2] to-[#F3EBE0] flex flex-col items-center justify-center p-6 sm:p-10 font-body">
       <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-10">
         <YDCareLogo height={48} />
       </div>
@@ -126,7 +126,7 @@ const HomeScreen: FC = () => {
       <div className="flex items-center gap-4 mb-10 sm:mb-14">
         <IHomeCareLogoMark size="lg" />
         <div>
-          <h1 ref={titleRef} className="text-2xl sm:text-3xl font-extrabold text-[#7A5C32] font-display tracking-tight whitespace-nowrap">YDiCare 易护</h1>
+          <h1 ref={titleRef} className="text-2xl sm:text-3xl font-extrabold text-[#0B3550] font-display tracking-tight whitespace-nowrap">YDiCare 易护</h1>
           <TitleWidthMatchedText titleRef={titleRef}>综合管理平台</TitleWidthMatchedText>
         </div>
       </div>
@@ -134,19 +134,19 @@ const HomeScreen: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 w-full max-w-5xl items-stretch">
         <PortalCard
           title="易护家属端"
-          buttonClass="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] group-hover:from-[#E8C97A] group-hover:to-[#D4A87C]"
+          buttonClass="bg-gradient-to-r from-[#4DCEFF] to-[#0B3550] group-hover:from-[#FEB903] group-hover:to-[#4DCEFF]"
           logo="family"
           onClick={() => navigate('/family')}
         />
         <PortalCard
           title="易护机构端"
-          buttonClass="bg-gradient-to-r from-[#9C7A4E] to-[#7A5C32] group-hover:from-[#C49A6C] group-hover:to-[#9C7A4E]"
+          buttonClass="bg-gradient-to-r from-[#03304B] to-[#0B3550] group-hover:from-[#0B3550] group-hover:to-[#03304B]"
           logo="hub"
           onClick={() => navigate('/command-center')}
         />
         <PortalCard
           title="易护照护端"
-          buttonClass="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] group-hover:from-[#E8C97A] group-hover:to-[#D4A87C]"
+          buttonClass="bg-gradient-to-r from-[#4DCEFF] to-[#0B3550] group-hover:from-[#FEB903] group-hover:to-[#4DCEFF]"
           logo="elite"
           onClick={() => navigate('/elites')}
         />

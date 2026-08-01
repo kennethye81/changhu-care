@@ -1,8 +1,8 @@
 import { type FC, useMemo, useState } from 'react';
 import { FAMILY_CONTACT_BY_PATIENT, familyAvatarPath, parseSenderGender } from '../data/chatFamily';
 
-const FEMALE_COLORS = ['#C49A6C', '#BC8F8F', '#CD853F', '#D4A87C', '#DEB887'];
-const MALE_COLORS = ['#64748b', '#475569', '#0d9488', '#2563eb', '#7A5C32'];
+const FEMALE_COLORS = ['#06B0EF', '#BC8F8F', '#CD853F', '#99E7FF', '#DEB887'];
+const MALE_COLORS = ['#64748b', '#475569', '#006F80', '#2563eb', '#0B3550'];
 
 function getInitials(name: string): string {
   const parts = name.replace(/[()]/g, ' ').trim().split(/\s+/).filter(Boolean);

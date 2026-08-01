@@ -152,7 +152,7 @@ const MapView: FC<{ patients: PatientSummary[]; onClose?: () => void }> = ({ pat
             ⏱ ${p.newsMonitoringLabel}${p.newsRedScore ? ' · 红色预警' : ''}
           </div>
           <button onclick="window.__selectPatient && window.__selectPatient(${p.id})"
-            style="display:block;width:100%;padding:6px;background:#1B5E4F;color:white;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">
+            style="display:block;width:100%;padding:6px;background:#0B3550;color:white;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">
             查看病人档案 →
           </button>
         </div>
