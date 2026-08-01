@@ -24,11 +24,12 @@ export function formatSevenVitalLine(v: Vitals): string {
 }
 
 export function syncAiSummaryNews(patientId: number, diagnosis: string, aiSummary: string): { overview: string; concerns: string[] } {
-  // Parse aiSummary: split at "AI核心关注" into overview + numbered concerns
+  // Guard: ensure aiSummary is a string
+  const text = typeof aiSummary === 'string' ? aiSummary : String(aiSummary || '');
   const splitMarker = 'AI核心关注：';
-  const idx = aiSummary.indexOf(splitMarker);
-  const overview = idx > -1 ? aiSummary.slice(0, idx).trim() : aiSummary;
-  const concernsText = idx > -1 ? aiSummary.slice(idx + splitMarker.length).trim() : '';
+  const idx = text.indexOf(splitMarker);
+  const overview = idx > -1 ? text.slice(0, idx).trim() : text;
+  const concernsText = idx > -1 ? text.slice(idx + splitMarker.length).trim() : '';
   const concerns = concernsText.split(/\d+\.\s+/).filter(Boolean).map(s => s.replace(/[—–]\s*$/, '').trim());
   return { overview, concerns };
 }

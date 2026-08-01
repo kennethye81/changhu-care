@@ -375,8 +375,8 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
     outpatient: User, er: AlertTriangle, followup: CalendarDays,
   };
   const typeLabel: Record<string, string> = {
-    admission: 'Admission', discharge: 'Discharge', surgery: 'Surgery',
-    outpatient: 'Outpatient', er: 'Emergency', followup: 'Follow-up',
+    admission: '入院', discharge: '出院', surgery: '手术',
+    outpatient: '门诊', er: '急诊', followup: '复诊',
   };
   const typeColor: Record<string, string> = {
     admission: 'border-l-red-400 bg-red-50/30',

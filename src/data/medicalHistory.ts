@@ -377,13 +377,3 @@ for (const [pid, entries] of Object.entries(NEW_MEDICAL_HISTORY)) {
     } as any;
   }
 }
-
-import { syncAiSummaryNews } from '../utils/medicalHistoryNews';
-import { PATIENTS_FULL } from './patients';
-
-for (const patient of PATIENTS_FULL) {
-  const history = MEDICAL_HISTORY[patient.id];
-  if (history?.aiSummary) {
-    history.aiSummary = syncAiSummaryNews(patient.id, patient.diagnosis, history.aiSummary);
-  }
-}
