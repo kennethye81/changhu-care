@@ -1037,7 +1037,7 @@ const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
         <div className="space-y-2">
           {[
             { num: '1', action: '压疮护理：每2h翻身+检查皮肤+减压气垫床。Braden≤16需重点关注。', icon: BedDouble },
-            { num: '2', action: alertActive ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0] ?? '社区医生'} 若>180/100。`, icon: Heart },
+            { num: '2', action: alertActive ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? '护士'} 若>160/95。`, icon: Heart },
             { num: '3', action: newsTier === 'high' || redScore ? '跌倒防控：检查助行器+地面防滑+夜间照明。有跌倒史需24h内上门。' : '跌倒防控：检查助行器+地面防滑+夜间照明。定期评估Barthel ADL。', icon: Footprints },
             { num: '4', action: `确保每日饮水~1,500 mL + 低盐低脂饮食。${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCareWorker?.split(' (')[0] ?? '护理员'}定期访视。`, icon: GlassWater },
           ].map((rec, i) => (
@@ -1379,13 +1379,13 @@ const ChatTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
       <div className="bg-gradient-to-r from-[#006F80] to-[#0B3550] px-4 py-3 flex items-center gap-3 flex-shrink-0">
         <div className="flex -space-x-2">
           <StaffAvatar name={PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse ?? 'RN'} size={32} className="ring-2 ring-white/40" />
-          <StaffAvatar name={PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor ?? 'Physician'} size={32} className="ring-2 ring-white/40" />
+          <StaffAvatar name={PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCaseManager ?? '个案经理'} size={32} className="ring-2 ring-white/40" />
           <PatientAvatar patientId={familyPatientId} size={32} className="ring-2 ring-white/40" />
         </div>
         <div className="flex-1">
           <p className="text-sm font-semibold text-white">照护消息</p>
           <p className="text-[9px] text-[#99E7FF] flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#99E7FF]" /> 在线 — AI监护 · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedDoctor?.split(' (')[0]?.replace('Dr. ','') ?? 'Physician'}
+            <span className="w-1.5 h-1.5 rounded-full bg-[#99E7FF]" /> 在线 — AI监护 · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? 'RN'} · {PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCaseManager?.split(' (')[0] ?? '个案经理'}
           </p>
         </div>
         <Phone className="w-4 h-4 text-white/90" />

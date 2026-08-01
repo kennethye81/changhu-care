@@ -34,12 +34,13 @@ export interface FamilyVitalCard {
 // TODO: pass patient-specific DEFAULT_VITALS[patientId] instead of hardcoding patient 1.
 const COPD_BASELINE = DEFAULT_VITALS[1];
 
-function trends(vitals: Vitals, alertActive: boolean) {
-  return buildVitalTrends(vitals, alertActive, COPD_BASELINE);
+function trends(vitals: Vitals, alertActive: boolean, baseline: Vitals = COPD_BASELINE) {
+  return buildVitalTrends(vitals, alertActive, baseline);
 }
 
-export function buildFamilyHomeVitalCards(vitals: Vitals, alertActive: boolean): FamilyVitalCard[] {
-  const t = trends(vitals, alertActive);
+export function buildFamilyHomeVitalCards(vitals: Vitals, alertActive: boolean, patientId?: number): FamilyVitalCard[] {
+  const baseline = DEFAULT_VITALS[patientId ?? 1] || DEFAULT_VITALS[1];
+  const t = trends(vitals, alertActive, baseline);
   const abnormal = alertActive;
   const glucoseAbnormal = vitals.bloodSugar < 80 || vitals.bloodSugar > 180;
   const card = (

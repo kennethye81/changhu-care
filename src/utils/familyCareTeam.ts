@@ -36,8 +36,7 @@ export function getFamilyCareTeam(patient: PatientFull | undefined): FamilyCareT
   if (!cp) return [];
 
   const entries: { name: string; role: string }[] = [
-    { name: stripRole(cp.assignedDoctor), role: roleLabel(cp.assignedDoctor, 'Attending Physician') },
-    { name: stripRole(cp.assignedCaseManager), role: roleLabel(cp.assignedCaseManager, 'Case Manager') },
+    { name: stripRole(cp.assignedCaseManager), role: roleLabel(cp.assignedCaseManager, '个案经理') },
     { name: stripRole(cp.assignedNurse), role: roleLabel(cp.assignedNurse, 'Primary Nurse') },
   ];
 
