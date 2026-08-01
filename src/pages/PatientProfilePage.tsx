@@ -430,7 +430,7 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
 
   return (
   <div>
-    <div className="sticky top-0 z-30 bg-white -mx-6 px-6 pt-6 pb-3 border-b border-slate-200 shadow-sm">
+    <div className="sticky top-0 z-50 bg-white -mx-6 px-6 pt-6 pb-3 border-b border-slate-200 shadow-sm" style={{ isolation: 'isolate' }}>
       <ST title="病史档案" icon={FileText} />
     </div>
     {/* ─── 临床病史分类 ─── */}
