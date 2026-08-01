@@ -37,7 +37,7 @@ const ALL_NAV: NavItem[] = [
 const ROLES = [
   { id: 'admin', label: '系统管理员', subtitle: 'Administrator', role: 'admin' },
   { id: 'jiang.shan', label: '姜珊', subtitle: '护士经理', role: 'nurse' },
-  { id: 'li.yan', label: '李妍', subtitle: '个案经理', role: 'case_manager' },
+  { id: 'case.mgr', label: '个案经理', subtitle: '待分配', role: 'case_manager' },
 ];
 
 const AVATARS: Record<string, string> = {

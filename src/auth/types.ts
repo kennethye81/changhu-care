@@ -69,7 +69,7 @@ export const MOCK_USERS: Record<string, { password: string; user: User }> = {
   },
   'li.yan': {
     password: '123456',
-    user: { id: 'CM001', name: '李妍', role: 'case_manager', avatar: 'LY', institutionId: 'CH-001', account: 'li.yan' },
+    user: { id: 'AS001', name: '李妍', role: 'assessor', avatar: 'LY', institutionId: 'CH-001', account: 'li.yan' },
   },
   'jiang.shan': {
     password: '123456',
