@@ -91,7 +91,7 @@ const LoginPage: FC = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
             <Activity className="w-8 h-8 text-white animate-pulse" />
           </div>
-          <p className="text-white font-bold text-lg">iHome<span className="text-blue-400">长护险平台</span></p>
+          <p className="text-white font-bold text-lg">YDiCare<span className="text-blue-400"> 易护</span></p>
           <div className="w-72 space-y-3">
             <div className="bg-white/10 rounded-lg px-4 py-2.5 flex items-center gap-2">
               <span className="text-slate-400 text-xs w-16">机构</span>
@@ -126,7 +126,7 @@ const LoginPage: FC = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200 mx-auto mb-4">
             <Activity className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">iHome<span className="text-teal-600">长护险平台</span></h1>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">YDiCare<span className="text-teal-600"> 易护</span></h1>
           <p className="text-sm text-slate-500 mt-1">Home Medical Care SaaS · Clinical Command Center</p>
         </div>
 
@@ -243,19 +243,19 @@ const LoginPage: FC = () => {
                 onClick={() => navigate('/family')}
                 className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-semibold shadow-md shadow-blue-200 hover:shadow-lg transition-all"
               >
-                <Smartphone className="w-3.5 h-3.5" /> iHomeCare Family
+                <Smartphone className="w-3.5 h-3.5" /> 易护家属端
               </button>
               <button
                 onClick={() => navigate('/elites')}
                 className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-semibold shadow-md shadow-emerald-200 hover:shadow-lg transition-all"
               >
-                <Shield className="w-3.5 h-3.5" /> iHomeCare for Elites
+                <Shield className="w-3.5 h-3.5" /> 易护照护端
               </button>
             </div>
           </div>
         </div>
 
-        <p className="text-center text-[10px] text-slate-400 mt-6">iHomeCare v1.36 · Hong Kong Medical SaaS</p>
+        <p className="text-center text-[10px] text-slate-400 mt-6">YDiCare 易护 v1.0</p>
       </div>
     </div>
   );

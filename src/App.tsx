@@ -126,33 +126,33 @@ const HomeScreen: FC = () => {
       <div className="flex items-center gap-4 mb-10 sm:mb-14">
         <IHomeCareLogoMark size="lg" />
         <div>
-          <h1 ref={titleRef} className="text-2xl sm:text-3xl font-extrabold text-[#7A5C32] font-display tracking-tight whitespace-nowrap">长护险平台</h1>
-          <TitleWidthMatchedText titleRef={titleRef}>综合管理平台</TitleWidthMatchedText>
+          <h1 ref={titleRef} className="text-2xl sm:text-3xl font-extrabold text-[#7A5C32] font-display tracking-tight whitespace-nowrap">YDiCare 易护</h1>
+          <TitleWidthMatchedText titleRef={titleRef}>管理平台</TitleWidthMatchedText>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 w-full max-w-5xl items-stretch">
         <PortalCard
-          title="长护险家属端"
+          title="易护家属端"
           buttonClass="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] group-hover:from-[#E8C97A] group-hover:to-[#D4A87C]"
           logo="family"
           onClick={() => navigate('/family')}
         />
         <PortalCard
-          title="长护险管理端"
+          title="易护机构端"
           buttonClass="bg-gradient-to-r from-[#9C7A4E] to-[#7A5C32] group-hover:from-[#C49A6C] group-hover:to-[#9C7A4E]"
           logo="hub"
           onClick={() => navigate('/command-center')}
         />
         <PortalCard
-          title="长护险照护端"
+          title="易护照护端"
           buttonClass="bg-gradient-to-r from-[#D4A87C] to-[#C49A6C] group-hover:from-[#E8C97A] group-hover:to-[#D4A87C]"
           logo="elite"
           onClick={() => navigate('/elites')}
         />
       </div>
 
-      <p className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 text-[10px] text-slate-400">长护险 v1.0</p>
+      <p className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 text-[10px] text-slate-400">YDiCare 易护 v1.0</p>
     </div>
   );
 };

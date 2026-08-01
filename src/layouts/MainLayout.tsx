@@ -126,8 +126,8 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
               <IHomeCareHubLogoIcon size={18} />
             </div>
             <div className="hidden sm:block">
-              <span className="text-sm font-bold text-slate-800 font-display">长护险</span>
-              <span className="text-[9px] text-slate-400 ml-1.5 font-medium">ChangHu Care</span>
+              <span className="text-sm font-bold text-slate-800 font-display">YDiCare 易护</span>
+              <span className="text-[9px] text-slate-400 ml-1.5 font-medium">YDiCare 易护</span>
             </div>
           </div>
 
@@ -287,7 +287,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
             <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
             <aside className="absolute left-0 top-0 bottom-0 w-56 bg-gradient-to-b from-[#1B5E4F] to-[#0D3B32] shadow-2xl flex flex-col animate-slide-in">
               <div className="p-3 border-b border-white/10 flex items-center justify-between">
-                <span className="text-sm font-bold text-white font-display">长护险</span>
+                <span className="text-sm font-bold text-white font-display">YDiCare 易护</span>
                 <button onClick={() => setSidebarOpen(false)} className="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-white text-xs">✕</button>
               </div>
               <div className="p-2 space-y-0.5 flex-1 overflow-y-auto">
