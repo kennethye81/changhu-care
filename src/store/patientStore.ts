@@ -91,7 +91,7 @@ export const DEFAULT_VITALS: Record<number, Vitals> = ALL_DEFAULT_VITALS;
 /* ──────────────────── Default Patient Summaries (from Desktop CC) ──────────────────── */
 
 const DEFAULT_SUMMARIES_BASE: Omit<PatientSummary, 'newsScore' | 'newsTier' | 'rr' | 'bloodSugar'>[] = [
-  { id: 1, name: '冯存富', gender: 'M', age: 77, diagnosis: '高血压 · 双侧肢体异常 · 压疮 · 中度失能', temp: 36.7, hr: 78, bpSystolic: 160, bpDiastolic: 82, spo2: 96, hospital: '易得康（常州金坛）', address: '江苏省常州市金坛区指前镇解放村接王家村3号', doctor: '社区医生（定期随访）', caseManager: '李妍（评估师）' },
+  { id: 1, name: '冯存富', gender: 'M', age: 77, diagnosis: '高血压 · 双侧肢体异常 · 压疮 · 中度失能', temp: 36.7, hr: 78, bpSystolic: 160, bpDiastolic: 82, spo2: 96, hospital: '易得康（常州金坛）', address: '江苏省常州市金坛区指前镇解放村接王家村3号', doctor: '社区医生（定期随访）', caseManager: '个案经理（待分配）' },
 ];
   
 
