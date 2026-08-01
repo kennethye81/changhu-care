@@ -7,10 +7,11 @@ type DeviceTemplate = Omit<IotDevice, 'serial' | 'status' | 'battery' | 'lastSyn
 
 const CORE_CHANGHU: DeviceTemplate[] = [
   { type: '血压监测仪', model: '欧姆龙 HEM-7361T', parameters: ['收缩压', '舒张压', '脉搏', '心律不齐检测'] },
-  { type: '血氧仪', model: 'Nonin Bluetooth 3230', parameters: ['SpO₂', '心率', '灌注指数'] },
-  { type: '体温计', model: 'Braun BNT400 Bluetooth', parameters: ['体温', '趋势', '发热提醒'] },
+  { type: '血氧仪', model: '鱼跃 YX301', parameters: ['SpO₂', '脉率', '灌注指数'] },
+  { type: '体温计', model: '欧姆龙 MC-682', parameters: ['体温', '趋势', '高温提醒'] },
   { type: '跌倒检测手环', model: '智能守护 S2', parameters: ['跌倒检测', 'SOS呼叫', '心率', 'GPS定位'] },
   { type: '减压气垫床', model: '迈德康 防压疮型', parameters: ['压力交替周期', '使用时长', '气泵状态'] },
+  { type: '床头呼叫铃', model: '康护通 CallBell S1', parameters: ['呼叫状态', '响应时间', '电池电量'] },
 ];
 
 const GPS_TRACKER: DeviceTemplate = {
@@ -53,8 +54,9 @@ function findByType(devices: IotDevice[], type: string): IotDevice | undefined {
 
 export function ensureChangHuDevices(patient: PatientFull): IotDevice[] {
   const required: DeviceTemplate[] = [...CORE_CHANGHU];
-  if (needsGps(patient)) required.push(GPS_TRACKER);
-  if (needsEmergencyCall(patient)) required.push(EMERGENCY_CALL);
+  // GPS定位器 + 床头呼叫铃: 按需启用（当前未启用）
+  // if (needsGps(patient)) required.push(GPS_TRACKER);
+  // if (needsEmergencyCall(patient)) required.push(EMERGENCY_CALL);
 
   const usedSerials = new Set<string>();
   const result: IotDevice[] = [];

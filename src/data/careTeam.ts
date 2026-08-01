@@ -271,17 +271,17 @@ export interface FamilyComm {
   date: string;
   time: string;
   contact: string;
-  method: 'Phone' | 'Message' | 'Video Call' | 'In-Person';
+  method: string;
   summary: string;
   actionItems: string;
-  direction: 'outgoing' | 'incoming';
+  direction: string;
 }
 
 export const FAMILY_COMMS: Record<number, FamilyComm[]> = {
   1: [
-    { date: '2026-06-20', time: '18:30', contact: 'Cheung Mei Ling (Daughter)', method: 'Phone', summary: 'Updated on weight stability (68.0kg). Reviewed fluid restriction compliance. Daughter reports patient ate well, less dyspnoeic today.', actionItems: 'Continue daily weight log. Call if weight gain >1kg/day.', direction: 'outgoing' },
-    { date: '2026-06-19', time: '14:00', contact: 'Mrs. Cheung (Wife)', method: 'In-Person', summary: 'Wife trained on BP monitor, weight scale, and medication schedule during nurse visit. Wife reports patient is compliant with fluid restriction but sometimes forgets afternoon Furosemide.', actionItems: 'Set phone alarm for 2PM Furosemide. Wife to call if weight gain >1kg.', direction: 'outgoing' },
-    { date: '2026-06-18', time: '16:00', contact: 'Cheung Mei Ling (Daughter)', method: 'Video Call', summary: 'HaH discharge planning call. Reviewed daily weight monitoring, fluid restriction, low-sodium diet, and emergency contact numbers. Smartwatch pairing confirmed.', actionItems: 'Daughter to set up medication box for the week. Post emergency numbers on fridge.', direction: 'outgoing' },
+    { date: '2026-08-16', time: '19:00', contact: '王小凤（配偶）', method: '电话', summary: '通知营养师今日迟到45分钟，营养筛查推迟至15:30完成。血压156/86，比上次访视略降。翻身护理、安全巡查均已完成。', actionItems: '明日上午照常访视。血压持续监测。', direction: '去电' },
+    { date: '2026-08-10', time: '16:30', contact: '王小凤（配偶）', method: '上门面谈', summary: '护士访视时培训配偶：血压监测仪正确使用、q2h翻身技巧确认、压疮部位日常观察要点。配偶操作熟练，血压读数准确。', actionItems: '配偶负责每日血压监测并记录。如有异常（≥160/100）立即联系个案经理。', direction: '去电' },
+    { date: '2026-08-03', time: '10:00', contact: '王小凤（配偶）', method: '上门面谈', summary: '8月首次上门服务。与配偶确认月度排程（每周一三五日）、用药方案（硝苯地平30mg qd）、饮食要求（低盐低脂）。配偶同意配合。', actionItems: '协助配偶安装手机用药提醒App。护理员每次访视核对药盒剩余量。', direction: '去电' },
   ],
   2: [
     { date: '2026-06-20', time: '17:00', contact: 'Wong Siu Ming (Daughter)', method: 'Phone', summary: 'Updated on SpO₂ improvement (93% RA). Reviewed O₂ safety and inhaler technique. Daughter reports patient less wheezy today.', actionItems: 'Continue O₂ prn. Call if SpO₂ <88%.', direction: 'outgoing' },
