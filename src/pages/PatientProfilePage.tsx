@@ -81,7 +81,7 @@ const PatientProfilePage: FC = () => {
           <button onClick={() => navigate('/patient-records')} className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-teal-600 mb-3"><ArrowLeft className="w-3.5 h-3.5" /> Back</button>
           <div className="flex items-center gap-2">
             <PatientAvatar patientId={patient.id} size={40} />
-            <div className="min-w-0"><p className="text-sm font-bold text-slate-800 truncate">{patient.name} <span className="text-[10px] font-normal text-slate-400 ml-1">#{patient.id}</span></p><p className="text-[10px] text-slate-400">{patient.gender}, {patient.age}</p></div>
+            <div className="min-w-0"><p className="text-sm font-bold text-slate-800 truncate">{patient.name} <span className="text-[10px] font-normal text-slate-400 ml-1">#{String(patient.id).padStart(5,'0')}</span></p><p className="text-[10px] text-slate-400">{patient.gender}, {patient.age}</p></div>
           </div>
           <span className={`inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-bold ${isCrit?'bg-red-100 text-red-700':displayPatient.riskLevel==='High'?'bg-amber-100 text-amber-700':'bg-emerald-100 text-emerald-700'}`}>{isCrit?'Critical':displayPatient.riskLevel==='High'&&patient.id===7?'Stable':displayPatient.riskLevel} Risk</span>
         </div>

@@ -162,7 +162,7 @@ export const PatientRecords: FC = () => {
               return (
                 <tr key={p.id} className="border-t border-slate-50 hover:bg-teal-50/30 transition-colors cursor-pointer" onClick={() => navigate(`/patient/${p.id}`)}>
                   <td className="px-2 py-2.5"><PatientAvatar patientId={p.id} size={28} /></td>
-                  <td className="px-2 py-2.5 text-slate-500 text-[10px] font-mono">{p.id}</td>
+                  <td className="px-2 py-2.5 text-slate-500 text-[10px] font-mono">{String(p.id).padStart(5,'0')}</td>
                   <td className="px-2 py-2.5 font-semibold text-slate-700">{p.name}</td>
                   <td className="px-2 py-2.5 text-slate-600">{genderCN(p.gender)}</td>
                   <td className="px-2 py-2.5 text-slate-600">{p.age}</td>
