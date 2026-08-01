@@ -186,13 +186,13 @@ const ElitesDashboardTab: FC = () => {
   const todayPct = pct(workOrders.today.completed, workOrders.today.total);
   const weekPct = pct(workOrders.week.completed, workOrders.week.total);
   const monthPct = pct(workOrders.month.completed, workOrders.month.total);
-  const caregiverName = user?.name ?? '姜珊';
+  const caregiverName = user?.name ?? '刘敏';
 
   const aiQuality = {
     punctuality: 92,
     completionQuality: 88,
     clientSatisfaction: 4.6,
-    ndFeedback: '姜珊护理专业素养高，临床文件记录完整、提交及时。本周因交通过度拥堵迟到1次——其余时间均准时完成。整体表现优异。',
+    ndFeedback: '刘敏护理专业素养高，临床文件记录完整、提交及时。本周因交通过度拥堵迟到1次——其余时间均准时完成。整体表现优异。',
     cmFeedback: `家属反馈积极。多位家属对${caregiverName}的细致照护和临床文档记录表示认可。零投诉记录。`,
     summary: '综合评估：良好。准时率略低于目标（92% vs 95%）。建议在居家访视间预留15分钟缓冲时间以应对路桥区交通拥堵。',
   };
@@ -206,7 +206,7 @@ const ElitesDashboardTab: FC = () => {
           <StaffAvatar name={caregiverName} size={56} className="shadow-md border-2 border-[#99E7FF]" />
           <div className="flex-1">
             <h3 className="text-base font-bold text-slate-900">{caregiverName}</h3>
-            <p className="text-xs text-slate-400">主管护师 · 13年经验</p>
+            <p className="text-xs text-slate-400">主管护师 · 11年经验</p>
             <div className="flex items-center gap-1.5 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-[#006F80]" />
               <span className="text-xs text-[#006F80] font-medium">在岗 · {workOrders.today.total} 次访视</span>
