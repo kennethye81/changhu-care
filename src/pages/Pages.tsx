@@ -112,8 +112,8 @@ export const PatientRecords: FC = () => {
 
   return (
     <div className="p-6">
-      <PageHeader title="病人档案" icon={Users} subtitle={`${stats.total} 位在管病人 · 按风险等级排序`}
-        action={<button className="flex items-center gap-1.5 px-3 py-1.5 bg-gold-600 hover:bg-gold-700 text-white text-xs font-semibold rounded"><Plus className="w-3.5 h-3.5" /> 添加病人</button>}
+      <PageHeader title="客户列表" icon={Users} subtitle={`${stats.total} 位在管客户 · 按风险等级排序`}
+        action={<button className="flex items-center gap-1.5 px-3 py-1.5 bg-gold-600 hover:bg-gold-700 text-white text-xs font-semibold rounded"><Plus className="w-3.5 h-3.5" /> 添加客户</button>}
       />
       <div className="grid grid-cols-4 gap-4 mb-6">
         {[{ label: '总计', value: stats.total, color: 'text-teal-600', bg: 'bg-teal-50' }, { label: '预警', value: stats.critical, color: 'text-red-600', bg: 'bg-red-50' }, { label: '关注', value: stats.attention, color: 'text-amber-600', bg: 'bg-amber-50' }, { label: '稳定', value: stats.stable, color: 'text-emerald-600', bg: 'bg-emerald-50' }].map((s, i) => (

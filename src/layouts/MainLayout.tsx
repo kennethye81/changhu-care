@@ -24,8 +24,8 @@ type NavItem = {
 
 const ALL_NAV: NavItem[] = [
   { key: 'command_center', label: '指挥中心', icon: Activity, route: '/command-center' },
-  { key: 'patient_registration', label: '病人登记', icon: FileText, route: '/pending-registration' },
-  { key: 'patient_records', label: '病人档案', icon: Users, route: '/patient-records' },
+  { key: 'patient_registration', label: '客户登记', icon: FileText, route: '/pending-registration' },
+  { key: 'patient_records', label: '客户列表', icon: Users, route: '/patient-records' },
   { key: 'care_elites', label: '照护团队', icon: Heart, route: '/care-elites' },
   { key: 'inventory', label: '设备管理', icon: Boxes, route: '/iot-devices' },
   { key: 'medical_institution', label: '服务机构', icon: Building2, route: '/medical-institution' },
