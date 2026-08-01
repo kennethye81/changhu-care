@@ -429,8 +429,8 @@ const MedicalSection: FC<{ patient: PatientFull }> = ({ patient }) => {
   const { overview = '', concerns = [] } = aiSummaryData || {};
 
   return (
-  <div>
-    <div className="sticky top-0 z-50 bg-white -mx-6 -mt-6 px-6 py-3 border-b border-slate-200 shadow-sm" style={{ isolation: 'isolate' }}>
+  <div className="-mt-6">
+    <div className="sticky top-0 z-50 bg-white -mx-6 px-6 py-3 border-b border-slate-200 shadow-sm">
       <ST title="病史档案" icon={FileText} />
     </div>
     {/* ─── 临床病史分类 ─── */}
