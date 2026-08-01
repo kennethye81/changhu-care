@@ -6,7 +6,7 @@ import {
   Users, ClipboardList, Smartphone, FileText, Pill, Activity,
   AlertTriangle, Calendar, Heart, MessageCircle, BookOpen,
   Search, Filter, Plus, Download, ChevronRight,
-  Clock, Award, Star, X, MapPin, Briefcase, Mail, Phone,
+  Clock, Award, Star, X, MapPin, Briefcase, Mail, Phone, Apple,
   Boxes, Package, CreditCard,
 } from 'lucide-react';
 import { CARE_TEAM, CN_CARE_TEAM, type TeamMember } from '../data/careTeam';
@@ -669,7 +669,7 @@ export const CareElites: FC = () => {
     <div className="h-full overflow-y-auto">
       {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-warm-50 -mx-6 px-6 pt-6 pb-3">
-        <PageHeader title="Care Elites" icon={Award} subtitle="Nurses, Rehab Therapists & Care Workers"
+        <PageHeader title="照护团队" icon={Award} subtitle="个案经理 · 护士 · 康复治疗师 · 营养师 · 护理员"
           action={
             <div className="flex gap-2">
               <button onClick={() => setView('roster')} className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${view === 'roster' ? 'bg-gold-600 text-white shadow-sm' : 'bg-warm-100 text-slate-600 hover:bg-warm-200'}`}>排班</button>
@@ -686,10 +686,11 @@ export const CareElites: FC = () => {
         /* ── Roster View — grouped by role ── */
         <div className="space-y-6">
           {[
-            { label: 'Case Managers', icon: ClipboardList, staff: ELITE_STAFF.filter(s => s.role === 'Case Manager') },
-            { label: 'Nurses (RN)', icon: Heart, staff: ELITE_STAFF.filter(s => s.role.includes('Nurse')) },
-            { label: 'Rehab Therapists', icon: Activity, staff: ELITE_STAFF.filter(s => s.role.includes('Rehab') || s.role.includes('Therapist')) },
-            { label: 'Care Workers', icon: Users, staff: ELITE_STAFF.filter(s => s.role.includes('Care Worker')) },
+            { label: '个案经理', icon: ClipboardList, staff: ELITE_STAFF.filter(s => s.role.includes('个案经理')) },
+            { label: '护士', icon: Heart, staff: ELITE_STAFF.filter(s => s.role.includes('护士')) },
+            { label: '康复治疗师', icon: Activity, staff: ELITE_STAFF.filter(s => s.role.includes('康复治疗师')) },
+            { label: '营养师', icon: Apple, staff: ELITE_STAFF.filter(s => s.role.includes('营养师')) },
+            { label: '护理员', icon: Users, staff: ELITE_STAFF.filter(s => s.role.includes('护理员')) },
           ].map((group) => group.staff.length > 0 && (
             <div key={group.label}>
               <h3 className="sticky top-[72px] z-[4] bg-warm-50 text-xs font-bold text-slate-500 uppercase tracking-wide py-2 -mx-4 px-4 mb-2 flex items-center gap-2">
