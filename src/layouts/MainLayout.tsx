@@ -23,7 +23,7 @@ type NavItem = {
 };
 
 const ALL_NAV: NavItem[] = [
-  { key: 'command_center', label: '指挥中心', icon: Activity, route: '/command-center' },
+  { key: 'command_center', label: '客户面板', icon: Activity, route: '/command-center' },
   { key: 'patient_registration', label: '客户登记', icon: FileText, route: '/pending-registration' },
   { key: 'patient_records', label: '客户列表', icon: Users, route: '/patient-records' },
   { key: 'care_elites', label: '照护团队', icon: Heart, route: '/care-elites' },

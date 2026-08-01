@@ -295,13 +295,13 @@ const DesktopCommandCenter: FC = () => {
     <> 
     <div className="relative pt-12">
       <div className="absolute top-4 left-4 z-[1000] flex items-center gap-1 bg-gold-100 rounded-xl p-1 border border-[#99E7FF]">
-        <button onClick={() => setView('patient')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Patient View</button>
-        <button onClick={() => setView('map')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${!isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>Map View</button>
+        <button onClick={() => setView('patient')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>客户视图</button>
+        <button onClick={() => setView('map')} className={`px-3 py-1.5 text-[10px] font-semibold rounded-lg transition-colors ${!isPatient ? 'bg-gold-600 text-white' : 'text-gold-700 hover:text-gold-900'}`}>地图视图</button>
       </div>
     <div className="max-w-[1600px] mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-2 sm:pb-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
-          { label: '服务中患者', value: String(patientsSummary.length), sub: 'Active under care', icon: Users, color: 'gold' as const },
+          { label: '服务中客户', value: String(patientsSummary.length), sub: '在管照护', icon: Users, color: 'gold' as const },
           { label: '跌倒高风险', value: String(highCount), sub: 'Fall risk >35', icon: AlertTriangle, color: 'red' as const },
           { label: '压疮风险', value: String(mediumCount), sub: 'Braden ≤16', icon: Bell, color: 'amber' as const },
           { label: '血压异常', value: String(lowCount), sub: 'BP >140/90', icon: CheckCircle2, color: 'green' as const },
@@ -345,12 +345,12 @@ const DesktopCommandCenter: FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 sm:mb-5 pt-2 sm:pt-3 gap-2 sm:gap-0">
         <h2 className="text-sm sm:text-base font-semibold text-slate-800 flex items-center gap-2 font-display">
           <Users className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
-          患者监控面板
+          客户面板
           <span className="inline-flex items-center ml-2 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full bg-gold-100 text-gold-800 text-[10px] sm:text-xs font-semibold">{patientsSummary.length} 在管</span>
         </h2>
         <div className="flex items-center gap-2 sm:gap-3">
-          <button className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-slate-600 glass-card hover:bg-warm-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-colors"><Filter className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Filter Patients</button>
-          <button className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-white bg-gold-600 hover:bg-gold-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-colors"><Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Add Patient</button>
+          <button className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-slate-600 glass-card hover:bg-warm-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-colors"><Filter className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 筛选客户</button>
+          <button className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-white bg-gold-600 hover:bg-gold-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl transition-colors"><Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> 增加客户</button>
         </div>
       </div>
       <div className="bento-grid">{patientsSummary.sort((a,b) => b.newsScore - a.newsScore).map(p => (<PatientCard key={p.id} patient={p} onSelect={() => navigate(`/patient/${p.id}`)} />))}</div>
