@@ -32,7 +32,7 @@ export interface FamilyVitalCard {
 
 // COPD clinical baseline for trend comparison — uses 患者1 (冯存富, 高血压+压疮) as reference.
 // TODO: pass patient-specific DEFAULT_VITALS[patientId] instead of hardcoding patient 1.
-const COPD_BASELINE = DEFAULT_VITALS[7];
+const COPD_BASELINE = DEFAULT_VITALS[1];
 
 function trends(vitals: Vitals, alertActive: boolean) {
   return buildVitalTrends(vitals, alertActive, COPD_BASELINE);

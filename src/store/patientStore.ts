@@ -237,7 +237,7 @@ function buildPatient1Summary(vitals: Vitals, alertActive: boolean): PatientSumm
 
 function computePatientSummaries(vitals: Record<number, Vitals>, alertActive = false, extraIds: Set<number> = new Set()): PatientSummary[] {
   const base = DEFAULT_SUMMARIES_BASE.map(s => {
-    if (s.id === 1) return buildPatient1Summary(vitals[7] || DEFAULT_VITALS[7], alertActive);
+    if (s.id === 1) return buildPatient1Summary(vitals[1] || DEFAULT_VITALS[1], alertActive);
     const v = vitals[s.id];
     if (!v) {
       const normalized = normalizeVitals(DEFAULT_VITALS[s.id] ?? {}, s.diagnosis);
@@ -253,7 +253,7 @@ function computePatientSummaries(vitals: Record<number, Vitals>, alertActive = f
       id: patient.id, name: patient.name, gender: patient.gender, age: patient.age,
       diagnosis: patient.diagnosis, temp: v.temp, hr: v.hr, bpSystolic: v.bpSystolic,
       bpDiastolic: v.bpDiastolic, spo2: v.spo2,
-      hospital: patient.physician.split('(')[1]?.replace(')', '').trim() || 'Prince of Wales Hospital',
+      hospital: patient.physician.split('(')[1]?.replace(')', '').trim() || '常州市金坛区人民医院',
       address: patient.address, doctor: patient.physician,
       caseManager: patient.carePlan.assignedCaseManager || '[待分配]',
     } as any, v));
@@ -463,7 +463,7 @@ export const usePatientStore = create<PatientStore>((set, get) => {
     deactivateAlert: () => {
       if (!get().alertActive) return;
       const state = get();
-      const newVitals = { ...state.vitals, 7: DEFAULT_VITALS[7] };
+      const newVitals = { ...state.vitals, 7: DEFAULT_VITALS[1] };
       const patients = patchP7Patient(state.patients, false);
       set({ alertActive: false, ...syncDerivedState(state, newVitals, false, patients) });
       useCollaborationStore.getState().refreshAlertMessages(false);

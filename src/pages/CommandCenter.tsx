@@ -248,7 +248,7 @@ const DesktopCommandCenter: FC = () => {
   const allPatients = usePatientStore(s => s.patientsSummary);
   const storePatients = usePatientStore(s => s.patients);
   const deviceStatuses = usePatientStore(s => s.deviceStatuses);
-  const vitals7 = usePatientStore(s => s.vitals[7]);
+  const vitals1 = usePatientStore(s => s.vitals[1]);
   const eliteTaskTimes = useCollaborationStore(s => s.eliteTaskTimes);
   const alertActive = usePatientStore(s => s.alertActive);
   const triggerAlert = usePatientStore(s => s.triggerAlert);
@@ -259,8 +259,8 @@ const DesktopCommandCenter: FC = () => {
   useEffect(() => { if (alertActive) setShowP7Banner(true); else setShowP7Banner(false); }, [alertActive]);
 
   const p7Banner = useMemo(
-    () => buildPatient1HubBannerContent(vitals7 ?? PATIENT1_ESCALATION_VITALS, 'COPD'),
-    [vitals7],
+    () => buildPatient1HubBannerContent(vitals1 ?? PATIENT1_ESCALATION_VITALS, 'COPD'),
+    [vitals1],
   );
 
 
