@@ -284,9 +284,9 @@ export const FAMILY_COMMS: Record<number, FamilyComm[]> = {
     { date: '2026-08-03', time: '10:00', contact: '陈玉兰（配偶）', method: '上门面谈', summary: '8月首次上门服务。与配偶确认月度排程（每周一三五日）、用药方案（硝苯地平30mg qd）、饮食要求（低盐低脂）。配偶同意配合。', actionItems: '协助配偶安装手机用药提醒App。护理员每次访视核对药盒剩余量。', direction: '去电' },
   ],
   2: [
-    { date: '2026-06-20', time: '17:00', contact: 'Wong Siu Ming (Daughter)', method: 'Phone', summary: 'Updated on SpO₂ improvement (93% RA). Reviewed O₂ safety and inhaler technique. Daughter reports patient less wheezy today.', actionItems: 'Continue O₂ prn. Call if SpO₂ <88%.', direction: 'outgoing' },
-    { date: '2026-06-19', time: '10:00', contact: 'Wong Siu Ming (Daughter)', method: 'In-Person', summary: 'Daughter present during nurse visit. Trained on O₂ concentrator setup, inhaler technique, and exacerbation action plan.', actionItems: 'Daughter to monitor SpO₂ daily. Exacerbation action plan posted on fridge.', direction: 'outgoing' },
-    { date: '2026-06-18', time: '15:00', contact: 'Wong Siu Ming (Daughter)', method: 'Message', summary: 'Daughter confirmed O₂ concentrator delivery received. Home ready for patient discharge.', actionItems: 'Nurse acknowledged. HaH visit scheduled tomorrow 11:00.', direction: 'incoming' },
+    { date: '2026-07-20', time: '19:00', contact: '周明辉（儿子）', method: '电话', summary: '通知右下肢肿胀较前加重，已联系护士刘敏上门评估。提醒儿子继续抬高患肢、避免按摩，若有呼吸困难或胸痛立即拨打120。', actionItems: '刘敏已上门评估，血栓暂无进展。继续低分子肝素抗凝。', direction: '去电' },
+    { date: '2026-07-10', time: '16:30', contact: '周明辉（儿子）', method: '上门面谈', summary: '护士上门培训：翻身护理操作（每2h）、被动关节活动度训练、血压监测仪使用。儿子操作熟练度达标。', actionItems: '儿子负责每日血压监测。已发放照护操作手册。', direction: '去电' },
+    { date: '2026-07-03', time: '10:00', contact: '周明辉（儿子）', method: '上门面谈', summary: '7月首次上门服务。与儿子确认月度排程（每周四次）、用药方案（降压药每日一次）、康复计划（被动ROM）。儿子表示理解并配合。', actionItems: '个案经理张丽华协调护理员排班。', direction: '去电' },
   ],
   3: [
     { date: '2026-06-20', time: '16:00', contact: 'Lam Wai Leng (Spouse)', method: 'Phone', summary: 'Spouse reports patient feels "80% better". Eating well, no fever. Levofloxacin taken without issues.', actionItems: 'Complete 2 more days antibiotics. Return to work (remote) from Day 7.', direction: 'outgoing' },

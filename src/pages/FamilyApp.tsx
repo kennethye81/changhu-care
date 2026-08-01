@@ -37,6 +37,7 @@ import { resolvePatientNews } from '../utils/patientNews';
 import { buildFamilyInfectionFactor, formatNewsHeadline } from '../utils/medicalHistoryNews';
 import { deviceImageUrl } from '../data/deviceImages';
 import { getFamilyCareTeam } from '../utils/familyCareTeam';
+import { FAMILY_COMMS, type FamilyComm } from '../data/careTeam';
 import { FAMILY_CLASS } from '../theme/familyTokens';
 import type { FollowupLogEntry } from '../data/carePlans';
 import type { ChatMessage } from '../data/chatMessages';
@@ -895,195 +896,109 @@ const CarePlanTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 };
 
 const CareLogsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
-  const isAlertPatient = familyPatientId === 2;
-  const alertActive = usePatientStore(s => isAlertPatient ? s.alertActive : false);
-  const vitals = usePatientStore(s => s.vitals[familyPatientId]);
-  const patientsSummary = usePatientStore(s => s.patientsSummary);
-  const summary = patientsSummary.find(p => p.id === familyPatientId);
-  const { score: newsScore, tier: newsTier, escalation, monitoringLabel, redScore, label } = resolvePatientNews(familyPatientId, summary?.diagnosis ?? '', vitals, summary, alertActive);
-  const effectiveVitals = vitals ?? DEFAULT_VITALS[familyPatientId];
-  const baseline = DEFAULT_VITALS[familyPatientId];
-  const contributingFactors = useMemo(() => [
-    {
-      vital: alertActive ? '血氧异常' : '血氧基线',
-      risk: alertActive
-        ? `SpO₂从${baseline.spo2}%降至${effectiveVitals.spo2}%。脑出血术后需维持SpO₂≥95%。${monitoringLabel}。`
-        : `SpO₂ ${effectiveVitals.spo2}%静息稳定。右侧偏瘫卧床，呼吸功能正常。目标≥95%。`,
-      icon: Activity,
-    },
-    {
-      vital: alertActive ? '血栓预警' : '血压管理',
-      risk: `血压${effectiveVitals.bpSystolic}/${effectiveVitals.bpDiastolic} mmHg。脑出血术后目标<150/90。` + (alertActive ? `血压升高需立即复查。${monitoringLabel}` : '降压药每日一次确认服用。注意体位性低血压。'),
-      icon: Droplets,
-    },
-    {
-      vital: alertActive ? '意识变化' : 'DVT监测',
-      risk: alertActive
-        ? `意识状态变化需紧急评估。${monitoringLabel}。照护者已接受紧急联络培训。`
-        : '右下肢DVT（Caprini 7分高危）。避免挤压、抬高患肢、每日观察肿胀/皮温/颜色。',
-      icon: Heart,
-    },
-    { vital: '照护者支持', risk: '儿子周明辉同住为主要照护者。已培训翻身护理+ROM操作+血压监测+血栓观察+紧急联络流程。', icon: MessageCircle },
-  ], [alertActive, effectiveVitals, monitoringLabel, summary?.diagnosis]);
-  const careLogs = usePatientStore(s => s.carePlans[familyPatientId]?.logs);
-  const submitted = useCollaborationStore(s => s.submittedCareLogs[familyPatientId]) ?? EMPTY_SUBMITTED_LOGS;
-  const carePlanStatus = useCollaborationStore(s => s.carePlanStatus);
-  const setCarePlanTaskStatus = useCollaborationStore(s => s.setCarePlanTaskStatus);
-  const appendMessage = useCollaborationStore(s => s.appendMessage);
-  const appendSubmittedCareLog = useCollaborationStore(s => s.appendSubmittedCareLog);
-  const protocolActive = carePlanStatus[COPD_PROTOCOL_TASK_KEY] === 'completed';
-  const mergedLogs = useMemo(
-    () => [...(careLogs || []), ...submitted],
-    [careLogs, submitted],
-  );
-  const progressNotes = useMemo(
-    () => getFamilyCareProgressNotes(mergedLogs, alertActive, DEMO_CARE_PLAN_DATE, 6, vitals ?? DEFAULT_VITALS[familyPatientId]),
-    [mergedLogs, alertActive, vitals, familyPatientId],
-  );
+  const patient = usePatientStore(s => s.patients.find(p => p.id === familyPatientId));
+  const nursingLogs = patient?.nursingRecords?.map(nr => ({
+    date: nr.date, time: nr.time, type: '护理访视',
+    detail: nr.note, author: nr.nurse, role: '护士', vitals: nr.vitals, status: '已完成',
+  })) ?? [];
+  const familyComms: FamilyComm[] = FAMILY_COMMS[familyPatientId] ?? [];
 
-  const handleActivateProtocol = () => {
-    if (protocolActive || !isAlertPatient) return;
-    const time = getDemoTimeString();
-    setCarePlanTaskStatus(COPD_PROTOCOL_TASK_KEY, 'completed');
-    appendMessage(familyPatientId, {
-      id: getDemoTimestamp(),
-      from: 'family',
-      senderName: 'Mrs. Chan (Chan Siu Ling)',
-      text: '照护协议已激活 — 家属已确认紧急联络流程和血压监测要求。护士刘敏将立即上门评估。',
-      time,
-      patientId: familyPatientId,
-    });
-    appendSubmittedCareLog(familyPatientId, {
-      date: DEMO_CARE_PLAN_DATE,
-      time,
-      type: '家属操作',
-      detail: '照护协议已激活 — 由家属周明辉确认。',
-      author: '周明辉',
-      role: '家属',
-      status: 'completed',
-    });
+  const statusCN = (s: string) => {
+    if (s === '已完成' || s === 'completed') return '已完成';
+    if (s === '进行中' || s === 'in_progress') return '进行中';
+    if (s === '预警' || s === 'critical') return '预警';
+    if (s === '异常') return '异常';
+    return s;
   };
+  const statusColor = (s: string) => {
+    if (s === '已完成' || s === 'completed') return 'text-emerald-600';
+    if (s === '进行中' || s === 'in_progress') return 'text-teal-600';
+    return 'text-red-600';
+  };
+  const methodBadge = (m: string) => {
+    if (m === '电话' || m === 'Phone') return 'bg-blue-100 text-teal-700';
+    if (m === '信息' || m === 'Message') return 'bg-emerald-100 text-emerald-700';
+    if (m === '视频通话' || m === 'Video Call') return 'bg-purple-100 text-purple-700';
+    return 'bg-amber-100 text-amber-700';
+  };
+  const dirLabel = (d: string) => d === 'incoming' || d === '来电' ? '↓ 来电' : d === '去电' || d === 'outgoing' ? '↑ 去电' : d;
+
   return (
   <div className="space-y-3">
-    {/* NEWS Score + Interventions */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <div className={`px-4 py-3 flex items-center justify-between ${newsTier === 'high' ? 'bg-gradient-to-r from-red-500 to-red-600' : newsTier === 'medium' ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-emerald-500 to-emerald-600'}`}>
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-white" />
-          <span className="text-xs font-bold text-white">风险评估</span>
-        </div>
-        <span className="text-[10px] font-semibold text-white/90 bg-black/20 px-2 py-0.5 rounded-full">
-          {label}
-        </span>
-      </div>
-
-      <div className="px-4 py-3">
-        <p className="text-[10px] text-slate-500 mb-2">国家早期预警评分（NEWS2）</p>
-        <div className="flex items-center gap-4">
-          <div className={`text-3xl font-extrabold ${newsTier === 'high' ? 'text-red-600' : newsTier === 'medium' ? 'text-amber-600' : redScore ? 'text-orange-600' : 'text-emerald-600'}`}>{newsScore}</div>
-          <div className="flex-1">
-            <p className="text-[10px] font-semibold text-slate-700">{escalation}</p>
-            <p className="text-[9px] text-slate-500 mt-0.5">{monitoringLabel}{redScore ? ' · 单参数红色警报' : ''}</p>
-            {vitals && (
-              <p className="text-[9px] text-slate-400 mt-1">
-                RR {vitals.rr}/min · SpO₂ {vitals.spo2}% Scale {vitals.spo2Scale ?? 2}{vitals.onSupplementalO2 ? ' + O₂' : ''} · AVPU {vitals.avpu ?? 'A'}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Clinical Factors */}
-      <div className="border-t border-slate-100 px-4 py-3">
-        <p className="text-[10px] font-semibold text-slate-600 mb-2">促成因素</p>
-        <div className="space-y-1.5">
-          {contributingFactors.map((f, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <f.icon className="w-3 h-3 text-red-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <span className="text-[10px] font-bold text-red-600">{f.vital}</span>
-                <span className="text-[9px] text-slate-500 ml-1">{f.risk}</span>
+      <SectionHeader icon={Activity} title={'护理访视记录（' + nursingLogs.length + '）'} />
+      <div className="p-4 space-y-2">
+        {nursingLogs.length === 0 ? (
+          <p className="text-[10px] text-slate-400">暂无护理访视记录。</p>
+        ) : (
+          nursingLogs.map((log: any, i: number) => (
+            <div key={i} className="border-l-2 border-blue-200 pl-3 py-1">
+              <div className="flex items-center justify-between mb-0.5">
+                <span className="text-[11px] font-semibold text-slate-700">{log.type}</span>
+                <span className="text-[9px] text-slate-400">{log.date} · {log.time}</span>
+              </div>
+              <p className="text-[10px] text-slate-600 leading-relaxed">{log.detail}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[9px] text-slate-400">— {log.author}（{log.role}）</span>
+                {log.vitals && <span className="text-[9px] text-slate-400">| {log.vitals}</span>}
+                <span className={'text-[8px] font-semibold px-1 py-0 rounded ' + statusColor(log.status)}>{statusCN(log.status)}</span>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* AI干预建议 */}
-      <div className="border-t border-slate-100 px-4 py-3 bg-amber-50/50">
-        <div className="flex items-center gap-2 mb-2">
-          <Zap className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-          <p className="text-[10px] font-bold text-amber-800">AI推荐干预</p>
-          <span className="text-[8px] text-amber-500 ml-auto">24小时内</span>
-        </div>
-        <div className="space-y-2">
-          {[
-            { num: '1', action: '压疮护理：每2h翻身+检查皮肤+减压气垫床。Braden≤16需重点关注。', icon: BedDouble },
-            { num: '2', action: alertActive ? `监测全部7项NEWS参数 — ${monitoringLabel}。O₂ 2L/min，目标SpO₂≥92%。` : `血压监测每日2次，目标<150/90 mmHg。通知 ${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedNurse?.split(' (')[0] ?? '护士'} 若>160/95。`, icon: Heart },
-            { num: '3', action: newsTier === 'high' || redScore ? '跌倒防控：检查助行器+地面防滑+夜间照明。有跌倒史需24h内上门。' : '跌倒防控：检查助行器+地面防滑+夜间照明。定期评估Barthel ADL。', icon: Footprints },
-            { num: '4', action: `确保每日饮水~1,500 mL + 低盐低脂饮食。${PATIENTS_FULL.find(p=>p.id===familyPatientId)?.carePlan?.assignedCareWorker?.split(' (')[0] ?? '护理员'}定期访视。`, icon: GlassWater },
-          ].map((rec, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <div className="w-5 h-5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">{rec.num}</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <rec.icon className="w-3 h-3 text-amber-600 flex-shrink-0" />
-                  <p className="text-[9px] text-slate-700 leading-relaxed">{rec.action}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Expected Outcome */}
-      <div className="border-t border-slate-100 px-4 py-3 bg-gradient-to-r from-[#CCF0FE] to-[#CCF0FE]">
-        <div className="flex items-start gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#006F80] flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-[10px] font-bold text-[#0B3550]">预期结果（30–90天）</p>
-            <p className="text-[9px] text-slate-600 mt-0.5">{alertActive ? `若全部4项干预完成：SpO₂≥92%，体温≤37.5°C，${escalation}` : `若全部4项干预完成：跌倒0次，血压<150/90，压疮改善。${monitoringLabel}。`}</p>
-            {isAlertPatient && (
-            <button
-              type="button"
-              onClick={handleActivateProtocol}
-              disabled={protocolActive}
-              className={`mt-2 text-[9px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-colors ${
-                protocolActive
-                  ? 'bg-emerald-100 text-emerald-700 cursor-default'
-                  : 'text-white bg-[#006F80] hover:bg-[#0B3550]'
-              }`}
-            >
-              <CheckCircle2 className="w-3 h-3" />
-              {protocolActive ? '照护协议已激活' : '激活易护照护端协议'}
-            </button>
-            )}
-          </div>
-        </div>
+          ))
+        )}
       </div>
     </div>
 
-    {/* Progress Notes */}
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <SectionHeader icon={ClipboardList} title="照护记录" />
-      <div className="p-4 space-y-3">
-        {progressNotes.map((note, i) => (
-          <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
-            <div className="w-8 h-8 rounded-full bg-[#CCF0FE] flex items-center justify-center flex-shrink-0">
-              <note.icon className={`w-4 h-4 ${note.color}`} />
+      <SectionHeader icon={Pill} title={'用药记录（' + (patient?.medications.length ?? 0) + ' 种在用）'} />
+      <div className="p-4 space-y-2">
+        {patient?.medications.length ? (
+          patient.medications.map((med, i) => (
+            <div key={i} className="flex items-center justify-between text-[11px] border-b border-slate-50 pb-2 last:border-0 last:pb-0">
+              <div className="flex-1">
+                <span className="font-semibold text-slate-700">{med.drug}</span>
+                <span className="text-slate-400 ml-2">{med.dose} · {med.route} · {med.frequency}</span>
+                <p className="text-[9px] text-slate-400 mt-0.5">起始日期：{med.startDate} · {med.purpose}</p>
+              </div>
+              <span className={'text-[9px] font-semibold px-2 py-0.5 rounded-full ' + (med.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500')}>{med.status === 'Active' ? '在用' : med.status}</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-slate-800">{note.title}</p>
-              <p className="text-[10px] text-slate-500">{note.detail}</p>
+          ))
+        ) : (
+          <p className="text-[10px] text-slate-400">暂无用药记录。</p>
+        )}
+      </div>
+    </div>
+
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+      <SectionHeader icon={MessageCircle} title={'家属沟通记录（' + familyComms.length + '）'} />
+      <div className="p-4 space-y-2">
+        {familyComms.length === 0 ? (
+          <p className="text-[10px] text-slate-400">暂无家属沟通记录。</p>
+        ) : (
+          familyComms.map((c: FamilyComm, i: number) => (
+            <div key={i} className="flex items-start gap-3 pb-2 border-b border-slate-50 last:border-0 last:pb-0">
+              <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
+                <MessageCircle className="w-4 h-4 text-amber-500" />
+                <span className={'text-[7px] font-semibold px-1 py-0.5 rounded ' + methodBadge(c.method)}>{c.method}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-semibold text-slate-700">{c.contact}</span>
+                  <span className="text-[8px] text-slate-400">{dirLabel(c.direction)}</span>
+                </div>
+                <p className="text-[9px] text-slate-600 mt-0.5 leading-relaxed">{c.summary}</p>
+                {c.actionItems && <p className="text-[9px] text-amber-600 mt-0.5 italic">→ {c.actionItems}</p>}
+                <span className="text-[8px] text-slate-400">{c.date} · {c.time}</span>
+              </div>
             </div>
-            <span className="text-[9px] text-slate-400 flex-shrink-0">{note.time}</span>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   </div>
   );
 };
+
 
 const MedsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
   const isAlertPatient = familyPatientId === 2;
