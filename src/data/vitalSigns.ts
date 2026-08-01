@@ -429,14 +429,14 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
 
   // Assess each vital sign
   const assessRR = () => {
-    if (rrStats.pctRed > 5) return `Tachypnoea episodes — ${rrStats.pctRed}% of readings in red zone (max ${rrStats.max}/min, ${rrStats.trend}). ${ctx.conditions.includes('COPD') || ctx.conditions.includes('CAP') ? 'Per GOLD 2024 / IDSA CAP, RR >24 with hypoxaemia suggests acute deterioration — correlate with SpO₂ and infection markers.' : 'Requires clinical correlation for respiratory or metabolic cause.'}`;
+    if (rrStats.pctRed > 5) return `呼吸急促发作 — ${rrStats.pctRed}%读数处于红色区域（最高${rrStats.max}次/分，${rrStats.trend}）。${ctx.conditions.includes('COPD') || ctx.conditions.includes('CAP') ? '依据GOLD 2024 / IDSA CAP，RR>24伴低氧血症提示急性恶化 — 需结合SpO₂和感染标志物综合判断。' : '需结合临床判断呼吸性或代谢性病因。'}`;
     if (rrStats.pctAmber > 10) return `呼吸频率在${rrStats.pctAmber}%读数中轻度升高（均值${rrStats.mean}次/分，${rrStats.trend}）。持续监测趋势并行完整NEWS评估。`;
-    return `Respiratory rate ${rrStats.trend.toLowerCase()} — mean ${rrStats.mean}/min. Within green zone ${100 - rrStats.pctAmber - rrStats.pctRed}% of time.`;
+    return `呼吸频率${rrStats.trend} — 均值${rrStats.mean}次/分。${100 - rrStats.pctAmber - rrStats.pctRed}%时间处于绿色区域。`;
   };
   const assessHR = () => {
-    if (hrStats.pctRed > 5) return `Significant tachycardia episodes detected — ${hrStats.pctRed}% of readings in red zone (${hrStats.trend}). ${ctx.conditions.includes('HF') ? 'Concerning in HF patient per ESC 2021 guidelines — may indicate decompensation or inadequate rate control in AF.' : ctx.conditions.includes('COPD') ? 'May reflect hypoxaemia-driven sympathetic activation in COPD per GOLD 2024.' : 'Requires clinical correlation.'}`;
-    if (hrStats.pctAmber > 10) return `Mild tachycardia noted in ${hrStats.pctAmber}% of readings (${hrStats.trend}). Within acceptable range for current clinical status.`;
-    return `Heart rate ${hrStats.trend.toLowerCase()} throughout monitoring period (mean ${hrStats.mean} bpm). Within green zone ${100 - hrStats.pctAmber - hrStats.pctRed}% of time.`;
+    if (hrStats.pctRed > 5) return `检测到明显心动过速发作 — ${hrStats.pctRed}%读数处于红色区域（${hrStats.trend}）。${ctx.conditions.includes('HF') ? '依据ESC 2021指南，心衰患者需警惕 — 可能提示失代偿或房颤心率控制不足。' : ctx.conditions.includes('COPD') ? '依据GOLD 2024，可能反映COPD低氧驱动的交感神经激活。' : '需结合临床判断。'}`;
+    if (hrStats.pctAmber > 10) return `轻度心动过速，${hrStats.pctAmber}%读数出现（${hrStats.trend}）。在当前临床状态下可接受范围内。`;
+    return `心率监测期间${hrStats.trend}（均值${hrStats.mean} bpm）。${100 - hrStats.pctAmber - hrStats.pctRed}%时间处于绿色区域。`;
   };
   const assessBP = () => {
     if (sysStats.pctRed > 3) return `检测到高血压波动（收缩压最高${sysStats.max} mmHg）— ${sysStats.pctRed}%读数处于红色区域。${ctx.conditions.includes('CKD') ? '依据KDIGO 2024，血压控制对CKD3期肾脏保护至关重要。' : '中国高血压防治指南2024推荐目标<140/90。'}`;
@@ -444,18 +444,18 @@ export function generateVitalsSummary(patientId: number, data: VitalsPoint[]): V
     return `血压控制良好 — 均值${sysStats.mean}/${diaStats.mean} mmHg，${sysStats.trend}。${100 - sysStats.pctAmber - sysStats.pctRed}%处于绿色区域。`;
   };
   const assessSpO2 = () => {
-    if (spo2Stats.pctRed > 5) return `⚠️ Significant desaturation episodes — ${spo2Stats.pctRed}% of readings in red zone (nadir ${spo2Stats.min}%). ${ctx.conditions.includes('COPD') ? 'Per GOLD 2024, SpO₂ <88% in COPD GOLD 2 indicates severe hypoxaemia requiring O₂ therapy and urgent clinical review. Exclude infective exacerbation.' : ctx.conditions.includes('CAP') ? 'Per IDSA CAP guidelines, SpO₂ <92% defines severe CAP. Post-pneumonia desaturation may indicate incomplete resolution.' : 'Desaturation requires urgent evaluation for pulmonary or cardiac aetiology.'}`;
-    if (spo2Stats.pctAmber > 10) return `Mild intermittent desaturation (${spo2Stats.pctAmber}% amber, nadir ${spo2Stats.min}%). ${ctx.conditions.includes('COPD') ? 'Consistent with COPD GOLD stage baseline — monitor for downward trend per GOLD 2024.' : 'Monitor for progression.'}`;
-    return `Oxygen saturation ${spo2Stats.trend.toLowerCase()} — mean ${spo2Stats.mean}%, ${100 - spo2Stats.pctAmber - spo2Stats.pctRed}% in green zone.`;
+    if (spo2Stats.pctRed > 5) return `⚠️ 显著低氧发作 — ${spo2Stats.pctRed}%读数处于红色区域（最低${spo2Stats.min}%）。${ctx.conditions.includes('COPD') ? '依据GOLD 2024，COPD GOLD 2级SpO₂ <88%提示严重低氧血症，需氧疗和紧急临床复审。排除感染性急性加重。' : ctx.conditions.includes('CAP') ? '依据IDSA CAP指南，SpO₂ <92%定义为重症CAP。肺炎后低氧可能提示未完全缓解。' : '低氧需紧急评估肺源性或心源性病因。'}`;
+    if (spo2Stats.pctAmber > 10) return `轻度间歇性低氧（${spo2Stats.pctAmber}%黄色区域，最低${spo2Stats.min}%）。${ctx.conditions.includes('COPD') ? '符合COPD GOLD分级基线 — 按GOLD 2024监测下降趋势。' : '监测进展情况。'}`;
+    return `血氧饱和度${spo2Stats.trend} — 均值${spo2Stats.mean}%，${100 - spo2Stats.pctAmber - spo2Stats.pctRed}%处于绿色区域。`;
   };
   const assessGlucose = () => {
     if (glucoseStats.pctRed > 3) return `⚠️ 血糖超出安全范围 — ${glucoseStats.pctRed}%读数处于危急值（${glucoseStats.min}–${glucoseStats.max} mg/dL）。${ctx.conditions.includes('T2DM') || ctx.conditions.includes('Diabetes') ? '依据ADA 2024，复查胰岛素/口服降糖方案并排查感染相关性高血糖。' : '未纳入NEWS评分 — 适用独立血糖预警协议（<70或>250为危急值）。立即复阅。'}`;
-    if (glucoseStats.pctAmber > 10) return `Glucose intermittently outside target in ${glucoseStats.pctAmber}% of readings (mean ${glucoseStats.mean} mg/dL). Alert-only metric — not included in NEWS score. Encourage dietary review and SMBG log.`;
-    return `Blood sugar ${glucoseStats.trend.toLowerCase()} — mean ${glucoseStats.mean} mg/dL, within acceptable range. Display-only; excluded from NEWS scoring.`;
+    if (glucoseStats.pctAmber > 10) return `血糖间歇超出目标范围，${glucoseStats.pctAmber}%读数异常（均值${glucoseStats.mean} mg/dL）。仅预警指标 — 不计入NEWS评分。建议饮食评估和自我血糖监测日志。`;
+    return `血糖${glucoseStats.trend} — 均值${glucoseStats.mean} mg/dL，在可接受范围内。仅供参考显示；不计入NEWS评分。`;
   };
   const assessTemp = () => {
-    if (tempStats.pctRed > 3) return `⚠️ Febrile episodes detected (max ${tempStats.max}°C) — ${tempStats.pctRed}% of readings in red zone. ${ctx.conditions.includes('UTI') ? 'Fever in complicated UTI per IDSA 2024 — check urine culture, CRP, PCT. Ensure IV antibiotic compliance. Escalate per NEWS2 if score ≥5.' : ctx.conditions.includes('CAP') || ctx.conditions.includes('Cellulitis') ? 'Fever may reflect ongoing infectious process per IDSA guidelines — verify antibiotic sensitivity, consider source control. Monitor NEWS2 trend.' : 'Contributes to NEWS escalation — HaH protocol: blood cultures, CRP, PCT, lactate if NEWS ≥5.'}`;
-    if (tempStats.pctAmber > 15) return `Low-grade temperature elevation in ${tempStats.pctAmber}% of readings (${tempStats.trend}). Consistent with resolving infection.`;
+    if (tempStats.pctRed > 3) return `⚠️ 检测到发热发作（最高${tempStats.max}°C）— ${tempStats.pctRed}%读数处于红色区域。${ctx.conditions.includes('UTI') ? '依据IDSA 2024，复杂性UTI发热 — 查尿培养、CRP、PCT。确保静脉抗生素依从性。如NEWS2 ≥5分升级。' : ctx.conditions.includes('CAP') || ctx.conditions.includes('Cellulitis') ? '依据IDSA指南，发热可能反映持续感染过程 — 确认抗生素敏感性，考虑感染源控制。监测NEWS2趋势。' : '构成NEWS升级因素 — 居家照护预案：血培养、CRP、PCT，NEWS ≥5时查乳酸。'}`;
+    if (tempStats.pctAmber > 15) return `${tempStats.pctAmber}%读数出现低度体温升高（${tempStats.trend}）。符合感染缓解过程。`;
     return `体温${tempStats.trend} — 均值${tempStats.mean}°C，监测期间无发热。感染正在缓解。`;
   };
 
