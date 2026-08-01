@@ -186,15 +186,15 @@ const ElitesDashboardTab: FC = () => {
   const todayPct = pct(workOrders.today.completed, workOrders.today.total);
   const weekPct = pct(workOrders.week.completed, workOrders.week.total);
   const monthPct = pct(workOrders.month.completed, workOrders.month.total);
-  const caregiverName = user?.name ?? 'Sarah Leung';
+  const caregiverName = user?.name ?? '姜珊';
 
   const aiQuality = {
     punctuality: 92,
     completionQuality: 88,
     clientSatisfaction: 4.6,
-    ndFeedback: 'Sarah maintains high clinical standards. Documentation is thorough and submitted on time. One late arrival noted this week due to traffic — otherwise excellent.',
-    cmFeedback: `Patients report positive experiences. Multiple families have praised ${caregiverName}’s attentive care and clinical documentation. No complaints received.`,
-    summary: 'Overall performance: Strong. Punctuality slightly below target (92% vs 95%). Recommend planning 15-min buffer between home visits to account for HK traffic variability.',
+    ndFeedback: '姜珊护理专业素养高，临床文件记录完整、提交及时。本周因交通过度拥堵迟到1次——其余时间均准时完成。整体表现优异。',
+    cmFeedback: `家属反馈积极。多位家属对${caregiverName}的细致照护和临床文档记录表示认可。零投诉记录。`,
+    summary: '综合评估：良好。准时率略低于目标（92% vs 95%）。建议在居家访视间预留15分钟缓冲时间以应对路桥区交通拥堵。',
   };
 
   return (
@@ -206,14 +206,14 @@ const ElitesDashboardTab: FC = () => {
           <StaffAvatar name={caregiverName} size={56} className="shadow-md border-2 border-[#99E7FF]" />
           <div className="flex-1">
             <h3 className="text-base font-bold text-slate-900">{caregiverName}</h3>
-            <p className="text-xs text-slate-400">Primary Nurse · 8 yrs exp</p>
+            <p className="text-xs text-slate-400">主管护师 · 13年经验</p>
             <div className="flex items-center gap-1.5 mt-1.5">
               <div className="w-2 h-2 rounded-full bg-[#006F80]" />
               <span className="text-xs text-[#006F80] font-medium">在岗 · {workOrders.today.total} 次访视</span>
             </div>
           </div>
           <button className="bg-[#CCF0FE] text-[#006F80] text-[10px] font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" /> Clock In
+            <CheckCircle2 className="w-3 h-3" /> 打卡
           </button>
         </div>
       </div>
@@ -225,7 +225,7 @@ const ElitesDashboardTab: FC = () => {
         <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
         <div>
           <p className="text-xs font-bold text-red-700">{formatNewsHeadline(calculateNews(PATIENT1_ESCALATION_VITALS, 'COPD'))}</p>
-          <p className="text-[10px] text-red-600 mt-0.5">{formatPatient1EscalationChat('Urgent clinical review required')}</p>
+          <p className="text-[10px] text-red-600 mt-0.5">需要立即临床复核</p>
         </div>
       </div>
     )}
@@ -258,18 +258,18 @@ const ElitesDashboardTab: FC = () => {
         {/* Today / Week / Month counts */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: 'Today', total: workOrders.today.total, completed: workOrders.today.completed, pct: todayPct, color: 'border-[#99E7FF] bg-[#CCF0FE]', bar: 'bg-[#006F80]', text: 'text-[#006F80]' },
+            { label: '今日', total: workOrders.today.total, completed: workOrders.today.completed, pct: todayPct, color: 'border-[#99E7FF] bg-[#CCF0FE]', bar: 'bg-[#006F80]', text: 'text-[#006F80]' },
             { label: '本周', total: workOrders.week.total, completed: workOrders.week.completed, pct: weekPct, color: 'border-[#06B0EF] bg-[#FAE8D0]', bar: 'bg-[#06B0EF]', text: 'text-[#0B3550]' },
             { label: '本月', total: workOrders.month.total, completed: workOrders.month.completed, pct: monthPct, color: 'border-[#006F80] bg-[#F0D5B0]', bar: 'bg-[#0B3550]', text: 'text-[#0B3550]' },
           ].map((col, i) => (
             <div key={i} className={`rounded-xl border ${col.color} p-3 text-center`}>
               <p className="text-[10px] font-semibold text-slate-500 mb-1">{col.label}</p>
               <p className={`text-xl font-extrabold ${col.text}`}>{col.total}</p>
-              <p className="text-[9px] text-slate-400">pending</p>
+              <p className="text-[9px] text-slate-400">待完成</p>
               <div className="mt-2 flex items-center gap-1.5 justify-center">
                 <CheckCircle2 className={`w-3 h-3 ${col.text}`} />
                 <span className={`text-[10px] font-bold ${col.text}`}>{col.completed}</span>
-                <span className="text-[9px] text-slate-400">done</span>
+                <span className="text-[9px] text-slate-400">已完成</span>
               </div>
             </div>
           ))}
@@ -285,7 +285,7 @@ const ElitesDashboardTab: FC = () => {
             <div className="bg-gradient-to-r from-[#06B0EF] to-[#006F80] h-2.5 rounded-full transition-all" style={{ width: `${todayPct}%` }} />
           </div>
           <p className="text-[9px] text-slate-400 mt-1">
-            {workOrders.today.completed} of {workOrders.today.total} completed · {workOrders.today.total - workOrders.today.completed} remaining
+            {workOrders.today.completed}/{workOrders.today.total} 已完成 · {workOrders.today.total - workOrders.today.completed} 待完成
           </p>
         </div>
 
@@ -319,8 +319,8 @@ const ElitesDashboardTab: FC = () => {
       <div className="p-4 space-y-3">
         {/* Metric bars */}
         {[
-          { label: 'Punctuality', value: aiQuality.punctuality, unit: '%', color: aiQuality.punctuality >= 95 ? 'text-emerald-600 bg-emerald-500' : aiQuality.punctuality >= 90 ? 'text-amber-600 bg-amber-500' : 'text-red-600 bg-red-500' },
-          { label: 'Completion Quality', value: aiQuality.completionQuality, unit: '%', color: aiQuality.completionQuality >= 90 ? 'text-emerald-600 bg-emerald-500' : aiQuality.completionQuality >= 80 ? 'text-amber-600 bg-amber-500' : 'text-red-600 bg-red-500' },
+          { label: '准时率', value: aiQuality.punctuality, unit: '%', color: aiQuality.punctuality >= 95 ? 'text-emerald-600 bg-emerald-500' : aiQuality.punctuality >= 90 ? 'text-amber-600 bg-amber-500' : 'text-red-600 bg-red-500' },
+          { label: '完成质量', value: aiQuality.completionQuality, unit: '%', color: aiQuality.completionQuality >= 90 ? 'text-emerald-600 bg-emerald-500' : aiQuality.completionQuality >= 80 ? 'text-amber-600 bg-amber-500' : 'text-red-600 bg-red-500' },
         ].map((m, i) => (
           <div key={i}>
             <div className="flex items-center justify-between mb-1">
@@ -343,7 +343,7 @@ const ElitesDashboardTab: FC = () => {
             {[1, 2, 3, 4, 5].map((n) => (
               <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.floor(aiQuality.clientSatisfaction) ? 'text-amber-400 fill-amber-400' : n <= aiQuality.clientSatisfaction ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
             ))}
-            <span className="text-[9px] text-slate-400 ml-1">4.6 avg</span>
+            <span className="text-[9px] text-slate-400 ml-1">4.6 分</span>
           </div>
         </div>
 
@@ -651,8 +651,8 @@ const ElitesPatientsTab: FC = () => {
   const recordingStart = useRef<number>(0);
 
   const typeMap: Record<string, string> = {
-    medication: 'med', monitoring: 'monitor', therapy: 'exercise',
-    nurse_visit: 'visit', doctor_consult: 'visit', care_worker: 'visit',
+    medication: '用药', monitoring: '监测', therapy: '康复',
+    nurse_visit: '访视', doctor_consult: '会诊', care_worker: '照护',
   };
   const typeColor: Record<string, string> = {
     med: 'bg-[#CCF0FE] text-[#006F80]', monitor: 'bg-amber-100 text-amber-700',
@@ -883,8 +883,8 @@ const ElitesPatientsTab: FC = () => {
             </div>
             {patientTasks.length > 0 && (
               <div className="border-t border-slate-100 px-4 py-2.5 bg-slate-50/50">
-                <div className="flex items-center gap-1.5 mb-1.5"><ClipboardList className="w-3 h-3 text-slate-400" /><span className="text-[10px] font-semibold text-slate-500">Today's Tasks</span><span className="text-[9px] text-slate-400">({patientTasks.length})</span></div>
-                <div className="space-y-1">{patientTasks.slice(0, 3).map((t, j) => (<div key={j} className="flex items-center gap-2 text-[10px]"><span className="font-bold text-slate-400 w-10 flex-shrink-0">{t.time}</span><span className="text-slate-700 flex-1 truncate">{t.activity}</span><span className={`text-[8px] font-medium px-1 py-0.5 rounded ${typeColor[typeMap[t.type]] || 'bg-slate-100 text-slate-600'}`}>{typeMap[t.type]}</span></div>))}{patientTasks.length > 3 && <p className="text-[9px] text-slate-400 pl-12">+{patientTasks.length - 3} more</p>}</div>
+                <div className="flex items-center gap-1.5 mb-1.5"><ClipboardList className="w-3 h-3 text-slate-400" /><span className="text-[10px] font-semibold text-slate-500">今日任务</span><span className="text-[9px] text-slate-400">({patientTasks.length})</span></div>
+                <div className="space-y-1">{patientTasks.slice(0, 3).map((t, j) => (<div key={j} className="flex items-center gap-2 text-[10px]"><span className="font-bold text-slate-400 w-10 flex-shrink-0">{t.time}</span><span className="text-slate-700 flex-1 truncate">{t.activity}</span><span className={`text-[8px] font-medium px-1 py-0.5 rounded ${typeColor[typeMap[t.type]] || 'bg-slate-100 text-slate-600'}`}>{typeMap[t.type]}</span></div>))}{patientTasks.length > 3 && <p className="text-[9px] text-slate-400 pl-12">+{patientTasks.length - 3} 项</p>}</div>
               </div>
             )}
             {ai && (
