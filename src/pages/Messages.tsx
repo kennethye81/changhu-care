@@ -19,13 +19,13 @@ import { countUnreadForPatient, getLatestUnreadPreview } from '../utils/hubNotif
 import { getHubNurseSender } from '../utils/chatSenders';
 
 const PATIENTS_LIST = [
-  { id: 1, name: 'Cheung Wai Man', lastMsg: 'He walked 1,200 steps today!', lastTime: '06/22 16:30' },
-  { id: 2, name: 'Wong Chi Ming', lastMsg: 'Outcome prediction: 6-month exacerbation risk...', lastTime: '06/24 08:00' },
-  { id: 3, name: 'Lam Ka Chun', lastMsg: 'Feeling 80% back to normal. Thank you!', lastTime: '06/20 14:00' },
-  { id: 4, name: 'Lau Suk Yee', lastMsg: 'AMTS 9/10 — confusion fully resolved.', lastTime: '06/20 09:30' },
-  { id: 5, name: 'Ho Tai Wai', lastMsg: 'Wound healing well, erythema down to 12cm.', lastTime: '06/20 08:00' },
-  { id: 6, name: 'Ng Siu Wan', lastMsg: 'INR 2.1 therapeutic, leg swelling improving.', lastTime: '06/20 08:00' },
-  { id: 7, name: 'Chan Tai Ming', lastMsg: 'HaH Day 1 intake complete. Family self-monitoring reinforced.', lastTime: '09:45' },
+  { id: 1, name: '沈国栋', lastMsg: '血压158/86，较前略降。压疮稳定。', lastTime: '08/16 08:30' },
+  { id: 2, name: '周志强', lastMsg: '右下肢DVT无进展，血压146/88。', lastTime: '08/16 08:30' },
+  { id: 3, name: '—', lastMsg: '', lastTime: '' },
+  { id: 4, name: '—', lastMsg: '', lastTime: '' },
+  { id: 5, name: '—', lastMsg: '', lastTime: '' },
+  { id: 6, name: '—', lastMsg: '', lastTime: '' },
+  { id: 7, name: '—', lastMsg: '', lastTime: '' },
   { id: 8, name: 'Chow Kwok Fai', lastMsg: 'PCI site clean. Cardiac rehab Day 1 tolerated.', lastTime: '07/03 10:30' },
   { id: 9, name: 'Lam Siu Wan', lastMsg: 'SpO₂ 92% on 2L O₂. Nebulizer technique reviewed.', lastTime: '07/04 09:15' },
   { id: 10, name: 'Cheung Siu Ming', lastMsg: 'NIHSS 4 stable. PT gait training progressing.', lastTime: '07/06 11:00' },

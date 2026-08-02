@@ -49,7 +49,7 @@ export const PageHeader: FC<{ title: string; icon: FC<{ className?: string }>; s
 /* ─────────────────────── Patient Records ────────────────── */
 
 const NURSE_MAP: Record<number, string> = {
-  1: 'Sarah Leung', 2: 'Peter Ho', 3: '—', 4: 'Sarah Leung', 5: 'Peter Ho', 6: '—', 7: 'Jenny Tam',
+  1: '姜珊', 2: '周明', 3: '—', 4: '姜珊', 5: '周明', 6: '—', 7: '刘敏',
 };
 
 function statusFromSummary(p: PatientSummary): string {
@@ -567,21 +567,21 @@ const ELITE_STAFF: TeamMember[] = [
 ];
 
 const STAFF_COLORS: Record<string, { bg: string; text: string; border: string; dot: string }> = {
-  'Sarah Leung':  { bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-blue-300',   dot: 'bg-teal-500' },
+  '姜珊':  { bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-blue-300',   dot: 'bg-teal-500' },
   'David Chan':   { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300', dot: 'bg-emerald-500' },
   'May Wong':     { bg: 'bg-amber-50',  text: 'text-amber-700',  border: 'border-amber-300',  dot: 'bg-amber-500' },
-  'Jenny Tam':    { bg: 'bg-cyan-50',   text: 'text-cyan-700',   border: 'border-cyan-300',   dot: 'bg-cyan-500' },
+  '刘敏':    { bg: 'bg-cyan-50',   text: 'text-cyan-700',   border: 'border-cyan-300',   dot: 'bg-cyan-500' },
   'Michael Kwok': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-300', dot: 'bg-purple-500' },
   'Lisa Cheng':   { bg: 'bg-rose-50',   text: 'text-rose-700',   border: 'border-rose-300',   dot: 'bg-rose-500' },
-  'Angela Ng':    { bg: 'bg-sky-50',    text: 'text-sky-700',    border: 'border-sky-300',    dot: 'bg-sky-500' },
-  'Connie Cheung':{ bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-teal-300',   dot: 'bg-teal-500' },
-  'Vivian Lau':   { bg: 'bg-violet-50', text: 'text-violet-700', border: 'border-violet-300', dot: 'bg-violet-500' },
+  '王秀英':    { bg: 'bg-sky-50',    text: 'text-sky-700',    border: 'border-sky-300',    dot: 'bg-sky-500' },
+  '张丽华':{ bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-teal-300',   dot: 'bg-teal-500' },
+  '陈雅文':   { bg: 'bg-violet-50', text: 'text-violet-700', border: 'border-violet-300', dot: 'bg-violet-500' },
   'Raymond Wong': { bg: 'bg-lime-50',   text: 'text-lime-700',   border: 'border-lime-300',   dot: 'bg-lime-500' },
   'Shirley Fong': { bg: 'bg-pink-50',   text: 'text-pink-700',   border: 'border-pink-300',   dot: 'bg-pink-500' },
   'Eric Chan':    { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-300', dot: 'bg-indigo-500' },
-  'Grace Tang':   { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300', dot: 'bg-orange-500' },
-  'Tony Lam':     { bg: 'bg-warm-100', text: 'text-slate-700', border: 'border-slate-300', dot: 'bg-slate-500' },
-  'Anna Leung':   { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300', dot: 'bg-yellow-500' },
+  '周明':   { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300', dot: 'bg-orange-500' },
+  '陈军':     { bg: 'bg-warm-100', text: 'text-slate-700', border: 'border-slate-300', dot: 'bg-slate-500' },
+  '赵静':   { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300', dot: 'bg-yellow-500' },
   'Carol Ng':     { bg: 'bg-fuchsia-50', text: 'text-fuchsia-700', border: 'border-fuchsia-300', dot: 'bg-fuchsia-500' },
   'Derek Ho':     { bg: 'bg-stone-50',  text: 'text-stone-700',  border: 'border-stone-300',  dot: 'bg-stone-500' },
   'Fanny Yip':    { bg: 'bg-rose-50',    text: 'text-rose-700',   border: 'border-rose-300',   dot: 'bg-rose-500' },

@@ -372,7 +372,7 @@ const DesktopCommandCenter: FC = () => {
                   <span className="text-slate-300">→</span>
                   <span className="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center text-[9px] font-semibold text-slate-500 flex-shrink-0">3</span> POCT CRP/PCT
                   <span className="text-slate-300">→</span>
-                  <span className="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center text-[9px] font-semibold text-slate-500 flex-shrink-0">4</span> Dr. Lee
+                  <span className="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center text-[9px] font-semibold text-slate-500 flex-shrink-0">4</span> 姜珊
                 </div>
               </div>
             </div>

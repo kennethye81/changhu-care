@@ -791,7 +791,7 @@ const ElitesPatientsTab: FC = () => {
           time: logTime,
           type: 'Elite 照护记录',
           detail: `${patientName}: ${detail.slice(0, 480)}`,
-          author: user?.name ?? 'Sarah Leung',
+          author: user?.name ?? '刘敏',
           role: 'RN',
           status: alertActive && selectedPid === 1 ? 'escalated' : 'completed',
         });

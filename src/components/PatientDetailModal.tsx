@@ -536,7 +536,7 @@ const 账单Tab: FC<{ editable: boolean }> = ({ editable }) => (
 
 const HistoryTab: FC<{ patient: Patient }> = () => {
   const events = [
-    { date: '2026-06-19', type: '入院', detail: 'Admitted via A&E with acute decompensated HF NYHA III. Orthopnea, pedal oedema 2+, BNP 1,200. IV Furosemide initiated. Echo: LVEF 30%, moderate MR.', provider: '香港养和医院' },
+    { date: '2026-06-19', type: '入院', detail: 'Admitted via A&E with acute decompensated HF NYHA III. Orthopnea, pedal oedema 2+, BNP 1,200. IV Furosemide initiated. Echo: LVEF 30%, moderate MR.', provider: '常州市第一人民医院' },
     { date: '2026-06-14', type: '入院', detail: 'Admitted with worsening dyspnoea, weight +3kg in 5 days. CXR: pulmonary congestion, small bilateral pleural effusions. GDMT optimised: Sacubitril/Valsartan initiated.', provider: '姜珊' },
     { date: '2024-01-15', type: 'Diagnosis', detail: 'Type 2 Diabetes Mellitus diagnosed. HbA1c: 8.2%. Started on Metformin 500mg BID.', provider: '姜珊' },
     { date: '2023-03-10', type: 'Diagnosis', detail: 'CKD Stage 3 diagnosed. eGFR 42 mL/min. UACR 850 mg/g. Losartan initiated for renoprotection — stopped due to ACEi cough. Switched to ARB (Candesartan→Losartan).', provider: '姜珊' },
