@@ -215,22 +215,22 @@ export function buildFamilyMentalStatus(vitals: Vitals, alertActive: boolean): F
   void rr;
   return [
     {
-      label: 'Alertness',
-      value: alertActive ? 'Alert, intermittent confusion' : 'Alert',
+      label: '意识状态',
+      value: alertActive ? '清醒，间歇性意识模糊' : '清醒',
       score: alertActive ? 'warn' : 'good',
     },
     {
-      label: 'Orientation',
-      value: alertActive ? 'AMTS 7–9/10' : 'AMTS 10/10',
+      label: '定向力',
+      value: alertActive ? '认知评估 7–9/10' : '认知评估 10/10',
       score: alertActive ? 'warn' : 'good',
     },
     {
-      label: 'Mood',
-      value: alertActive ? 'Anxious' : 'Calm',
+      label: '情绪',
+      value: alertActive ? '焦虑' : '平静',
       score: alertActive ? 'warn' : 'good',
     },
     {
-      label: 'Pain Level',
+      label: '疼痛评分',
       value: alertActive ? '3/10' : '2/10',
       score: alertActive ? 'warn' : 'good',
     },
@@ -245,11 +245,11 @@ export function buildFamilyIoSnapshot(vitals: Vitals, alertActive: boolean): Fam
     urinePct: alertActive ? 45 : 70,
     fluidBalance: alertActive ? '+600 mL' : '+100 mL',
     fluidWarn: alertActive,
-    oralNote: alertActive ? '↓ Reduced intake — encourage small frequent sips' : 'No fluid restriction — encourage hydration',
-    urineNote: alertActive ? '⚠↓ Reduced — monitor for AKI with infection' : 'Adequate urine output',
+    oralNote: alertActive ? '↓ 摄入减少 — 鼓励少量多次饮水' : '无液体限制 — 鼓励多饮水',
+    urineNote: alertActive ? '⚠↓ 排尿减少 — 监测感染相关的急性肾损伤' : '排尿量正常',
     insight: alertActive
-      ? '⚠ Positive balance +600mL — febrile patient with reduced urine output. Monitor for AKI (KDIGO 2024). Encourage oral fluids. Check creatinine at next POCT.'
-      : 'Adequate intake ~1,500mL. Urine output ~1,400mL. Net +100mL — no fluid overload concern. No diuretic therapy. Continue encouraging hydration for sputum clearance.',
+      ? '⚠ 正平衡+600mL — 发热伴排尿减少。监测急性肾损伤。鼓励口服补液。下次即时检验查肌酐。'
+      : '摄入充足约1,500mL。排尿约1,400mL。净平衡+100mL — 无液体超负荷风险。未使用利尿剂。继续鼓励饮水。',
   };
 }
 
@@ -259,17 +259,17 @@ export function buildFamilySleepSnapshot(vitals: Vitals, alertActive: boolean): 
     duration: alertActive ? '5.8' : '6.8',
     respRate: String(rr),
     sleepScore: alertActive ? '58' : '76',
-    durationSub: alertActive ? '↓ Disrupted by SpO₂ alarms' : 'Adequate for recovery',
-    respSub: alertActive ? '⚠ Tachypneic' : 'COPD baseline',
-    scoreSub: alertActive ? 'Poor — frequent arousals' : 'Fair quality',
+    durationSub: alertActive ? '↓ 血氧警报干扰睡眠' : '满足康复需求',
+    respSub: alertActive ? '⚠ 呼吸急促' : '正常范围',
+    scoreSub: alertActive ? '差 — 频繁觉醒' : '质量良好',
     insight: alertActive
-      ? '⚠ Sleep severely disrupted — only 5.8h with frequent arousals from SpO₂ alarms (O₂ desat to 90%). RR elevated. Sleep score 58/100 indicates poor recovery. Prioritise O₂ optimization to improve rest.'
-      : `Sleep 6.8h, RR ${rr}/min (COPD baseline — GOLD 2024: tachypnea expected). Score 76/100 — fair quality. No significant nocturnal desaturation. O₂ concentrator on standby.`,
+      ? '⚠ 睡眠严重受损 — 仅5.8小时且因血氧警报频繁觉醒（血氧降至90%）。呼吸频率升高。睡眠评分58/100表示恢复不良。优先优化氧疗以改善休息。'
+      : `睡眠6.8小时，呼吸频率${rr}/分钟（正常范围）。评分76/100 — 质量良好。无明显夜间血氧下降。`,
   };
 }
 
 export function buildFamilyMentalInsight(alertActive: boolean): string {
   return alertActive
     ? 'SpO₂下降期间AMTS从10→7 — 疑为低氧性谵妄。吸氧2L/min后恢复至9/10。每小时监测一次。配偶陈玉兰在床旁 — 已培训意识模糊评估。'
-    : 'AMTS 10/10。清醒，定向力×3。情绪平稳。配偶在场，已培训COPD行动计划。 No cognitive decline. Consistent with baseline.';
+    : '认知评估10/10。清醒，定向力×3。情绪平稳。家属在场，已培训照护计划。无认知功能减退，与基线一致。';
 }

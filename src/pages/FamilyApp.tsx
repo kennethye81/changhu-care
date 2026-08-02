@@ -700,7 +700,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
       {/* Mental Status + I/O */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <SectionHeader icon={Brain} title="Mental Status & I/O" />
+        <SectionHeader icon={Brain} title="精神状态与出入量" />
         <div className="grid grid-cols-2 divide-x divide-slate-100">
           {/* Mental Status */}
           <div className="p-4">
@@ -708,7 +708,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center">
                 <Brain className="w-3.5 h-3.5 text-purple-600" />
               </div>
-              <h4 className="text-xs font-semibold text-slate-700">Mental Status</h4>
+              <h4 className="text-xs font-semibold text-slate-700">精神状态</h4>
             </div>
             <div className="space-y-2.5">
               {mentalRows.map((item, i) => (
@@ -731,7 +731,7 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
               <div className="w-7 h-7 rounded-lg bg-cyan-50 flex items-center justify-center">
                 <GlassWater className="w-3.5 h-3.5 text-cyan-600" />
               </div>
-              <h4 className="text-xs font-semibold text-slate-700">Intake / Output</h4>
+              <h4 className="text-xs font-semibold text-slate-700">出入量</h4>
             </div>
             <div className="space-y-3">
               <div>
@@ -766,13 +766,13 @@ const VitalsTab: FC<{ familyPatientId: number }> = ({ familyPatientId }) => {
 
       {/* Sleep Data from mmWave */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <SectionHeader icon={BedDouble} title="Sleep Data (mmWave Radar)" />
+        <SectionHeader icon={BedDouble} title="睡眠数据" />
         <div className="p-4">
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: 'Sleep Duration', value: sleepSnapshot.duration, unit: 'hrs', sub: sleepSnapshot.durationSub },
-            { label: 'Resp Rate', value: sleepSnapshot.respRate, unit: '/min', sub: sleepSnapshot.respSub },
-            { label: 'Sleep Score', value: sleepSnapshot.sleepScore, unit: '/100', sub: sleepSnapshot.scoreSub },
+            { label: '睡眠时长', value: sleepSnapshot.duration, unit: '小时', sub: sleepSnapshot.durationSub },
+            { label: '呼吸频率', value: sleepSnapshot.respRate, unit: '/分钟', sub: sleepSnapshot.respSub },
+            { label: '睡眠评分', value: sleepSnapshot.sleepScore, unit: '/100', sub: sleepSnapshot.scoreSub },
           ].map((s, i) => (
             <div key={i} className="text-center">
               <p className="text-lg font-bold text-slate-900">{s.value}</p>
