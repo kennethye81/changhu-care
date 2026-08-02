@@ -43,7 +43,7 @@ function makeDates(start: string, days: number): string[] {
 // PATIENT 1 — 沈国栋 — 高血压+心衰+压疮 (14天计划)
 // ═══════════════════════════════════════════════════════════
 {
-  const dates = makeDates('2026-08-01', 14);
+  const dates = makeDates('2026-08-01', 16);
   const s: Record<string, DailyActivity[]> = {};
   dates.forEach((d, i) => {
     s[d] = [
@@ -60,7 +60,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[1] = {
-    patientName: '沈国栋', startDate: dates[0], endDate: dates[13],
+    patientName: '沈国栋', startDate: dates[0], endDate: dates[15],
     schedule: s,
     logs: [
       { date: '2026-08-16', time: '08:30', type: '护士访视', detail: 'BP 158/86较前略降。压疮面积稳定(3.5×2.8cm)无渗出。翻身护理q2h执行良好。配偶陈玉兰血压测量操作规范。', author: '姜珊', role: '护士', vitals: 'BP 158/86 | HR 78 | SpO₂ 96% | 压疮稳定', status: 'completed' },
@@ -75,7 +75,7 @@ function makeDates(start: string, days: number): string[] {
 // PATIENT 2 — 周志强 — 脑出血术后+右侧偏瘫+DVT (10天计划)
 // ═══════════════════════════════════════════════════════════
 {
-  const dates = makeDates('2026-08-01', 10);
+  const dates = makeDates('2026-08-01', 16);
   const s: Record<string, DailyActivity[]> = {};
   dates.forEach((d, i) => {
     const day = i + 1;
@@ -95,7 +95,7 @@ function makeDates(start: string, days: number): string[] {
     ];
   });
   TWO_WEEK_PLANS[2] = {
-    patientName: '周志强', startDate: dates[0], endDate: dates[9],
+    patientName: '周志强', startDate: dates[0], endDate: dates[15],
     schedule: s,
     logs: [
       { date: '2026-08-16', time: '08:30', type: '护士访视', detail: 'BP 146/88较上次略降。右侧偏瘫肌张力稳定。右下肢DVT无进展(肿胀无加重、皮温正常)。翻身q2h执行。儿子周明辉照护操作达标。', author: '刘敏', role: '护士', vitals: 'BP 146/88 | HR 82 | SpO₂ 97% | Caprini 7', status: 'completed' },
