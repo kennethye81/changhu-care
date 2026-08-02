@@ -39,82 +39,72 @@ function makeDates(start: string, days: number): string[] {
 }
 
 // ═══════════════════════════════════════════════════════════
-// PATIENT 1 — CHEUNG WAI MAN — CHF (14-day plan)
+// ═══════════════════════════════════════════════════════════
+// PATIENT 1 — 沈国栋 — 高血压+心衰+压疮 (14天计划)
 // ═══════════════════════════════════════════════════════════
 {
-  const dates = makeDates('2026-06-18', 14);
+  const dates = makeDates('2026-08-01', 14);
   const s: Record<string, DailyActivity[]> = {};
-  // Daily template for CHF
   dates.forEach((d, i) => {
-    const day = i + 1;
     s[d] = [
-      { time: '06:30', activity: 'Morning Weight + Vitals', type: 'monitoring', detail: 'Weight, BP, HR, SpO₂ via smartwatch + Omron BP monitor. Record in daily log.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '07:00', activity: 'AM Medications', type: 'medication', detail: 'Entresto 97/103mg + Bisoprolol 5mg + Furosemide 40mg + Spironolactone 25mg + Apixaban 5mg + Metformin 500mg', status: i < 3 ? 'completed' : 'pending' },
-      { time: '08:00', activity: 'Light Breakfast', type: 'self_care', detail: 'Low sodium (<500mg), fluid counted towards 1.5L daily limit', status: i < 3 ? 'completed' : 'pending' },
-      { time: '08:30', activity: 'RN Home Visit', type: 'nurse_visit', detail: 'Vital signs check, cardiac auscultation, pedal oedema assessment, JVP, medication reconciliation, I/O review, weight trend analysis', status: i < 3 ? 'completed' : 'pending', provider: 'Sarah Leung (RN)' },
-      { time: '10:00', activity: 'Fluid Intake Check', type: 'monitoring', detail: 'Mid-morning fluid: 250mL (cumulative: 500mL). Record in I/O chart.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '10:30', activity: 'Cardiac Rehab (PT)', type: 'therapy', detail: 'Seated exercises, gentle walking 10-15min indoors, breathing exercises. Monitor HR/SpO₂ throughout.', status: day % 2 === 0 ? 'pending' : 'completed', provider: 'David Chan (PT)' },
-      { time: '12:00', activity: 'Lunch', type: 'self_care', detail: 'Low sodium meal (<500mg), fluid counted. Total fluid so far: 750mL.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '14:00', activity: 'PM Furosemide', type: 'medication', detail: 'Furosemide 40mg. Take with water (counted).', status: i < 3 ? 'completed' : 'pending' },
-      { time: '15:00', activity: 'Teleconsult (q48h)', type: 'doctor_consult', detail: 'Dr. Chan Chi Keung virtual ward round. Review weight, I/O, symptoms, medication tolerance.', status: day % 2 === 1 ? 'completed' : (i < 3 ? 'pending' : 'pending'), provider: 'Dr. Chan Chi Keung' },
-      { time: '16:00', activity: 'Family Education Moment', type: 'self_care', detail: 'Wife reviews daily weight log, fluid restriction compliance, sodium intake. Discuss any concerns.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '17:00', activity: 'Afternoon Rest', type: 'self_care', detail: 'Leg elevation x 30min. No fluid for 1h before dinner.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '18:00', activity: 'Dinner', type: 'self_care', detail: 'Low sodium, fluid counted. Total daily fluid target: 1,500mL max.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '19:00', activity: 'PM Medications', type: 'medication', detail: 'Entresto 97/103mg + Apixaban 5mg + Metformin 500mg', status: i < 3 ? 'completed' : 'pending' },
-      { time: '20:00', activity: 'Evening Weight Check', type: 'monitoring', detail: 'Weight (compare to AM). Report if >0.5kg gain from AM.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '21:00', activity: 'Bedtime', type: 'self_care', detail: 'Head of bed elevated 30°. Smartwatch charging. Sleep monitoring via SenseLife mattress.', status: i < 3 ? 'completed' : 'pending' },
+      { time: '07:00', activity: '晨间用药', type: 'medication', detail: '硝苯地平控释片30mg qd + 阿司匹林100mg。配偶陈玉兰协助服药。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '08:00', activity: '血压+体重监测', type: 'monitoring', detail: 'BP、HR、体重。目标BP<150/90。记录家庭血压日记。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '08:30', activity: '护士上门访视', type: 'nurse_visit', detail: '生命体征检查、压疮评估(Braden 16)、翻身护理指导、用药核对、饮食执行检查。', status: i < 3 ? 'completed' : 'pending', provider: '姜珊（主管护师）' },
+      { time: '10:00', activity: '翻身+皮肤检查', type: 'care_worker', detail: '每2h翻身执行，髋部压疮部位检查、敷料更换。减压气垫床压力监测。', status: i < 3 ? 'completed' : 'pending', provider: '汤菊玲（护理员）' },
+      { time: '12:00', activity: '午餐', type: 'self_care', detail: '低盐低脂饮食（<3g盐/日）。蛋白摄入约45g/日。配偶协助进食。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '14:00', activity: '康复训练', type: 'therapy', detail: '被动关节活动度训练、床上活动能力恢复、呼吸训练。卧床为主。', status: i < 3 ? (i % 2 === 0 ? 'completed' : 'pending') : 'pending', provider: '周明（康复师）' },
+      { time: '16:00', activity: '家属沟通时间', type: 'self_care', detail: '配偶陈玉兰汇报当日血压、饮食、翻身执行情况。护士电话随访。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '18:00', activity: '晚餐', type: 'self_care', detail: '低盐低脂饮食。控制饮水量（带刻度水杯）。配偶监测摄入。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '20:00', activity: '晚间血压+翻身', type: 'monitoring', detail: '晚间血压监测。q2h翻身+皮肤检查。跌倒防护确认（夜间照明/护栏）。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '22:00', activity: '就寝准备', type: 'self_care', detail: '减压气垫床开启。床头呼叫铃就位。智能手环充电。睡眠监测开启。', status: i < 3 ? 'completed' : 'pending' },
     ];
   });
   TWO_WEEK_PLANS[1] = {
     patientName: '沈国栋', startDate: dates[0], endDate: dates[13],
     schedule: s,
     logs: [
-      { date: '2026-06-20', time: '08:30', type: 'RN Visit', detail: 'Weight 68.0kg stable. BP 118/72. HR 82 AF. SpO₂ 95%. Pedal oedema trace. I/O: net -270mL. AM meds confirmed. Wife demonstrating correct weight log technique.', author: 'Sarah Leung', role: 'RN', vitals: 'BP 118/72 | HR 82 | SpO₂ 95% | Wt 68.0kg', status: 'completed' },
-      { date: '2026-06-19', time: '09:15', type: 'RN Visit', detail: 'Initial HaH visit. Weight 68.5kg. BP 122/76. HR 78 AF. SpO₂ 94%. Pedal oedema 1+. JVP 4cm. Med reconciliation completed. Home safety assessed. Wife trained on BP monitor + weight scale.', author: 'Sarah Leung', role: 'RN', vitals: 'BP 122/76 | HR 78 | SpO₂ 94% | Wt 68.5kg', status: 'completed' },
-      { date: '2026-06-19', time: '15:00', type: 'Teleconsult', detail: 'Day 1 virtual ward round. Weight 68.5kg (↓3.4kg from admission). Oedema 1+. Breath sounds improving. JVP 4cm. Continue current regimen. Strict I/O. Renal panel in 48h.', author: 'Dr. Chan Chi Keung', role: 'Cardiologist', vitals: 'BP 122/76 | HR 78 | SpO₂ 94%', status: 'completed' },
-      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 2 review. Weight 68.0kg stable. No orthopnoea. BNP 850 (↓ from 2,200). Renal stable. Continue GDMT. Recheck renal panel tomorrow.', author: 'Dr. Chan Chi Keung', role: 'Cardiologist', vitals: 'BP 118/72 | HR 82 | SpO₂ 95%', status: 'completed' },
+      { date: '2026-08-16', time: '08:30', type: '护士访视', detail: 'BP 158/86较前略降。压疮面积稳定(3.5×2.8cm)无渗出。翻身护理q2h执行良好。配偶陈玉兰血压测量操作规范。', author: '姜珊', role: '护士', vitals: 'BP 158/86 | HR 78 | SpO₂ 96% | 压疮稳定', status: 'completed' },
+      { date: '2026-08-14', time: '09:30', type: '护士访视', detail: '血压168/95连续2次超标。个案经理林晓东已通知社区医生。建议硝苯地平剂量优化。配偶在场。', author: '姜珊', role: '护士', vitals: 'BP 168/95 | HR 82 | SpO₂ 96% | Temp 36.8', status: 'completed' },
+      { date: '2026-08-10', time: '10:00', type: '个案经理', detail: '8月第2周服务评估。血压管理需加强。压疮改善。家属照护技能培训达标。下周期待血压<150/90。', author: '林晓东', role: '个案经理', vitals: 'BP 156/84 | 执行率90%', status: 'completed' },
+      { date: '2026-08-03', time: '08:30', type: '初评访视', detail: '8月首次上门。与家属确认月度排程（每周4次）、用药方案、饮食要求。配偶表示配合。首次血压160/85。', author: '姜珊', role: '护士', vitals: 'BP 160/85 | HR 78 | 执行率达标', status: 'completed' },
     ],
   };
 }
 
 // ═══════════════════════════════════════════════════════════
-// PATIENT 2 — WONG CHI MING — COPD (10-day plan)
+// PATIENT 2 — 周志强 — 脑出血术后+右侧偏瘫+DVT (10天计划)
 // ═══════════════════════════════════════════════════════════
 {
-  const dates = makeDates('2026-06-18', 10);
+  const dates = makeDates('2026-08-01', 10);
   const s: Record<string, DailyActivity[]> = {};
   dates.forEach((d, i) => {
     const day = i + 1;
     const isRNday = day % 2 === 1 || day <= 2;
-    const isPTday = day % 3 === 1 || day === 2;
-    const isConsultDay = day % 2 === 1 || day === 1;
+    const isRehabDay = day % 3 === 1 || day === 2;
     s[d] = [
-      { time: '07:00', activity: 'AM Medications', type: 'medication', detail: 'Stiolto Respimat 2 puffs. Prednisolone (taper: Day 1-3: 30mg, Day 4-5: 20mg, Day 6-7: 10mg, Day 8+: stop). Perindopril 4mg.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '07:30', activity: 'Morning SpO₂ Check', type: 'monitoring', detail: 'SpO₂ at rest via Nonin oximeter. Record. Use O₂ 2L/min if <90%.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '08:00', activity: 'Breakfast', type: 'self_care', detail: 'Light meal. Sit upright. Pursed-lip breathing if dyspnoeic.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '09:00', activity: 'RN Home Visit', type: 'nurse_visit', detail: 'Vital signs, SpO₂ at rest + exertion, lung auscultation, inhaler technique check, sputum assessment, O₂ equipment check.', status: isRNday ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: 'Jenny Tam (RN)' },
-      { time: '10:30', activity: 'Pulmonary Rehab (PT)', type: 'therapy', detail: 'Breathing exercises, pursed-lip breathing, diaphragmatic breathing, upper body strengthening, gentle walking 10-15min with SpO₂ monitoring.', status: isPTday ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: 'Raymond Wong (PT)' },
-      { time: '12:00', activity: 'Lunch', type: 'self_care', detail: 'High-protein, small frequent meals. Avoid gas-forming foods.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '14:00', activity: 'Afternoon Medications', type: 'medication', detail: 'Salbutamol MDI prn (if wheeze/dyspnoea). Atorvastatin 20mg.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '15:00', activity: 'Teleconsult (q48h)', type: 'doctor_consult', detail: 'Dr. Lee Mei Ling virtual ward round. Review SpO₂ trend, sputum, exercise tolerance, CAT score, steroid taper.', status: isConsultDay ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: 'Dr. Lee Mei Ling' },
-      { time: '16:00', activity: 'Family Education', type: 'self_care', detail: 'Daughter reviews O₂ safety, inhaler technique, exacerbation action plan. SpO₂ check post-activity.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '18:00', activity: 'Dinner', type: 'self_care', detail: 'Light meal. Sit upright. No large meals before bed.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '20:00', activity: 'Evening SpO₂ Check', type: 'monitoring', detail: 'SpO₂ at rest. O₂ prn if <90%. Record in log.', status: i < 3 ? 'completed' : 'pending' },
-      { time: '21:00', activity: 'Bedtime', type: 'self_care', detail: 'Head elevated 30-45°. O₂ concentrator on standby. Smartwatch charging.', status: i < 3 ? 'completed' : 'pending' },
+      { time: '07:00', activity: '晨间用药', type: 'medication', detail: '降压药每日一次。儿子周明辉协助服药。依从性100%。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '08:00', activity: '血压监测', type: 'monitoring', detail: 'BP监测，目标<150/90。DVT观察：右下肢肿胀/皮温/颜色。记录家庭血压日记。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '08:30', activity: '护士上门访视', type: 'nurse_visit', detail: '生命体征、右下肢DVT评估(Caprini 7分)、Braden压疮风险评估(14分)、被动ROM指导。', status: isRNday ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: '刘敏（主管护师）' },
+      { time: '10:00', activity: '翻身+二便护理', type: 'care_worker', detail: '每2h翻身执行。右下肢抬高、避免挤压。二便管理。被动ROM训练。', status: i < 3 ? 'completed' : 'pending', provider: '王秀英（护理员）' },
+      { time: '11:00', activity: '康复训练', type: 'therapy', detail: '右侧偏瘫侧被动ROM、关节活动度维持、床上活动能力训练。左侧主动训练。', status: isRehabDay ? (i < 3 ? 'completed' : 'pending') : 'pending', provider: '陈军（康复师）' },
+      { time: '12:00', activity: '午餐', type: 'self_care', detail: '软食为主。儿子协助进食。蛋白摄入约40g/日。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '15:00', activity: '家属沟通', type: 'self_care', detail: '儿子周明辉汇报当日血压、翻身、DVT观察结果。护士电话随访。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '18:00', activity: '晚餐', type: 'self_care', detail: '软食。儿子协助进食。关注饮水。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '20:00', activity: '晚间血压+DVT观察', type: 'monitoring', detail: '晚间BP监测。右下肢肿胀/皮温/颜色检查。床旁护栏确认。', status: i < 3 ? 'completed' : 'pending' },
+      { time: '22:00', activity: '就寝准备', type: 'self_care', detail: 'q2h翻身最后检查。床头呼叫铃到位。智能手环充电。', status: i < 3 ? 'completed' : 'pending' },
     ];
   });
   TWO_WEEK_PLANS[2] = {
-    patientName: '待录入', startDate: dates[0], endDate: dates[9],
+    patientName: '周志强', startDate: dates[0], endDate: dates[9],
     schedule: s,
     logs: [
-      { date: '2026-06-20', time: '10:00', type: 'RN Visit', detail: 'SpO₂ 93% at rest, RR 18. Wheeze improved. Inhaler technique correct. Prednisolone 20mg Day 3. O₂ equipment functioning. Daughter present.', author: 'Jenny Tam', role: 'RN', vitals: 'SpO₂ 93% | RR 18 | HR 86 | BP 132/80', status: 'completed' },
-      { date: '2026-06-19', time: '11:00', type: 'RN Visit', detail: 'Initial HaH visit. SpO₂ 92% RA. RR 20. Wheeze present. O₂ concentrator tested. Med reconciliation. Prednisolone taper reviewed. O₂ safety education completed.', author: 'Jenny Tam', role: 'RN', vitals: 'SpO₂ 92% | RR 20 | HR 90 | BP 138/84', status: 'completed' },
-      { date: '2026-06-20', time: '15:00', type: 'Teleconsult', detail: 'Day 2 review. SpO₂ 93% RA, 89% post 50m walk. RR 20. Wheeze improving. Continue steroid taper. Pulmonary rehab progressing. Recheck exertion SpO₂ in 3 days.', author: 'Dr. Lee Mei Ling', role: 'Respiratory Physician', vitals: 'SpO₂ 93% | RR 20', status: 'completed' },
+      { date: '2026-08-16', time: '08:30', type: '护士访视', detail: 'BP 146/88较上次略降。右侧偏瘫肌张力稳定。右下肢DVT无进展(肿胀无加重、皮温正常)。翻身q2h执行。儿子周明辉照护操作达标。', author: '刘敏', role: '护士', vitals: 'BP 146/88 | HR 82 | SpO₂ 97% | Caprini 7', status: 'completed' },
+      { date: '2026-08-14', time: '09:00', type: '护士访视', detail: '右下肢肿胀轻微加重，已通知个案经理。避免挤压抬高患肢继续。血压148/90关注中。儿子周明辉在场配合。', author: '刘敏', role: '护士', vitals: 'BP 148/90 | DVT 加重警戒', status: 'completed' },
+      { date: '2026-08-10', time: '10:30', type: '个案经理', detail: '8月第2周服务评估。血压管理需关注(目标<150/90)。DVT观察每日执行。康复训练每周3次。服务执行率90%。', author: '张丽华', role: '个案经理', vitals: 'BP 146/88 | 执行率90%', status: 'completed' },
+      { date: '2026-08-03', time: '09:00', type: '初评访视', detail: '8月首次上门。确认月度排程（每周4次）、用药方案。首次血压146/90。儿子周明辉已培训翻身护理+DVT观察+血压监测。', author: '刘敏', role: '护士', vitals: 'BP 146/90 | HR 82 | 执行率达标', status: 'completed' },
     ],
   };
 }
-
-// ═══════════════════════════════════════════════════════════
 // PATIENT 3 — LAM KA CHUN — CAP (7-day plan)
 // ═══════════════════════════════════════════════════════════
 {
