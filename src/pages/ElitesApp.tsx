@@ -970,7 +970,7 @@ const ElitesPatientsTab: FC = () => {
         );
       })}
 
-    {/* Auto-show 照护记录s modal when all tasks complete */}
+    {/* Auto-show 照护记录 modal when all tasks complete */}
     {allTasksDone && (
       <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => {}}>
         <div className="bg-white rounded-2xl shadow-2xl w-[380px] max-h-[85vh] overflow-y-auto m-2 relative" onClick={e => e.stopPropagation()}>
@@ -979,8 +979,8 @@ const ElitesPatientsTab: FC = () => {
             <div className="flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-white" />
               <div>
-                <span className="text-sm font-bold text-white">照护记录s</span>
-                <p className="text-[9px] text-[#99E7FF]">{p.name} · Wed 6/18</p>
+                <span className="text-sm font-bold text-white">照护记录</span>
+                <p className="text-[9px] text-[#99E7FF]">{p.name} · 8月16日 周日</p>
               </div>
             </div>
             <button onClick={() => { setSelectedPid(null); }} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30">
@@ -997,27 +997,12 @@ const ElitesPatientsTab: FC = () => {
                 </span>
                 {isRecording && (
                   <span className="text-[9px] text-red-500 font-semibold animate-pulse flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-red-500" /> Recording...
+                    <span className="w-2 h-2 rounded-full bg-red-500" /> 录音中...
                   </span>
                 )}
               </div>
 
-              {/* Recording waveform animation */}
-              {isRecording && (
-                <div className="flex items-center justify-center gap-[2px] h-10 mb-3">
-                  {Array.from({ length: 24 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-[3px] bg-[#06B0EF] rounded-full"
-                      style={{
-                        animation: `waveform 0.6s ease-in-out infinite`,
-                        animationDelay: `${i * 0.05}s`,
-                        height: `${14 + Math.abs(Math.sin(i * 0.7)) * 20}px`,
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
+
 
               {/* Text area with typing animation */}
               <div className="relative">
@@ -1035,7 +1020,7 @@ const ElitesPatientsTab: FC = () => {
                       {isRecording && <span className="inline-block w-[2px] h-[14px] bg-[#006F80] ml-0.5 animate-pulse align-middle" />}
                     </p>
                   ) : (
-                    <p className="text-[11px] text-slate-400 italic">Tap the microphone to start dictating your care report...</p>
+                    <p className="text-[11px] text-slate-400 italic">点击麦克风开始语音录入照护报告...</p>
                   )}
                 </div>
 
@@ -1052,29 +1037,20 @@ const ElitesPatientsTab: FC = () => {
                 </button>
               </div>
 
-              {isRecording && (
-                <div className="mt-3 flex items-center gap-2 px-1">
-                  <div className="flex-1 bg-slate-200 rounded-full h-1 overflow-hidden">
-                    <div className="bg-[#006F80] h-1 animate-pulse" style={{ width: '100%' }} />
-                  </div>
-                  <span className="text-[9px] text-slate-400 font-mono">
-                    {String(Math.floor(recordingTime / 60000)).padStart(2,'0')}:{String(Math.floor((recordingTime % 60000) / 1000)).padStart(2,'0')}
-                  </span>
-                </div>
-              )}
+
             </div>
 
             {/* Divider */}
             <div className="border-t border-slate-100 pt-4 space-y-3">
               <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">结构化字段</span>
               {[
-                { key: 'condition', label: 'Physical Condition', icon: Heart },
-                { key: 'meds', label: 'Medication Status', icon: Pill },
-                { key: 'response', label: 'Nursing Response', icon: Shield },
-                { key: 'mental', label: 'Mental Status', icon: Brain },
-                { key: 'io', label: 'Intake / Output', icon: GlassWater },
-                { key: 'diet', label: 'Diet & Nutrition', icon: Apple },
-                { key: 'incidents', label: 'Incidents', icon: AlertTriangle },
+                { key: 'condition', label: '身体状况', icon: Heart },
+                { key: 'meds', label: '用药情况', icon: Pill },
+                { key: 'response', label: '护理响应', icon: Shield },
+                { key: 'mental', label: '精神状态', icon: Brain },
+                { key: 'io', label: '出入量', icon: GlassWater },
+                { key: 'diet', label: '饮食与营养', icon: Apple },
+                { key: 'incidents', label: '事件记录', icon: AlertTriangle },
               ].map((f) => (
                 <div key={f.key}>
                   <label className="text-[10px] font-semibold text-slate-600 flex items-center gap-1.5 mb-1">
@@ -1083,7 +1059,15 @@ const ElitesPatientsTab: FC = () => {
                   <input
                     type="text"
                     value={careLogFields[f.key as keyof typeof careLogFields]}
-                    onChange={e => selectedPid !== null && setEliteCareLogFields(selectedPid, { ...careLogFields, [f.key]: e.target.value })}
+                    onChange={e => {
+                      if (selectedPid !== null) {
+                        const next = { ...careLogFields, [f.key]: e.target.value };
+                        setEliteCareLogFields(selectedPid, next);
+                        if (f.key === 'incidents' && Object.values(next).every(v => v && String(v).trim())) {
+                          setTimeout(() => handleSubmitLogs(), 300);
+                        }
+                      }
+                    }}
                     className="w-full bg-slate-50 rounded-lg px-3 py-2 text-[10px] text-slate-700 placeholder-slate-400 border border-slate-200 outline-none focus:border-[#06B0EF]"
                   />
                 </div>
@@ -1095,7 +1079,7 @@ const ElitesPatientsTab: FC = () => {
               disabled={uploading}
               className="w-full py-2.5 bg-[#006F80] text-white text-xs font-bold rounded-xl hover:bg-[#0B3550] transition-colors shadow-md shadow-[#99E7FF] flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <Send className="w-3.5 h-3.5" /> Submit 照护记录s
+              <Send className="w-3.5 h-3.5" /> 提交照护记录
             </button>
 
             {/* Hidden TTS audio */}
